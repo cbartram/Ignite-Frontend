@@ -1,19 +1,7 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import './App.css';
-import {
-  simpleAction
-} from './actions/simpleAction';
 import Container from "./components/Container/Container";
 import { Link } from 'react-router-dom'
-
-const mapStateToProps = state => ({
-    data: state.testReducer.result
-});
-
-const mapDispatchToProps = dispatch => ({
-   update: (data) => dispatch(simpleAction(data))
-});
 
 class App extends Component {
   render() {
@@ -37,4 +25,4 @@ class App extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

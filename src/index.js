@@ -5,16 +5,11 @@ import { Provider } from 'react-redux'
 import * as serviceWorker from './serviceWorker';
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import rootReducer from './reducers/rootReducer';
 import  Amplify from 'aws-amplify';
 import * as constants from './constants'
 import config from './config';
-
-// Import Page Components
-import App from './App';
-import Login from './components/Login/Login';
-import NotFound from './components/NotFound/NotFound';
+import Router from './components/Router/Router'
 
 // Setup Redux middleware and store
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -47,16 +42,14 @@ Amplify.configure({
     }
 });
 
+// Setup Logger
+if (process.env.NODE_ENV !== 'production') {
+    localStorage.setItem('debug', 'ignite:*');
+}
+
 ReactDOM.render(
     <Provider store={store}>
-        <Router>
-            <Switch>
-                <Route exact path="/" component={App} />
-                <Route path="/login" component={Login} />
-                {/* Catch All unmatched paths with a 404 */}
-                <Route component={NotFound} />
-            </Switch>
-        </Router>
+        <Router />
     </Provider>
     , document.getElementById('root'));
 

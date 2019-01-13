@@ -4,5 +4,13 @@
  * @type {{}}
  */
 export const INITIAL_STATE = {
-
+    auth: {
+        isAuthenticated: false,
+        user: null,
+        error: null,
+    }
 };
+
+// Redux Action/Reducer Constants
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAILURE = 'LOGIN_FAILURE';

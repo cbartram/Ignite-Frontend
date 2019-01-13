@@ -43,8 +43,9 @@ export default class Login extends Component {
 
         try {
             const res = await Auth.signIn(this.state.email, this.state.password);
+
             console.log(res);
-            console.log('Successful?');
+
             alert("Logged in");
         } catch (err) {
             console.log('[ERROR] Failed to Authenticate User: ', err);
