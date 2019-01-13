@@ -10,10 +10,6 @@ const mapStateToProps = state => ({
 });
 
 class Router extends Component {
-    componentDidMount() {
-        console.log(this.props.auth);
-    }
-
     render() {
         return (
             <BrowserRouter>

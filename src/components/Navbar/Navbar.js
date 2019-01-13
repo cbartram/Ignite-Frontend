@@ -1,9 +1,25 @@
 import React, { Component } from 'react';
 import Logo from '../../resources/images/logo.png';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { logout } from '../../actions/actions';
+import { Auth } from 'aws-amplify';
+import Log from '../../Log';
 import './Navbar.css';
 
-export default class Navbar extends Component {
+const mapStateToProps = state => ({
+    auth: state.auth,
+});
+
+const mapDispatchToProps = dispatch => ({
+   logoutUser: async () => {
+       Log.info('Logging out...');
+       await Auth.signOut();
+       dispatch(logout());
+   }
+});
+
+class Navbar extends Component {
     render() {
         return (
             <div className="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm fixed-top">
@@ -17,7 +33,15 @@ export default class Navbar extends Component {
                     <Link className="p-2 text-dark" to="/register">Sign Up</Link>
                     <Link className="p-2 text-dark" to="#support">Support</Link>
                 </nav>
+                {
+                    (this.props.auth.user !== null && typeof this.props.auth.user !== 'undefined') &&
+                     <Link to="/logout">
+                        <button className="btn btn-outline-primary" onClick={() => this.props.logoutUser()}>Logout</button>
+                     </Link>
+                }
             </div>
         )
     }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

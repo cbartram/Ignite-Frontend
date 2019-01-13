@@ -6,10 +6,12 @@ import * as serviceWorker from './serviceWorker';
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import rootReducer from './reducers/rootReducer';
-import  Amplify from 'aws-amplify';
+import Amplify, { Auth } from 'aws-amplify';
 import * as constants from './constants'
 import config from './config';
 import Router from './components/Router/Router'
+import Log from './Log';
+import { loginSuccess } from './actions/actions';
 
 // Setup Redux middleware and store
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -47,13 +49,40 @@ if (process.env.NODE_ENV !== 'production') {
     localStorage.setItem('debug', 'ignite:*');
 }
 
-ReactDOM.render(
-    <Provider store={store}>
-        <Router />
-    </Provider>
-    , document.getElementById('root'));
+// Checks the cookies/local storage to see if the user has been authenticated recently/remembered.
+const checkAuthStatus = async () => {
+    Log.info('Checking User Authentication status...');
+    try {
+        Auth.currentSession().then(user => {
+            Log.info(user.idToken.payload.email, 'Found Authenticated user within a Cookie!');
+            store.dispatch(loginSuccess(user))
+        }).catch(err => {
+            Log.error('Could not find authenticated user.', err)
+        });
+    }
+    catch (e) {
+        if (e !== 'No current user') {
+            alert(e);
+        }
+    }
+};
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
-serviceWorker.unregister();
+const render = async () => {
+    await checkAuthStatus();
+    ReactDOM.render(
+        <Provider store={store}>
+            <Router />
+        </Provider>
+        , document.getElementById('root'));
+
+    // If you want your app to work offline and load faster, you can change
+    // unregister() to register() below. Note this comes with some pitfalls.
+    // Learn more about service workers: http://bit.ly/CRA-PWA
+    serviceWorker.unregister();
+};
+
+// Execute the App
+render().then(() => {
+    Log.info('Ignite Rendered Successfully.')
+});
+

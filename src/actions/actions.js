@@ -29,3 +29,14 @@ export const loginFailure = payload => dispatch => {
         payload
     });
 };
+
+/**
+ * Handles removing the user's login session from the browser.
+ * @returns {Function}
+ */
+export const logout = () => dispatch => {
+    dispatch({
+        type: constants.LOGOUT,
+        payload: {} // We don't need any information to update the logout state
+    })
+};
