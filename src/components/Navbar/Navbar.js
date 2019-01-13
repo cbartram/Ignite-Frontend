@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Logo from '../../resources/images/logo.png';
+import { Link } from 'react-router-dom';
 import './Navbar.css';
 
 export default class Navbar extends Component {
@@ -11,11 +12,10 @@ export default class Navbar extends Component {
                 </a>
                 <h5 className="my-0 mr-md-auto font-weight-normal">Ignite</h5>
                 <nav className="my-2 my-md-0 mr-md-3">
-                    <a className="p-2 text-dark" href="#about">About</a>
-                    <a className="p-2 text-dark" href="#examples">Examples</a>
-                    <a className="p-2 text-dark" href="#sponsor">Sponsor</a>
-                    <a className="p-2 text-dark" href="https://github.com/cbartram/nanoleaf-layout">Github</a>
-                    <a className="p-2 text-dark" href="#support">Support</a>
+                    <Link className="p-2 text-dark" to="/">Home</Link>
+                    <Link className="p-2 text-dark" to="/login">Login</Link>
+                    <Link className="p-2 text-dark" to="/register">Sign Up</Link>
+                    <Link className="p-2 text-dark" to="#support">Support</Link>
                 </nav>
             </div>
         )
