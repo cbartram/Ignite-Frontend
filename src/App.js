@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './App.css';
-import Navbar from "./components/Navbar/Navbar";
 import {
   simpleAction
 } from './actions/simpleAction';
+import Container from "./components/Container/Container";
+import { Link } from 'react-router-dom'
 
 const mapStateToProps = state => ({
     data: state.testReducer.result
@@ -17,13 +18,21 @@ const mapDispatchToProps = dispatch => ({
 class App extends Component {
   render() {
     return (
-      <div className="container-fluid">
-       <Navbar/>
-          <button onClick={() => this.props.update('Foo')}>Submit</button>
-        <p align="center" style={{ color: 'red'}}>
-            Hey { this.props.data}
-        </p>
-      </div>
+      <Container>
+          <div className="d-flex flex-column justify-content-center align-items-center">
+              <h1>Welcome to Ignite!</h1>
+              <Link to="/login">
+                  <button className="btn btn-primary mb-3">
+                    Login <i className="fas fa-sign-in-alt" />
+                  </button>
+              </Link>
+              <Link to="/register">
+                  <button className="btn btn-secondary">
+                      Sign Up <i className="fas fa-plus" />
+                  </button>
+              </Link>
+          </div>
+      </Container>
     );
   }
 }
