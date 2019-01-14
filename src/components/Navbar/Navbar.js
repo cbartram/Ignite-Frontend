@@ -42,7 +42,7 @@ class Navbar extends Component {
                 <nav className="my-2 my-md-0 mr-md-3">
                     <Link className="p-2 text-dark" to="/">Home</Link>
                     <Link className="p-2 text-dark" to="/login">Login</Link>
-                    <Link className="p-2 text-dark" to="/register">Sign Up</Link>
+                    <Link className="p-2 text-dark" to="/signup">Sign Up</Link>
                     <Link className="p-2 text-dark" to="#support">Support</Link>
                 </nav>
                 {

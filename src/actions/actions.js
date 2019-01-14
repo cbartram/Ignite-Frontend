@@ -8,10 +8,10 @@ import * as constants from '../constants';
  * Updates the store to notify the user that the request has been sent and the data is loading.
  * @returns {Function}
  */
-export const loginRequest = () => dispatch => {
+export const loginRequest = (payload = true) => dispatch => {
     dispatch({
         type: constants.LOGIN_REQUEST,
-        payload: {}
+        payload
     });
 };
 

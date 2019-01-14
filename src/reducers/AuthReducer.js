@@ -9,10 +9,9 @@ import * as constants from '../constants';
 export default (state = {}, action) => {
     switch (action.type) {
         case constants.LOGIN_REQUEST:
-            console.log('Starting the request');
             return {
                 ...state,
-                isFetching: true,
+                isFetching: action.payload,
             };
         case constants.LOGIN_SUCCESS:
             return {

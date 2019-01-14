@@ -19,11 +19,11 @@ class App extends Component {
                   this.props.auth.user === null ?
                   <div>
                       <Link to="/login">
-                          <button className="btn btn-primary mb-3">
+                          <button className="btn btn-primary mr-2">
                             Login <i className="fas fa-sign-in-alt" />
                           </button>
                       </Link>
-                      <Link to="/register">
+                      <Link to="/signup">
                           <button className="btn btn-secondary">
                               Sign Up <i className="fas fa-plus" />
                           </button>

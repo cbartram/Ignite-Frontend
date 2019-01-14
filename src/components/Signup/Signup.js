@@ -6,18 +6,32 @@ import {
     ControlLabel
 } from "react-bootstrap";
 import LoaderButton from "../LoaderButton/LoaderButton";
+import { connect } from 'react-redux';
+import { Auth } from 'aws-amplify';
 import "./Signup.css";
 import Container from "../Container/Container";
+import { loginRequest, loginSuccess, loginFailure } from "../../actions/actions";
+import Log from '../../Log';
+
+const mapStateToProps = state => ({
+    auth: state.auth,
+});
+
+const mapDispatchToProps = dispatch => ({
+    // We can use the login request here to trigger a loading sequence within the App but its generic enough to be anything not just logging in!
+    isFetching: (data) => dispatch(loginRequest(data)),
+    loginSuccess: (data) => dispatch(loginSuccess(data)),
+    loginFailure: (data) => dispatch(loginFailure(data))
+});
 
 /**
  * Presentational Component which shows the Signup form page
  */
-export default class Signup extends Component {
+class Signup extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            isLoading: false,
             email: "",
             password: "",
             confirmPassword: "",
@@ -46,14 +60,38 @@ export default class Signup extends Component {
 
     handleSubmit = async event => {
         event.preventDefault();
-        this.setState({ isLoading: true });
-        this.setState({ newUser: "test" });
-        this.setState({ isLoading: false });
+        this.props.isFetching();
+
+        try {
+            const newUser = await Auth.signUp({
+                username: this.state.email,
+                password: this.state.password
+            });
+
+            this.setState({ newUser });
+        } catch (e) {
+            Log.error('Error Signing up new user...', e)
+        }
+
+
+        this.props.isFetching(false);
     };
 
     handleConfirmationSubmit = async event => {
         event.preventDefault();
-        this.setState({ isLoading: true });
+
+        this.props.isFetching();
+
+        try {
+            await Auth.confirmSignUp(this.state.email, this.state.confirmationCode);
+            const user = await Auth.signIn(this.state.email, this.state.password);
+
+            this.props.loginSuccess(user);
+            this.props.history.push('/');
+        } catch (err) {
+            Log.error('Error confirming user code or logging user in...', err);
+            this.props.loginFailure(err)
+        }
     };
 
     renderConfirmationForm() {
@@ -67,14 +105,14 @@ export default class Signup extends Component {
                         value={this.state.confirmationCode}
                         onChange={this.handleChange}
                     />
-                    <HelpBlock>Please check your email for the code.</HelpBlock>
+                    <HelpBlock>Please check your email for the confirmation code.</HelpBlock>
                 </FormGroup>
                 <LoaderButton
                     block
                     bsSize="large"
                     disabled={!this.validateConfirmationForm()}
                     type="submit"
-                    isLoading={this.state.isLoading}
+                    isLoading={this.props.auth.isFetching}
                     text="Verify"
                     loadingText="Verifying…"
                 />
@@ -115,7 +153,7 @@ export default class Signup extends Component {
                     bsSize="large"
                     disabled={!this.validateForm()}
                     type="submit"
-                    isLoading={this.state.isLoading}
+                    isLoading={this.props.auth.isFetching}
                     text="Signup"
                     loadingText="Signing up…"
                 />
@@ -135,3 +173,5 @@ export default class Signup extends Component {
         );
     }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Signup);
