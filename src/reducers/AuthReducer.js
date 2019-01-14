@@ -8,10 +8,17 @@ import * as constants from '../constants';
  */
 export default (state = {}, action) => {
     switch (action.type) {
+        case constants.LOGIN_REQUEST:
+            console.log('Starting the request');
+            return {
+                ...state,
+                isFetching: true,
+            };
         case constants.LOGIN_SUCCESS:
             return {
                 ...state,
                 isAuthenticated: true,
+                isFetching: false,
                 user: action.payload,
                 error: null
             };
@@ -19,6 +26,7 @@ export default (state = {}, action) => {
             return {
                 ...state,
                 isAuthenticated: false,
+                isFetching: false,
                 user: null,
                 error: action.payload,
             };
@@ -26,6 +34,7 @@ export default (state = {}, action) => {
             return {
                 ...state,
                 isAuthenticated: false,
+                isFetching: false,
                 user: null,
                 error: null,
             };

@@ -1,13 +1,17 @@
 import React, { Component } from "react";
-import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import { Auth } from 'aws-amplify';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import './Login.css';
 import Log from '../../Log';
-import Container from "../Container/Container";
-import {loginFailure, loginSuccess} from "../../actions/actions";
-
+import Container from '../Container/Container';
+import LoaderButton from '../LoaderButton/LoaderButton';
+import {
+    loginFailure,
+    loginSuccess,
+    loginRequest,
+} from '../../actions/actions';
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -15,7 +19,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     loginSuccess: (data) => dispatch(loginSuccess(data)),
-    loginFailure: (data) => dispatch(loginFailure(data))
+    loginFailure: (data) => dispatch(loginFailure(data)),
+    loginRequest: () => dispatch(loginRequest()),
 });
 
 class Login extends Component {
@@ -24,7 +29,8 @@ class Login extends Component {
 
         this.state = {
             email: "",
-            password: ""
+            password: "",
+            isLoading: false,
         };
     }
 
@@ -55,6 +61,8 @@ class Login extends Component {
     handleSubmit = async event => {
         Log.info('Logging in...');
         event.preventDefault();
+        // Dispatch the isFetching redux
+        this.props.loginRequest();
 
         try {
             const res = await Auth.signIn(this.state.email, this.state.password);
@@ -103,14 +111,15 @@ class Login extends Component {
                                 type="password"
                             />
                         </FormGroup>
-                        <Button
+                        <LoaderButton
                             block
                             bsSize="large"
                             disabled={!this.validateForm()}
                             type="submit"
-                        >
-                            Login
-                        </Button>
+                            isLoading={this.props.auth.isFetching}
+                            text="Login"
+                            loadingText="Logging in…"
+                        />
                     </form>
                 </div>
             </Container>

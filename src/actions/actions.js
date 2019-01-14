@@ -5,6 +5,17 @@ import * as constants from '../constants';
 
 
 /**
+ * Updates the store to notify the user that the request has been sent and the data is loading.
+ * @returns {Function}
+ */
+export const loginRequest = () => dispatch => {
+    dispatch({
+        type: constants.LOGIN_REQUEST,
+        payload: {}
+    });
+};
+
+/**
  * The login action updated the user state when a login item has occurred
  * and also validates if it was successful or not
  * @param payload Object AWS Cognito Login Success object
@@ -14,7 +25,7 @@ export const loginSuccess = (payload) => dispatch => {
     dispatch({
         type: constants.LOGIN_SUCCESS,
         payload
-    })
+    });
 };
 
 /**
@@ -38,5 +49,5 @@ export const logout = () => dispatch => {
     dispatch({
         type: constants.LOGOUT,
         payload: {} // We don't need any information to update the logout state
-    })
+    });
 };
