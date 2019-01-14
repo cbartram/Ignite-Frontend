@@ -52,8 +52,21 @@ class Navbar extends Component {
                 <h5 className="my-0 mr-md-auto font-weight-normal">Ignite</h5>
                 <nav className="my-2 my-md-0 mr-md-3">
                     <Link className="p-2 text-dark" to="/" onClick={() => this.handleLinkClick()}>Home</Link>
-                    <Link className="p-2 text-dark" to="/login" onClick={() => this.handleLinkClick()}>Login</Link>
-                    <Link className="p-2 text-dark" to="/signup" onClick={() => this.handleLinkClick()}>Sign Up</Link>
+                    {
+                        this.props.auth.user && (
+                            <Link className="p-2 text-dark" to="/tracks" onClick={() => this.handleLinkClick()}>Tracks</Link>
+                        )
+                    }
+                    {
+                        !this.props.auth.user && (
+                                <Link className="p-2 text-dark" to="/login" onClick={() => this.handleLinkClick()}>Login</Link>
+                        )
+                    }
+                    {
+                        !this.props.auth.user && (
+                            <Link className="p-2 text-dark" to="/signup" onClick={() => this.handleLinkClick()}>Sign Up</Link>
+                        )
+                    }
                     <Link className="p-2 text-dark" to="#support" onClick={() => this.handleLinkClick()}>Support</Link>
                 </nav>
                 {
