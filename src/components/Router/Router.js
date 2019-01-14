@@ -10,6 +10,9 @@ const mapStateToProps = state => ({
    auth: state.auth,
 });
 
+/**
+ * This Component handles the routes which are displayed within index.js
+ */
 class Router extends Component {
     render() {
         return (

@@ -29,7 +29,7 @@ export default (state = {}, action) => {
                 user: null,
                 error: action.payload,
             };
-        case constants.HIDE_ERROR: {
+        case constants.HIDE_ERRORS: {
             return {
                 ...state,
                 error: null,

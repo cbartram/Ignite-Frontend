@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Logo from '../../resources/images/logo.png';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { logout } from '../../actions/actions';
+import {hideErrors, logout} from '../../actions/actions';
 import { Auth } from 'aws-amplify';
 import Log from '../../Log';
 import './Navbar.css';
@@ -12,9 +12,13 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-   logout: () => dispatch(logout())
+   logout: () => dispatch(logout()),
+   hideErrors: () => dispatch(hideErrors()),
 });
 
+/**
+ * Shows the Navbar at the top of the page.
+ */
 class Navbar extends Component {
     /**
      * Handles logging the user out by removing cookies/session history
@@ -29,7 +33,14 @@ class Navbar extends Component {
         } catch(err) {
             Log.error('Failed to logout user...', err)
         }
+    }
 
+
+    /**
+     * Hides any errors when each of the links are clicked.
+     */
+    handleLinkClick() {
+        this.props.hideErrors();
     }
 
     render() {
@@ -40,10 +51,10 @@ class Navbar extends Component {
                 </a>
                 <h5 className="my-0 mr-md-auto font-weight-normal">Ignite</h5>
                 <nav className="my-2 my-md-0 mr-md-3">
-                    <Link className="p-2 text-dark" to="/">Home</Link>
-                    <Link className="p-2 text-dark" to="/login">Login</Link>
-                    <Link className="p-2 text-dark" to="/signup">Sign Up</Link>
-                    <Link className="p-2 text-dark" to="#support">Support</Link>
+                    <Link className="p-2 text-dark" to="/" onClick={() => this.handleLinkClick()}>Home</Link>
+                    <Link className="p-2 text-dark" to="/login" onClick={() => this.handleLinkClick()}>Login</Link>
+                    <Link className="p-2 text-dark" to="/signup" onClick={() => this.handleLinkClick()}>Sign Up</Link>
+                    <Link className="p-2 text-dark" to="#support" onClick={() => this.handleLinkClick()}>Support</Link>
                 </nav>
                 {
                     (this.props.auth.user !== null && typeof this.props.auth.user !== 'undefined') &&

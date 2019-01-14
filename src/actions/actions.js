@@ -21,7 +21,7 @@ export const loginRequest = (payload = true) => dispatch => {
  */
 export const hideErrors = () => dispatch => {
     dispatch({
-        type: constants.LOGIN_REQUEST,
+        type: constants.HIDE_ERRORS,
     });
 };
 

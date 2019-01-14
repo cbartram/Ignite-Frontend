@@ -23,6 +23,9 @@ const mapDispatchToProps = dispatch => ({
     loginRequest: () => dispatch(loginRequest()),
 });
 
+/**
+ * Login Component showing the email and password form fields.
+ */
 class Login extends Component {
     constructor(props) {
         super(props);

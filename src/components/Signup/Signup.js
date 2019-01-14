@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { Auth } from 'aws-amplify';
 import "./Signup.css";
 import Container from "../Container/Container";
-import { loginRequest, loginSuccess, loginFailure, hideErrors } from "../../actions/actions";
+import { loginRequest, loginSuccess, loginFailure } from "../../actions/actions";
 import Log from '../../Log';
 
 const mapStateToProps = state => ({
@@ -22,7 +22,6 @@ const mapDispatchToProps = dispatch => ({
     isFetching: (data) => dispatch(loginRequest(data)),
     loginSuccess: (data) => dispatch(loginSuccess(data)),
     loginFailure: (data) => dispatch(loginFailure(data)),
-    hideErrors: () => dispatch(hideErrors()),
 });
 
 /**

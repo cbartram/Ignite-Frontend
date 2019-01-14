@@ -16,5 +16,5 @@ export const INITIAL_STATE = {
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
-export const HIDE_ERROR = 'HIDE_ERROR';
+export const HIDE_ERRORS = 'HIDE_ERRORS';
 export const LOGOUT = 'LOGOUT';
