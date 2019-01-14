@@ -12,14 +12,26 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-   logoutUser: async () => {
-       Log.info('Logging out...');
-       await Auth.signOut();
-       dispatch(logout());
-   }
+   logout: () => dispatch(logout())
 });
 
 class Navbar extends Component {
+    /**
+     * Handles logging the user out by removing cookies/session history
+     * @returns {Promise<void>}
+     */
+    async logout() {
+        Log.info('Logging out...');
+        try {
+            await Auth.signOut();
+            this.props.logout();
+            this.props.history.push('/login');
+        } catch(err) {
+            Log.error('Failed to logout user...', err)
+        }
+
+    }
+
     render() {
         return (
             <div className="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm fixed-top">
@@ -35,9 +47,7 @@ class Navbar extends Component {
                 </nav>
                 {
                     (this.props.auth.user !== null && typeof this.props.auth.user !== 'undefined') &&
-                     <Link to="/logout">
-                        <button className="btn btn-outline-primary" onClick={() => this.props.logoutUser()}>Logout</button>
-                     </Link>
+                    <button className="btn btn-outline-primary" onClick={() => this.logout()}>Logout</button>
                 }
             </div>
         )

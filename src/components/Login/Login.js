@@ -59,7 +59,8 @@ class Login extends Component {
         try {
             const res = await Auth.signIn(this.state.email, this.state.password);
             Log.info('Login Success!');
-            this.props.loginSuccess(res)
+            this.props.loginSuccess(res);
+            this.props.history.push('/');
         } catch (err) {
             Log.error('Login Failed!', err);
             this.props.loginFailure(err);
