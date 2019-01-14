@@ -9,7 +9,6 @@ import * as constants from '../constants';
 export default (state = {}, action) => {
     switch (action.type) {
         case constants.LOGIN_SUCCESS:
-            console.log('Login success', action.payload);
             return {
                 ...state,
                 isAuthenticated: true,
