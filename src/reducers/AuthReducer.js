@@ -29,6 +29,12 @@ export default (state = {}, action) => {
                 user: null,
                 error: action.payload,
             };
+        case constants.HIDE_ERROR: {
+            return {
+                ...state,
+                error: null,
+            }
+        }
         case constants.LOGOUT:
             return {
                 ...state,

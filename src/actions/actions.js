@@ -16,6 +16,16 @@ export const loginRequest = (payload = true) => dispatch => {
 };
 
 /**
+ * Updates the store to hide any outstanding error messages that are no longer needed.
+ * @returns {Function}
+ */
+export const hideErrors = () => dispatch => {
+    dispatch({
+        type: constants.LOGIN_REQUEST,
+    });
+};
+
+/**
  * The login action updated the user state when a login item has occurred
  * and also validates if it was successful or not
  * @param payload Object AWS Cognito Login Success object
