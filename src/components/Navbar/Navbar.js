@@ -46,12 +46,12 @@ class Navbar extends Component {
         const authLinks = [
             <Link className="p-2 text-dark" to="/tracks" key="tracks" onClick={() => this.handleLinkClick()}>Tracks</Link>,
             <Link className="p-2 text-dark" to="/library" key="library" onClick={() => this.handleLinkClick()}>Library</Link>,
-
+            <Link className="p-2 text-dark" to="/pricing" key="pricing" onClick={() => this.handleLinkClick()}>Pricing</Link>,
         ];
         const standardLinks = [
             <Link className="p-2 text-dark" to="/login" key="login" onClick={() => this.handleLinkClick()}>Login</Link>,
             <Link className="p-2 text-dark" to="/signup" key="signup" onClick={() => this.handleLinkClick()}>Sign Up</Link>,
-            <Link className="p-2 text-dark" to="/pricing" key="pricing" onClick={() => this.handleLinkClick()}>Pricing</Link>
+            <Link className="p-2 text-dark" to="/pricing" key="pricing" onClick={() => this.handleLinkClick()}>Pricing</Link>,
         ];
 
         return (

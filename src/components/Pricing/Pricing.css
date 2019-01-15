@@ -1,0 +1,131 @@
+.Plan--standard {
+    background: #fff;
+    z-index: 10;
+}
+
+.Plan {
+    -webkit-box-shadow: 0 15px 35px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.07);
+    box-shadow: 0 15px 35px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.07);
+    position: relative;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.common-UppercaseText {
+    font-size: 17px;
+    line-height: 28px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .025em;
+}
+
+.Plan-title {
+    font-size: 1.8em;
+    font-weight: 500;
+    text-align: center;
+    padding: 35px 30px 20px;
+    margin: 0 auto 20px;
+    color: #24b47e;
+    border-bottom: 2px solid #f6f9fc;
+}
+
+.Plan-description-intergrated {
+    color: #525f7f;
+    max-width: 460px;
+    padding-bottom: 20px;
+    font-size: 19px;
+    line-height: 29px;
+    text-align: center;
+    margin: 0 auto;
+    /*padding: 0 40px;*/
+}
+
+.Plan-cardPricing {
+    text-align: center;
+}
+
+.Plan-cardRate {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.Plan-cardRate-percent {
+    display: inline-block;
+    font-size: 6em;
+    line-height: 60px;
+    letter-spacing: -.05em;
+    vertical-align: middle;
+    color: #32325d;
+}
+.Plan-cardRate-plus {
+    margin: 0 10px;
+    text-indent: 100%;
+    overflow: hidden;
+    width: 12px;
+    height: 12px;
+    background: url(https://stripe.com/img/v3/pricing/header/cardRate-plus.svg);
+    line-height: 60px;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.Plan-cardRate-fixed {
+    font-size: 2em;
+    font-weight: 500;
+    color: #32325d;
+    line-height: 60px;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.Plan-cardRate-description {
+    color: #8898aa;
+    font-size: 1.6em;
+    line-height: 1.4em;
+    padding-top: 3px;
+}
+
+ul.Plan-list.Plan-list-updated {
+    max-width: 460px;
+}
+
+.Plan-list {
+    font-size: 17px;
+    line-height: 26px;
+    color: #525f7f;
+    margin: 49px auto 59px;
+    max-width: 390px;
+    padding: 0 37px 0 80px;
+    list-style: none;
+}
+
+.Plan-listItem {
+    margin-bottom: 16px;
+    position: relative;
+}
+
+.Plan-button {
+    background: #f6f9fc;
+    display: block;
+    color: #32325d;
+    text-align: center;
+    text-decoration: none;
+    padding: 25px;
+    -webkit-transition: background .15s ease;
+    transition: background .15s ease;
+    font-size: 17px;
+    line-height: 28px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .025em;
+}
+
+.common-UppercaseText.common-Link--arrow:after {
+    content: "\279C";
+}
+
+.common-Link--arrow:after {
+    font: normal 16px StripeIcons;
+    content: "\2192";
+    padding-left: 5px;
+}

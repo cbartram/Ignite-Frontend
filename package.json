@@ -17,6 +17,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "deploy": "aws s3 sync build/ s3://ignite-web-us-east-1 --delete && aws cloudfront create-invalidation --distribution-id E9NTP35UE9KRQ --paths '/*'",
     "test": "CI=true react-scripts test; ./node_modules/mocha/bin/mocha --timeout 10000 --exit",
     "eject": "react-scripts eject"
   },
