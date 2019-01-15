@@ -57,13 +57,12 @@ const checkAuthStatus = async () => {
             Log.info(user.idToken.payload.email, 'Found Authenticated user within a Cookie!');
             store.dispatch(loginSuccess(user))
         }).catch(err => {
-            Log.error('Could not find authenticated user.', err)
+            Log.warn('Could not find authenticated user.', err)
         });
     }
     catch (e) {
-        if (e !== 'No current user') {
-            alert(e);
-        }
+        if (e !== 'No current user')
+           Log.error(e);
     }
 };
 

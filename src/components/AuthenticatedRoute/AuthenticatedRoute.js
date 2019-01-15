@@ -1,4 +1,4 @@
-import React, { Component  } from "react";
+import React from "react";
 import { Route, Redirect } from "react-router-dom";
 
 const AuthenticatedRoute = ({ component: Component, ...rest }) => (
@@ -6,7 +6,7 @@ const AuthenticatedRoute = ({ component: Component, ...rest }) => (
         if (rest.isAuthenticated === true) {
             return <Component {...props} />;
         } else {
-            return <Redirect to="/login"/>
+            return <Redirect to={`/login?redirect=${props.location.pathname}${props.location.search}`}/>
         }
     }} />
 );

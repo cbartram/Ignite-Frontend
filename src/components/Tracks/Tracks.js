@@ -30,29 +30,34 @@ class Tracks extends Component {
             }]
         }
     }
+
     render() {
         return (
             <Container>
                 <div className="d-flex flex-row justify-content-center">
                     <h1>Your Tracks</h1>
                 </div>
-                <div className="d-flex flex-row justify-content-between">
-                    {
-                        this.state.tracks.map(track => {
-                          return (
-                              <div className="common-Card m-2" key={track.name}>
-                                  <div className="cover" />
-                                  <h2 className="common-IntroText">{track.name}</h2>
-                                  <p className="common-BodyText">
-                                      {track.description}
-                                  </p>
-                                  <button className="common-Button common-Button--default">
-                                      Start Now
-                                  </button>
-                              </div>
-                          )
-                        })
-                    }
+                <div className="row">
+                    <div className="col-md-8 offset-md-2">
+                        <div className="d-flex flex-row justify-content-between">
+                            {
+                                this.state.tracks.map(track => {
+                                    return (
+                                        <div className="common-Card m-2" key={track.name}>
+                                            <div className="cover" />
+                                            <h2 className="common-IntroText">{track.name}</h2>
+                                            <p className="common-BodyText">
+                                                {track.description}
+                                            </p>
+                                            <button className="common-Button common-Button--default">
+                                                Start Now
+                                            </button>
+                                        </div>
+                                    )
+                                })
+                            }
+                        </div>
+                    </div>
                 </div>
             </Container>
         )
