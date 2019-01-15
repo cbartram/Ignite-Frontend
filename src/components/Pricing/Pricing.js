@@ -10,7 +10,7 @@ class Pricing extends Component {
                     <h1>Simple. Flexible. Pricing.</h1>
                 </div>
                 <div className="row">
-                    <div className="col-md-5 offset-md-3">
+                    <div className="col-md-4 offset-md-4">
                         <div className="Plan Plan--standard">
                             <h2 className="Plan-title common-UppercaseText">Integrated</h2>
                             <div className="Plan-description Plan-description-intergrated">Access a complete platform
@@ -35,16 +35,16 @@ class Pricing extends Component {
                                 <li className="Plan-listItem">
                                     <img src="https://stripe.com/img/v3/pricing/header/payment.svg" width="26" height="26"
                                          alt="fees icon" />
-                                        Everything you need to manage payments
+                                    Everything you need to manage payments
                                 </li>
                                 <li className="Plan-listItem">
                                     <img src="https://stripe.com/img/v3/pricing/header/forward.svg" width="26" height="26" alt="pay icon" />
-                                        Get hundreds of feature updates each year
+                                    Get hundreds of feature updates each year
                                 </li>
                                 <li className="Plan-listItem">
                                     <img src="https://stripe.com/img/v3/pricing/header/plan-star.svg" width="26" height="26"
                                          alt="reporting icon" />
-                                        No setup fees, monthly fees, or hidden fees
+                                    No setup fees, monthly fees, or hidden fees
                                 </li>
                             </ul>
 
@@ -54,6 +54,27 @@ class Pricing extends Component {
                                data-analytics-source="pricing-experiment-plan-boxes">
                                 Get started in minutes
                             </a>
+
+                        </div>
+                    </div>
+                </div>
+                <div className="common-StripeGrid anchorBottom">
+                    <div className="backgroundContainer">
+                        <div className="grid">
+                            <div className="background" />
+                        </div>
+                    </div>
+                    <div className="stripeContainer">
+                        <div className="grid">
+                            <div className="stripe" />
+                            <div className="stripe" />
+                            <div className="stripe" />
+                            <div className="stripe" />
+                            <div className="stripe" />
+                            <div className="stripe" />
+                            <div className="stripe" />
+                            <div className="stripe" />
+                            <div className="stripe" />
 
                         </div>
                     </div>
