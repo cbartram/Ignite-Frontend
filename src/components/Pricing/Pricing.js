@@ -10,6 +10,32 @@ const mapStateToProps = state => ({
 });
 
 class Pricing extends Component {
+
+    /**
+     * Renders the correct button for the payment screen depending on what kind of user
+     * is using the button (non registered, registered but not premium, registered and premium)
+     */
+    renderButton() {
+        if(this.props.auth.user) {
+            // If the user is already premium let them know!
+            if(this.props.auth.user.idToken.payload['custom:plan'] === 'basic') {
+                // todo replace this alert with something better
+                return <a href="#basic-plan" onClick={() => alert('You are already on this plan!')} className="Plan-button common-UppercaseText common-Link--arrow">
+                    Join free for 7 days
+                </a>
+            } else {
+                // Else show them the payment form
+                return <a href="#join" data-toggle="modal" data-target="#payment-modal" className="Plan-button common-UppercaseText common-Link--arrow">
+                    Join free for 7 days
+                </a>
+            }
+        }
+        // User is not signed in prompt them to signup
+        return  <Link to="/signup" className="Plan-button common-UppercaseText common-Link--arrow">
+            Join free for 7 days
+        </Link>;
+    }
+
     render() {
         return (
             <Container>
@@ -63,13 +89,7 @@ class Pricing extends Component {
                             </ul>
                             {/* If the user is logged in show the payment modal else redirect to the sign up page */}
                             {
-                                this.props.auth.user ?
-                                <a href="#join" data-toggle="modal" data-target="#payment-modal" className="Plan-button common-UppercaseText common-Link--arrow">
-                                    Join free for 7 days
-                                </a> :
-                                <Link to="/signup" className="Plan-button common-UppercaseText common-Link--arrow">
-                                    Join free for 7 days
-                                </Link>
+                               this.renderButton()
                             }
 
                         </div>
