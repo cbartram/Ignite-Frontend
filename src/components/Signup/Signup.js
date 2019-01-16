@@ -34,10 +34,12 @@ class Signup extends Component {
         super(props);
 
         this.state = {
-            email: "",
-            password: "",
-            confirmPassword: "",
-            confirmationCode: "",
+            email: '',
+            password: '',
+            first_name: '',
+            last_name: '',
+            confirmPassword: '',
+            confirmationCode: '',
             newUser: null
         };
     }
@@ -46,8 +48,8 @@ class Signup extends Component {
      * Validates the users form input info is correct
      */
     validateForm() {
-        const { email, password, confirmPassword } = this.state;
-        return email.length > 0 && password.length > 0 && password === confirmPassword
+        const { email, password, confirmPassword, first_name, last_name } = this.state;
+        return email.length > 0 && password.length > 0 && first_name.length > 0 && last_name.length > 0 && password === confirmPassword
     }
     /**
      * Validates the confirmation dialog box has input.
@@ -74,7 +76,13 @@ class Signup extends Component {
         try {
             const newUser = await Auth.signUp({
                 username: this.state.email,
-                password: this.state.password
+                password: this.state.password,
+                attributes: {
+                    'custom:first_name': this.state.first_name,
+                    'custom:last_name': this.state.last_name,
+                    'custom:premium': 'false',
+                    'custom:plan': 'none'
+                }
             });
 
             this.props.hideErrors();
@@ -137,6 +145,24 @@ class Signup extends Component {
         return (
             <div>
                 <form onSubmit={this.handleSubmit}>
+                    <FormGroup controlId="first_name" bsSize="large">
+                        <ControlLabel>First Name</ControlLabel>
+                        <FormControl
+                            autoFocus
+                            type="text"
+                            value={this.state.first_name}
+                            onChange={this.handleChange}
+                        />
+                    </FormGroup>
+                    <FormGroup controlId="last_name" bsSize="large">
+                        <ControlLabel>Last Name</ControlLabel>
+                        <FormControl
+                            autoFocus
+                            type="text"
+                            value={this.state.last_name}
+                            onChange={this.handleChange}
+                        />
+                    </FormGroup>
                     <FormGroup controlId="email" bsSize="large">
                         <ControlLabel>Email</ControlLabel>
                         <FormControl
