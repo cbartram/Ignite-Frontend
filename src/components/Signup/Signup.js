@@ -8,10 +8,11 @@ import {
 import LoaderButton from "../LoaderButton/LoaderButton";
 import { connect } from 'react-redux';
 import { Auth } from 'aws-amplify';
-import "./Signup.css";
+import { Link } from 'react-router-dom';
 import Container from "../Container/Container";
 import { loginRequest, loginSuccess, loginFailure } from "../../actions/actions";
 import Log from '../../Log';
+import './Signup.css';
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -168,8 +169,12 @@ class Signup extends Component {
                         loadingText="Signing up…"
                     />
                 </form>
-                <div className="d-flex flex-row justify-content-center">
+                <div className="d-flex flex-column align-items-center justify-content-center">
                     <button className="btn btn-link" onClick={() => this.resendConfirmationCode()}>Re-send confirmation code.</button>
+                    <span className="text-muted">
+                        or
+                    </span>
+                    <Link to="/login">Login</Link>
                 </div>
             </div>
         );

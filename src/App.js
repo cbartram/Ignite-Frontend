@@ -9,7 +9,48 @@ const mapStateToProps = state => ({
 });
 
 class App extends Component {
-  render() {
+  constructor() {
+      super();
+
+      this.state = {
+          rotations: [100, 400],
+          layerRotation: 100,
+      }
+  }
+
+  componentDidMount() {
+      let { rotations, layerRotation } = this.state;
+      setInterval(() => {
+          this.setState({
+              rotations: [rotations[0] += 0.25, rotations[1] += 0.25],
+              layerRotation: layerRotation -= Math.random(),
+          })
+      }, 50);
+  }
+
+    // Object(h.b)(0).then(function() {
+    //     return t.__createLogo(1, 4e3)
+    // }),
+    // Object(h.b)(500).then(function() {
+    //     return t.__createLogo(2, 90, 4500)
+    // }),
+    // Object(h.b)(1e3).then(function() {
+    //     return t.__createLogo(3, 180, 5e3)
+    // }),
+    // Object(h.b)(1500).then(function() {
+    //     return t.__createLogo(3, 360, 5500)
+    // }),
+    // Object(h.b)(2e3).then(function() {
+    //     return t.__createLogo(4, 130, 6e3)
+    // }),
+    // Object(h.b)(2500).then(function() {
+    //     return t.__createLogo(4, 250, 6500)
+    // }),
+    // Object(h.b)(3e3).then(function() {
+    //     return t.__createLogo(4, 320, 7e3)
+    // });
+
+    render() {
     return (
       <Container>
 
@@ -30,11 +71,11 @@ class App extends Component {
               <div className="col-md-5">
                   <div className="intro-visual">
                       <div className="intro-visual-container intro-visual--measured" id="js-intro-visual">
-                          <div className="layer" style={{opacity: 0.3, transform: 'scale(1)'}} />
+                          <div className="layer" style={{opacity: 0.3, transform: 'scale(1)',}} />
                           <div className="layer" style={{ opacity: 0.45, transform: 'scale(0.7799)' }} />
                           <div className="layer" style={{ opacity: 0.6, transform: 'scale(0.5598)' }} />
                           <div className="layer" style={{ opacity: 0.75, transform: 'scale(0.3397)' }} />
-                          <div className="layer layer--stripe" style={{ opacity: 0.9, transform: 'scale(0.1196)' }}>
+                          <div className="layer layer--stripe" style={{ opacity: 0.9, transform: `scale(0.1196)` }}>
                               <svg xmlns="http://www.w3.org/2000/svg" width="250" height="250" viewBox="0 0 250 250">
                                   <defs>
                                       <circle id="stripe-intro-visual-a" cx="125" cy="125" r="125" />
@@ -60,15 +101,14 @@ class App extends Component {
                               </svg>
 
                           </div>
-                          <div className="logo-rotator" style={{ transform: 'rotate(253.678deg)' }}>
+                          <div className="logo-rotator" style={{ transform: `rotate(${this.state.rotations[0]}deg)` }}>
                               <div className="logo-scaler" style={{transform: 'scale(0.99142)', left: '238.296px' }}>
-                                  <div className="logo HeaderVisualLogo HeaderVisualLogo-img8" style={{ transform: 'rotate(-253.678deg)' }} />
+                                  <div className="logo HeaderVisualLogo HeaderVisualLogo-img8" style={{ transform: `rotate(${this.state.rotations[0] + 4000}deg)` }} />
                               </div>
                           </div>
-                          <div className="logo-rotator" style={{ transform: 'rotate(447.942deg)' }}>
+                          <div className="logo-rotator" style={{ transform: `rotate(${this.state.rotations[1]}deg)` }}>
                               <div className="logo-scaler" style={{ transform: 'scale(0.99142)', left: '238.296px' }}>
-                                  <div className="logo HeaderVisualLogo HeaderVisualLogo-img9"
-                                       style={{ transform: 'rotate(-447.942deg)' }} />
+                                  <div className="logo HeaderVisualLogo HeaderVisualLogo-img9" style={{ transform: `rotate(${this.state.rotations[0] + 400}deg)` }} />
                               </div>
                           </div>
                       </div>
@@ -94,26 +134,26 @@ class App extends Component {
                   <p>Welcome thanks for logging in!</p>
               }
           </div>
-          <div className="common-StripeGrid anchorBottom">
-              <div className="backgroundContainer">
-                  <div className="grid">
-                      <div className="background" />
-                  </div>
-              </div>
-              <div className="stripeContainer" style={{ height: '36%', zIndex: -1}}>
-                  <div className="grid">
-                      <div className="stripe" />
-                      <div className="stripe" />
-                      <div className="stripe" />
-                      <div className="stripe" />
-                      <div className="stripe" />
-                      <div className="stripe" />
-                      <div className="stripe" />
-                      <div className="stripe" />
-                      <div className="stripe" />
-                  </div>
-              </div>
-          </div>
+          {/*<div className="common-StripeGrid anchorBottom">*/}
+              {/*<div className="backgroundContainer">*/}
+                  {/*<div className="grid">*/}
+                      {/*<div className="background" />*/}
+                  {/*</div>*/}
+              {/*</div>*/}
+              {/*<div className="stripeContainer" style={{ height: '36%', zIndex: -1}}>*/}
+                  {/*<div className="grid">*/}
+                      {/*<div className="stripe" />*/}
+                      {/*<div className="stripe" />*/}
+                      {/*<div className="stripe" />*/}
+                      {/*<div className="stripe" />*/}
+                      {/*<div className="stripe" />*/}
+                      {/*<div className="stripe" />*/}
+                      {/*<div className="stripe" />*/}
+                      {/*<div className="stripe" />*/}
+                      {/*<div className="stripe" />*/}
+                  {/*</div>*/}
+              {/*</div>*/}
+          {/*</div>*/}
       </Container>
     );
   }
