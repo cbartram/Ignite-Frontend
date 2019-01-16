@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { Auth } from 'aws-amplify';
 import { Link } from 'react-router-dom';
 import Container from "../Container/Container";
-import { loginRequest, loginSuccess, loginFailure } from "../../actions/actions";
+import { loginRequest, loginSuccess, loginFailure, hideErrors } from "../../actions/actions";
 import Log from '../../Log';
 import './Signup.css';
 
@@ -23,6 +23,7 @@ const mapDispatchToProps = dispatch => ({
     isFetching: (data) => dispatch(loginRequest(data)),
     loginSuccess: (data) => dispatch(loginSuccess(data)),
     loginFailure: (data) => dispatch(loginFailure(data)),
+    hideErrors: () => dispatch(hideErrors())
 });
 
 /**
@@ -60,7 +61,7 @@ class Signup extends Component {
      */
     handleChange = event => {
         this.setState({
-            [event.target.id]: event.target.value
+            [event.target.id]: event.target.value.trim()
         });
     };
 
@@ -75,6 +76,8 @@ class Signup extends Component {
                 username: this.state.email,
                 password: this.state.password
             });
+
+            this.props.hideErrors();
 
             // This triggers the app to show the confirmation dialog box
             this.setState({ newUser });
@@ -187,6 +190,7 @@ class Signup extends Component {
             // New user must not be null this handles showing the confirmation dialog box
             try {
                 await Auth.resendSignUp(this.state.email);
+                this.props.hideErrors();
                 this.setState({ newUser: true});
             } catch (err) {
                 Log.error('Failed to re-send sign-up confirmation email');
