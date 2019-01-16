@@ -15,7 +15,7 @@ import './LoaderButton.css';
  */
 export default ({ isLoading, text, loadingText, className = '', disabled = false, ...props }) =>
     <Button
-        className={`LoaderButton ${className}`}
+        className={`LoaderButton common-Button common-Button--default ${className}`}
         disabled={disabled || isLoading}
         {...props}
     >

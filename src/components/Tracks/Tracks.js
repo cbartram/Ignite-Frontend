@@ -49,7 +49,7 @@ class Tracks extends Component {
                                             <p className="common-BodyText">
                                                 {track.description}
                                             </p>
-                                            <button className="common-Button common-Button--default">
+                                            <button className="common-Button common-Button--default mt-2">
                                                 Start Now
                                             </button>
                                         </div>

@@ -1,59 +1,76 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Container from '../Container/Container';
+import PaymentModal from '../PaymentModal/PaymentModal';
 import './Pricing.css';
+
+const mapStateToProps = state => ({
+   auth: state.auth,
+});
 
 class Pricing extends Component {
     render() {
         return (
             <Container>
-                <div className="d-flex flex-row justify-content-center">
-                    <h1>Simple. Flexible. Pricing.</h1>
+                <PaymentModal />
+                <div className="d-flex flex-row justify-content-center my-3">
+                    <h1>Simple Plans. Flexible Pricing.</h1>
                 </div>
                 <div className="row">
                     <div className="col-md-4 offset-md-4">
                         <div className="Plan Plan--standard">
-                            <h2 className="Plan-title common-UppercaseText">Integrated</h2>
-                            <div className="Plan-description Plan-description-intergrated">Access a complete platform
-                                for online payments with simple, pay-as-you-go pricing
+                            <h2 className="Plan-title common-UppercaseText">Basic Plan</h2>
+                            <div className="Plan-description Plan-description-intergrated">Access a complete suite of high
+                                quality full stack development videos.
                             </div>
 
                             <div className="Plan-cardPricing">
                                 <div className="Plan-cardRate">
                                     <div className="Plan-cardRate-percent">
-                                        2.9%
+                                        $20
                                     </div>
-                                    <div className="Plan-cardRate-plus">+</div>
+                                    <div className="Plan-cardRate-plus">/</div>
                                     <div className="Plan-cardRate-fixed">
-                                        30¢
+                                        month
                                     </div>
                                 </div>
                                 <div className="Plan-cardRate-description">
-                                    per successful card charge
+                                    Cancel Anytime
                                 </div>
                             </div>
                             <ul className="Plan-list Plan-list-updated">
                                 <li className="Plan-listItem">
-                                    <img src="https://stripe.com/img/v3/pricing/header/payment.svg" width="26" height="26"
-                                         alt="fees icon" />
-                                    Everything you need to manage payments
+                                    <span className="fa fa-check success-icon mr-2" />
+                                    1080p HD Step by Step Videos
                                 </li>
                                 <li className="Plan-listItem">
-                                    <img src="https://stripe.com/img/v3/pricing/header/forward.svg" width="26" height="26" alt="pay icon" />
-                                    Get hundreds of feature updates each year
+                                    <span className="fa fa-check success-icon mr-2" />
+                                    Full Stack Development Course
                                 </li>
                                 <li className="Plan-listItem">
-                                    <img src="https://stripe.com/img/v3/pricing/header/plan-star.svg" width="26" height="26"
-                                         alt="reporting icon" />
-                                    No setup fees, monthly fees, or hidden fees
+                                    <span className="fa fa-check success-icon mr-2" />
+                                    Real World exercises and portfolio
+                                </li>
+                                <li className="Plan-listItem">
+                                    <span className="fa fa-check success-icon mr-2" />
+                                    On Demand Learning
+                                </li>
+                                <li className="Plan-listItem">
+                                    <span className="fa fa-check success-icon mr-2" />
+                                    Supportive Q&A Community
                                 </li>
                             </ul>
-
-                            <a href="https://dashboard.stripe.com/register"
-                               className="Plan-button common-UppercaseText common-Link--arrow"
-                               data-analytics-action="get-started"
-                               data-analytics-source="pricing-experiment-plan-boxes">
-                                Get started in minutes
-                            </a>
+                            {/* If the user is logged in show the payment modal else redirect to the sign up page */}
+                            {
+                                this.props.auth.user ?
+                                <a href="#join" data-toggle="modal" data-target="#payment-modal" className="Plan-button common-UppercaseText common-Link--arrow">
+                                    Join free for 7 days
+                                </a> :
+                                <Link to="/signup" className="Plan-button common-UppercaseText common-Link--arrow">
+                                    Join free for 7 days
+                                </Link>
+                            }
 
                         </div>
                     </div>
@@ -84,4 +101,4 @@ class Pricing extends Component {
     }
 }
 
-export default Pricing;
+export default connect(mapStateToProps)(Pricing);

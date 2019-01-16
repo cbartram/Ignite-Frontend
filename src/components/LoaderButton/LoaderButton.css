@@ -4,6 +4,25 @@
     animation: spin 1s infinite linear;
 }
 
+.common-Button--default:hover:enabled {
+    color: #fff;
+    background-color: #7795f8;
+}
+
+.common-Button--default:hover:disabled {
+    color: #fff;
+}
+
+.common-Button:hover:enabled {
+    color: #fff;
+    background-color: #7795f8;
+    transform: translateY(-1px);
+    -webkit-box-shadow: 0 13px 27px -5px rgba(50,50,93,.25), 0 8px 16px -8px rgba(0,0,0,.3);
+    box-shadow: 0 13px 27px -5px rgba(50,50,93,.25), 0 8px 16px -8px rgba(0,0,0,.3);
+    -webkit-box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);
+    box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);
+}
+
 @keyframes spin {
     from { transform: scale(1) rotate(0deg); }
     to { transform: scale(1) rotate(360deg); }

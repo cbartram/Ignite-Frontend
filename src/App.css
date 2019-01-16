@@ -1,0 +1,9 @@
+.common-UppercaseTitle {
+    color: #6772e5;
+    margin-bottom: 0;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .025em;
+    font-size: 21px;
+    line-height: 32px;
+}

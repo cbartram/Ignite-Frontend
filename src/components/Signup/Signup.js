@@ -175,19 +175,18 @@ class Signup extends Component {
         );
     }
 
-    resendConfirmationCode() {
+    async resendConfirmationCode() {
         if(this.state.email.length === 0) {
             this.props.loginFailure({ code: 'InvalidEmailException', message: 'You must fill out your email first.'});
         } else {
             // New user must not be null this handles showing the confirmation dialog box
-            this.setState({newUser: true}, async () => {
-                try {
-                    await Auth.resendSignUp(this.state.email);
-                } catch (err) {
-                    Log.error('Failed to re-send sign-up confirmation email');
-                    this.props.loginFailure(err);
-                }
-            });
+            try {
+                await Auth.resendSignUp(this.state.email);
+                this.setState({ newUser: true});
+            } catch (err) {
+                Log.error('Failed to re-send sign-up confirmation email');
+                this.props.loginFailure(err);
+            }
         }
     }
 

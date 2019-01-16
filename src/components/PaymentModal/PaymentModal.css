@@ -1,0 +1,186 @@
+/* Form CSS */
+.form-row {
+    display: flex;
+    flex-direction: row;
+    border-bottom: none;
+    /*padding: 4px 0;*/
+    max-width: 600px;
+    padding: 8px 13px 2px 17px;
+    -webkit-transition: opacity .2s ease-in,height .2s ease-out;
+    transition: opacity .2s ease-in,height .2s ease-out;
+}
+
+.form-row > label {
+    color: #424770;
+    font-size: 17px;
+    font-weight: 500;
+    letter-spacing: normal;
+    line-height: 26px;
+    margin-right: 20px;
+    -ms-flex-item-align: center;
+    align-self: center;
+    -webkit-box-flex: 32%;
+    -ms-flex: 32%;
+    flex: 32%;
+    text-transform: none;
+}
+
+.form-row input, .form-row textarea {
+    background-image: url(https://stripe.com/img/v3/contact_sales/form/validation-error.svg);
+    background-repeat: no-repeat;
+    background-position-x: -5000px;
+    background-position-y: 9px;
+    background-size: 20px 20px;
+
+    background-color: #f6f9fc;
+    padding: 5px 20px 8px 13px;
+    -ms-flex: 68%;
+    flex: 68%;
+    width: auto;
+
+    display: block;
+    border: none;
+    outline: none;
+    border-radius: 4px;
+    color: #32325d;
+    font-family: Camphor,Open Sans,Segoe UI,sans-serif;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 26px;
+    -webkit-transition: background-color .1s ease-in,color .1s ease-in;
+    transition: background-color .1s ease-in,color .1s ease-in;
+}
+
+.form-row input:focus ,.form-row textarea:focus {
+    -webkit-box-shadow: 0 0 0 1px #e4effa;
+    box-shadow: 0 0 0 1px #e4effa;
+    color: #8898aa!important;
+    background-color: white;
+}
+
+
+/* Dropdown Select */
+.select-dropdown {
+    /*position: absolute;*/
+    /*top: 22em;*/
+    z-index: 1000;
+    background: #fff;
+    -webkit-box-shadow: 0 13px 27px -5px rgba(50,50,93,.25), 0 8px 16px -8px rgba(0,0,0,.3);
+    box-shadow: 0 13px 27px -5px rgba(50,50,93,.25), 0 8px 16px -8px rgba(0,0,0,.3);
+    width: calc(90% + 12px);
+    margin-top: 5px;
+    padding: 0 5px;
+    border: 1px solid #e6ebf1;
+    border-radius: 4px;
+    -webkit-transition: opacity .08s ease-out,-webkit-transform .08s ease-out;
+    transition: opacity .08s ease-out,transform .08s ease-out;
+    -webkit-transition-duration: .12s;
+    transition-duration: .12s;
+    transition-delay: .1s;
+    -webkit-transform-origin: 100% -50px;
+    transform-origin: 100% -50px;
+}
+
+.select-results {
+    max-height: 215px;
+    overflow-y: auto;
+    position: relative;
+    padding: 0;
+    margin: 0 -5px;
+    -webkit-tap-highlight-color: transparent;
+    list-style: none;
+}
+
+.select-result {
+    border-bottom: 1px solid #e7ecf3;
+    padding: 8px 0 8px 12px;
+    font-weight: 300;
+    font-size: 17px;
+    line-height: 26px;
+    color: #6b7c93;
+    cursor: pointer;
+}
+
+.select-result:hover {
+    background: #f2f7fc;
+    color: #32325d;
+    font-weight: 400;
+}
+
+.hidden {
+    display: none;
+}
+
+.selected {
+    border: 2px solid #6772e5;
+}
+
+.missing-value {
+    color: #ffa27b;
+    background-image: url(https://stripe.com/img/v3/contact_sales/form/validation-error.svg);
+    background-repeat: no-repeat;
+    background-position-x: calc(100% - 16px) !important;
+    background-position-y: 9px;
+    background-size: 20px 20px;
+    -webkit-box-shadow: 0 0 0 1px #ffa27b;
+    box-shadow: 0 0 0 1px #ffa27b;
+    border: 1px solid #ffa27b;
+    background-color: transparent !important;
+}
+
+.missing-value::placeholder {
+    color: #ffa27b;
+}
+
+input:focus {
+    outline: none;
+}
+
+button:focus {
+    outline: none;
+}
+
+*:focus {
+    outline: none;
+}
+
+.fa-circle-notch {
+    -webkit-animation: rotating 1s linear infinite;
+    -moz-animation: rotating 1s linear infinite;
+    -ms-animation: rotating 1s linear infinite;
+    -o-animation: rotating 1s linear infinite;
+    animation: rotating 1s linear infinite;
+}
+
+@-webkit-keyframes rotating /* Safari and Chrome */ {
+    from {
+        -webkit-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+@keyframes rotating {
+    from {
+        -ms-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    to {
+        -ms-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+.common-Button--default:disabled {
+    opacity: 0.4;
+}
