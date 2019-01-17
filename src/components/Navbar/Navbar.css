@@ -1,4 +1,7 @@
+
+
 nav a:hover {
+    transition: border-bottom .3s;
     text-decoration: none;
     border-bottom: 3px solid #6772e5;
 }

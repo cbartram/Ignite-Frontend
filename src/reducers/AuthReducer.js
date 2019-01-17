@@ -33,6 +33,14 @@ export default (state = {}, action) => {
                     error: null
                 }
             }
+        case constants.UPDATE_USER_ATTRIBUTES:
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    ...action.payload
+                }
+            };
         case constants.LOGIN_FAILURE:
             return {
                 ...state,

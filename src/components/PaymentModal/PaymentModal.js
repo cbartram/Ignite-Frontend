@@ -2,11 +2,16 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import { Auth } from 'aws-amplify';
 import { connect } from 'react-redux';
+import Alert from '../Alert/Alert';
+import { updateUserAttributes } from '../../actions/actions';
 import './PaymentModal.css';
-import Alert from "../Alert/Alert";
 
 const mapStateToProps = state => ({
     auth: state.auth,
+});
+
+const mapDispatchToProps = dispatch => ({
+   updateUserAttributes: (payload) => dispatch(updateUserAttributes(payload))
 });
 
 class PaymentModal extends Component {
@@ -149,13 +154,24 @@ class PaymentModal extends Component {
                 else {
                     // Update AWS Cognito Custom Attributes with the results from the response
                     const user = await Auth.currentUserPoolUser();
-                    await Auth.updateUserAttributes(user, {
+                    const res = await Auth.updateUserAttributes(user, {
                         'custom:customer_id': response.body.customer.id,
                         'custom:plan_id': response.body.plan.id,
                         'custom:subscription_id': response.body.subscription.id,
+                        'custom:premium': 'true', // Only strings are allowed
+                        'custom:plan': response.body.plan.nickname
                     });
+                    
+                    console.log(res);
 
-                    //TODO Update redux with the new user attributes
+                    // Update redux with the new user attributes
+                    this.props.updateUserAttributes({
+                        'custom:customer_id': response.body.customer.id,
+                        'custom:plan_id': response.body.plan.id,
+                        'custom:subscription_id': response.body.subscription.id,
+                        'custom:premium': 'true', // Only strings are allowed
+                        'custom:plan': response.body.plan.nickname
+                    });
 
                     // Reset all the fields and show a success message
                     this.setState({
@@ -388,5 +404,5 @@ class PaymentModal extends Component {
     }
 }
 
-export default connect(mapStateToProps)(PaymentModal);
+export default connect(mapStateToProps, mapDispatchToProps)(PaymentModal);
 

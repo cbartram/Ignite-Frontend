@@ -74,7 +74,7 @@ class Navbar extends Component {
                             <li className="nav-item dropdown">
                                 <button className="btn btn-link dropdown-toggle" id="navbarDropdown" data-toggle="dropdown">
                                     <div className="avatar-container">
-                                        <img src={this.props.auth.user['custom:profile_picture']} className="avatar-image" height="30" width="30" />
+                                        <img src={this.props.auth.user['custom:profile_picture']} alt="Profile" className="avatar-image" height="30" width="30" />
                                     </div>
                                 </button>
                                 <div className="dropdown-menu dropdown-menu-right header-nav-item-profile-dropdown mt-2 py-0">
