@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
 import moment from 'moment';
+import { Auth } from 'aws-amplify';
+import { connect } from 'react-redux';
 import './PaymentModal.css';
 import Alert from "../Alert/Alert";
 
-export default class PaymentModal extends Component {
+const mapStateToProps = state => ({
+    auth: state.auth,
+});
+
+class PaymentModal extends Component {
     constructor(props) {
         super(props);
 
@@ -84,20 +90,9 @@ export default class PaymentModal extends Component {
     };
 
     /**
-     * Handles updating the state to reflect the selected amount the user wishes to donate
-     * @param amount Integer amount of money in ¢ the users wishes to donate
-     */
-    handleAmountSelection = (amount) => {
-        this.setState({
-            fields: {
-                ...this.state.fields,
-                amount,
-            }
-        });
-    };
-
-    /**
-     * Handles making the POST request containing the CC details to the backend
+     * Handles making the POST request containing the CC details to the backend.
+     * This also updates the user attributes in AWS Cognito with stripe details for the plan, customer,
+     * and subscription objects.
      */
     checkout = () => {
         this.setState({ loading: true }, async () => {
@@ -111,8 +106,6 @@ export default class PaymentModal extends Component {
                 expirationYear,
                 amount
             } = this.state.fields;
-            // TODO Validate Fields
-
             // If any of the fields are blank do not submit the request
             if(creditCard.length === 0 || firstName.length === 0 || amount < 200 || lastName.length === 0 || cvc.length === 0 || expirationMonth.length === 0 || expirationYear.length === 0) {
                 this.setState({ error: 'Some of the fields were left blank!', success: false, loading: false });
@@ -123,20 +116,29 @@ export default class PaymentModal extends Component {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    'x-api-key': 'pgS8gGvkv53xFg4BdgECn38C4CDNZXKj8EqFtQdW'
                 },
+                // Since this is calling an API these details are crucial for the lambda function to know which route to execute.
                 body: JSON.stringify({
-                    number: creditCard,
-                    exp_month: expirationMonth,
-                    exp_year: expirationYear,
-                    cvc: cvc,
-                    name: `${firstName} ${lastName}`,
-                    amount
-                })
+                    headers: {},
+                    method: 'POST',
+                    path: '/billing/subscription/create',
+                    parameters: {}, // Query params
+                    body: {
+                        number: creditCard,
+                        exp_month: expirationMonth,
+                        exp_year: expirationYear,
+                        cvc: cvc,
+                        name: `${firstName} ${lastName}`,
+                        amount,
+                    }
+                }),
             };
 
+            // Attempt to make the API call
             try {
-                let response = await (await fetch('https://e7pdt8qmt1.execute-api.us-east-1.amazonaws.com/Dev/charge/create', params)).json();
+                let response = await (await fetch('https://5c5aslvp9k.execute-api.us-east-1.amazonaws.com/Development/billing/subscription/create', params)).json();
 
                 console.log(response);
                 // Something went wrong with the request
@@ -144,8 +146,18 @@ export default class PaymentModal extends Component {
                     this.setState({ error: response.errorMessage, success: false, loading: false });
                 else if(response.body.error)
                     this.setState({ error: response.body.error.message, success: false, loading: false });
-                else
-                // Reset all the fields and show a success message
+                else {
+                    // Update AWS Cognito Custom Attributes with the results from the response
+                    const user = await Auth.currentUserPoolUser();
+                    await Auth.updateUserAttributes(user, {
+                        'custom:customer_id': response.body.customer.id,
+                        'custom:plan_id': response.body.plan.id,
+                        'custom:subscription_id': response.body.subscription.id,
+                    });
+
+                    //TODO Update redux with the new user attributes
+
+                    // Reset all the fields and show a success message
                     this.setState({
                         success: true,
                         loading: false,
@@ -166,6 +178,7 @@ export default class PaymentModal extends Component {
                             cvc: false,
                         }
                     });
+                }
             } catch(err) {
                 console.log(err);
                 this.setState({ error: err.message, success: false, loading: false });
@@ -205,12 +218,11 @@ export default class PaymentModal extends Component {
                                 this.state.success &&
                                 <Alert type="success" heading="Thank You">
                                     <p>
-                                        Thank you for your generous donation to Nanoleaf Layout and helping to support the open source
-                                        community.
+                                        Your subscription has been created successfully and will automatically renew on February 16th
                                     </p>
                                     <hr />
                                     <p>
-                                        We sincerely appreciate it!
+                                        Enjoy your learning!
                                     </p>
                                 </Alert>
                             }
@@ -375,3 +387,6 @@ export default class PaymentModal extends Component {
         )
     }
 }
+
+export default connect(mapStateToProps)(PaymentModal);
+

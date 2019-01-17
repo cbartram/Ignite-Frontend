@@ -68,18 +68,27 @@ class Navbar extends Component {
                     <Link className="p-2 text-dark" to="/community" onClick={() => this.handleLinkClick()}>Community</Link>
                     <Link className="p-2 text-dark" to="/support" onClick={() => this.handleLinkClick()}>Support</Link>
                 </nav>
-                <ul style={{ listStyle: 'none' }}>
+                <ul className="dropdown-list">
                     {
                         this.props.auth.user && (
                             <li className="nav-item dropdown">
                                 <button className="btn btn-link dropdown-toggle" id="navbarDropdown" data-toggle="dropdown">
-                                    Welcome
+                                    <div className="avatar-container">
+                                        <img src={this.props.auth.user['custom:profile_picture']} className="avatar-image" height="30" width="30" />
+                                    </div>
                                 </button>
-                                <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a className="dropdown-item" href="#action">Action</a>
-                                    <a className="dropdown-item" href="#another">Another action</a>
-                                    <div className="dropdown-divider" />
-                                    <a className="dropdown-item" href="#logout" onClick={() => this.logout()}>Logout</a>
+                                <div className="dropdown-menu dropdown-menu-right header-nav-item-profile-dropdown mt-2 py-0">
+                                    <h4 className="dropdown-title">
+                                        <Link to="/profile" className="header-nav-item-profile-dropdown-title-link">
+                                            <strong className="header-nav-item-profile-dropdown-title-name">Christian Bartram</strong>
+                                            <span className="header-nav-item-profile-dropdown-title-label">View Profile</span>
+                                        </Link>
+                                    </h4>
+                                    <a className="dropdown-item" href="#another">Home</a>
+                                    <a className="dropdown-item" href="#another">Community</a>
+                                    <a className="dropdown-item" href="#another">Tracks</a>
+                                    <a className="dropdown-item" href="#another">Billing</a>
+                                    <a className="dropdown-item dropdown-secondary" href="#logout" onClick={() => this.logout()}>Sign Out</a>
                                 </div>
                             </li>
                         )

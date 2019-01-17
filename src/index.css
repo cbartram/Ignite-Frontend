@@ -1,3 +1,8 @@
+/**
+ * Index.css
+ * This file defines global styles which are applied across the entire application such
+ * as font sizes, colors, link hovers, etc...
+ */
 @font-face {
   font-family: Camphor;
   font-weight: 600;
@@ -50,6 +55,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
   padding: 0;
   margin-top:90px; /* Used to offset the navbar at the top of the page */
+}
+
+a {
+  cursor: pointer;
+  text-decoration: none;
 }
 
 code {

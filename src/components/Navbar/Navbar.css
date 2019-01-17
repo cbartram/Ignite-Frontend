@@ -6,3 +6,131 @@ nav a:hover {
 .fixed {
     position: fixed;
 }
+
+.avatar-container {
+    background: #d4d9dd;
+    border-radius: 50%;
+    padding: 2px;
+    width: 100%;
+    height: 100%;
+    border: 2px solid #edeff0;
+    transition: border-color 300ms 0s ease;
+}
+
+.avatar-image {
+    background: #3e474f;
+    border-color: #3e474f;
+}
+
+.avatar-image {
+    overflow: hidden;
+    display: block;
+    border-radius: 50%;
+    position: relative;
+    margin: 0 auto;
+    width: 30px;
+    height: 30px;
+    transition: width 300ms 0s ease, height 300ms 0s ease;
+    background: #edeff0;
+    padding: 2px;
+}
+
+.dropdown-toggle::after {
+    display: none;
+}
+
+.dropdown-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.dropdown-menu {
+    background: #f9fafa;
+    min-width: 200px;
+    max-width: 420px;
+    position: absolute;
+    top: 50px;
+    display: none;
+    z-index: 100;
+    border-radius: 5px;
+    padding-top: 0;
+    box-shadow: 0 1px 0 0 rgba(0,0,0,0.1), 0 0 1px 1px rgba(0,0,0,0.08);
+}
+
+.dropdown-menu:before {
+    position: absolute;
+    content: "";
+    background: #fff;
+    width: 12px;
+    height: 12px;
+    border-radius: 3px 0 0 0;
+    -ms-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+    box-shadow: -2px -2px 2px rgba(0,0,0,0.08);
+    top: -6px;
+    left: 162px;
+}
+
+.header-nav-item-profile-dropdown {
+    top: 96%;
+    right: -10px;
+}
+
+.dropdown-menu .dropdown-title {
+    display: block;
+    background: #fff;
+    font-size: 16px;
+    line-height: 20px;
+    position: relative;
+    z-index: 1;
+    border-bottom: 1px solid #e8ebed;
+    border-radius: 5px 5px 0 0;
+    margin: 0;
+}
+
+.dropdown-menu .dropdown-title a {
+    display: block;
+    padding: 15px 20px;
+    color: #4b5658;
+}
+
+.header-nav-item-profile-dropdown-title-name {
+    display: block;
+    color: #4b5658;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.header-nav-item-profile-dropdown-title-label {
+    color: #7b8b8e;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.dropdown-menu .dropdown-secondary {
+    position: relative;
+    display: block;
+    padding: 15px 20px;
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 500;
+    color: #576366;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 0 0 5px 5px;
+    background: #fff;
+    border-top: 1px solid #e8ebed;
+}
+
+.dropdown-item {
+    position: relative;
+    display: block;
+    padding: 15px 20px;
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 500;
+    color: #576366;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}

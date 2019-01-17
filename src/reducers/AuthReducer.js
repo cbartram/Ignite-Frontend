@@ -14,13 +14,25 @@ export default (state = {}, action) => {
                 isFetching: action.payload,
             };
         case constants.LOGIN_SUCCESS:
-            return {
-                ...state,
-                isAuthenticated: true,
-                isFetching: false,
-                user: action.payload,
-                error: null
-            };
+            // Strangely the object is different for signup vs sign in from Cognito
+            // This reducer straightens it out for our application to use a single coherent user object
+            if(typeof action.payload.signInUserSession === 'undefined') {
+                return {
+                    ...state,
+                    isAuthenticated: true,
+                    isFetching: false,
+                    user: action.payload.idToken.payload,
+                    error: null
+                };
+            } else {
+                return {
+                    ...state,
+                    isAuthenticated: true,
+                    isFetching: false,
+                    user: action.payload.signInUserSession.idToken.payload,
+                    error: null
+                }
+            }
         case constants.LOGIN_FAILURE:
             return {
                 ...state,
