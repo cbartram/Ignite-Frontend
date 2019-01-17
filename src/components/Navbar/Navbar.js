@@ -80,7 +80,9 @@ class Navbar extends Component {
                                 <div className="dropdown-menu dropdown-menu-right header-nav-item-profile-dropdown mt-2 py-0">
                                     <h4 className="dropdown-title">
                                         <Link to="/profile" className="header-nav-item-profile-dropdown-title-link">
-                                            <strong className="header-nav-item-profile-dropdown-title-name">Christian Bartram</strong>
+                                            <strong className="header-nav-item-profile-dropdown-title-name">
+                                                {`${this.props.auth.user['custom:first_name']} ${this.props.auth.user['custom:last_name']}`}
+                                            </strong>
                                             <span className="header-nav-item-profile-dropdown-title-label">View Profile</span>
                                         </Link>
                                     </h4>
