@@ -21,7 +21,12 @@ export default (state = {}, action) => {
                     ...state,
                     isAuthenticated: true,
                     isFetching: false,
-                    user: action.payload.idToken.payload,
+                    user: {
+                        ...action.payload.idToken.payload,
+                        jwtToken: action.payload.idToken.jwtToken,
+                        refreshToken: action.payload.refreshToken.token,
+                        deviceKey: action.payload.accessToken.payload.device_key,
+                    },
                     error: null
                 };
             } else {
@@ -29,7 +34,12 @@ export default (state = {}, action) => {
                     ...state,
                     isAuthenticated: true,
                     isFetching: false,
-                    user: action.payload.signInUserSession.idToken.payload,
+                    user: {
+                        ...action.payload.signInUserSession.idToken.payload,
+                        jwtToken: action.payload.signInUserSession.idToken.jwtToken,
+                        refreshToken: action.payload.refreshToken.token,
+                        deviceKey: action.payload.accessToken.payload.device_key,
+                    },
                     error: null
                 }
             }

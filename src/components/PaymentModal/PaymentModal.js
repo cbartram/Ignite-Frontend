@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import { Auth } from 'aws-amplify';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Alert from '../Alert/Alert';
 import { updateUserAttributes } from '../../actions/actions';
 import './PaymentModal.css';
+import Log from '../../Log';
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -131,6 +133,9 @@ class PaymentModal extends Component {
                     path: '/billing/subscription/create',
                     parameters: {}, // Query params
                     body: {
+                        ['cognito:username']: this.props.auth.user['cognito:username'],
+                        deviceKey: this.props.auth.user.deviceKey,
+                        refreshToken: this.props.auth.user.refreshToken,
                         number: creditCard,
                         exp_month: expirationMonth,
                         exp_year: expirationYear,
@@ -145,33 +150,15 @@ class PaymentModal extends Component {
             try {
                 let response = await (await fetch('https://5c5aslvp9k.execute-api.us-east-1.amazonaws.com/Development/billing/subscription/create', params)).json();
 
-                console.log(response);
+                Log.info(response);
                 // Something went wrong with the request
                 if(response.errorMessage)
                     this.setState({ error: response.errorMessage, success: false, loading: false });
                 else if(response.body.error)
                     this.setState({ error: response.body.error.message, success: false, loading: false });
                 else {
-                    // Update AWS Cognito Custom Attributes with the results from the response
-                    const user = await Auth.currentUserPoolUser();
-                    const res = await Auth.updateUserAttributes(user, {
-                        'custom:customer_id': response.body.customer.id,
-                        'custom:plan_id': response.body.plan.id,
-                        'custom:subscription_id': response.body.subscription.id,
-                        'custom:premium': 'true', // Only strings are allowed
-                        'custom:plan': response.body.plan.nickname
-                    });
-                    
-                    console.log(res);
-
                     // Update redux with the new user attributes
-                    this.props.updateUserAttributes({
-                        'custom:customer_id': response.body.customer.id,
-                        'custom:plan_id': response.body.plan.id,
-                        'custom:subscription_id': response.body.subscription.id,
-                        'custom:premium': 'true', // Only strings are allowed
-                        'custom:plan': response.body.plan.nickname
-                    });
+                    this.props.updateUserAttributes(response.body.user);
 
                     // Reset all the fields and show a success message
                     this.setState({
@@ -234,7 +221,8 @@ class PaymentModal extends Component {
                                 this.state.success &&
                                 <Alert type="success" heading="Thank You">
                                     <p>
-                                        Your subscription has been created successfully and will automatically renew on February 16th
+                                        Your subscription has been created successfully and will automatically renew on { moment().format('MMM Do') }.
+                                        Check out our <Link to="/tracks">tracks</Link> and start watching!
                                     </p>
                                     <hr />
                                     <p>

@@ -112,7 +112,7 @@ class Signup extends Component {
             const user = await Auth.signIn(this.state.email, this.state.password);
 
             this.props.loginSuccess(user);
-            this.props.history.push('/');
+            this.props.history.push('/tracks');
         } catch (err) {
             Log.error('Error confirming user code or logging user in...', err);
             this.props.loginFailure(err)

@@ -56,15 +56,12 @@ class Navbar extends Component {
 
         return (
             <div className="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm fixed-top">
-                <a className="navbar-brand" href="/">
+                <Link className="navbar-brand" to="/">
                     <img src={Logo} width="30" height="30" alt="Ignite Logo" />
-                </a>
+                </Link>
                 <h5 className="my-0 mr-md-auto font-weight-normal">Ignite</h5>
                 <nav className="my-2 my-md-0 mr-md-3">
-                    <Link className="p-2 text-dark" to="/" onClick={() => this.handleLinkClick()}>Home</Link>
-                    {
-                        this.props.auth.user ? authLinks.map(link => link) : standardLinks.map(link => link)
-                    }
+                    { this.props.auth.user ? authLinks.map(link => link) : standardLinks.map(link => link) }
                     <Link className="p-2 text-dark" to="/community" onClick={() => this.handleLinkClick()}>Community</Link>
                     <Link className="p-2 text-dark" to="/support" onClick={() => this.handleLinkClick()}>Support</Link>
                 </nav>

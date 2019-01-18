@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Container from "../Container/Container";
 import './Tracks.css';
 
@@ -49,9 +50,9 @@ class Tracks extends Component {
                                             <p className="common-BodyText">
                                                 {track.description}
                                             </p>
-                                            <button className="common-Button common-Button--default mt-2">
+                                            <Link to={`/watch?track=${track.name}`} className="common-Button common-Button--default mt-2">
                                                 Start Now
-                                            </button>
+                                            </Link>
                                         </div>
                                     )
                                 })

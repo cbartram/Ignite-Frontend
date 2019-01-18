@@ -10,7 +10,6 @@ const mapStateToProps = state => ({
 });
 
 class Pricing extends Component {
-
     /**
      * Renders the correct button for the payment screen depending on what kind of user
      * is using the button (non registered, registered but not premium, registered and premium)
@@ -18,7 +17,7 @@ class Pricing extends Component {
     renderButton() {
         if(this.props.auth.user) {
             // If the user is already premium let them know!
-            if(this.props.auth.user['custom:plan'] === 'Basic Plan') {
+            if(this.props.auth.user['custom:plan'] === 'Basic Plan2') {
                 // todo replace this alert with something better
                 return <a href="#basic-plan" onClick={() => alert('You are already on this plan!')} className="Plan-button common-UppercaseText common-Link--arrow">
                     Join free for 7 days

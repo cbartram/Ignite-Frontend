@@ -5,8 +5,8 @@ import { Provider } from 'react-redux'
 import * as serviceWorker from './serviceWorker';
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
-import rootReducer from './reducers/rootReducer';
 import Amplify, { Auth } from 'aws-amplify';
+import rootReducer from './reducers/rootReducer';
 import * as constants from './constants'
 import config from './config';
 import Router from './components/Router/Router'
@@ -53,14 +53,12 @@ if (process.env.NODE_ENV !== 'production') {
 const checkAuthStatus = async () => {
     Log.info('Checking User Authentication status...');
     try {
-        Auth.currentSession().then(user => {
-            Log.info(user.idToken.payload.email, 'Found Authenticated user within a Cookie!');
-            store.dispatch(loginSuccess(user))
-        }).catch(err => {
-            Log.warn('Could not find authenticated user.', err)
-        });
+        const user = await Auth.currentSession();
+        Log.info(user.idToken.payload.email, 'Found Authenticated user within a Cookie!');
+        store.dispatch(loginSuccess(user))
     }
     catch (e) {
+        Log.warn('Could not find authenticated user.');
         if (e !== 'No current user')
            Log.error(e);
     }
