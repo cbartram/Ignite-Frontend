@@ -88,7 +88,6 @@ class Watch extends Component {
                   <ReactPlayer
                       url={this.state.signedUrl}
                       playing
-                      light
                   />
                 }
             </div>

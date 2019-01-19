@@ -37,8 +37,8 @@ export default (state = {}, action) => {
                     user: {
                         ...action.payload.signInUserSession.idToken.payload,
                         jwtToken: action.payload.signInUserSession.idToken.jwtToken,
-                        refreshToken: action.payload.refreshToken.token,
-                        deviceKey: action.payload.accessToken.payload.device_key,
+                        refreshToken: action.payload.signInUserSession.refreshToken.token,
+                        deviceKey: action.payload.deviceKey,
                     },
                     error: null
                 }

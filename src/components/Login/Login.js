@@ -63,6 +63,7 @@ class Login extends Component {
      */
     handleSubmit = async event => {
         Log.info('Logging in...');
+        console.log('Logging in');
         event.preventDefault();
         // Dispatch the isFetching redux
         this.props.loginRequest();
@@ -70,8 +71,10 @@ class Login extends Component {
         try {
             const res = await Auth.signIn(this.state.email, this.state.password);
             Log.info('Login Success!');
+            console.log('Login Success');
             this.props.loginSuccess(res);
         } catch (err) {
+            console.log(err);
             if(err.code === 'NotAuthorizedException')
                 Log.warn(err.message);
             else

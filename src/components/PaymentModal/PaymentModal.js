@@ -156,9 +156,19 @@ class PaymentModal extends Component {
                     this.setState({ error: response.errorMessage, success: false, loading: false });
                 else if(response.body.error)
                     this.setState({ error: response.body.error.message, success: false, loading: false });
+                else if(response.statusCode > 200)
+                    this.setState({ error: response.body.messages.join(','), success: false, loading: false });
                 else {
                     // Update redux with the new user attributes
                     this.props.updateUserAttributes(response.body.user);
+
+                    // Re-Signin so AWS Amplify can't retrieve old user data from localStorage
+                    // If a user does refresh it will kick them out the login screen
+                    // const r = await Auth.signIn(response.body.user['cognito:username']);
+                    // console.log('Attempting to re-sign in user: ', r);
+                    // todo come back to this there is a bug in AWS amplify'
+
+                    localStorage.clear(); // todo this will force users to re-sign in when they refresh a page
 
                     // Reset all the fields and show a success message
                     this.setState({
@@ -183,7 +193,7 @@ class PaymentModal extends Component {
                     });
                 }
             } catch(err) {
-                console.log(err);
+                console.log('ERROR', err);
                 this.setState({ error: err.message, success: false, loading: false });
             }
         });
