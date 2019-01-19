@@ -96,7 +96,7 @@ class Login extends Component {
                                 <h4 className="alert-heading">Invalid Email or Password</h4>
                                 <hr />
                                 <p>The email or password you entered does not match what we have on record. You can try again or &nbsp;
-                                    <Link to="/reset">reset your password.</Link> if you forgot.
+                                    <Link to="/login/reset">reset your password.</Link> if you forgot.
                                 </p>
                             </div>
                         </div>
@@ -129,6 +129,7 @@ class Login extends Component {
                             text="Login"
                             loadingText="Logging in…"
                         />
+                        <Link to="/login/reset" className="text-muted">Forgot your password?</Link>
                     </form>
                 </div>
             </Container>

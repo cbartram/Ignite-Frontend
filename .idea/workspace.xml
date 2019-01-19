@@ -4,9 +4,7 @@
     <list default="true" id="4ec36ac8-77e5-4985-93b1-57c48712b128" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Login/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Login/Login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/PaymentModal/PaymentModal.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/PaymentModal/PaymentModal.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Watch/Watch.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Watch/Watch.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/reducers/AuthReducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/reducers/AuthReducer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Router/Router.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Router/Router.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -33,8 +31,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/Login/Login.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="353">
-              <caret line="73" column="31" selection-start-line="73" selection-start-column="31" selection-end-line="73" selection-end-column="31" />
+            <state relative-caret-position="310">
+              <caret line="131" column="69" selection-start-line="131" selection-start-column="69" selection-end-line="131" selection-end-column="69" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
               </folding>
@@ -43,31 +41,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/reducers/AuthReducer.js">
+        <entry file="file://$PROJECT_DIR$/src/components/ResetPassword/ResetPassword.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-51">
-              <caret line="16" selection-start-line="16" selection-end-line="16" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/index.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="152">
-              <caret line="47" column="33" selection-start-line="47" selection-start-column="33" selection-end-line="47" selection-end-column="33" />
-              <folding>
-                <element signature="e#0#26#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/PaymentModal/PaymentModal.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-985">
-              <caret line="170" column="110" selection-start-line="170" selection-start-column="110" selection-end-line="170" selection-end-column="110" />
+            <state relative-caret-position="329">
+              <caret line="199" column="41" selection-start-line="199" selection-start-column="41" selection-end-line="199" selection-end-column="41" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
               </folding>
@@ -76,22 +53,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/Watch/Watch.js">
+        <entry file="file://$PROJECT_DIR$/src/components/Router/Router.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="622">
-              <caret line="88" column="30" selection-start-line="88" selection-start-column="30" selection-end-line="88" selection-end-column="30" />
-              <folding>
-                <element signature="e#0#41#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/Signup/Signup.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="667">
-              <caret line="129" column="26" lean-forward="true" selection-start-line="129" selection-start-column="26" selection-end-line="129" selection-end-column="26" />
+            <state relative-caret-position="318">
+              <caret line="29" column="34" selection-start-line="29" selection-start-column="34" selection-end-line="29" selection-end-column="34" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
               </folding>
@@ -165,14 +130,16 @@
         <option value="$PROJECT_DIR$/src/actions/actions.js" />
         <option value="$PROJECT_DIR$/src/components/Navbar/Navbar.js" />
         <option value="$PROJECT_DIR$/src/components/Tracks/Tracks.js" />
-        <option value="$PROJECT_DIR$/src/components/Router/Router.js" />
         <option value="$PROJECT_DIR$/src/components/Pricing/Pricing.js" />
         <option value="$PROJECT_DIR$/src/components/Signup/Signup.js" />
         <option value="$PROJECT_DIR$/src/index.js" />
-        <option value="$PROJECT_DIR$/src/components/Login/Login.js" />
         <option value="$PROJECT_DIR$/src/reducers/AuthReducer.js" />
         <option value="$PROJECT_DIR$/src/components/PaymentModal/PaymentModal.js" />
         <option value="$PROJECT_DIR$/src/components/Watch/Watch.js" />
+        <option value="$PROJECT_DIR$/src/components/ResetPassword/ResetPassword.css" />
+        <option value="$PROJECT_DIR$/src/components/Login/Login.js" />
+        <option value="$PROJECT_DIR$/src/components/Router/Router.js" />
+        <option value="$PROJECT_DIR$/src/components/ResetPassword/ResetPassword.js" />
       </list>
     </option>
   </component>
@@ -289,13 +256,6 @@
               <item name="Ignite-Frontend" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="LoaderButton" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Ignite-Frontend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Ignite-Frontend" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
               <item name="Login" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -303,14 +263,7 @@
               <item name="Ignite-Frontend" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="PaymentModal" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Ignite-Frontend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Ignite-Frontend" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="Pricing" type="462c0819:PsiDirectoryNode" />
+              <item name="ResetPassword" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Ignite-Frontend" type="b2602c69:ProjectViewProjectNode" />
@@ -318,27 +271,6 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="components" type="462c0819:PsiDirectoryNode" />
               <item name="Router" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Ignite-Frontend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Ignite-Frontend" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="Signup" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Ignite-Frontend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Ignite-Frontend" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="Tracks" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Ignite-Frontend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Ignite-Frontend" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="Watch" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Ignite-Frontend" type="b2602c69:ProjectViewProjectNode" />
@@ -364,7 +296,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547861644362" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547866747597" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs.mocha.mocha_node_package_dir" value="$PROJECT_DIR$/node_modules/mocha" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="/usr/local/bin/node" />
@@ -476,7 +408,7 @@
       <updated>1547323202687</updated>
       <workItem from="1547323212748" duration="29205000" />
       <workItem from="1547512395489" duration="12183000" />
-      <workItem from="1547595151134" duration="37666000" />
+      <workItem from="1547595151134" duration="38670000" />
     </task>
     <task id="LOCAL-00001" summary="Added unit tests for React components, and redux store changes">
       <created>1547479006674</created>
@@ -520,11 +452,18 @@
       <option name="project" value="LOCAL" />
       <updated>1547847996207</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Bug fixes">
+      <created>1547861659389</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1547861659391</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="79054000" />
+    <option name="totallyTimeSpent" value="80058000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -539,7 +478,7 @@
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16361417" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16361417" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -555,7 +494,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3291536" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="8" visible="true" weight="0.3291536" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.3291536" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="10" show_stripe_button="false" />
       <window_info anchor="bottom" id="Docker" order="11" show_stripe_button="false" />
@@ -581,7 +520,8 @@
     <MESSAGE value="Fixed incorrect date in payment modal" />
     <MESSAGE value="Added redux updates for user attributes" />
     <MESSAGE value="Added Correct user payment verification and video access" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added Correct user payment verification and video access" />
+    <MESSAGE value="Bug fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Bug fixes" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/components/Container/Container.css">
@@ -827,13 +767,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Router/Router.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="10" column="41" lean-forward="true" selection-start-line="10" selection-start-column="41" selection-end-line="10" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/LoaderButton/LoaderButton.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="399">
@@ -884,7 +817,7 @@
     <entry file="file://$PROJECT_DIR$/src/components/Signup/Signup.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="667">
-          <caret line="129" column="26" lean-forward="true" selection-start-line="129" selection-start-column="26" selection-end-line="129" selection-end-column="26" />
+          <caret line="129" column="26" selection-start-line="129" selection-start-column="26" selection-end-line="129" selection-end-column="26" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
           </folding>
@@ -908,6 +841,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/reducers/AuthReducer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-51">
+          <caret line="16" selection-start-line="16" selection-end-line="16" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="152">
@@ -918,10 +858,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Login/Login.js">
+    <entry file="file://$PROJECT_DIR$/src/components/PaymentModal/PaymentModal.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="353">
-          <caret line="73" column="31" selection-start-line="73" selection-start-column="31" selection-end-line="73" selection-end-column="31" />
+        <state relative-caret-position="-985">
+          <caret line="170" column="110" selection-start-line="170" selection-start-column="110" selection-end-line="170" selection-end-column="110" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
           </folding>
@@ -938,20 +878,40 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/PaymentModal/PaymentModal.js">
+    <entry file="file://$PROJECT_DIR$/src/components/Login/Login.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-985">
-          <caret line="170" column="110" selection-start-line="170" selection-start-column="110" selection-end-line="170" selection-end-column="110" />
+        <state relative-caret-position="310">
+          <caret line="131" column="69" selection-start-line="131" selection-start-column="69" selection-end-line="131" selection-end-column="69" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/reducers/AuthReducer.js">
+    <entry file="file://$PROJECT_DIR$/src/components/ResetPassword/ResetPassword.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-51">
-          <caret line="16" selection-start-line="16" selection-end-line="16" />
+        <state relative-caret-position="437">
+          <caret line="23" column="1" selection-start-line="23" selection-start-column="1" selection-end-line="23" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Router/Router.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="318">
+          <caret line="29" column="34" selection-start-line="29" selection-start-column="34" selection-end-line="29" selection-end-column="34" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/ResetPassword/ResetPassword.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="329">
+          <caret line="199" column="41" selection-start-line="199" selection-start-column="41" selection-end-line="199" selection-end-column="41" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
