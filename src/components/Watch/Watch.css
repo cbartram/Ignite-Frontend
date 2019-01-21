@@ -39,15 +39,16 @@ small {
 
 .curriculum-row {
     border-top: 1px solid #f0f4f7;
-    /*border-bottom: 1px solid #f0f4f7;*/
-
 }
 
 .curriculum-row-last {
     border-bottom: 1px solid #f0f4f7;
 }
 
-
+.curriculum-row:hover {
+    cursor: pointer;
+    background-color:#ffffff;
+}
 
 
 /* Main view, move content down due to fixed navbar. */
@@ -57,7 +58,7 @@ small {
     position: absolute;
     top: 0;
     left: 0;
-    padding-top: 50px;
+    padding-top: 10px;
 }
 
 /* Container for a sidebar. */
@@ -82,11 +83,4 @@ small {
     background: #fafcfc;
     border-right: 1px solid #f0f4f7;
     text-align: center;
-}
-
-.main-view {
-    height: 100%;
-    overflow: auto;
-    position: relative;
-    padding: 0px;
 }

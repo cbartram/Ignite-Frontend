@@ -8,7 +8,7 @@ import Logo from '../../resources/images/logo.png';
 export default class Container extends Component {
     render() {
         return (
-            <footer className="pt-4 mb-5 pt-md-5 border-top">
+            <footer className={`pt-4 mb-5 ${!this.props.noMargin && 'mt-5'} pt-md-5 border-top`}>
                 <div className="row">
                     <div className="col-12 col-md">
                         <img className="mb-2" src={Logo} alt="" width="24"

@@ -66,16 +66,16 @@ class Watch extends Component {
 
     render() {
       return (
-          <Container style={{marginBottom: '0px!important'}}>
+          <Container marginTop={80} noMargin>
               <div className="row" style={{ marginTop: 80}}>
                   <div className="col-md-3 pr-0">
-                      <div className="my-3">
-                          <img height="70" width="70" alt="thumbnail" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/170px-HTML5_logo_and_wordmark.svg.png" />
-                      </div>
-                      <h3 className="text-muted">HTML & CSS</h3>
                       <div className="main-wrapper">
                           <div className="sidebar-container col-md-3">
                               <div className="sidebar">
+                                  <div className="my-3">
+                                      <img height="70" width="70" alt="thumbnail" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/170px-HTML5_logo_and_wordmark.svg.png" />
+                                  </div>
+                                  <h3 className="text-muted">HTML & CSS</h3>
                                   <div className="d-flex pl-4 pr-2">
                                       <small className="mr-auto">Chapter 1</small>
                                       <span className="curriculum-chapterDuration">17:21</span>
@@ -86,48 +86,66 @@ class Watch extends Component {
                                       </h4>
                                   </div>
                                   <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row">
-                                      <i className="fa fa-check pl-4" style={{ color: 'green' }} />
+                                      <div className="pl-4">
+                                          <i className="fa fa-check success-icon" />
+                                       </div>
                                       <span>Overview</span>
                                       <span className="curriculum-chapterDuration pr-2">18:20</span>
                                   </div>
                                   <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row">
-                                      <i className="fa fa-check pl-4" style={{ color: 'green' }} />
+                                      <div className="pl-4">
+                                          <i className="fa fa-check success-icon" />
+                                      </div>
                                       <span>Blueprint</span>
                                       <span className="curriculum-chapterDuration pr-2">18:20</span>
                                   </div>
                                   <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row">
-                                      <i className="fa fa-check pl-4" style={{ color: 'green' }} />
+                                      <div className="pl-4">
+                                          <i className="fa fa-check success-icon" />
+                                      </div>
                                       <span>Git & Version Control</span>
                                       <span className="curriculum-chapterDuration pr-2">18:20</span>
                                   </div>
                                   <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row">
-                                      <i className="fa fa-check pl-4" style={{ color: 'green' }} />
-                                      <span>HTML</span>
+                                      <div className="pl-4">
+                                          <i className="fa fa-check success-icon" />
+                                      </div>
+                                      <span>CSS</span>
                                       <span className="curriculum-chapterDuration pr-2">18:20</span>
                                   </div>
                                   <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row">
-                                      <i className="fa fa-check pl-4" style={{ color: 'green' }} />
-                                      <span>Kinesis 101</span>
+                                      <div className="pl-4">
+                                          <i className="fa fa-check success-icon" />
+                                      </div>
+                                      <span>JQuery</span>
                                       <span className="curriculum-chapterDuration pr-2">18:20</span>
                                   </div>
                                   <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row">
-                                      <i className="fa fa-check pl-4" style={{ color: 'green' }} />
-                                      <span>CSS Basics</span>
+                                      <div className="pl-4">
+                                          <i className="fa fa-check success-icon" />
+                                      </div>
+                                      <span>The DOM</span>
                                       <span className="curriculum-chapterDuration pr-2">18:20</span>
                                   </div>
                                   <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row">
-                                      <i className="fa fa-check pl-4" style={{ color: 'green' }} />
+                                      <div className="pl-4">
+                                          <i className="fas fa-play play-icon" />
+                                      </div>
                                       <span>Javascript Basics</span>
                                       <span className="curriculum-chapterDuration pr-2">18:20</span>
                                   </div>
                                   <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row">
-                                      <i className="fa fa-check pl-4" style={{ color: 'green' }} />
-                                      <span>AWS SNS Basics</span>
+                                      <div className="pl-4">
+                                          <i className="fas fa-play play-icon" />
+                                      </div>
+                                      <span>NodeJS</span>
                                       <span className="curriculum-chapterDuration pr-2">18:20</span>
                                   </div>
                                   <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row curriculum-row-last">
-                                      <i className="fa fa-check pl-4" style={{ color: 'green' }} />
-                                      <span>AWS SQS Basics</span>
+                                      <div className="pl-4">
+                                          <i className="fas fa-play play-icon" />
+                                      </div>
+                                      <span>Express Framework</span>
                                       <span className="curriculum-chapterDuration pr-2">18:20</span>
                                   </div>
                               </div>

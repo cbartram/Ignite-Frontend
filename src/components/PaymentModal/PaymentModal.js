@@ -171,7 +171,7 @@ class PaymentModal extends Component {
                     localStorage.clear(); // todo this will force users to re-sign in when they refresh a page
 
                     // Ensures that the user only see's a success message if the operation was actually successful.
-                    if(response.statusCode === 200) {
+                    if(response.status === 200 && response.body.statusCode === 200) {
                         // Reset all the fields and show a success message
                         this.setState({
                             success: true,

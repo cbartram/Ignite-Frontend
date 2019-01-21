@@ -54,7 +54,7 @@ class App extends Component {
     return (
       <Container>
 
-          <div className="row">
+          <div className="row" style={{marginTop: 90}}>
               {/* Intro Column*/}
               <div className="col-md-4 offset-md-2">
                 <span className="common-UppercaseTitle">
