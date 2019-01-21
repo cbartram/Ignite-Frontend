@@ -1,0 +1,43 @@
+.course-viewer-sidebar {
+    /*position: absolute;*/
+    /*width: 300px;*/
+    left: 0;
+    top: 0;
+    bottom: 0;
+    overflow: hidden;
+    background: #fafcfc;
+    border-right: 1px solid #f0f4f7;
+    text-align: center;
+}
+
+h4 {
+ font-size: 20px;
+}
+
+small {
+    margin-bottom: .75em;
+    text-transform: uppercase;
+    letter-spacing: .2em;
+    font-size: .7rem;
+    opacity: .5;
+}
+
+.course-viewer-sidebar .curriculum-chapterDuration {
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: .2em;
+    font-size: 10px;
+    opacity: .5;
+}
+
+.overflow {
+    height: auto; /* reconfigure this to be the height of a page */
+    overflow-y: scroll;
+}
+
+.curriculum-row {
+    border-top: 1px solid #f0f4f7;
+    border-bottom: 1px solid #f0f4f7;
+
+}
+

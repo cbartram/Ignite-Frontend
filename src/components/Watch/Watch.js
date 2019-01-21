@@ -66,31 +66,94 @@ class Watch extends Component {
 
     render() {
       return (
-          <Container>
-            <div className="d-flex flex-row justify-content-center mt-3">
-                {
-                  this.state.isFetching && <i className="fas fa-7x fa-circle-notch" style={{ color: '#6772e5' }} />
-                }
-                {
-                    this.state.error.length > 0 &&
-                    <div className="row">
-                      <div className="col-md-5 offset-md-4">
-                          <h2 className="common-UppercaseTitle">Oh no!</h2>
-                          <h4 className="common-IntroText">{this.state.error}</h4>
-                          <Link to="/pricing" className="common-Button common-Button--default">
-                            Subscribe
-                          </Link>
+          <Container style={{marginBottom: '0px!important;'}}>
+              <div className="row">
+                  <div className="col-md-3 pr-0">
+                      <div className="course-viewer-sidebar pl-5 pr-2">
+                          <div className="my-3">
+                              <img height="70" width="70" alt="thumbnail" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/170px-HTML5_logo_and_wordmark.svg.png" />
+                          </div>
+                          <h3 className="text-muted">HTML & CSS</h3>
+                          <div className="overflow">
+                              <div className="d-flex">
+                                  <small className="mr-auto">Chapter 1</small>
+                                  <span className="curriculum-chapterDuration">17:21</span>
+                              </div>
+                              <div className="d-flex flex-column align-items-start">
+                                  <h4 className="curriculum-heading">
+                                      Introduction
+                                  </h4>
+                              </div>
+                              <div className="d-flex flex-row justify-content-between align-self-center my-3 py-3 curriculum-row">
+                                  <i className="fa fa-check" style={{ color: 'green' }} />
+                                  <span>Overview</span>
+                                  <span className="curriculum-chapterDuration">18:20</span>
+                              </div>
+                              <div className="d-flex flex-row justify-content-between align-self-center my-3 py-3 curriculum-row">
+                                  <i className="fa fa-check" style={{ color: 'green' }} />
+                                  <span>Blueprint</span>
+                                  <span className="curriculum-chapterDuration">18:20</span>
+                              </div>
+                              <div className="d-flex flex-row justify-content-between align-self-center my-3 py-3 curriculum-row">
+                                  <i className="fa fa-check" style={{ color: 'green' }} />
+                                  <span>Git & Version Control</span>
+                                  <span className="curriculum-chapterDuration">18:20</span>
+                              </div>
+                              <div className="d-flex flex-row justify-content-between align-self-center my-3 py-3 curriculum-row">
+                                  <i className="fa fa-check" style={{ color: 'green' }} />
+                                  <span>HTML</span>
+                                  <span className="curriculum-chapterDuration">18:20</span>
+                              </div>
+                              <div className="d-flex flex-row justify-content-between align-self-center my-3 py-3 curriculum-row">
+                                  <i className="fa fa-check" style={{ color: 'green' }} />
+                                  <span>HTML</span>
+                                  <span className="curriculum-chapterDuration">18:20</span>
+                              </div>
+                              <div className="d-flex flex-row justify-content-between align-self-center my-3 py-3 curriculum-row">
+                                  <i className="fa fa-check" style={{ color: 'green' }} />
+                                  <span>CSS Basics</span>
+                                  <span className="curriculum-chapterDuration">18:20</span>
+                              </div>
+                              <div className="d-flex flex-row justify-content-between align-self-center my-3 py-3 curriculum-row">
+                                  <i className="fa fa-check" style={{ color: 'green' }} />
+                                  <span>Javascript Basics</span>
+                                  <span className="curriculum-chapterDuration">18:20</span>
+                              </div>
+                          </div>
                       </div>
-                    </div>
-                }
-                {
-                  this.state.canPlay &&
-                  <ReactPlayer
-                      url={this.state.signedUrl}
-                      playing
-                  />
-                }
-            </div>
+                  </div>
+                  <div className="col-md-9 pl-0">
+                      {
+                          this.state.error.length > 0 &&
+                          <div className="row">
+                              <div className="col-md-5 offset-md-4">
+                                  <h2 className="common-UppercaseTitle">Oh no!</h2>
+                                  <h4 className="common-IntroText">{this.state.error}</h4>
+                                  <Link to="/pricing" className="common-Button common-Button--default">
+                                      Subscribe
+                                  </Link>
+                              </div>
+                          </div>
+                      }
+                      { this.state.isFetching && <i className="fas fa-7x fa-circle-notch" style={{ color: '#6772e5' }} /> }
+                      {
+                          this.state.canPlay &&
+                          <ReactPlayer
+                              url={this.state.signedUrl}
+                              width="100%"
+                              height="100%"
+                              style={{
+                                  width: '100%',
+                                  height: '100%',
+                                  minWidth: '100%',
+                                  minHeight: '100%'
+                              }}
+                              playing
+                              controls
+                          />
+                      }
+                  </div>
+              </div>
           </Container>
       )
   }

@@ -10,7 +10,7 @@ export default class Container extends Component {
     render() {
         return (
             <div className="container-fluid">
-                <Navbar/>
+                <Navbar {...this.props} />
                 {this.props.children}
                 <Footer />
             </div>

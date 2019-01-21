@@ -36,7 +36,7 @@ class Tracks extends Component {
         return (
             <Container>
                 <div className="d-flex flex-row justify-content-center">
-                    <h1>Your Tracks</h1>
+                    <h1>Your Recent Videos</h1>
                 </div>
                 <div className="row">
                     <div className="col-md-8 offset-md-2">

@@ -13,7 +13,7 @@ class App extends Component {
       super();
 
       this.state = {
-          rotations: [100, 400],
+          rotations: [100, 400, 180, 360, 130, 250],
           layerRotation: 100,
       }
   }
@@ -22,7 +22,7 @@ class App extends Component {
       let { rotations, layerRotation } = this.state;
       setInterval(() => {
           this.setState({
-              rotations: [rotations[0] += 0.25, rotations[1] += 0.25],
+              rotations: [rotations[0] += 0.65, rotations[1] += 0.25, rotations[2] += 0.55, rotations[3] += 0.15, rotations[4] += 0.39, rotations[5] += 0.75],
               layerRotation: layerRotation -= Math.random(),
           })
       }, 50);
@@ -62,9 +62,9 @@ class App extends Component {
                 </span>
                 <h1 className="common-PageTitle">Learn to Code Quickly</h1>
                   <p className="common-IntroText">
-                      Our partners build technology and software that bring more businesses online,
-                      enable new types of businesses, and help them work more effectively. We’ve designed a
-                      program to help accelerate and amplify their impact.
+                      Our course on full stack development will teach you all the core concepts necessary to have a firm
+                      understanding of modern day development practices. We've designed a program that helps to accelerate
+                      you through all the stages of software development from project planning to future maintenance.
                   </p>
               </div>
               {/* Visual Column */}
@@ -103,12 +103,32 @@ class App extends Component {
                           </div>
                           <div className="logo-rotator" style={{ transform: `rotate(${this.state.rotations[0]}deg)` }}>
                               <div className="logo-scaler" style={{transform: 'scale(0.99142)', left: '238.296px' }}>
-                                  <div className="logo HeaderVisualLogo HeaderVisualLogo-img8" style={{ transform: `rotate(${this.state.rotations[0] + 4000}deg)` }} />
+                                  <div className="logo HeaderVisualLogo HeaderVisualLogo-img1" />
                               </div>
                           </div>
                           <div className="logo-rotator" style={{ transform: `rotate(${this.state.rotations[1]}deg)` }}>
                               <div className="logo-scaler" style={{ transform: 'scale(0.99142)', left: '238.296px' }}>
-                                  <div className="logo HeaderVisualLogo HeaderVisualLogo-img9" style={{ transform: `rotate(${this.state.rotations[0] + 400}deg)` }} />
+                                  <div className="logo HeaderVisualLogo HeaderVisualLogo-img2" />
+                              </div>
+                          </div>
+                          <div className="logo-rotator" style={{transform: `rotate(${this.state.rotations[2]}deg)`}}>
+                              <div className="logo-scaler" style={{transform: 'scale(0.99142)', left: '205.547px'}}>
+                                  <div className="logo HeaderVisualLogo HeaderVisualLogo-img3" />
+                              </div>
+                          </div>
+                          <div className="logo-rotator" style={{transform: `rotate(${this.state.rotations[3]}deg)`}}>
+                              <div className="logo-scaler" style={{transform: 'scale(0.99142)', left: '105.547px'}}>
+                                  <div className="logo HeaderVisualLogo HeaderVisualLogo-img4" />
+                              </div>
+                          </div>
+                          <div className="logo-rotator" style={{transform: `rotate(${this.state.rotations[4]}deg)`}}>
+                              <div className="logo-scaler" style={{transform: 'scale(0.99142)', left: '50.547px'}}>
+                                  <div className="logo HeaderVisualLogo HeaderVisualLogo-img5" />
+                              </div>
+                          </div>
+                          <div className="logo-rotator" style={{transform: `rotate(${this.state.rotations[5]}deg)`}}>
+                              <div className="logo-scaler" style={{transform: 'scale(0.99142)', left: '31.547px'}}>
+                                  <div className="logo HeaderVisualLogo HeaderVisualLogo-img6" />
                               </div>
                           </div>
                       </div>

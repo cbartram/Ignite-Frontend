@@ -170,30 +170,33 @@ class PaymentModal extends Component {
 
                     localStorage.clear(); // todo this will force users to re-sign in when they refresh a page
 
-                    // Reset all the fields and show a success message
-                    this.setState({
-                        success: true,
-                        loading: false,
-                        error: '',
-                        fields: {
-                            firstName: '',
-                            lastName: '',
-                            amount: 2500,
-                            expirationYear: '',
-                            expirationMonth: '',
-                            creditCard: '',
-                            cvc: ''
-                        },
-                        missingValues: {
-                            firstName: false,
-                            lastName: false,
-                            creditCard: false,
-                            cvc: false,
-                        }
-                    });
+                    // Ensures that the user only see's a success message if the operation was actually successful.
+                    if(response.statusCode === 200) {
+                        // Reset all the fields and show a success message
+                        this.setState({
+                            success: true,
+                            loading: false,
+                            error: '',
+                            fields: {
+                                firstName: '',
+                                lastName: '',
+                                amount: 2500,
+                                expirationYear: '',
+                                expirationMonth: '',
+                                creditCard: '',
+                                cvc: ''
+                            },
+                            missingValues: {
+                                firstName: false,
+                                lastName: false,
+                                creditCard: false,
+                                cvc: false,
+                            }
+                        });
+                    }
                 }
             } catch(err) {
-                console.log('ERROR', err);
+                Log.error(err);
                 this.setState({ error: err.message, success: false, loading: false });
             }
         });
