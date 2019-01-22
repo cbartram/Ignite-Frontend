@@ -29,7 +29,7 @@ class Router extends Component {
                     <Avenue exact path="/login" component={Login} isAuthenticated={this.props.auth.user !== null} />
                     <Avenue exact path="/login/reset" component={ResetPassword} isAuthenticated={this.props.auth.user !== null} />
                     <Avenue path="/signup" component={Signup} isAuthenticated={this.props.auth.user !== null} />
-                    <AuthenticatedRoute exact path="/tracks" component={Tracks} isAuthenticated={this.props.auth.user !== null} />
+                    <AuthenticatedRoute exact path="/videos" component={Tracks} isAuthenticated={this.props.auth.user !== null} />
                     <AuthenticatedRoute path="/watch" component={Watch} isAuthenticated={this.props.auth.user !== null} />
                     <Route path="/pricing" component={Pricing} />
                     {/* Catch All unmatched paths with a 404 */}

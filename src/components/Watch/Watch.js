@@ -65,6 +65,19 @@ class Watch extends Component {
   }
 
     render() {
+      if(this.state.error.length > 0)
+          return (
+                <div className="row">
+                    <div className="col-md-5 offset-md-4">
+                        <h2 className="common-UppercaseTitle">Oh no!</h2>
+                        <h4 className="common-IntroText">{this.state.error}</h4>
+                        <Link to="/pricing" className="common-Button common-Button--default">
+                            Subscribe
+                        </Link>
+                    </div>
+                </div>
+          );
+
       return (
           <Container marginTop={80} noMargin>
               <div className="row" style={{ marginTop: 80}}>
@@ -153,18 +166,6 @@ class Watch extends Component {
                       </div>
                   </div>
                   <div className="col-md-9 pl-0">
-                      {
-                          this.state.error.length > 0 &&
-                          <div className="row">
-                              <div className="col-md-5 offset-md-4">
-                                  <h2 className="common-UppercaseTitle">Oh no!</h2>
-                                  <h4 className="common-IntroText">{this.state.error}</h4>
-                                  <Link to="/pricing" className="common-Button common-Button--default">
-                                      Subscribe
-                                  </Link>
-                              </div>
-                          </div>
-                      }
                       { this.state.isFetching && <div className="d-flex justify-content-center mt-5"><i className="fas fa-7x fa-circle-notch" style={{ color: '#6772e5' }} /></div> }
                       {
                           this.state.canPlay &&

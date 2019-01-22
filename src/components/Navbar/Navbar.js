@@ -44,7 +44,7 @@ class Navbar extends Component {
 
     render() {
         const authLinks = [
-            <Link className="p-2 text-dark" to="/tracks" key="tracks" onClick={() => this.handleLinkClick()}>Tracks</Link>,
+            <Link className="p-2 text-dark" to="/videos" key="videos" onClick={() => this.handleLinkClick()}>Videos</Link>,
             <Link className="p-2 text-dark" to="/library" key="library" onClick={() => this.handleLinkClick()}>Library</Link>,
             <Link className="p-2 text-dark" to="/pricing" key="pricing" onClick={() => this.handleLinkClick()}>Pricing</Link>,
         ];
@@ -62,7 +62,6 @@ class Navbar extends Component {
                 <h5 className="my-0 mr-md-auto font-weight-normal">Ignite</h5>
                 <nav className="my-2 my-md-0 mr-md-3">
                     { this.props.auth.user ? authLinks.map(link => link) : standardLinks.map(link => link) }
-                    <Link className="p-2 text-dark" to="/community" onClick={() => this.handleLinkClick()}>Community</Link>
                     <Link className="p-2 text-dark" to="/support" onClick={() => this.handleLinkClick()}>Support</Link>
                 </nav>
                 <ul className="dropdown-list">
@@ -83,9 +82,8 @@ class Navbar extends Component {
                                             <span className="header-nav-item-profile-dropdown-title-label">View Profile</span>
                                         </Link>
                                     </h4>
-                                    <a className="dropdown-item" href="#another">Home</a>
-                                    <a className="dropdown-item" href="#another">Community</a>
-                                    <a className="dropdown-item" href="#another">Tracks</a>
+                                    <Link className="dropdown-item" to="/videos">Home</Link>
+                                    <Link className="dropdown-item" to="/videos">Videos</Link>
                                     <a className="dropdown-item" href="#another">Billing</a>
                                     <a className="dropdown-item dropdown-secondary" href="#logout" onClick={() => this.logout()}>Sign Out</a>
                                 </div>
