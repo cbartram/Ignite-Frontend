@@ -55,7 +55,7 @@ class Navbar extends Component {
         ];
 
         return (
-            <div className={`d-flex flex-column flex-md-row align-items-center p-3 px-md-4 bg-white border-bottom shadow-sm fixed-top`} style={this.props.style}>
+            <div className={`d-flex flex-column flex-md-row align-items-center p-3 px-md-4 bg-white border-bottom shadow-sm`} style={{ ...this.props.style, zIndex: 50}}>
                 <Link className="navbar-brand" to="/">
                     <img src={Logo} width="30" height="30" alt="Ignite Logo" />
                 </Link>

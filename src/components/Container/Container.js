@@ -11,10 +11,7 @@ export default class Container extends Component {
         return (
             <div className="container-fluid">
                 <Navbar {...this.props} />
-                {/* Used to offset the navbar's position*/}
-                <div style={{marginTop: this.props.marginTop || 90}}>
                     {this.props.children}
-                </div>
                 <Footer {...this.props} />
             </div>
         );

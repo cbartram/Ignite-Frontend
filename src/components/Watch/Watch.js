@@ -80,15 +80,15 @@ class Watch extends Component {
 
       return (
           <Container marginTop={80} noMargin>
-              <div className="row" style={{ marginTop: 80}}>
-                  <div className="col-md-3 pr-0">
+              <div className="row">
                       <div className="main-wrapper">
-                          <div className="sidebar-container col-md-3">
+                          <div className="sidebar-container">
                               <div className="sidebar">
                                   <div className="my-3">
                                       <img height="70" width="70" alt="thumbnail" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/170px-HTML5_logo_and_wordmark.svg.png" />
                                   </div>
                                   <h3 className="text-muted">HTML & CSS</h3>
+                                  <div className="overflow-section">
                                   <div className="d-flex pl-4 pr-2">
                                       <small className="mr-auto">Chapter 1</small>
                                       <span className="curriculum-chapterDuration">17:21</span>
@@ -161,11 +161,11 @@ class Watch extends Component {
                                       <span>Express Framework</span>
                                       <span className="curriculum-chapterDuration pr-2">18:20</span>
                                   </div>
+                                </div>
                               </div>
                           </div>
                       </div>
-                  </div>
-                  <div className="col-md-9 pl-0">
+                  <div className="col-md-9 mx-auto">
                       { this.state.isFetching && <div className="d-flex justify-content-center mt-5"><i className="fas fa-7x fa-circle-notch" style={{ color: '#6772e5' }} /></div> }
                       {
                           this.state.canPlay &&

@@ -2,6 +2,7 @@
  * This file defines actions which trigger switch statements in the reducer
  */
 import * as constants from '../constants';
+import {getVideos} from "../util";
 
 
 /**
@@ -63,6 +64,34 @@ export const loginFailure = payload => dispatch => {
         type: constants.LOGIN_FAILURE,
         payload
     });
+};
+
+/**
+ * Handles making the Async API call to retrieve the videos. It will dispatch a success or failure event
+ * depending on the status of the API call.
+ * @param email String the email of the user to retrieve videos for
+ * @returns {Function}
+ */
+export const fetchVideos = email => async dispatch => {
+    dispatch({
+        type: constants.REQUEST_VIDEOS,
+        payload: true // Sets isFetching to true
+    });
+
+    const videos = await getVideos(email);
+
+    if(videos.status === 200) {
+        dispatch({
+            type: constants.VIDEOS_SUCCESS,
+            payload: videos,
+        });
+    } else if(videos.status > 200 || typeof videos.status === 'undefined') {
+        // An error occurred
+        dispatch({
+            type: constants.VIDEOS_FAILURE,
+            payload: 'Failed to retrieve videos from the API.'
+        });
+    }
 };
 
 /**

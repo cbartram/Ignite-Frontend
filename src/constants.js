@@ -9,7 +9,8 @@ export const INITIAL_STATE = {
         isFetching: false,
         user: null,
         error: null,
-    }
+    },
+    videos: {}
 };
 
 // Redux Action/Reducer Constants
@@ -19,3 +20,6 @@ export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 export const HIDE_ERRORS = 'HIDE_ERRORS';
 export const LOGOUT = 'LOGOUT';
 export const UPDATE_USER_ATTRIBUTES = 'UPDATE_USER_ATTRIBUTES';
+export const REQUEST_VIDEOS = 'REQUEST_VIDEOS';
+export const VIDEOS_SUCCESS = 'VIDEOS_SUCCESS';
+export const VIDEOS_FAILURE = 'VIDEOS_FAILURE';

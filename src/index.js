@@ -11,7 +11,7 @@ import * as constants from './constants'
 import config from './config';
 import Router from './components/Router/Router'
 import Log from './Log';
-import { loginSuccess } from './actions/actions';
+import { loginSuccess, fetchVideos} from './actions/actions';
 
 // Setup Redux middleware and store
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -55,7 +55,9 @@ const checkAuthStatus = async () => {
     try {
         const user = await Auth.currentSession();
         Log.info(user.idToken.payload.email, 'Found Authenticated user within a Cookie!');
-        store.dispatch(loginSuccess(user))
+        Log.info('Attempting to retrieve user videos...');
+        store.dispatch(fetchVideos(user.idToken.payload.email));
+        store.dispatch(loginSuccess(user));
     }
     catch (e) {
         Log.warn('Could not find authenticated user.');
