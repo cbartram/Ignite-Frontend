@@ -2,17 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import {applyMiddleware, compose, createStore} from "redux";
-import rootReducer from "./reducers/rootReducer";
-import * as constants from "./constants";
+import rootReducer from "../reducers/rootReducer";
+import * as constants from "../constants";
 import thunk from "redux-thunk";
 import { BrowserRouter  }from "react-router-dom";
 
-import Login from './components/Login/Login'
-import App from './App';
-import Navbar from "./components/Navbar/Navbar";
-import Router from "./components/Router/Router";
-import NotFound from './components/NotFound/NotFound';
-import Container from './components/Container/Container';
+import Login from '../components/Login/Login'
+import App from '../App';
+import Navbar from "../components/Navbar/Navbar";
+import Router from "../components/Router/Router";
+import NotFound from '../components/NotFound/NotFound';
+import Container from '../components/Container/Container';
 
 // Create store used throughout the unit tests
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

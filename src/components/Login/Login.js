@@ -11,6 +11,7 @@ import {
     loginFailure,
     loginSuccess,
     loginRequest,
+    fetchVideos,
 } from '../../actions/actions';
 
 const mapStateToProps = state => ({
@@ -21,6 +22,7 @@ const mapDispatchToProps = dispatch => ({
     loginSuccess: (data) => dispatch(loginSuccess(data)),
     loginFailure: (data) => dispatch(loginFailure(data)),
     loginRequest: () => dispatch(loginRequest()),
+    fetchVideos: (email) => dispatch(fetchVideos(email)),
 });
 
 /**
@@ -63,7 +65,6 @@ class Login extends Component {
      */
     handleSubmit = async event => {
         Log.info('Logging in...');
-        console.log('Logging in');
         event.preventDefault();
         // Dispatch the isFetching redux
         this.props.loginRequest();
@@ -71,7 +72,7 @@ class Login extends Component {
         try {
             const res = await Auth.signIn(this.state.email, this.state.password);
             Log.info('Login Success!');
-            console.log('Login Success');
+            this.props.fetchVideos(this.state.email);
             this.props.loginSuccess(res);
         } catch (err) {
             console.log(err);

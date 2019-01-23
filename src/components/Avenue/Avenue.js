@@ -62,9 +62,9 @@ const Avenue = ({ component: Component, props: componentProps, ...rest }) => {
                     redirect === "" ||
                     redirect === null ||
                     typeof redirect === 'undefined' ||
-                    Object.keys(redirect).length === 0 ? '/tracks' : redirect;
+                    Object.keys(redirect).length === 0 ? '/videos' : redirect;
 
-                return <Redirect to={shouldUseRedirect ? '/tracks' : redirect } />
+                return <Redirect to={shouldUseRedirect ? '/videos' : redirect } />
             }
         }}/>
     )

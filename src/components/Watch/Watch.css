@@ -60,25 +60,27 @@ small {
 
 /* Container for a sidebar. */
 .sidebar-container {
-    height: 100%;
-    position: relative;
-    max-height: 500px;
-    padding: 50px 0 0;
+    height: 200px;
+    /*position: relative;*/
+    /*padding: 50px 0 0;*/
     background: #fafcfc;
     border-right: 1px solid #f0f4f7;
     text-align: center;
-    z-index: 1;
-}
+    z-index: -1;
 
-.overflow-section {
-    max-height:470px;
-    overflow-y: scroll;
+    position: fixed;
+    width: 300px;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    overflow: hidden;
 }
 
 /* Scrollable sidebar. */
 .sidebar {
     height: 100%;
-    position: relative;
+    width: 100%;
+    position: absolute;
     overflow-y: scroll;
     background: #fafcfc;
     border-right: 1px solid #f0f4f7;

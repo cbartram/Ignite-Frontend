@@ -49,7 +49,14 @@ class Watch extends Component {
         Log.info('Signed URL Response', response);
 
         if(response.status === 403) {
-          this.setState({ error: 'We couldn\'t find an active subscription for your account. If you would like to subscribe and view this content check out the link below!', isFetching: false })
+          this.setState({ error: 'We couldn\'t find an active subscription for your account. If you would like to subscribe and view this content check out the link below!', isFetching: false });
+          return;
+        }
+
+        // Server errors
+        if(response.status > 403) {
+            this.setState({ error: `Something went wrong retrieving the videos: ${response.body.messages.join(',')}` });
+            return;
         }
 
         if(response.status === 200 && ReactPlayer.canPlay(response.body.signedUrl)) {
@@ -88,7 +95,6 @@ class Watch extends Component {
                                       <img height="70" width="70" alt="thumbnail" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/170px-HTML5_logo_and_wordmark.svg.png" />
                                   </div>
                                   <h3 className="text-muted">HTML & CSS</h3>
-                                  <div className="overflow-section">
                                   <div className="d-flex pl-4 pr-2">
                                       <small className="mr-auto">Chapter 1</small>
                                       <span className="curriculum-chapterDuration">17:21</span>
@@ -161,7 +167,6 @@ class Watch extends Component {
                                       <span>Express Framework</span>
                                       <span className="curriculum-chapterDuration pr-2">18:20</span>
                                   </div>
-                                </div>
                               </div>
                           </div>
                       </div>

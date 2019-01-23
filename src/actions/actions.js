@@ -2,7 +2,8 @@
  * This file defines actions which trigger switch statements in the reducer
  */
 import * as constants from '../constants';
-import {getVideos} from "../util";
+import Log from '../Log';
+import { getVideos } from "../util";
 
 
 /**
@@ -75,21 +76,21 @@ export const loginFailure = payload => dispatch => {
 export const fetchVideos = email => async dispatch => {
     dispatch({
         type: constants.REQUEST_VIDEOS,
-        payload: true // Sets isFetching to true
+        payload: true // Sets isFetching to true (useful for unit testing redux)
     });
 
-    const videos = await getVideos(email);
+    const response = await getVideos(email);
 
-    if(videos.status === 200) {
+    if(response.status === 200) {
         dispatch({
             type: constants.VIDEOS_SUCCESS,
-            payload: videos,
+            payload: response.body.user.videos,
         });
-    } else if(videos.status > 200 || typeof videos.status === 'undefined') {
+    } else if(response.status > 200 || typeof response.status === 'undefined') {
         // An error occurred
         dispatch({
             type: constants.VIDEOS_FAILURE,
-            payload: 'Failed to retrieve videos from the API.'
+            payload: { message: `Failed to retrieve videos from API: ${JSON.stringify(response)}`}
         });
     }
 };
