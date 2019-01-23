@@ -24,7 +24,7 @@ class Watch extends Component {
 
   componentDidMount() {
     this.setState({ isFetching: true }, async () => {
-      const trackName = this.props.location.search.substring(this.props.location.search.indexOf('=') + 1, this.props.location.search.length);
+      const trackName = atob(this.props.location.search.substring(this.props.location.search.indexOf('=') + 1, this.props.location.search.length));
         const params = {
             method: 'POST',
             headers: {

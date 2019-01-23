@@ -16,7 +16,7 @@ export default (state = {}, action) => {
         case constants.VIDEOS_SUCCESS:
             return {
                 ...state,
-                ...action.payload,
+                videoList: [...action.payload],
                 isFetching: false,
                 error: null,
             };

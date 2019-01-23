@@ -6,6 +6,7 @@ import './Tracks.css';
 
 const mapStateToProps = state => ({
     auth: state.auth,
+    videos: state.videos
 });
 
 /**
@@ -33,6 +34,16 @@ class Tracks extends Component {
     }
 
     render() {
+
+        if(this.props.videos.isFetching)
+            return (
+                <Container>
+                    <div className="d-flex justify-content-center mt-5">
+                        <i className="fas fa-7x fa-circle-notch" style={{ color: '#6772e5' }} />
+                    </div>
+                </Container>
+            );
+
         return (
             <Container>
                 <div className="d-flex flex-row justify-content-center">
@@ -42,7 +53,7 @@ class Tracks extends Component {
                     <div className="col-md-8 offset-md-2">
                         <div className="d-flex flex-row justify-content-between">
                             {
-                                this.state.tracks.map(track => {
+                                this.props.videos.videoList.map(track => {
                                     return (
                                         <div className="common-Card m-2" key={track.name}>
                                             <div className="cover" />
@@ -50,7 +61,7 @@ class Tracks extends Component {
                                             <p className="common-BodyText">
                                                 {track.description}
                                             </p>
-                                            <Link to={`/watch?track=${track.name}`} className="common-Button common-Button--default mt-2">
+                                            <Link to={`/watch?v=${btoa(unescape(encodeURIComponent(track.id)))}`} className="common-Button common-Button--default mt-2">
                                                 Start Now
                                             </Link>
                                         </div>
