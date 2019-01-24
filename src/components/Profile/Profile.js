@@ -51,8 +51,9 @@ class Profile extends Component {
                 this.state.oldPassword,
                 this.state.password
             );
-
-            this.props.history.push('/profile');
+            this.setState({ isChanging: false, password: '', oldPassword: '', confirmPassword: '' }, () => {
+                this.props.history.push('/profile');
+            });
         } catch (e) {
             alert(e.message);
             this.setState({ isChanging: false });
@@ -185,10 +186,10 @@ class Profile extends Component {
                             />
                         </form>
                     </div>
-                    <h4>Change your Email</h4>
                 </Card>
                 {/* Billing Card */}
                 <Card badgeText="Billing Information">
+
                 </Card>
             </div>
           </Container>
