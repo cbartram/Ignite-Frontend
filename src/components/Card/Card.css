@@ -1,0 +1,33 @@
+.common-Card {
+    position: relative;
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 30px;
+    z-index: 20;
+    -webkit-box-shadow: 0 30px 60px -12px rgba(50,50,93,.25), 0 18px 36px -18px rgba(0,0,0,.3);
+    box-shadow: 0 30px 60px -12px rgba(50,50,93,.25), 0 18px 36px -18px rgba(0,0,0,.3);
+}
+
+.common-UppercaseText-Badge {
+    font-size: 17px;
+    line-height: 28px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .025em;
+}
+
+.profile-badge {
+    position: absolute;
+    left: 50%;
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    white-space: nowrap;
+    background: #6b7c93;
+    color: #fff;
+    padding: 3px 15px;
+    border-radius: 50px;
+}
+
+.card-body {
+    margin-top: 20px;
+}
