@@ -82,7 +82,7 @@ class Navbar extends Component {
                                             <span className="header-nav-item-profile-dropdown-title-label">View Profile</span>
                                         </Link>
                                     </h4>
-                                    <Link className="dropdown-item" to="/videos">Home</Link>
+                                    <Link className="dropdown-item" to="/profile">Profile</Link>
                                     <Link className="dropdown-item" to="/videos">Videos</Link>
                                     <a className="dropdown-item" href="#another">Billing</a>
                                     <a className="dropdown-item dropdown-secondary" href="#logout" onClick={() => this.logout()}>Sign Out</a>

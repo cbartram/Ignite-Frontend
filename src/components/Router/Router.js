@@ -11,6 +11,7 @@ import Avenue from '../Avenue/Avenue';
 import Pricing from '../Pricing/Pricing';
 import Watch from '../Watch/Watch';
 import ResetPassword from '../ResetPassword/ResetPassword';
+import Profile from '../Profile/Profile';
 
 const mapStateToProps = state => ({
    auth: state.auth,
@@ -31,6 +32,7 @@ class Router extends Component {
                     <Avenue path="/signup" component={Signup} isAuthenticated={this.props.auth.user !== null} />
                     <AuthenticatedRoute exact path="/videos" component={Tracks} isAuthenticated={this.props.auth.user !== null} />
                     <AuthenticatedRoute path="/watch" component={Watch} isAuthenticated={this.props.auth.user !== null} />
+                    <AuthenticatedRoute path="/profile" component={Profile} isAuthenticated={this.props.auth.user !== null} />
                     <Route path="/pricing" component={Pricing} />
                     {/* Catch All unmatched paths with a 404 */}
                     <Route component={NotFound} />
