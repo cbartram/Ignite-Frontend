@@ -71,6 +71,14 @@ class Watch extends Component {
 
   }
 
+    componentWillMount() {
+        // document.body.style.overflow = 'hidden';
+    }
+
+    componentWillUnmount() {
+        // document.body.style.overflow = 'scroll';
+    }
+
     render() {
       if(this.state.error.length > 0)
           return (
@@ -86,110 +94,153 @@ class Watch extends Component {
           );
 
       return (
-          <Container marginTop={80} noMargin>
-              <div className="row">
-                      <div className="main-wrapper">
-                          <div className="sidebar-container">
-                              <div className="sidebar">
-                                  <div className="my-3">
-                                      <img height="70" width="70" alt="thumbnail" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/170px-HTML5_logo_and_wordmark.svg.png" />
-                                  </div>
-                                  <h3 className="text-muted">HTML & CSS</h3>
-                                  <div className="d-flex pl-4 pr-2">
-                                      <small className="mr-auto">Chapter 1</small>
-                                      <span className="curriculum-chapterDuration">17:21</span>
-                                  </div>
-                                  <div className="d-flex flex-column align-items-start pl-4">
-                                      <h4 className="curriculum-heading">
-                                          Introduction
-                                      </h4>
-                                  </div>
-                                  <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row">
-                                      <div className="pl-4">
-                                          <i className="fa fa-check success-icon" />
-                                       </div>
-                                      <span>Overview</span>
-                                      <span className="curriculum-chapterDuration pr-2">18:20</span>
-                                  </div>
-                                  <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row">
-                                      <div className="pl-4">
-                                          <i className="fa fa-check success-icon" />
-                                      </div>
-                                      <span>Blueprint</span>
-                                      <span className="curriculum-chapterDuration pr-2">18:20</span>
-                                  </div>
-                                  <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row">
-                                      <div className="pl-4">
-                                          <i className="fa fa-check success-icon" />
-                                      </div>
-                                      <span>Git & Version Control</span>
-                                      <span className="curriculum-chapterDuration pr-2">18:20</span>
-                                  </div>
-                                  <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row">
-                                      <div className="pl-4">
-                                          <i className="fa fa-check success-icon" />
-                                      </div>
-                                      <span>CSS</span>
-                                      <span className="curriculum-chapterDuration pr-2">18:20</span>
-                                  </div>
-                                  <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row">
-                                      <div className="pl-4">
-                                          <i className="fa fa-check success-icon" />
-                                      </div>
-                                      <span>JQuery</span>
-                                      <span className="curriculum-chapterDuration pr-2">18:20</span>
-                                  </div>
-                                  <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row">
-                                      <div className="pl-4">
-                                          <i className="fa fa-check success-icon" />
-                                      </div>
-                                      <span>The DOM</span>
-                                      <span className="curriculum-chapterDuration pr-2">18:20</span>
-                                  </div>
-                                  <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row">
-                                      <div className="pl-4">
-                                          <i className="fas fa-play play-icon" />
-                                      </div>
-                                      <span>Javascript Basics</span>
-                                      <span className="curriculum-chapterDuration pr-2">18:20</span>
-                                  </div>
-                                  <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row">
-                                      <div className="pl-4">
-                                          <i className="fas fa-play play-icon" />
-                                      </div>
-                                      <span>NodeJS</span>
-                                      <span className="curriculum-chapterDuration pr-2">18:20</span>
-                                  </div>
-                                  <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row curriculum-row-last">
-                                      <div className="pl-4">
-                                          <i className="fas fa-play play-icon" />
-                                      </div>
-                                      <span>Express Framework</span>
-                                      <span className="curriculum-chapterDuration pr-2">18:20</span>
-                                  </div>
+          <Container noFooter>
+                  <div className="sidebar-container">
+                      <div className="my-3">
+                          <img height="70" width="70" alt="thumbnail" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/170px-HTML5_logo_and_wordmark.svg.png" />
+                      </div>
+                      <h3 className="text-muted">HTML & CSS</h3>
+                      <div className="sidebar">
+                          <div className="d-flex pl-4 pr-2">
+                              <small className="mr-auto">Chapter 1</small>
+                              <span className="curriculum-chapterDuration">17:21</span>
+                          </div>
+                          <div className="d-flex flex-column align-items-start pl-4">
+                              <h4 className="curriculum-heading">
+                                  Introduction
+                              </h4>
+                          </div>
+                          <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row">
+                              <div className="pl-4">
+                                  <i className="fa fa-check success-icon" />
                               </div>
+                              <span>Overview</span>
+                              <span className="curriculum-chapterDuration pr-2">18:20</span>
+                          </div>
+                          <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row">
+                              <div className="pl-4">
+                                  <i className="fa fa-check success-icon" />
+                              </div>
+                              <span>Blueprint</span>
+                              <span className="curriculum-chapterDuration pr-2">18:20</span>
+                          </div>
+                          <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row">
+                              <div className="pl-4">
+                                  <i className="fa fa-check success-icon" />
+                              </div>
+                              <span>Git & Version Control</span>
+                              <span className="curriculum-chapterDuration pr-2">18:20</span>
+                          </div>
+                          <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row">
+                              <div className="pl-4">
+                                  <i className="fa fa-check success-icon" />
+                              </div>
+                              <span>CSS</span>
+                              <span className="curriculum-chapterDuration pr-2">18:20</span>
+                          </div>
+                          <div className="d-flex pl-4 pr-2">
+                              <small className="mr-auto">Chapter 2</small>
+                              <span className="curriculum-chapterDuration">13:43</span>
+                          </div>
+                          <div className="d-flex flex-column align-items-start pl-4">
+                              <h4 className="curriculum-heading">
+                                  Javascript
+                              </h4>
+                          </div>
+                          <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row">
+                              <div className="pl-4">
+                                  <i className="fa fa-check success-icon" />
+                              </div>
+                              <span>JQuery</span>
+                              <span className="curriculum-chapterDuration pr-2">18:20</span>
+                          </div>
+                          <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row">
+                              <div className="pl-4">
+                                  <i className="fa fa-check success-icon" />
+                              </div>
+                              <span>The DOM</span>
+                              <span className="curriculum-chapterDuration pr-2">18:20</span>
+                          </div>
+                          <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row">
+                              <div className="pl-4">
+                                  <i className="fas fa-play play-icon" />
+                              </div>
+                              <span>Javascript Basics</span>
+                              <span className="curriculum-chapterDuration pr-2">18:20</span>
+                          </div>
+                          <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row">
+                              <div className="pl-4">
+                                  <i className="fas fa-play play-icon" />
+                              </div>
+                              <span>NodeJS</span>
+                              <span className="curriculum-chapterDuration pr-2">18:20</span>
+                          </div>
+                          <div className="d-flex pl-4 pr-2">
+                              <small className="mr-auto">Chapter 3</small>
+                              <span className="curriculum-chapterDuration">22:21</span>
+                          </div>
+                          <div className="d-flex flex-column align-items-start pl-4">
+                              <h4 className="curriculum-heading">
+                                  NodeJS
+                              </h4>
+                          </div>
+                          <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row curriculum-row-last">
+                              <div className="pl-4">
+                                  <i className="fas fa-play play-icon" />
+                              </div>
+                              <span>Express Framework</span>
+                              <span className="curriculum-chapterDuration pr-2">18:20</span>
+                          </div>
+                          <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row curriculum-row-last">
+                              <div className="pl-4">
+                                  <i className="fas fa-play play-icon" />
+                              </div>
+                              <span>Express Framework</span>
+                              <span className="curriculum-chapterDuration pr-2">18:20</span>
+                          </div>
+                          <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row curriculum-row-last">
+                              <div className="pl-4">
+                                  <i className="fas fa-play play-icon" />
+                              </div>
+                              <span>Express Framework</span>
+                              <span className="curriculum-chapterDuration pr-2">18:20</span>
+                          </div>
+                          <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row curriculum-row-last">
+                              <div className="pl-4">
+                                  <i className="fas fa-play play-icon" />
+                              </div>
+                              <span>Express Framework</span>
+                              <span className="curriculum-chapterDuration pr-2">18:20</span>
+                          </div>
+                          <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row curriculum-row-last">
+                              <div className="pl-4">
+                                  <i className="fas fa-play play-icon" />
+                              </div>
+                              <span>Express Framework</span>
+                              <span className="curriculum-chapterDuration pr-2">18:20</span>
                           </div>
                       </div>
-                  <div className="col-md-9 mx-auto">
-                      { this.state.isFetching && <div className="d-flex justify-content-center mt-5"><i className="fas fa-7x fa-circle-notch" style={{ color: '#6772e5' }} /></div> }
-                      {
-                          this.state.canPlay &&
-                          <ReactPlayer
-                              url={this.state.signedUrl}
-                              width="100%"
-                              height="100%"
-                              style={{
-                                  width: '100%',
-                                  height: '100%',
-                                  minWidth: '100%',
-                                  minHeight: '100%'
-                              }}
-                              playing
-                              controls
-                          />
-                      }
                   </div>
-              </div>
+                  { this.state.isFetching && <div className="d-flex justify-content-center mt-5"><i className="fas fa-7x fa-circle-notch" style={{ color: '#6772e5' }} /></div> }
+                  {
+                      this.state.canPlay &&
+                      <ReactPlayer
+                          url={this.state.signedUrl}
+                          width="100%"
+                          height="100%"
+                          style={{
+                              position: 'relative',
+                              width: '80%',
+                              height: '100%',
+                              maxWidth: '80%',
+                              maxHeight: '100vh',
+                              marginLeft: 302,
+                              minHeight: '100%'
+                          }}
+                          playing
+                          controls
+                      />
+                  }
           </Container>
       )
   }

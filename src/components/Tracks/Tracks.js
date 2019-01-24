@@ -59,8 +59,12 @@ class Tracks extends Component {
                                             <div className="cover" />
                                             <h2 className="common-IntroText">{track.name}</h2>
                                             <p className="common-BodyText">
-                                                {track.description}
+                                                {console.log(track)}
+                                                {track.length}
                                             </p>
+                                            <span className="text-muted">
+                                                {track.percentComplete === 0 ? 'Not Started' : `${track.percentComplete}% complete!`}
+                                            </span>
                                             <Link to={`/watch?v=${btoa(unescape(encodeURIComponent(track.id)))}`} className="common-Button common-Button--default mt-2">
                                                 Start Now
                                             </Link>

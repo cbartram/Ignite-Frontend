@@ -60,27 +60,26 @@ small {
 
 /* Container for a sidebar. */
 .sidebar-container {
-    height: 200px;
-    /*position: relative;*/
-    /*padding: 50px 0 0;*/
+    height: 100%;
+    padding: 133px 0 0;
     background: #fafcfc;
     border-right: 1px solid #f0f4f7;
     text-align: center;
-    z-index: -1;
-
-    position: fixed;
     width: 300px;
-    left: 0;
-    top: 0;
-    bottom: 0;
     overflow: hidden;
+
+    position: absolute;
+    /*top: 83px;*/
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Scrollable sidebar. */
 .sidebar {
-    height: 100%;
     width: 100%;
-    position: absolute;
+    flex-grow: 1;
     overflow-y: scroll;
     background: #fafcfc;
     border-right: 1px solid #f0f4f7;
