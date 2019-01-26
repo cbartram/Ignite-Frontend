@@ -2,12 +2,18 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ReactPlayer from 'react-player'
 import { Link } from 'react-router-dom';
+import { Auth } from 'aws-amplify';
 import Log from '../../Log';
 import Container from '../Container/Container';
+import { logout } from '../../actions/actions';
 import './Watch.css';
 
 const mapStateToProps = state => ({
     auth: state.auth,
+});
+
+const mapDispatchToProps = dispatch => ({
+    logout: () => dispatch(logout()),
 });
 
 class Watch extends Component {
@@ -53,35 +59,47 @@ class Watch extends Component {
           return;
         }
 
-        // Server errors
-        if(response.status > 403) {
-            this.setState({ error: `Something went wrong retrieving the videos: ${response.body.messages.join(',')}` });
-            return;
-        }
-
-        if(response.status === 200 && ReactPlayer.canPlay(response.body.signedUrl)) {
-            this.setState({
-                signedUrl: response.body.signedUrl,
-                canPlay: true,
-                isFetching: false,
-                error: '',
-            });
+        switch(response.status) {
+            case 403:
+                this.setState({ error: 'We couldn\'t find an active subscription for your account. If you would like to subscribe and view this content check out the link below!', isFetching: false });
+                break;
+            case 501:
+                // The JWT token is more than likely expired re-authenticate
+                await this.logout();
+                break;
+            case 200:
+                if(ReactPlayer.canPlay(response.body.signedUrl))
+                    this.setState({
+                        signedUrl: response.body.signedUrl,
+                        canPlay: true,
+                        isFetching: false,
+                        error: '',
+                    });
+                break;
+            default:
+                this.setState({ error: `Something went wrong retrieving the videos: ${response.body.messages.join(',')}` });
         }
     });
-
   }
 
-    componentWillMount() {
-        // document.body.style.overflow = 'hidden';
-    }
-
-    componentWillUnmount() {
-        // document.body.style.overflow = 'scroll';
+    /**
+     * Handles logging the user out by removing cookies/session history
+     * @returns {Promise<void>}
+     */
+    async logout() {
+        Log.info('JWT is expired re-authenticating');
+        try {
+            await Auth.signOut();
+            this.props.logout();
+        } catch(err) {
+            Log.error('Failed to logout user...', err)
+        }
     }
 
     render() {
       if(this.state.error.length > 0)
           return (
+              <Container>
                 <div className="row">
                     <div className="col-md-5 offset-md-4">
                         <h2 className="common-UppercaseTitle">Oh no!</h2>
@@ -91,6 +109,7 @@ class Watch extends Component {
                         </Link>
                     </div>
                 </div>
+              </Container>
           );
 
       return (
@@ -246,4 +265,4 @@ class Watch extends Component {
   }
 }
 
-export default connect(mapStateToProps)(Watch);
+export default connect(mapStateToProps, mapDispatchToProps)(Watch);
