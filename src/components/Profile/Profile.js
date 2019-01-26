@@ -13,6 +13,10 @@ const mapStateToProps = state => ({
     videos: state.videos,
 });
 
+/**
+ * This Presentational component shows the user their information and
+ * allows them to manage their billing and current password.
+ */
 class Profile extends Component {
     constructor(props) {
         super(props);
@@ -25,6 +29,9 @@ class Profile extends Component {
         };
     }
 
+    /**
+     * Validates the input fields
+     */
     validateForm() {
         return (
             this.state.oldPassword.length > 0 &&
@@ -33,12 +40,18 @@ class Profile extends Component {
         );
     }
 
+    /**
+     * Updates local state with the values in each form field
+     */
     handleChange = event => {
         this.setState({
             [event.target.id]: event.target.value
         });
     };
 
+    /**
+     * Handles submitting the form and changer a user's password
+     */
     handleChangeClick = async event => {
         event.preventDefault();
 
