@@ -216,30 +216,16 @@ class PaymentModal extends Component {
                             {/* Show the error/success Alerts after the payment is submitted */}
                             {
                                 this.state.error &&
-                                <Alert type="danger" heading="Error">
-                                    <p>
-                                        Unfortunately something went wrong processing your payment information. Ensure your
-                                        card information is typed correctly and matches the details on your credit or debit card.
-                                    </p>
-                                    <hr />
-                                    <p>
-                                        You can try again by resubmitting the form below! Details of the error: &nbsp;
-                                        { this.state.error }
-                                    </p>
+                                <Alert type="danger" title="Error" visible={this.state.error}>
+                                    Unfortunately something went wrong processing your payment information.
                                 </Alert>
                             }
 
                             {
                                 this.state.success &&
-                                <Alert type="success" heading="Thank You">
-                                    <p>
-                                        Your subscription has been created successfully and will automatically renew on { moment().format('MMM Do') }.
-                                        Check out our <Link to="/tracks">tracks</Link> and start watching!
-                                    </p>
-                                    <hr />
-                                    <p>
-                                        Enjoy your learning!
-                                    </p>
+                                <Alert type="success" title="Thank You" visible={this.state.success}>
+                                    Your subscription has been created successfully and will automatically renew on { moment().format('MMM Do') }.
+                                    Check out our <Link to="/tracks">tracks</Link> and start watching!
                                 </Alert>
                             }
                             <div className="form-row text firstname">

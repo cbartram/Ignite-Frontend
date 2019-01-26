@@ -1,0 +1,115 @@
+.notification {
+    position: relative;
+    /*top: 20px;*/
+    width: 550px;
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 20px;
+    -webkit-box-shadow: 0 30px 60px -12px rgba(50,50,93,.25), 0 18px 36px -18px rgba(0,0,0,.3);
+    box-shadow: 0 30px 60px -12px rgba(50,50,93,.25), 0 18px 36px -18px rgba(0,0,0,.3);
+    animation: slide .75s ease forwards;
+}
+
+.notification-hide {
+    animation: slide-out .75s forwards;
+}
+
+.notification:hover {
+    transform: none;
+}
+
+/*
+ * Notification Types
+ */
+.notification-danger {
+    border-left: 4px solid rgb(224, 77, 77);
+}
+
+.notification-success {
+    border-left: 4px solid rgb(21, 149, 112);
+}
+
+.notification-warning {
+    border-left: 4px solid #ffa27b;
+}
+
+.notification-info {
+    border-left: 4px solid rgb(68, 88, 246);
+}
+
+.success-icon {
+    background-color: rgb(175, 241, 182);
+    color: rgb(21, 149, 112);
+    font-size: 15px;
+    border-radius: 50%;
+    padding: 8px 6px 6px;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    vertical-align: center;
+}
+
+.danger-icon {
+    background-color: rgb(247, 211, 211);
+    color: rgb(224, 77, 77);
+    font-size: 15px;
+    border-radius: 50%;
+    padding: 7px 6px 6px;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    vertical-align: center;
+}
+
+.warning-icon {
+    background-color: rgb(255, 231, 203);
+    color: #ffa27b;
+    font-size: 15px;
+    border-radius: 50%;
+    padding: 8px 6px 6px;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    vertical-align: center;
+}
+
+.info-icon {
+    background-color: rgb(200, 216, 255);
+    color: rgb(68, 88, 246);
+    font-size: 15px;
+    border-radius: 50%;
+    padding: 8px 6px 6px;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    vertical-align: center;
+}
+
+@keyframes slide {
+    from {
+        transform:translateX(-100px);
+    }
+    to {
+        transform: translateX(17px);
+    }
+}
+
+@keyframes slide-out {
+    0% {
+        transform: translateX(17px);
+    }
+    100% {
+        transform:translateX(-300em);
+        display: none;
+    }
+}
+
+.light-gray {
+    color: rgb(191, 192, 195);
+    font-size: 24px;
+}
+
+.light-gray:hover {
+    color: rgb(179, 180, 183);
+}

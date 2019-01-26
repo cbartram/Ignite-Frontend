@@ -13,6 +13,8 @@ import {
     loginRequest,
     fetchVideos,
 } from '../../actions/actions';
+import Alert from "../Alert/Alert";
+import AlertContainer from "../AlertContainer/AlertContainer";
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -36,6 +38,8 @@ class Login extends Component {
             email: "",
             password: "",
             isLoading: false,
+
+            alerts: [],
         };
     }
 
@@ -85,9 +89,24 @@ class Login extends Component {
         }
     };
 
+    renderAlert() {
+        const { alerts } = this.state;
+        alerts.push(
+            <Alert title="Hold on." type="warning">
+                Be careful of what you are doing it might not
+                work as expected.
+            </Alert>
+        );
+
+        this.setState({ alerts });
+    }
+
     render() {
         return (
             <Container>
+                <AlertContainer>
+                    { this.state.alerts.map(alert => alert) }
+                </AlertContainer>
                 <div className="Login">
                     {/* If there is an error alert the user */}
                     { (this.props.auth.error !== null && typeof this.props.auth.error !== 'undefined') &&
@@ -135,6 +154,21 @@ class Login extends Component {
                         />
                         <Link to="/login/reset" className="text-muted">Forgot your password?</Link>
                     </form>
+
+                    <div className="row">
+                        <div className="col-md-3 offset-md-5">
+                            <LoaderButton
+                                block
+                                bsSize="large"
+                                type="submit"
+                                isLoading={this.props.auth.isFetching}
+                                text="Show Notification"
+                                onClick={() => this.renderAlert()}
+                                style={{marginBottom: 20}}
+                                loadingText="Logging in…"
+                            />
+                        </div>
+                    </div>
                 </div>
             </Container>
         );

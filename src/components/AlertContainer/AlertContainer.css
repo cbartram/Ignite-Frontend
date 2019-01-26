@@ -1,0 +1,6 @@
+.alert-container {
+    height:100vh;
+    position: fixed;
+    z-index: 99999;
+    overflow-y: scroll;
+}
