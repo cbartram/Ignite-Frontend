@@ -1,18 +1,23 @@
 import React, { Component } from "react";
 import { Auth } from "aws-amplify";
 import { Link } from "react-router-dom";
+import { connect } from 'react-redux';
 import {
     HelpBlock,
     FormGroup,
     Glyphicon,
     FormControl,
     ControlLabel
-} from "react-bootstrap";
-import LoaderButton from "../LoaderButton/LoaderButton";
-import "./ResetPassword.css";
-import { connect } from 'react-redux';
-import Container from "../Container/Container";
-import {loginFailure, loginRequest, loginSuccess} from "../../actions/actions";
+} from 'react-bootstrap';
+import LoaderButton from '../LoaderButton/LoaderButton';
+import Container from '../Container/Container';
+import {
+    loginFailure,
+    loginRequest,
+    loginSuccess,
+    hideErrors
+} from '../../actions/actions';
+import './ResetPassword.css';
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -22,8 +27,12 @@ const mapDispatchToProps = dispatch => ({
     loginSuccess: (data) => dispatch(loginSuccess(data)),
     loginFailure: (data) => dispatch(loginFailure(data)),
     loginRequest: () => dispatch(loginRequest()),
+    hideErrors: () => dispatch(hideErrors()),
 });
 
+/**
+ * Handles re-setting a user's password
+ */
 class ResetPassword extends Component {
     constructor(props) {
         super(props);
@@ -83,6 +92,7 @@ class ResetPassword extends Component {
                 this.state.code,
                 this.state.password
             );
+            this.props.hideErrors();
             this.setState({ confirmed: true });
         } catch (e) {
             this.setState({ isConfirming: false });
@@ -96,6 +106,7 @@ class ResetPassword extends Component {
                 <FormGroup bsSize="large" controlId="email">
                     <ControlLabel>Email</ControlLabel>
                     <FormControl
+                        className="form-field-default"
                         autoFocus
                         type="email"
                         value={this.state.email}
@@ -183,10 +194,10 @@ class ResetPassword extends Component {
                 <div className="row">
                     <div className="col-md-4 offset-md-4">
                         <div className="alert alert-danger" role="alert">
-                            <h4 className="alert-heading">Invalid Email or Password</h4>
+                            <h4 className="alert-heading">Oh No!</h4>
                             <hr />
-                            <p>The email or password you entered does not match what we have on record. You can try again or &nbsp;
-                                <Link to="/login/reset">reset your password.</Link> if you forgot.
+                            <p>
+                              { this.props.auth.error }
                             </p>
                         </div>
                     </div>

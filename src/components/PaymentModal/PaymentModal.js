@@ -386,7 +386,7 @@ class PaymentModal extends Component {
                                 />
                             </div>
                             <p className="text-muted px-2 mt-3">
-                                You will be billed $25.00 monthly starting today and recurring on the { moment().format('Do') } of the month. You
+                                You will be billed $20.00 monthly starting today and recurring on the { moment().format('Do') } of the month. You
                                 can unsubscribe at any time by visiting your profile page.
                             </p>
                         </div>

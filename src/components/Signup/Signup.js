@@ -152,7 +152,6 @@ class Signup extends Component {
                     <FormGroup controlId="first_name" bsSize="large">
                         <ControlLabel>First Name</ControlLabel>
                         <FormControl
-                            autoFocus
                             type="text"
                             value={this.state.first_name}
                             onChange={this.handleChange}
@@ -161,7 +160,6 @@ class Signup extends Component {
                     <FormGroup controlId="last_name" bsSize="large">
                         <ControlLabel>Last Name</ControlLabel>
                         <FormControl
-                            autoFocus
                             type="text"
                             value={this.state.last_name}
                             onChange={this.handleChange}
@@ -170,7 +168,6 @@ class Signup extends Component {
                     <FormGroup controlId="email" bsSize="large">
                         <ControlLabel>Email</ControlLabel>
                         <FormControl
-                            autoFocus
                             type="email"
                             value={this.state.email}
                             onChange={this.handleChange}

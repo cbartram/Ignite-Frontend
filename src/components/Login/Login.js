@@ -108,6 +108,7 @@ class Login extends Component {
                             <ControlLabel>Email</ControlLabel>
                             <FormControl
                                 autoFocus
+                                className="form-field-default"
                                 type="email"
                                 value={this.state.email}
                                 onChange={this.handleChange}
@@ -116,6 +117,7 @@ class Login extends Component {
                         <FormGroup controlId="password" bsSize="large">
                             <ControlLabel>Password</ControlLabel>
                             <FormControl
+                                className="form-field-default"
                                 value={this.state.password}
                                 onChange={this.handleChange}
                                 type="password"
@@ -128,6 +130,7 @@ class Login extends Component {
                             type="submit"
                             isLoading={this.props.auth.isFetching}
                             text="Login"
+                            style={{marginBottom: 20}}
                             loadingText="Logging in…"
                         />
                         <Link to="/login/reset" className="text-muted">Forgot your password?</Link>

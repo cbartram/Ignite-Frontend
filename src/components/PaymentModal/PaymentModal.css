@@ -17,9 +17,7 @@
     letter-spacing: normal;
     line-height: 26px;
     margin-right: 20px;
-    -ms-flex-item-align: center;
     align-self: center;
-    -webkit-box-flex: 32%;
     -ms-flex: 32%;
     flex: 32%;
     text-transform: none;
@@ -130,57 +128,4 @@
 
 .missing-value::placeholder {
     color: #ffa27b;
-}
-
-input:focus {
-    outline: none;
-}
-
-button:focus {
-    outline: none;
-}
-
-*:focus {
-    outline: none;
-}
-
-.fa-circle-notch {
-    -webkit-animation: rotating 1s linear infinite;
-    -moz-animation: rotating 1s linear infinite;
-    -ms-animation: rotating 1s linear infinite;
-    -o-animation: rotating 1s linear infinite;
-    animation: rotating 1s linear infinite;
-}
-
-@-webkit-keyframes rotating /* Safari and Chrome */ {
-    from {
-        -webkit-transform: rotate(0deg);
-        -o-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-    to {
-        -webkit-transform: rotate(360deg);
-        -o-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
-}
-@keyframes rotating {
-    from {
-        -ms-transform: rotate(0deg);
-        -moz-transform: rotate(0deg);
-        -webkit-transform: rotate(0deg);
-        -o-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-    to {
-        -ms-transform: rotate(360deg);
-        -moz-transform: rotate(360deg);
-        -webkit-transform: rotate(360deg);
-        -o-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
-}
-
-.common-Button--default:disabled {
-    opacity: 0.4;
 }
