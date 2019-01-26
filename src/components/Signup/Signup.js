@@ -152,6 +152,7 @@ class Signup extends Component {
                     <FormGroup controlId="first_name" bsSize="large">
                         <ControlLabel>First Name</ControlLabel>
                         <FormControl
+                            className="form-field-default"
                             type="text"
                             value={this.state.first_name}
                             onChange={this.handleChange}
@@ -160,6 +161,7 @@ class Signup extends Component {
                     <FormGroup controlId="last_name" bsSize="large">
                         <ControlLabel>Last Name</ControlLabel>
                         <FormControl
+                            className="form-field-default"
                             type="text"
                             value={this.state.last_name}
                             onChange={this.handleChange}
@@ -168,6 +170,7 @@ class Signup extends Component {
                     <FormGroup controlId="email" bsSize="large">
                         <ControlLabel>Email</ControlLabel>
                         <FormControl
+                            className="form-field-default"
                             type="email"
                             value={this.state.email}
                             onChange={this.handleChange}
@@ -176,6 +179,7 @@ class Signup extends Component {
                     <FormGroup controlId="password" bsSize="large">
                         <ControlLabel>Password</ControlLabel>
                         <FormControl
+                            className="form-field-default"
                             value={this.state.password}
                             onChange={this.handleChange}
                             type="password"
@@ -184,6 +188,7 @@ class Signup extends Component {
                     <FormGroup controlId="confirmPassword" bsSize="large">
                         <ControlLabel>Confirm Password</ControlLabel>
                         <FormControl
+                            className="form-field-default"
                             value={this.state.confirmPassword}
                             onChange={this.handleChange}
                             type="password"
@@ -210,6 +215,10 @@ class Signup extends Component {
         );
     }
 
+    /**
+     * Re-sends a user a confirmation code for their account.
+     * If the user is already confirmed it will not re-send a new code.
+     */
     async resendConfirmationCode() {
         if(this.state.email.length === 0) {
             this.props.loginFailure({ code: 'InvalidEmailException', message: 'You must fill out your email first.'});

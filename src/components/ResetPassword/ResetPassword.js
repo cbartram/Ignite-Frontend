@@ -49,6 +49,11 @@ class ResetPassword extends Component {
         };
     }
 
+    componentDidMount() {
+        // Hide any errors from user's entering in previous (unknown) passwords
+        this.props.hideErrors();
+    }
+
     validateCodeForm() {
         return this.state.email.length > 0;
     }
@@ -67,6 +72,11 @@ class ResetPassword extends Component {
         });
     };
 
+    /**
+     * Function called when a user clicks the button to send them a code
+     * @param event
+     * @returns {Promise<void>}
+     */
     handleSendCodeClick = async event => {
         event.preventDefault();
 
@@ -75,12 +85,17 @@ class ResetPassword extends Component {
         try {
             await Auth.forgotPassword(this.state.email);
             this.setState({ codeSent: true });
-        } catch (e) {
-            this.props.loginFailure(e.message);
+        } catch (err) {
+            this.props.loginFailure(err);
             this.setState({ isSendingCode: false });
         }
     };
 
+    /**
+     * Function called when the user is submitting the form to reset their password.
+     * @param event Object Javascript event object
+     * @returns {Promise<void>}
+     */
     handleConfirmClick = async event => {
         event.preventDefault();
 
@@ -94,12 +109,16 @@ class ResetPassword extends Component {
             );
             this.props.hideErrors();
             this.setState({ confirmed: true });
-        } catch (e) {
+        } catch (err) {
             this.setState({ isConfirming: false });
-            this.props.loginFailure(e.message);
+            this.props.loginFailure(err);
         }
     };
 
+    /**
+     * Renders the UI for asking the user for their email
+     * in order to reset their password.
+     */
     renderRequestCodeForm() {
         return (
             <form onSubmit={this.handleSendCodeClick}>
@@ -126,6 +145,10 @@ class ResetPassword extends Component {
         );
     }
 
+    /**
+     * Handles rendering the confirmation dialog for the user
+     * after they have submitted their email.
+     */
     renderConfirmationForm() {
         return (
             <form onSubmit={this.handleConfirmClick}>
@@ -133,6 +156,7 @@ class ResetPassword extends Component {
                     <ControlLabel>Confirmation Code</ControlLabel>
                     <FormControl
                         autoFocus
+                        className="form-field-default"
                         type="tel"
                         value={this.state.code}
                         onChange={this.handleChange}
@@ -146,6 +170,7 @@ class ResetPassword extends Component {
                 <FormGroup bsSize="large" controlId="password">
                     <ControlLabel>New Password</ControlLabel>
                     <FormControl
+                        className="form-field-default"
                         type="password"
                         value={this.state.password}
                         onChange={this.handleChange}
@@ -154,6 +179,7 @@ class ResetPassword extends Component {
                 <FormGroup bsSize="large" controlId="confirmPassword">
                     <ControlLabel>Confirm Password</ControlLabel>
                     <FormControl
+                        className="form-field-default"
                         type="password"
                         onChange={this.handleChange}
                         value={this.state.confirmPassword}
@@ -197,19 +223,19 @@ class ResetPassword extends Component {
                             <h4 className="alert-heading">Oh No!</h4>
                             <hr />
                             <p>
-                              { this.props.auth.error }
+                                { this.props.auth.error.message }
                             </p>
                         </div>
                     </div>
                 </div>
                 }
-              <div className="ResetPassword">
-                  {!this.state.codeSent
-                      ? this.renderRequestCodeForm()
-                      : !this.state.confirmed
-                          ? this.renderConfirmationForm()
-                          : ResetPassword.renderSuccessMessage()}
-              </div>
+                <div className="ResetPassword">
+                    {!this.state.codeSent
+                        ? this.renderRequestCodeForm()
+                        : !this.state.confirmed
+                            ? this.renderConfirmationForm()
+                            : ResetPassword.renderSuccessMessage()}
+                </div>
             </Container>
         );
     }
