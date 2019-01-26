@@ -2,8 +2,7 @@
  * This file defines actions which trigger switch statements in the reducer
  */
 import * as constants from '../constants';
-import Log from '../Log';
-import { getVideos } from "../util";
+import { getVideos } from '../util';
 
 
 /**

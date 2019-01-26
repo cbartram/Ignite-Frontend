@@ -76,7 +76,6 @@ describe('Redux Unit Tests', () => {
        };
        // Update the state with an action
        store.dispatch(loginFailure({ message: 'Bad unit test' }));
-       console.log(store.getState());
        expect(store.getState()).to.be.a('object').that.deep.equals(updatedState);
        done();
    });
@@ -133,6 +132,70 @@ describe('Redux Unit Tests', () => {
         expect(store.getState()).to.be.a('object').that.deep.equals(constants.INITIAL_STATE);
         store.dispatch(updateUserAttributes(payload));
         expect(store.getState()).to.be.a('object').that.deep.equals(updatedState); // Nothing should change
+        done();
+    });
+
+    it('Updates state when the VIDEO_FAILURE action is dispatched', done => {
+        const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+        const store = createStore(rootReducer, constants.INITIAL_STATE, composeEnhancers(
+            applyMiddleware(thunk)
+        ));
+
+        const updatedState = {
+            auth: {
+                    isAuthenticated: false,
+                    isFetching: false,
+                    user: null,
+                    error: null
+                },
+            videos: {
+                    isFetching: false,
+                    error: {
+                        message: 'Failed to retrieve videos from API'
+                    }
+                }
+        };
+
+        expect(store.getState()).to.be.a('object').that.deep.equals(constants.INITIAL_STATE);
+        store.dispatch({
+            type: constants.VIDEOS_FAILURE,
+            payload: { message: 'Failed to retrieve videos from API' }
+        });
+        expect(store.getState()).to.be.a('object').that.deep.equals(updatedState);
+        done();
+    });
+
+    it('Updates state when the VIDEOS_SUCCESS action is dispatched', done => {
+        const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+        const store = createStore(rootReducer, constants.INITIAL_STATE, composeEnhancers(
+            applyMiddleware(thunk)
+        ));
+
+        const updatedState = {
+            auth: {
+                isAuthenticated: false,
+                isFetching: false,
+                user: null,
+                error: null
+            },
+            videos: {
+                videoList: [{
+                    message: 'hi'
+                }, {
+                    message: 'test'
+                }],
+                isFetching: false,
+                error: null
+            }
+        };
+
+        expect(store.getState()).to.be.a('object').that.deep.equals(constants.INITIAL_STATE);
+        store.dispatch({
+            type: constants.VIDEOS_SUCCESS,
+            payload: [{ message: 'hi' }, { message: 'test' } ]
+        });
+        console.log(store.getState());
+        expect(store.getState()).to.be.a('object').that.deep.equals(updatedState);
         done();
     });
 
