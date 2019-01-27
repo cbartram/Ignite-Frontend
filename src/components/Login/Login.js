@@ -79,22 +79,27 @@ class Login extends Component {
             this.props.fetchVideos(this.state.email);
             this.props.loginSuccess(res);
         } catch (err) {
-            console.log(err);
             if(err.code === 'NotAuthorizedException')
                 Log.warn(err.message);
             else
                 Log.error('Login Failed!', err);
 
             this.props.loginFailure(err);
+            // TODO this will continually push alerts farther down the page as they are not removed from the DOM
+            this.pushAlert('danger', 'Login Failed', err.message);
         }
     };
 
-    renderAlert() {
+    /**
+     * Pushes an alert onto the stack
+     */
+    pushAlert(type, title, message) {
         const { alerts } = this.state;
         alerts.push(
-            <Alert title="Hold on." type="warning">
-                Be careful of what you are doing it might not
-                work as expected.
+            <Alert key={alerts.length} title={title} type={type}>
+                {message}
+                <br />
+                <Link to="/login/reset">reset your password.</Link>
             </Alert>
         );
 
@@ -104,24 +109,10 @@ class Login extends Component {
     render() {
         return (
             <Container>
-                <AlertContainer>
+                <AlertContainer hidden={this.state.alerts.length === 0}>
                     { this.state.alerts.map(alert => alert) }
                 </AlertContainer>
                 <div className="Login">
-                    {/* If there is an error alert the user */}
-                    { (this.props.auth.error !== null && typeof this.props.auth.error !== 'undefined') &&
-                    <div className="row">
-                        <div className="col-md-4 offset-md-4">
-                            <div className="alert alert-danger" role="alert">
-                                <h4 className="alert-heading">Invalid Email or Password</h4>
-                                <hr />
-                                <p>The email or password you entered does not match what we have on record. You can try again or &nbsp;
-                                    <Link to="/login/reset">reset your password.</Link> if you forgot.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    }
                     <form onSubmit={this.handleSubmit}>
                         <FormGroup controlId="email" bsSize="large">
                             <ControlLabel>Email</ControlLabel>
@@ -154,21 +145,6 @@ class Login extends Component {
                         />
                         <Link to="/login/reset" className="text-muted">Forgot your password?</Link>
                     </form>
-
-                    <div className="row">
-                        <div className="col-md-3 offset-md-5">
-                            <LoaderButton
-                                block
-                                bsSize="large"
-                                type="submit"
-                                isLoading={this.props.auth.isFetching}
-                                text="Show Notification"
-                                onClick={() => this.renderAlert()}
-                                style={{marginBottom: 20}}
-                                loadingText="Logging in…"
-                            />
-                        </div>
-                    </div>
                 </div>
             </Container>
         );

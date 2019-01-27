@@ -33,7 +33,7 @@ export default class Alert extends Component {
     render() {
         return (
             <div className={`notification notification-${this.props.type} ${this.state.notificationHidden ? 'notification-hide' : '' }`} role="alert">
-                <div className="d-flex flex-row justify-content-center align-items-center">
+                <div className="d-flex flex-row justify-content-left align-items-center">
                     {/* Icon Image */}
                     { this.renderIconType() }
                     <div className="d-flex flex-column ml-3 mt-2">

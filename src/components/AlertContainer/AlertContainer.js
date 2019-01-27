@@ -5,7 +5,7 @@ export default class AlertContainer extends Component {
   render() {
       return (
           <div className="alert-container">
-              { this.props.children }
+              { !this.props.hidden ? this.props.children : null }
           </div>
       )
   }
