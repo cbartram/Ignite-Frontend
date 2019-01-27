@@ -12,6 +12,9 @@ import { Link } from 'react-router-dom';
 import Container from "../Container/Container";
 import { loginRequest, loginSuccess, loginFailure, hideErrors } from "../../actions/actions";
 import Log from '../../Log';
+import Login from '../Login/Login';
+import Alert from '../Alert/Alert';
+import AlertContainer from '../AlertContainer/AlertContainer';
 import './Signup.css';
 
 const mapStateToProps = state => ({
@@ -40,7 +43,8 @@ class Signup extends Component {
             last_name: '',
             confirmPassword: '',
             confirmationCode: '',
-            newUser: null
+            newUser: null,
+            alerts: [],
         };
     }
 
@@ -94,6 +98,7 @@ class Signup extends Component {
             // This triggers the app to show the confirmation dialog box
             this.setState({ newUser });
         } catch (err) {
+            this.pushAlert('danger', 'Error Registering Account', err.message);
             Log.error('Error Signing up new user...', err);
             this.props.loginFailure(err);
         }
@@ -115,7 +120,8 @@ class Signup extends Component {
             this.props.history.push('/tracks');
         } catch (err) {
             Log.error('Error confirming user code or logging user in...', err);
-            this.props.loginFailure(err)
+            this.props.loginFailure(err);
+            this.pushAlert('danger', 'Error confirming user', err.message);
         }
     };
 
@@ -231,36 +237,41 @@ class Signup extends Component {
             } catch (err) {
                 Log.error('Failed to re-send sign-up confirmation email');
                 this.props.loginFailure(err);
+                this.pushAlert('danger', 'Failed to resent sign-up email', err.message)
             }
         }
+    }
+
+    /**
+     * Pushes an alert onto the stack
+     */
+    pushAlert(type, title, message) {
+        const { alerts } = this.state;
+        alerts.push(
+            <Alert key={alerts.length} title={title} type={type}>
+                { message }
+                {/*{ this.props.auth.error.code === 'UsernameExistsException' ?*/}
+                    {/*(*/}
+                        {/*<span>*/}
+                                                {/*{ this.props.auth.error.message }*/}
+                            {/*<button className="btn btn-link" onClick={() => this.resendConfirmationCode()}>Click here to re-send your confirmation code</button>*/}
+                                            {/*</span>*/}
+
+                    {/*) : this.props.auth.error.message*/}
+                {/*}*/}
+            </Alert>
+        );
+
+        this.setState({ alerts });
     }
 
     render() {
         return (
             <Container>
+                <AlertContainer>
+                { this.state.alerts.map(alert => alert) }
+                </AlertContainer>
                 <div className="Signup">
-                    {/* If there is an error alert the user */}
-                    { (this.props.auth.error !== null && typeof this.props.auth.error !== 'undefined') &&
-                    <div className="row">
-                        <div className="col-md-4 offset-md-4">
-                            <div className="alert alert-danger" role="alert">
-                                <h4 className="alert-heading">Error Registering Account</h4>
-                                <hr />
-                                <p>
-                                    { this.props.auth.error.code === 'UsernameExistsException' ?
-                                        (
-                                            <span>
-                                                { this.props.auth.error.message }
-                                                <button className="btn btn-link" onClick={() => this.resendConfirmationCode()}>Click here to re-send your confirmation code</button>
-                                            </span>
-
-                                        ) : this.props.auth.error.message
-                                    }
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    }
                     {
                         this.state.newUser === null
                         ? this.renderForm()

@@ -45,7 +45,7 @@ export default class Alert extends Component {
                             <button className="btn btn-link text-left pl-0" onClick={() => this.props.onClick()}>{this.props.actionText}></button>
                         }
                     </div>
-                    <span onClick={() => this.setState({ notificationHidden: true })} className="fa fa-times light-gray ml-5 mt-2" />
+                    <span onClick={() => this.setState({ notificationHidden: true })} className="fa fa-times light-gray ml-auto mt-2" />
                 </div>
             </div>
         )

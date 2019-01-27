@@ -109,7 +109,7 @@ class Login extends Component {
     render() {
         return (
             <Container>
-                <AlertContainer hidden={this.state.alerts.length === 0}>
+                <AlertContainer>
                     { this.state.alerts.map(alert => alert) }
                 </AlertContainer>
                 <div className="Login">
