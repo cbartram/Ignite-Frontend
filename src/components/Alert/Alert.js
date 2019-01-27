@@ -15,6 +15,18 @@ export default class Alert extends Component {
         }
     }
 
+    pushAlert(type, title, message) {
+        const { alerts } = this.state;
+
+        alerts.push(
+            <Alert key={alerts.length} title={title} type={type}>
+                {message}
+            </Alert>
+        );
+
+        this.setState({ alerts });
+    }
+
     renderIconType() {
         switch(this.props.type.toUpperCase()) {
             case 'SUCCESS':

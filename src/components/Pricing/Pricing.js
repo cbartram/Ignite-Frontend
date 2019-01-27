@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import moment from 'moment';
 import { Link } from 'react-router-dom';
 import Container from '../Container/Container';
 import PaymentModal from '../PaymentModal/PaymentModal';
+import AlertContainer from '../AlertContainer/AlertContainer';
+import Alert from '../Alert/Alert';
 import './Pricing.css';
 
 const mapStateToProps = state => ({
@@ -10,6 +13,14 @@ const mapStateToProps = state => ({
 });
 
 class Pricing extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            alerts: []
+        }
+    }
+
     /**
      * Renders the correct button for the payment screen depending on what kind of user
      * is using the button (non registered, registered but not premium, registered and premium)
@@ -35,10 +46,35 @@ class Pricing extends Component {
         </Link>;
     }
 
+    /**
+     * Pushes an alert onto the stack
+     */
+    pushAlert(type, title, message) {
+        const { alerts } = this.state;
+        alerts.push(
+            <Alert key={alerts.length} title={title} type={type}>
+                {message}
+            </Alert>
+        );
+        this.setState({ alerts });
+    }
+
     render() {
         return (
             <Container>
-                <PaymentModal />
+                <AlertContainer>
+                    { this.state.alerts.map(alert => alert) }
+                </AlertContainer>
+                {/* Handles showing and processing user payments */}
+                <PaymentModal
+                    onFailedPayment={(errorMessage) => {
+                        let message = `Unfortunately something went wrong processing your payment: ${errorMessage}`;
+                        this.pushAlert('danger', 'Subscription Failed', message)
+                    }}
+                    onSuccessfulPayment={() => {
+                    let message = `Your subscription has been created successfully and will automatically renew on ${ moment().format('MMM Do') }.`;
+                    this.pushAlert('success', 'Subscription Successful', message)
+                }} />
                 <div className="d-flex flex-row justify-content-center my-3">
                     <h1>Simple Plans. Flexible Pricing.</h1>
                 </div>
@@ -87,10 +123,7 @@ class Pricing extends Component {
                                 </li>
                             </ul>
                             {/* If the user is logged in show the payment modal else redirect to the sign up page */}
-                            {
-                               this.renderButton()
-                            }
-
+                            { this.renderButton() }
                         </div>
                     </div>
                 </div>

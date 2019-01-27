@@ -6,6 +6,7 @@ import Alert from '../Alert/Alert';
 import { updateUserAttributes } from '../../actions/actions';
 import './PaymentModal.css';
 import Log from '../../Log';
+import AlertContainer from "../Login/Login";
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -18,6 +19,9 @@ const mapDispatchToProps = dispatch => ({
 class PaymentModal extends Component {
     constructor(props) {
         super(props);
+
+        // Holds a reference to the close button so we can programmatically close the modal
+        this.closeButton = React.createRef();
 
         this.state = {
             visible: false, // Is the dropdown for the expiration year visible?
@@ -39,7 +43,8 @@ class PaymentModal extends Component {
                 lastName: false,
                 creditCard: false,
                 cvc: false,
-            }
+            },
+            alerts: [],
         }
     }
 
@@ -151,13 +156,16 @@ class PaymentModal extends Component {
 
                 Log.info(response);
                 // Something went wrong with the request
-                if(response.errorMessage)
-                    this.setState({ error: response.errorMessage, success: false, loading: false });
-                else if(response.body.error)
-                    this.setState({ error: response.body.error.message, success: false, loading: false });
-                else if(response.statusCode > 200)
-                    this.setState({ error: response.body.messages.join(','), success: false, loading: false });
-                else {
+                if(response.errorMessage) {
+                    this.setState({error: response.errorMessage, success: false, loading: false});
+                    this.props.onFailedPayment(response.errorMessage);
+                } else if(response.body.error) {
+                    this.setState({error: response.body.error.message, success: false, loading: false});
+                    this.props.onFailedPayment(response.body.error.message);
+                } else if(response.statusCode > 200) {
+                    this.setState({error: response.body.messages.join(','), success: false, loading: false});
+                    this.props.onFailedPayment(response.body.messages.join(','));
+                } else {
                     // Update redux with the new user attributes
                     this.props.updateUserAttributes(response.body.user);
 
@@ -171,6 +179,10 @@ class PaymentModal extends Component {
 
                     // Ensures that the user only see's a success message if the operation was actually successful.
                     if(response.status === 200 && response.body.statusCode === 200) {
+
+                        // Close the modal
+                        this.closeButton.current.click();
+
                         // Reset all the fields and show a success message
                         this.setState({
                             success: true,
@@ -191,6 +203,9 @@ class PaymentModal extends Component {
                                 creditCard: false,
                                 cvc: false,
                             }
+                        }, () => {
+                            // Push an alert to the stack
+                            this.props.onSuccessfulPayment();
                         });
                     }
                 }
@@ -213,21 +228,6 @@ class PaymentModal extends Component {
                             </button>
                         </div>
                         <div className="modal-body">
-                            {/* Show the error/success Alerts after the payment is submitted */}
-                            {
-                                this.state.error &&
-                                <Alert type="danger" title="Error" visible={this.state.error}>
-                                    Unfortunately something went wrong processing your payment information.
-                                </Alert>
-                            }
-
-                            {
-                                this.state.success &&
-                                <Alert type="success" title="Thank You" visible={this.state.success}>
-                                    Your subscription has been created successfully and will automatically renew on { moment().format('MMM Do') }.
-                                    Check out our <Link to="/tracks">tracks</Link> and start watching!
-                                </Alert>
-                            }
                             <div className="form-row text firstname">
                                 <label className="firstname" htmlFor="firstname">Your first name</label>
                                 <input
@@ -377,7 +377,7 @@ class PaymentModal extends Component {
                             </p>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="common-Button" data-dismiss="modal">Close</button>
+                            <button type="button" className="common-Button" data-dismiss="modal" ref={this.closeButton}>Close</button>
                             {
                                 this.state.loading ? <button type="button" className="common-Button common-Button--default" disabled>Processing <i className="fas fa-circle-notch" /></button> :
                                     <button type="button" className="common-Button common-Button--default" onClick={() => this.checkout()}>Place Order</button>

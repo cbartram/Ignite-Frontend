@@ -59,7 +59,6 @@ class Tracks extends Component {
                                             <div className="cover" />
                                             <h2 className="common-IntroText">{track.name}</h2>
                                             <p className="common-BodyText">
-                                                {console.log(track)}
                                                 {track.length}
                                             </p>
                                             <span className="text-muted">
