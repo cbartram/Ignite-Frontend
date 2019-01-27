@@ -18,6 +18,8 @@ import {
     hideErrors
 } from '../../actions/actions';
 import './ResetPassword.css';
+import Alert from '../Alert/Alert';
+import AlertContainer from '../AlertContainer/AlertContainer';
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -45,7 +47,8 @@ class ResetPassword extends Component {
             confirmed: false,
             confirmPassword: "",
             isConfirming: false,
-            isSendingCode: false
+            isSendingCode: false,
+            alerts: []
         };
     }
 
@@ -88,6 +91,7 @@ class ResetPassword extends Component {
         } catch (err) {
             this.props.loginFailure(err);
             this.setState({ isSendingCode: false });
+            this.pushAlert('danger', 'Oh No!', this.props.auth.error.message)
         }
     };
 
@@ -112,10 +116,25 @@ class ResetPassword extends Component {
         } catch (err) {
             this.setState({ isConfirming: false });
             this.props.loginFailure(err);
+            this.pushAlert('danger', 'Oh No!', this.props.auth.error.message)
+
         }
     };
 
     /**
+     * Pushes an alert onto the stack
+     */
+    pushAlert(type, title, message) {
+        const { alerts } = this.state;
+        alerts.push(
+            <Alert key={alerts.length} title={title} type={type}>
+                {message}
+            </Alert>
+        );
+        this.setState({ alerts });
+    }
+
+/**
      * Renders the UI for asking the user for their email
      * in order to reset their password.
      */
@@ -198,7 +217,8 @@ class ResetPassword extends Component {
         );
     }
 
-    static renderSuccessMessage() {
+    renderSuccessMessage() {
+        this.pushAlert('success', 'Success', 'Your password has been reset successfully!');
         return (
             <div className="success">
                 <Glyphicon glyph="ok" />
@@ -215,26 +235,15 @@ class ResetPassword extends Component {
     render() {
         return (
             <Container>
-                {/* If there is an error alert the user */}
-                { (this.props.auth.error !== null && typeof this.props.auth.error !== 'undefined') &&
-                <div className="row">
-                    <div className="col-md-4 offset-md-4">
-                        <div className="alert alert-danger" role="alert">
-                            <h4 className="alert-heading">Oh No!</h4>
-                            <hr />
-                            <p>
-                                { this.props.auth.error.message }
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                }
+                <AlertContainer>
+                    { this.state.alerts.map(alert => alert) }
+                </AlertContainer>
                 <div className="ResetPassword">
                     {!this.state.codeSent
                         ? this.renderRequestCodeForm()
                         : !this.state.confirmed
                             ? this.renderConfirmationForm()
-                            : ResetPassword.renderSuccessMessage()}
+                            : this.renderSuccessMessage()}
                 </div>
             </Container>
         );
