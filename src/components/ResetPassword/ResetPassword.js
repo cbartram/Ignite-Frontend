@@ -20,6 +20,7 @@ import {
 import './ResetPassword.css';
 import Alert from '../Alert/Alert';
 import AlertContainer from '../AlertContainer/AlertContainer';
+import _ from "lodash";
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -75,6 +76,7 @@ class ResetPassword extends Component {
         });
     };
 
+
     /**
      * Function called when a user clicks the button to send them a code
      * @param event
@@ -122,19 +124,6 @@ class ResetPassword extends Component {
     };
 
     /**
-     * Pushes an alert onto the stack
-     */
-    pushAlert(type, title, message) {
-        const { alerts } = this.state;
-        alerts.push(
-            <Alert key={alerts.length} title={title} type={type}>
-                {message}
-            </Alert>
-        );
-        this.setState({ alerts });
-    }
-
-/**
      * Renders the UI for asking the user for their email
      * in order to reset their password.
      */
@@ -232,11 +221,48 @@ class ResetPassword extends Component {
         );
     }
 
+    /**
+     * Pushes an alert onto the stack to be
+     * visible by users
+     */
+    pushAlert(type, title, message, id = _.uniqueId()) {
+        const { alerts } = this.state;
+        // Push an object of props to be passed to the <Alert /> Component
+        alerts.push({
+            type,
+            title,
+            id,
+            message,
+        });
+
+        this.setState({ alerts });
+    }
+
+    /**
+     * Removes an alert from the stack so that
+     * it is no longer rendered on the page
+     * @param id Integer the unique alert id
+     */
+    removeAlert(id) {
+        const { alerts } = this.state;
+        const newAlerts = [
+            ...alerts.filter(alert => alert.id !== id)
+        ];
+
+        this.setState({ alerts: newAlerts });
+    }
+
     render() {
         return (
             <Container>
                 <AlertContainer>
-                    { this.state.alerts.map(alert => alert) }
+                    {
+                        this.state.alerts.map((props, index) =>
+                            <Alert onDismiss={() => this.removeAlert(props.id)} {...props} key={index}>
+                                { props.message }
+                            </Alert>
+                        )
+                    }
                 </AlertContainer>
                 <div className="ResetPassword">
                     {!this.state.codeSent

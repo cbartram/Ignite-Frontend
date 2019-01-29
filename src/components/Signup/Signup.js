@@ -12,10 +12,10 @@ import { Link } from 'react-router-dom';
 import Container from "../Container/Container";
 import { loginRequest, loginSuccess, loginFailure, hideErrors } from "../../actions/actions";
 import Log from '../../Log';
-import Login from '../Login/Login';
 import Alert from '../Alert/Alert';
 import AlertContainer from '../AlertContainer/AlertContainer';
 import './Signup.css';
+import _ from 'lodash';
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -98,9 +98,9 @@ class Signup extends Component {
             // This triggers the app to show the confirmation dialog box
             this.setState({ newUser });
         } catch (err) {
-            this.pushAlert('danger', 'Error Registering Account', err.message);
             Log.error('Error Signing up new user...', err);
             this.props.loginFailure(err);
+            this.pushAlert('danger', 'Error Registering Account', err.message);
         }
         this.props.isFetching(false);
     };
@@ -125,6 +125,11 @@ class Signup extends Component {
         }
     };
 
+    /**
+     * Renders the confirmation code form for users to input
+     * the code sent to their email.
+     * @returns {*}
+     */
     renderConfirmationForm() {
         return (
             <form onSubmit={this.handleConfirmationSubmit}>
@@ -132,6 +137,7 @@ class Signup extends Component {
                     <ControlLabel>Confirmation Code</ControlLabel>
                     <FormControl
                         autoFocus
+                        className="form-field-default"
                         type="tel"
                         value={this.state.confirmationCode}
                         onChange={this.handleChange}
@@ -243,33 +249,56 @@ class Signup extends Component {
     }
 
     /**
-     * Pushes an alert onto the stack
+     * Pushes an alert onto the stack to be
+     * visible by users
      */
-    pushAlert(type, title, message) {
+    pushAlert(type, title, message, id = _.uniqueId()) {
         const { alerts } = this.state;
-        alerts.push(
-            <Alert key={alerts.length} title={title} type={type}>
-                { message }
-                {/*{ this.props.auth.error.code === 'UsernameExistsException' ?*/}
-                    {/*(*/}
-                        {/*<span>*/}
-                                                {/*{ this.props.auth.error.message }*/}
-                            {/*<button className="btn btn-link" onClick={() => this.resendConfirmationCode()}>Click here to re-send your confirmation code</button>*/}
-                                            {/*</span>*/}
-
-                    {/*) : this.props.auth.error.message*/}
-                {/*}*/}
-            </Alert>
-        );
+        // Push an object of props to be passed to the <Alert /> Component
+        alerts.push({
+            type,
+            title,
+            id,
+            message,
+        });
 
         this.setState({ alerts });
     }
+
+    /**
+     * Removes an alert from the stack so that
+     * it is no longer rendered on the page
+     * @param id Integer the unique alert id
+     */
+    removeAlert(id) {
+        const { alerts } = this.state;
+        const newAlerts = [
+            ...alerts.filter(alert => alert.id !== id)
+        ];
+
+        this.setState({ alerts: newAlerts });
+    }
+
 
     render() {
         return (
             <Container>
                 <AlertContainer>
-                { this.state.alerts.map(alert => alert) }
+                {
+                    this.state.alerts.map((props, index) =>
+                        <Alert onDismiss={() => this.removeAlert(props.id)} {...props} key={index}>
+                            { props.message }
+                            { this.props.auth.error.code === 'UsernameExistsException' ?
+                                (
+                                    <span>
+                                        { this.props.auth.error.message }
+                                        <button className="btn btn-link" onClick={() => this.resendConfirmationCode()}>Click here to re-send your confirmation code</button>
+                                    </span>
+                                ) : this.props.auth.error.message
+                            }
+                        </Alert>
+                    )
+                }
                 </AlertContainer>
                 <div className="Signup">
                     {

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import _ from 'lodash';
 import { Link } from 'react-router-dom';
 import Container from '../Container/Container';
 import PaymentModal from '../PaymentModal/PaymentModal';
@@ -47,23 +48,47 @@ class Pricing extends Component {
     }
 
     /**
-     * Pushes an alert onto the stack
+     * Pushes an alert onto the stack to be
+     * visible by users
      */
-    pushAlert(type, title, message) {
+    pushAlert(type, title, message, id = _.uniqueId()) {
         const { alerts } = this.state;
-        alerts.push(
-            <Alert key={alerts.length} title={title} type={type}>
-                {message}
-            </Alert>
-        );
+        // Push an object of props to be passed to the <Alert /> Component
+        alerts.push({
+            type,
+            title,
+            id,
+            message,
+        });
+
         this.setState({ alerts });
+    }
+
+    /**
+     * Removes an alert from the stack so that
+     * it is no longer rendered on the page
+     * @param id Integer the unique alert id
+     */
+    removeAlert(id) {
+        const { alerts } = this.state;
+        const newAlerts = [
+            ...alerts.filter(alert => alert.id !== id)
+        ];
+
+        this.setState({ alerts: newAlerts });
     }
 
     render() {
         return (
             <Container>
                 <AlertContainer>
-                    { this.state.alerts.map(alert => alert) }
+                    {
+                        this.state.alerts.map((props, index) =>
+                            <Alert onDismiss={() => this.removeAlert(props.id)} {...props} key={index}>
+                                { props.message }
+                            </Alert>
+                        )
+                    }
                 </AlertContainer>
                 {/* Handles showing and processing user payments */}
                 <PaymentModal

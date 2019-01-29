@@ -7,26 +7,10 @@ import './Alert.css';
  * via the "type" prop.
  */
 export default class Alert extends Component {
-    constructor() {
-        super();
-
-        this.state = {
-            notificationHidden: false,
-        }
-    }
-
-    pushAlert(type, title, message) {
-        const { alerts } = this.state;
-
-        alerts.push(
-            <Alert key={alerts.length} title={title} type={type}>
-                {message}
-            </Alert>
-        );
-
-        this.setState({ alerts });
-    }
-
+    /**
+     * Renders the correct icon depending on the
+     * type of alert passed in as props
+     */
     renderIconType() {
         switch(this.props.type.toUpperCase()) {
             case 'SUCCESS':
@@ -44,20 +28,17 @@ export default class Alert extends Component {
 
     render() {
         return (
-            <div className={`notification notification-${this.props.type} ${this.state.notificationHidden ? 'notification-hide' : '' }`} role="alert">
+            <div className={`notification notification-${this.props.type}`} role="alert">
                 <div className="d-flex flex-row justify-content-left align-items-center">
                     {/* Icon Image */}
                     { this.renderIconType() }
                     <div className="d-flex flex-column ml-3 mt-2">
                         <strong>{this.props.title}</strong>
-                        <p className="text-muted mb-0">
+                        <div className="text-muted mb-0">
                             {this.props.children}
-                        </p>
-                        { this.props.action &&
-                            <button className="btn btn-link text-left pl-0" onClick={() => this.props.onClick()}>{this.props.actionText}></button>
-                        }
+                        </div>
                     </div>
-                    <span onClick={() => this.setState({ notificationHidden: true })} className="fa fa-times light-gray ml-auto mt-2" />
+                    <span onClick={() => this.props.onDismiss(this.props.id)} role="button" className="fa fa-times light-gray ml-auto mt-2" />
                 </div>
             </div>
         )

@@ -1,6 +1,9 @@
 .notification {
     position: relative;
     /*top: 20px;*/
+    min-width: 400px;
+    max-width: 500px;
+    z-index:9999;
     background-color: #fff;
     border-radius: 8px;
     padding: 10px 20px 10px 10px;

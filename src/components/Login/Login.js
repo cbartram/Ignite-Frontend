@@ -15,6 +15,7 @@ import {
 } from '../../actions/actions';
 import Alert from "../Alert/Alert";
 import AlertContainer from "../AlertContainer/AlertContainer";
+import _ from 'lodash';
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -38,7 +39,6 @@ class Login extends Component {
             email: "",
             password: "",
             isLoading: false,
-
             alerts: [],
         };
     }
@@ -85,32 +85,54 @@ class Login extends Component {
                 Log.error('Login Failed!', err);
 
             this.props.loginFailure(err);
-            // TODO this will continually push alerts farther down the page as they are not removed from the DOM
             this.pushAlert('danger', 'Login Failed', err.message);
         }
     };
 
+
     /**
-     * Pushes an alert onto the stack
+     * Pushes an alert onto the stack to be
+     * visible by users
      */
-    pushAlert(type, title, message) {
+    pushAlert(type, title, message, id = _.uniqueId()) {
         const { alerts } = this.state;
-        alerts.push(
-            <Alert key={alerts.length} title={title} type={type}>
-                {message}
-                <br />
-                <Link to="/login/reset">reset your password.</Link>
-            </Alert>
-        );
+        // Push an object of props to be passed to the <Alert /> Component
+        alerts.push({
+            type,
+            title,
+            id,
+            message,
+        });
 
         this.setState({ alerts });
+    }
+
+    /**
+     * Removes an alert from the stack so that
+     * it is no longer rendered on the page
+     * @param id Integer the unique alert id
+     */
+    removeAlert(id) {
+        const { alerts } = this.state;
+        const newAlerts = [
+            ...alerts.filter(alert => alert.id !== id)
+        ];
+
+        this.setState({ alerts: newAlerts });
     }
 
     render() {
         return (
             <Container>
                 <AlertContainer>
-                    { this.state.alerts.map(alert => alert) }
+                    { this.state.alerts.map((props, index) =>
+                        <Alert key={index} onDismiss={() => this.removeAlert(props.id)} {...props}>
+                            {props.message}
+                            <br />
+                            <Link to="/login/reset">reset your password.</Link>
+                        </Alert>
+                        )
+                    }
                 </AlertContainer>
                 <div className="Login">
                     <form onSubmit={this.handleSubmit}>

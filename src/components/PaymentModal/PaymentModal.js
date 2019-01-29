@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import Alert from '../Alert/Alert';
 import { updateUserAttributes } from '../../actions/actions';
 import './PaymentModal.css';
 import Log from '../../Log';
-import AlertContainer from "../Login/Login";
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -44,7 +41,6 @@ class PaymentModal extends Component {
                 creditCard: false,
                 cvc: false,
             },
-            alerts: [],
         }
     }
 
