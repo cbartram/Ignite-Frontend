@@ -12,6 +12,7 @@ import Pricing from '../Pricing/Pricing';
 import Watch from '../Watch/Watch';
 import ResetPassword from '../ResetPassword/ResetPassword';
 import Profile from '../Profile/Profile';
+// import withAlerts from '../WithAlerts';
 
 const mapStateToProps = state => ({
    auth: state.auth,
