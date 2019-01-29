@@ -32,7 +32,8 @@ describe('Redux Unit Tests', () => {
                         deviceKey: 'devicekey'
                     },
                     error: null },
-            videos: {}
+            videos: {},
+            billing: {},
         };
 
         const payload = {
@@ -72,6 +73,7 @@ describe('Redux Unit Tests', () => {
                isFetching: false,
                user: null
            },
+           billing: {},
            videos: {}
        };
        // Update the state with an action
@@ -121,6 +123,7 @@ describe('Redux Unit Tests', () => {
                     lastName: 'bar'
                 }
             },
+            billing: {},
             videos: {}
         };
 
@@ -148,6 +151,7 @@ describe('Redux Unit Tests', () => {
                     user: null,
                     error: null
                 },
+            billing: {},
             videos: {
                     isFetching: false,
                     error: {
@@ -178,6 +182,7 @@ describe('Redux Unit Tests', () => {
                 user: null,
                 error: null
             },
+            billing: {},
             videos: {
                 videoList: [{
                     message: 'hi'
@@ -194,7 +199,62 @@ describe('Redux Unit Tests', () => {
             type: constants.VIDEOS_SUCCESS,
             payload: [{ message: 'hi' }, { message: 'test' } ]
         });
-        console.log(store.getState());
+        expect(store.getState()).to.be.a('object').that.deep.equals(updatedState);
+        done();
+    });
+
+    it('Updates state when the BILLING_SUCCESS action is dispatched', done => {
+        const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+        const store = createStore(rootReducer, constants.INITIAL_STATE, composeEnhancers(
+            applyMiddleware(thunk)
+        ));
+
+        const updatedState = {
+            auth: {
+                isAuthenticated: false,
+                isFetching: false,
+                user: null,
+                error: null
+            },
+            videos: {},
+            billing: {
+                error: null,
+                isFetching:false,
+                customer_id: 1,
+                next_invoice_amount: 2000,
+                invoice_status: 'success',
+                payment_card_type: 'Visa',
+                payment_last_four: 4242,
+                subscription_active: 'active',
+                next_invoice_date: 152938177,
+                invoice_date: 152938127,
+                invoice_amount: 2000,
+                premium: 'true',
+                plan: 'Basic Plan',
+                plan_id: 'pl_x1jdha8s7ahD',
+                subscription_id: 'sub_asdjkJA9sd7A'
+            }
+        };
+
+        expect(store.getState()).to.be.a('object').that.deep.equals(constants.INITIAL_STATE);
+        store.dispatch({
+            type: constants.BILLING_SUCCESS,
+            payload: {
+                customer_id: 1,
+                next_invoice_amount: 2000,
+                invoice_status: 'success',
+                payment_card_type: 'Visa',
+                payment_last_four: 4242,
+                subscription_active: 'active',
+                next_invoice_date: 152938177,
+                invoice_date: 152938127,
+                invoice_amount: 2000,
+                premium: 'true',
+                plan: 'Basic Plan',
+                plan_id: 'pl_x1jdha8s7ahD',
+                subscription_id: 'sub_asdjkJA9sd7A'
+            }
+        });
         expect(store.getState()).to.be.a('object').that.deep.equals(updatedState);
         done();
     });

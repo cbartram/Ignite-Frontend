@@ -10,7 +10,8 @@ export const INITIAL_STATE = {
         user: null,
         error: null,
     },
-    videos: {}
+    videos: {},
+    billing: {}
 };
 
 // Redux Action/Reducer Constants
@@ -23,3 +24,5 @@ export const UPDATE_USER_ATTRIBUTES = 'UPDATE_USER_ATTRIBUTES';
 export const REQUEST_VIDEOS = 'REQUEST_VIDEOS';
 export const VIDEOS_SUCCESS = 'VIDEOS_SUCCESS';
 export const VIDEOS_FAILURE = 'VIDEOS_FAILURE';
+export const BILLING_SUCCESS = 'BILLING_SUCCESS';
+export const BILLING_FAILURE = 'BILLING_FAILURE';

@@ -162,7 +162,7 @@ it('<Alert /> Component renders without crashing', () => {
     ReactDOM.render(
         <Provider store={store}>
             <BrowserRouter>
-                <Alert />
+                <Alert type="success" id={19238} onDismiss={() => console.log('Dismissed')} message="Foo" title="Foo" />
             </BrowserRouter>
         </Provider>, div);
     ReactDOM.unmountComponentAtNode(div);

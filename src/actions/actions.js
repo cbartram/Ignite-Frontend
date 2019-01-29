@@ -67,7 +67,7 @@ export const loginFailure = payload => dispatch => {
 };
 
 /**
- * Handles making the Async API call to retrieve the videos. It will dispatch a success or failure event
+ * Handles making the Async API call to retrieve the videos and billing information from users. It will dispatch a success or failure event
  * depending on the status of the API call.
  * @param email String the email of the user to retrieve videos for
  * @returns {Function}
@@ -81,6 +81,13 @@ export const fetchVideos = email => async dispatch => {
     const response = await getVideos(email);
 
     if(response.status === 200) {
+        // Dispatch information about billing
+        dispatch({
+            type: constants.BILLING_SUCCESS,
+            payload: response.body.user,
+        });
+
+        // Dispatch information about videos
         dispatch({
             type: constants.VIDEOS_SUCCESS,
             payload: response.body.user.videos,
@@ -89,9 +96,26 @@ export const fetchVideos = email => async dispatch => {
         // An error occurred
         dispatch({
             type: constants.VIDEOS_FAILURE,
-            payload: { message: `Failed to retrieve videos from API: ${JSON.stringify(response)}`}
+            payload: { message: `Failed to retrieve billing/video data from API: ${JSON.stringify(response)}`}
         });
     }
+};
+
+/**
+ * Dispatches an action updating redux store that
+ * something has gone wrong retrieving the billing data from DynamoDB/API
+ * @param code String error code
+ * @param message String the error message to be displayed
+ * @returns {Function}
+ */
+export const billingFailure = (code, message) => dispatch => {
+  dispatch({
+      type: constants.BILLING_FAILURE,
+      payload: {
+          code,
+          message
+      }
+  });
 };
 
 /**

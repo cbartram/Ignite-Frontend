@@ -76,6 +76,8 @@ class Login extends Component {
         try {
             const res = await Auth.signIn(this.state.email, this.state.password);
             Log.info('Login Success!');
+            // Fetches both user videos and user billing information
+            // using the same API route
             this.props.fetchVideos(this.state.email);
             this.props.loginSuccess(res);
         } catch (err) {

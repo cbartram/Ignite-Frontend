@@ -1,7 +1,7 @@
 import * as constants from '../constants';
 /**
- * This is the Authentication reducer which handles updating state to reflect if a user is
- * logged in/logged out.
+ * This is the Video reducer which handles updating state to reflect the user's current
+ * videos as well as associated data like which video comes next.
  * @param state Object current state
  * @param action Object action being dispatched (includes action.payload which is the data)
  * @returns {{result: *}}
