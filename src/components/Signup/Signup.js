@@ -113,11 +113,13 @@ class Signup extends Component {
         this.props.isFetching();
 
         try {
+            Log.info('Attempting to sign-in newly created user...');
             await Auth.confirmSignUp(this.state.email, this.state.confirmationCode);
             const user = await Auth.signIn(this.state.email, this.state.password);
 
+            Log.info('Sign-in successful!');
             this.props.loginSuccess(user);
-            this.props.history.push('/tracks');
+            this.props.history.push('/videos');
         } catch (err) {
             Log.error('Error confirming user code or logging user in...', err);
             this.props.loginFailure(err);
@@ -282,7 +284,7 @@ class Signup extends Component {
 
     render() {
         return (
-            <Container>
+            <Container style={{backgroundColor: '#FFFFFF'}}>
                 <AlertContainer>
                 {
                     this.state.alerts.map((props, index) =>

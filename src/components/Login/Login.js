@@ -125,7 +125,7 @@ class Login extends Component {
 
     render() {
         return (
-            <Container>
+            <Container style={{backgroundColor: '#FFFFFF'}}>
                 <AlertContainer>
                     { this.state.alerts.map((props, index) =>
                         <Alert key={index} onDismiss={() => this.removeAlert(props.id)} {...props}>

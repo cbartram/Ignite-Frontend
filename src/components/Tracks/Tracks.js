@@ -13,28 +13,43 @@ const mapStateToProps = state => ({
  * This Component handles the routes which are displayed within index.js
  */
 class Tracks extends Component {
-    constructor() {
-        super();
 
-        this.state = {
-            tracks: [{
-                name: 'HTML',
-                description: 'Learn HTML and how to make some awesome web pages',
-                image: 'https://en.wikipedia.org/wiki/File:HTML5_logo_and_wordmark.svg'
-            }, {
-                name: 'Javascript',
-                description: 'Learn what javascript is so you can use it in your websites',
-                image: 'https://www.google.com/imgres?imgurl=https://cdn-images-1.medium.com/max/1052/1*DN7ToydkJZEdVaJVK_Nhvw.png'
-            }, {
-                name: 'Python',
-                description: 'Learn what python is so you can do some really neat stuff with data science and machine learning',
-                image: 'https://www.python.org/static/opengraph-icon-200x200.png'
-            }]
+    renderVideos() {
+
+        if(typeof this.props.videos.videoList !== 'undefined') {
+            if (this.props.videos.videoList.length === 0) {
+                return (
+                    <div className="d-flex flex-column justify-content-center">
+                        <h3>No Recent Videos</h3>
+                        <Link to="/pricing" className="common-Button common-Button--default">
+                            Subscribe to Watch Videos
+                        </Link>
+                    </div>
+                )
+            }
+
+            return this.props.videos.videoList.map(track => {
+                return (
+                    <div className="common-Card m-2" key={track.name}>
+                        <div className="cover"/>
+                        <h2 className="common-IntroText">{track.name}</h2>
+                        <p className="common-BodyText">
+                            {track.length}
+                        </p>
+                        <span className="text-muted">
+                                                    {track.percentComplete === 0 ? 'Not Started' : `${track.percentComplete}% complete!`}
+                                                </span>
+                        <Link to={`/watch?v=${btoa(unescape(encodeURIComponent(track.id)))}`}
+                              className="common-Button common-Button--default mt-2">
+                            Start Now
+                        </Link>
+                    </div>
+                )
+            })
         }
     }
 
     render() {
-
         if(this.props.videos.isFetching)
             return (
                 <Container>
@@ -52,25 +67,7 @@ class Tracks extends Component {
                 <div className="row">
                     <div className="col-md-8 offset-md-2">
                         <div className="d-flex flex-row justify-content-between">
-                            {
-                                this.props.videos.videoList.map(track => {
-                                    return (
-                                        <div className="common-Card m-2" key={track.name}>
-                                            <div className="cover" />
-                                            <h2 className="common-IntroText">{track.name}</h2>
-                                            <p className="common-BodyText">
-                                                {track.length}
-                                            </p>
-                                            <span className="text-muted">
-                                                {track.percentComplete === 0 ? 'Not Started' : `${track.percentComplete}% complete!`}
-                                            </span>
-                                            <Link to={`/watch?v=${btoa(unescape(encodeURIComponent(track.id)))}`} className="common-Button common-Button--default mt-2">
-                                                Start Now
-                                            </Link>
-                                        </div>
-                                    )
-                                })
-                            }
+                            { this.renderVideos() }
                         </div>
                     </div>
                 </div>

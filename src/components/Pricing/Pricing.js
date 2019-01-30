@@ -107,7 +107,7 @@ class Pricing extends Component {
                     <div className="col-md-4 offset-md-4">
                         <div className="Plan Plan--standard">
                             <h2 className="Plan-title common-UppercaseText">Basic Plan</h2>
-                            <div className="Plan-description Plan-description-intergrated">Access a complete suite of high
+                            <div className="Plan-description Plan-description-intergrated px-2">Access a complete suite of high
                                 quality full stack development videos.
                             </div>
 
