@@ -12,12 +12,12 @@ export default class Card extends Component {
               {
                   this.props.cardTitle &&
                    <div className="content-header">
-                      <div className="d-flex flex-row justify-content-left ml-2">
+                      <div className="d-flex flex-row justify-content-left ml-3 pl-3">
                           <h4 className="card-title">{this.props.cardTitle}</h4>
                       </div>
                    </div>
               }
-              <div className="card-body">
+              <div className={`card-body ${this.props.classNames && this.props.classNames.join(' ')}`}>
                 { this.props.children }
               </div>
           </section>

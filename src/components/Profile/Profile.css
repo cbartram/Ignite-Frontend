@@ -1,6 +1,6 @@
 @media all and (min-width: 480px) {
     .ChangePassword {
-        padding: 60px 0;
+        padding: 0px 0;
     }
 
     .ChangePassword form {
@@ -17,22 +17,41 @@
 }
 
 .value {
+    color: black;
+    font-size: 16px;
+}
 
+.text-danger {
+    color:#cd3d64;
+}
+
+.no-hover:hover:enabled {
+    background-color: white !important;
+    box-shadow: 0 0 0 1px rgba(42,47,69, 0.1), 0 2px 5px 0 rgba(42,47,69, 0.08), 0 1px 1.5px 0 rgba(0,0,0, 0.07), 0 1px 2px 0 rgba(0,0,0, 0.08);
+}
+
+.missing {
+    color: #a3acb9;
+    font-style: italic;
+    line-height: 1.6;
 }
 
 .value-code {
     font-family: 'Inconsolata', monospace;
     line-height: 20px;
     font-weight: 400;
-    font-size: 13px;
+    font-size: 16px;
     white-space: normal;
 }
 
 .badge-primary {
     color: #3d4eac;
-    padding: 5px 8px 2px;
     background-color: #d6ecff;
-    border-radius: 20px;
+}
+
+.badge-warning {
+    background-color: rgb(255, 231, 203);
+    color: #ff996b;
 }
 
 .value-lg {
