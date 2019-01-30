@@ -4,8 +4,19 @@ import './Card.css';
 export default class Card extends Component {
   render() {
       return (
-          <section className="common-Card pricing-box mx-3 my-3">
-              <aside className="common-UppercaseText-Badge profile-badge">{this.props.badgeText}</aside>
+          <section className={`common-Card pricing-box mx-3 my-3 ${this.props.cardTitle ? 'px-0' : ''}`}>
+              {
+                  this.props.badgeText &&
+                  <aside className="common-UppercaseText-Badge profile-badge">{this.props.badgeText}</aside>
+              }
+              {
+                  this.props.cardTitle &&
+                   <div className="content-header">
+                      <div className="d-flex flex-row justify-content-left ml-2">
+                          <h4 className="card-title">{this.props.cardTitle}</h4>
+                      </div>
+                   </div>
+              }
               <div className="card-body">
                 { this.props.children }
               </div>

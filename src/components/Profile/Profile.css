@@ -8,3 +8,33 @@
         max-width: 320px;
     }
 }
+
+.key {
+    color: #697386;
+    line-height: 1.6;
+    word-break: break-word;
+    white-space: normal;
+}
+
+.value {
+
+}
+
+.value-code {
+    font-family: 'Inconsolata', monospace;
+    line-height: 20px;
+    font-weight: 400;
+    font-size: 13px;
+    white-space: normal;
+}
+
+.badge-primary {
+    color: #3d4eac;
+    padding: 5px 8px 2px;
+    background-color: #d6ecff;
+    border-radius: 20px;
+}
+
+.value-lg {
+    font-size: 19px;
+}
