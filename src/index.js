@@ -8,10 +8,10 @@ import thunk from 'redux-thunk';
 import Amplify, { Auth } from 'aws-amplify';
 import rootReducer from './reducers/rootReducer';
 import * as constants from './constants'
-import config from './config';
 import Router from './components/Router/Router'
 import Log from './Log';
 import { loginSuccess, fetchVideos} from './actions/actions';
+import { AMPLIFY_CONFIG, erika } from "./constants";
 
 // Setup Redux middleware and store
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -20,29 +20,7 @@ const store = createStore(rootReducer, constants.INITIAL_STATE, composeEnhancers
 ));
 
 // Configure federated identity providers (AWS Cognito)
-Amplify.configure({
-    Auth: {
-        mandatorySignIn: true,
-        region: config.cognito.REGION,
-        userPoolId: config.cognito.USER_POOL_ID,
-        identityPoolId: config.cognito.IDENTITY_POOL_ID,
-        userPoolWebClientId: config.cognito.APP_CLIENT_ID
-    },
-    Storage: {
-        region: config.s3.REGION,
-        bucket: config.s3.development.BUCKET, // TODO change this to prod before deployment
-        identityPoolId: config.cognito.IDENTITY_POOL_ID
-    },
-    API: {
-        endpoints: [
-            {
-                name: "Ignite API", // The name of our API in API Gateway in case we want to use more
-                endpoint: config.apiGateway.development.URL, // TODO change this to prod before deployment
-                region: config.apiGateway.REGION
-            },
-        ]
-    }
-});
+Amplify.configure(AMPLIFY_CONFIG);
 
 // Setup Logger
 if (process.env.NODE_ENV !== 'production') {

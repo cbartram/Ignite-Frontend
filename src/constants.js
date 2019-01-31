@@ -1,3 +1,4 @@
+
 /**
  * This file defines constants used throughout the frontend portion of the application.
  * Constants as the name suggests are constant and never change regardless of state changes.
@@ -44,14 +45,43 @@ export const API_FIND_ALL_USERS = '/users/find';
 export const API_FETCH_SIGNED_URL = '/security/signed-url/create';
 export const API_CREATE_SUBSCRIPTION = '/billing/subscription/create';
 
-// Prod API Params
+// Prod Params
 export const PROD_URL = 'https://5c5aslvp9k.execute-api.us-east-1.amazonaws.com/Production';
 
-// Dev API Params
+// Dev Params
 export const DEV_URL = 'https://5c5aslvp9k.execute-api.us-east-1.amazonaws.com/Development';
 
 // Configuration Params
 export const API_KEY = 'pgS8gGvkv53xFg4BdgECn38C4CDNZXKj8EqFtQdW';
+
+/**
+ * Config passed to AWS Amplify to tell them about our cloud infrastructure and who/how to communicate with it. This is automatically
+ * optimized for dev/prod environments so that AWS Amplify will know use the right infrastructure for the right environment.
+ * @type {{Storage: {bucket: string, region: string, identityPoolId: string}, Auth: {userPoolWebClientId: string, region: string, userPoolId: string, identityPoolId: string, mandatorySignIn: boolean}, API: {endpoints: {endpoint: string, name: string, region: string}[]}}}
+ */
+export const AMPLIFY_CONFIG = {
+    Auth: {
+        mandatorySignIn: true,
+        region: 'us-east-1',
+        userPoolId: IS_PROD ? 'us-east-1_G2KMemCwv' : 'us-east-1_XYjhXhc4h',
+        identityPoolId:  IS_PROD ? 'us-east-1:ffa56150-299b-4046-8e68-9a35939fa6eb' : 'us-east-1:18d3e90b-3f5d-43ba-b7cb-6baae3072215',
+        userPoolWebClientId: IS_PROD ? '70huop2uv25e0i5pvjskggatdo' : '4nlb23tujafrmojl2hibe9u6sk'
+    },
+    Storage: {
+        region: 'us-east-1',
+        bucket: IS_PROD ? 'ignite-prod-us-east-1' : 'ignite-dev-us-east-1',
+        identityPoolId: IS_PROD ? 'us-east-1:ffa56150-299b-4046-8e68-9a35939fa6eb' : 'us-east-1:18d3e90b-3f5d-43ba-b7cb-6baae3072215'
+    },
+    API: {
+        endpoints: [
+            {
+                name: "Ignite API", // The name of our API in API Gateway in case we want to use more
+                endpoint: `https://5c5aslvp9k.execute-api.us-east-1.amazonaws.com/${IS_PROD ? 'Production' : 'Development'}`,
+                region: 'us-east-1'
+            },
+        ]
+    }
+};
 
 // Redux Action/Reducer Constants
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
