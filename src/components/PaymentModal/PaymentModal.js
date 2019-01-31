@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { updateUserAttributes } from '../../actions/actions';
 import './PaymentModal.css';
 import Log from '../../Log';
+import {API_CREATE_SUBSCRIPTION, API_KEY, getRequestUrl} from '../../constants';
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -124,13 +125,13 @@ class PaymentModal extends Component {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                    'x-api-key': 'pgS8gGvkv53xFg4BdgECn38C4CDNZXKj8EqFtQdW'
+                    'x-api-key': API_KEY,
                 },
                 // Since this is calling an API these details are crucial for the lambda function to know which route to execute.
                 body: JSON.stringify({
                     headers: {},
                     method: 'POST',
-                    path: '/billing/subscription/create',
+                    path: API_CREATE_SUBSCRIPTION,
                     parameters: {}, // Query params
                     body: {
                         ['cognito:username']: this.props.auth.user['cognito:username'],
@@ -148,7 +149,7 @@ class PaymentModal extends Component {
 
             // Attempt to make the API call
             try {
-                let response = await (await fetch('https://5c5aslvp9k.execute-api.us-east-1.amazonaws.com/Development/billing/subscription/create', params)).json();
+                let response = await (await fetch(getRequestUrl(API_CREATE_SUBSCRIPTION), params)).json();
 
                 Log.info(response);
                 // Something went wrong with the request

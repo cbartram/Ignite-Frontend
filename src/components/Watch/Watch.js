@@ -6,6 +6,7 @@ import { Auth } from 'aws-amplify';
 import Log from '../../Log';
 import Container from '../Container/Container';
 import { logout } from '../../actions/actions';
+import {API_FETCH_SIGNED_URL, API_KEY, getRequestUrl, IS_PROD} from '../../constants';
 import './Watch.css';
 
 const mapStateToProps = state => ({
@@ -36,13 +37,13 @@ class Watch extends Component {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'x-api-key': 'pgS8gGvkv53xFg4BdgECn38C4CDNZXKj8EqFtQdW'
+                'x-api-key': API_KEY,
             },
             // Since this is calling an API these details are crucial for the lambda function to know which route to execute.
             body: JSON.stringify({
                 headers: {},
                 method: 'POST',
-                path: '/security/signed-url/create',
+                path: API_FETCH_SIGNED_URL,
                 parameters: {}, // Query params
                 body: {
                     resourceUrl: `https://dpvchyatyxxeg.cloudfront.net/${trackName}_Track.mov`,
@@ -51,7 +52,7 @@ class Watch extends Component {
             }),
         };
 
-        let response = await (await fetch('https://5c5aslvp9k.execute-api.us-east-1.amazonaws.com/Development/security/signed-url/create', params)).json();
+        let response = await (await fetch(getRequestUrl(API_FETCH_SIGNED_URL), params)).json();
         Log.info('Signed URL Response', response);
 
         if(response.status === 403) {
@@ -77,7 +78,8 @@ class Watch extends Component {
                     });
                 break;
             default:
-                this.setState({ error: `Something went wrong retrieving the videos: ${response.body.messages.join(',')}` });
+                // Only show detailed information when its NOT production.
+                this.setState({ error: `Something went wrong retrieving the videos refresh the page to try again. ${!IS_PROD && response.body.messages.join(',')}` });
         }
     });
   }

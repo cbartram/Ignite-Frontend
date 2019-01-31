@@ -4,6 +4,7 @@
  * @author cbartram
  */
 import Log from './Log';
+import {API_KEY, getRequestUrl, API_FIND_ALL_USERS } from './constants';
 
 /**
  * Gets data about the user's videos including: scrub duration, the next video in the queue,
@@ -16,20 +17,20 @@ export const getVideos = async (email) => {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'x-api-key': 'pgS8gGvkv53xFg4BdgECn38C4CDNZXKj8EqFtQdW'
+            'x-api-key': API_KEY
         },
         // Since this is calling an API these details are crucial for the lambda function to know which route to execute.
         body: JSON.stringify({
             headers: {},
             method: 'POST',
-            path: '/users/find',
+            path: API_FIND_ALL_USERS,
             parameters: {}, // Query params
             body: { email }
         }),
     };
 
     try {
-        return await (await fetch('https://5c5aslvp9k.execute-api.us-east-1.amazonaws.com/Development/users/find', params)).json();
+        return await (await fetch(getRequestUrl(API_FIND_ALL_USERS), params)).json();
     } catch(err) {
         Log.error('Failed to retrieve videos from API...', err);
     }
