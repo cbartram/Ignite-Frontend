@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import _ from 'lodash';
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 import LoaderButton from "../LoaderButton/LoaderButton";
 import { Auth } from 'aws-amplify';
@@ -79,8 +80,9 @@ class Profile extends Component {
 
     render() {
         let currentVideo = null;
-        if(!this.props.videos.isFetching)
+        if(!this.props.videos.isFetching) {
             currentVideo = this.props.videos.videoList.sort((a, b) => a.scrubDuration - b.scrubDuration)[0];
+        }
 
         return (
             <Container>
@@ -107,17 +109,23 @@ class Profile extends Component {
                                 {/* Values */}
                                 <div className="d-flex flex-column align-items-left align-self-center px-3">
                                   <span className="value-code">
-                                    { this.props.billing.customer_id }
+                                    { _.isNil(this.props.billing.customer_id) ? 'None' : this.props.billing.customer_id }
                                 </span>
                                     <span className="value">
-                                    { this.props.billing.plan }
-                                </span>
-                                    <span className="badge badge-pill badge-primary py-1 px-0">
-                                    { moment.unix(this.props.billing.next_invoice_date).format('MMMM Do') }
-                                </span>
+                                        { _.isNil(this.props.billing.plan) ? 'None' : this.props.billing.plan }
+                                    </span>
+                                    {
+                                        _.isNil(this.props.billing.next_invoice_date) ?
+                                            <span className="value">
+                                                None
+                                            </span> :
+                                            <span className="badge badge-pill badge-primary py-1 px-0">
+                                                {moment.unix(this.props.billing.next_invoice_date).format('MMMM Do')}
+                                            </span>
+                                    }
                                     <span className="value">
-                                    { this.props.billing.subscription_active }
-                                </span>
+                                        { _.isNil(this.props.billing.subscription_active) ? 'None' : this.props.billing.subscription_active }
+                                    </span>
                                 </div>
                                 {/* Keys (2) */}
                                 <div className="d-flex flex-column align-items-left align-self-center px-3">
@@ -136,32 +144,41 @@ class Profile extends Component {
                                 </div>
                                 {/* Values (2) */}
                                 <div className="d-flex flex-column align-items-left align-self-center px-3">
-                                  <span className="value">
-                                    { moment.unix(this.props.billing.invoice_date).format('MMM Do YYYY') }
-                                      &nbsp;
-                                      to
-                                      &nbsp;
-                                      { moment.unix(this.props.billing.next_invoice_date).format('MMM Do YYYY')}
-                                </span>
+                                    { _.isNil(this.props.billing.invoice_date) ?
+                                        <span className="value">None</span> :
+                                        <span className="value">
+                                        { moment.unix(this.props.billing.invoice_date).format('MMM Do YYYY') }
+                                            &nbsp;
+                                            to
+                                            &nbsp;
+                                            { moment.unix(this.props.billing.next_invoice_date).format('MMM Do YYYY')}
+                                    </span>
+                                    }
                                     <span className="value-code value-lg">
-                                    ${ (this.props.billing.next_invoice_amount / 100).toFixed(2) }
-                                </span>
-                                    <span className="value">
-                                      {/* Card image icon */}
-                                        <svg className="SVGInline-svg SVGInline--cleaned-svg SVG-svg mr-2" style={{width: 16, height: 16 }}
-                                             xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                                        <g fill="none" fillRule="evenodd">
-                                            <path fill="#F6F9FC" fillRule="nonzero" d="M1 12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v8z" />
-                                            <path fill="#E6EBF1" fillRule="nonzero" d="M1 12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v8zm-1 0V4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2z" />
-                                            <path fill="#1A1F71" d="M0 5V4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v1H0zm5 2h6a1 1 0 0 1 0 2H5a1 1 0 1 1 0-2z" />
-                                            <path fill="#F7B600" d="M0 11v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1H0z" />
-                                        </g>
-                                    </svg>
-                                      •••• { this.props.billing.payment_last_four }
-                                </span>
-                                    <span className="value">
-                                    { this.props.billing.payment_card_type }
-                                </span>
+                                        ${ !_.isNil(this.props.billing.next_invoice_amount) ? (this.props.billing.next_invoice_amount / 100).toFixed(2): '0.00' }
+                                    </span>
+                                    {
+                                        !_.isNil(this.props.billing.payment_card_type) ?
+                                            <div>
+                                                <span className="value">
+                                                  {/* Card image icon */}
+                                                    <svg className="SVGInline-svg SVGInline--cleaned-svg SVG-svg mr-2" style={{width: 16, height: 16 }}
+                                                         xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                                                    <g fill="none" fillRule="evenodd">
+                                                        <path fill="#F6F9FC" fillRule="nonzero" d="M1 12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v8z" />
+                                                        <path fill="#E6EBF1" fillRule="nonzero" d="M1 12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v8zm-1 0V4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2z" />
+                                                        <path fill="#1A1F71" d="M0 5V4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v1H0zm5 2h6a1 1 0 0 1 0 2H5a1 1 0 1 1 0-2z" />
+                                                        <path fill="#F7B600" d="M0 11v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1H0z" />
+                                                    </g>
+                                                </svg>
+                                                •••• { this.props.billing.payment_last_four }
+                                                </span>
+                                                <span className="value">
+                                                 { this.props.billing.payment_card_type }
+                                                </span>
+                                            </div> :
+                                            null
+                                    }
                                 </div>
                             </div>
                             <div className="d-flex align-items-end justify-content-start mt-3">
@@ -226,10 +243,10 @@ class Profile extends Component {
                                 <span className="key">
                                     Current Video
                                 </span>
-                                    <span className="key">
+                                <span className="key">
                                     Length
                                  </span>
-                                    <span className="key">
+                                <span className="key">
                                     Duration Completed
                                  </span>
                                 <span className="key">
@@ -242,30 +259,30 @@ class Profile extends Component {
                             {/* Values */}
                             <div className="d-flex flex-column align-items-left align-self-center px-3">
                                 {
-                                    currentVideo !== null ?
-                                    <span className="value">{ currentVideo.name }</span> :
-                                    <span className="value missing"> None </span>
+                                    !_.isNil(currentVideo) ?
+                                        <span className="value">{ currentVideo.name }</span> :
+                                        <span className="value missing"> None </span>
                                 }
                                 {
-                                    currentVideo !== null ?
-                                    <span className="value-code">{ currentVideo.length }</span> :
-                                    <span className="value-code missing">0:00</span>
+                                    !_.isNil(currentVideo) ?
+                                        <span className="value-code">{ currentVideo.length }</span> :
+                                        <span className="value-code missing">0:00</span>
                                 }
                                 {
-                                    currentVideo !== null ?
-                                    <span className="value-code">{ currentVideo.scrubDuration }</span> :
-                                    <span className="value-code missing">0:00</span>
+                                    !_.isNil(currentVideo) ?
+                                        <span className="value-code">{ currentVideo.scrubDuration }</span> :
+                                        <span className="value-code missing">0:00</span>
                                 }
                                 {
-                                    currentVideo !== null ?
-                                    <span className="value">{ currentVideo.percentComplete }%</span> :
-                                    <span className="value missing">0%</span>
+                                    !_.isNil(currentVideo) ?
+                                        <span className="value">{ currentVideo.percentComplete }%</span> :
+                                        <span className="value missing">0%</span>
                                 }
                                 {/* Todo this could be null if there is no next video */}
                                 {
-                                    currentVideo !== null ?
-                                    <span className="value">{ this.props.videos.videoList.filter(v => v.id === currentVideo.next)[0].name }</span> :
-                                    <span className="value missing">None</span>
+                                    !_.isNil(currentVideo) ?
+                                        <span className="value">{ this.props.videos.videoList.filter(v => v.id === currentVideo.next)[0].name }</span> :
+                                        <span className="value missing">None</span>
                                 }
                             </div>
                         </div>

@@ -47,11 +47,13 @@
 .badge-primary {
     color: #3d4eac;
     background-color: #d6ecff;
+    max-width: 150px;
 }
 
 .badge-warning {
     background-color: rgb(255, 231, 203);
     color: #ff996b;
+    max-width: 50px;
 }
 
 .value-lg {
