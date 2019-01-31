@@ -3,10 +3,18 @@ import { connect } from 'react-redux';
 import ReactPlayer from 'react-player'
 import { Link } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
+import _ from 'lodash';
 import Log from '../../Log';
 import Container from '../Container/Container';
 import { logout } from '../../actions/actions';
-import {API_FETCH_SIGNED_URL, API_KEY, getRequestUrl, IS_PROD} from '../../constants';
+import {
+    API_FETCH_SIGNED_URL,
+    API_KEY,
+    getRequestUrl,
+    IS_PROD
+} from '../../constants';
+import Alert from '../Alert/Alert';
+import AlertContainer from '../AlertContainer/AlertContainer';
 import './Watch.css';
 
 const mapStateToProps = state => ({
@@ -26,6 +34,7 @@ class Watch extends Component {
       canPlay: false,
       signedUrl: '',
       error: '',
+      alerts: [],
     }
   }
 
@@ -56,12 +65,14 @@ class Watch extends Component {
         Log.info('Signed URL Response', response);
 
         if(response.status === 403) {
-          this.setState({ error: 'We couldn\'t find an active subscription for your account. If you would like to subscribe and view this content check out the link below!', isFetching: false });
+            this.pushAlert('warning', 'No Subscription', 'We couldn\'t find an active subscription for your account.');
+            this.setState({ error: 'We couldn\'t find an active subscription for your account. If you would like to subscribe and view this content check out the link below!', isFetching: false });
           return;
         }
 
         switch(response.status) {
             case 403:
+                this.pushAlert('warning', 'No Subscription', 'We couldn\'t find an active subscription for your account.');
                 this.setState({ error: 'We couldn\'t find an active subscription for your account. If you would like to subscribe and view this content check out the link below!', isFetching: false });
                 break;
             case 501:
@@ -70,6 +81,7 @@ class Watch extends Component {
                 break;
             case 200:
                 if(ReactPlayer.canPlay(response.body.signedUrl))
+                    this.pushAlert('success', 'Success', `Enjoy learning about ${trackName}`);
                     this.setState({
                         signedUrl: response.body.signedUrl,
                         canPlay: true,
@@ -78,6 +90,7 @@ class Watch extends Component {
                     });
                 break;
             default:
+                this.pushAlert('danger', 'Oh No', 'Something went wrong retrieving the videos.');
                 // Only show detailed information when its NOT production.
                 this.setState({ error: `Something went wrong retrieving the videos refresh the page to try again. ${!IS_PROD && response.body.messages.join(',')}` });
         }
@@ -98,10 +111,58 @@ class Watch extends Component {
         }
     }
 
+    /**
+     * Pushes an alert onto the stack to be
+     * visible by users
+     */
+    pushAlert(type, title, message, id = _.uniqueId()) {
+        const { alerts } = this.state;
+        // Push an object of props to be passed to the <Alert /> Component
+        alerts.push({
+            type,
+            title,
+            id,
+            message,
+        });
+
+        this.setState({ alerts });
+    }
+
+    /**
+     * Removes an alert from the stack so that
+     * it is no longer rendered on the page
+     * @param id Integer the unique alert id
+     */
+    removeAlert(id) {
+        const { alerts } = this.state;
+        const newAlerts = [
+            ...alerts.filter(alert => alert.id !== id)
+        ];
+
+        this.setState({ alerts: newAlerts });
+    }
+
     render() {
-      if(this.state.error.length > 0)
+        if(this.state.isFetching)
+            return (
+                <Container>
+                    <div className="d-flex justify-content-center mt-5">
+                        <i className="fas fa-7x fa-circle-notch" style={{ color: '#6772e5' }} />
+                    </div>
+                </Container>
+            );
+
+        if(this.state.error.length > 0)
           return (
               <Container>
+                  <AlertContainer>
+                      { this.state.alerts.map((props, index) =>
+                          <Alert key={index} onDismiss={() => this.removeAlert(props.id)} {...props}>
+                              {props.message}
+                          </Alert>
+                      )
+                      }
+                  </AlertContainer>
                 <div className="row">
                     <div className="col-md-5 offset-md-4">
                         <h2 className="common-UppercaseTitle">Oh no!</h2>
@@ -115,8 +176,16 @@ class Watch extends Component {
           );
 
       return (
-          <Container noFooter={true}>
-                  <div className="sidebar-container">
+          <Container noFooter>
+              <AlertContainer>
+                  { this.state.alerts.map((props, index) =>
+                      <Alert key={index} onDismiss={() => this.removeAlert(props.id)} {...props}>
+                          {props.message}
+                      </Alert>
+                  )
+                  }
+              </AlertContainer>
+              <div className="sidebar-container">
                       <div className="my-3">
                           <img height="70" width="70" alt="thumbnail" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/170px-HTML5_logo_and_wordmark.svg.png" />
                       </div>
@@ -242,7 +311,6 @@ class Watch extends Component {
                           </div>
                       </div>
                   </div>
-                  { this.state.isFetching && <div className="d-flex justify-content-center mt-5"><i className="fas fa-7x fa-circle-notch" style={{ color: '#6772e5' }} /></div> }
                   {
                       this.state.canPlay &&
                       <ReactPlayer

@@ -9,7 +9,7 @@ import Footer from '../Footer/Footer';
 export default class Container extends Component {
     render() {
         return (
-            <div className="container-fluid" {...this.props}>
+            <div className="container-fluid" style={this.props.style}>
                 <Navbar/>
                     {this.props.children}
                 {!this.props.noFooter && <Footer/>}
