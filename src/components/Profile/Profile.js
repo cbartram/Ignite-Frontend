@@ -219,8 +219,8 @@ class Profile extends Component {
                                 </span>
 
                                 {
-                                    this.props.auth.user['custom:premium'] === 'true2' ?
-                                        <span className="badge badge-pill badge-primary py-1 px-0">
+                                    this.props.auth.user['custom:premium'] === 'true' ?
+                                        <span className="badge badge-pill badge-success py-1 px-0">
                                   True
                               </span> :
                                         <span className="badge badge-pill badge-warning py-1 px-0">

@@ -32,13 +32,15 @@ class Tracks extends Component {
                 return (
                     <div className="common-Card m-2" key={track.name}>
                         <div className="cover"/>
-                        <h2 className="common-IntroText">{track.name}</h2>
-                        <p className="common-BodyText">
-                            {track.length}
-                        </p>
+                        <div className="d-flex flex-row">
+                            <h2 className="common-IntroText mt-0">{track.name}</h2>
+                            <p className="common-BodyText pt-1 ml-3">
+                                {track.length}
+                            </p>
+                        </div>
                         <span className="text-muted">
-                                                    {track.percentComplete === 0 ? 'Not Started' : `${track.percentComplete}% complete!`}
-                                                </span>
+                           {track.percentComplete === 0 ? 'Not Started' : `${track.percentComplete}% complete!`}
+                        </span>
                         <Link to={`/watch?v=${btoa(unescape(encodeURIComponent(track.id)))}`}
                               className="common-Button common-Button--default mt-2">
                             Start Now

@@ -113,7 +113,7 @@ class Watch extends Component {
           );
 
       return (
-          <Container noFooter>
+          <Container noFooter={true}>
                   <div className="sidebar-container">
                       <div className="my-3">
                           <img height="70" width="70" alt="thumbnail" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/170px-HTML5_logo_and_wordmark.svg.png" />

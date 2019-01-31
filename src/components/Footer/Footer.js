@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import './Footer.css';
 import Logo from '../../resources/images/logo.png';
+import './Footer.css';
 
 /**
  * The page footer component
  */
-export default class Container extends Component {
+export default class Footer extends Component {
     render() {
         return (
             <footer className={`pt-4 ${!this.props.noMargin && 'mt-5'} pt-md-5 border-top`}>
