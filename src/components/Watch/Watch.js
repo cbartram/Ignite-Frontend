@@ -55,7 +55,7 @@ class Watch extends Component {
                 path: API_FETCH_SIGNED_URL,
                 parameters: {}, // Query params
                 body: {
-                    resourceUrl: `https://dpvchyatyxxeg.cloudfront.net/${trackName}_Track.mov`,
+                    resourceUrl: `${IS_PROD ? 'https://d2hhpuhxg00qg.cloudfront.net' : 'https://dpvchyatyxxeg.cloudfront.net'}/${trackName}_Track.mov`,
                     jwtToken: this.props.auth.user.jwtToken,
                 }
             }),
