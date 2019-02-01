@@ -46,7 +46,7 @@ class Watch extends Component {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'x-api-key': API_KEY,
+                'x-api-key': IS_PROD ? PROD_API_KEY : API_KEY,
             },
             // Since this is calling an API these details are crucial for the lambda function to know which route to execute.
             body: JSON.stringify({

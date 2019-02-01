@@ -4,7 +4,7 @@
  * @author cbartram
  */
 import Log from './Log';
-import {API_KEY, getRequestUrl, API_FIND_ALL_USERS } from './constants';
+import {API_KEY, getRequestUrl, API_FIND_ALL_USERS, IS_PROD, PROD_API_KEY} from './constants';
 
 /**
  * Gets data about the user's videos including: scrub duration, the next video in the queue,
@@ -17,7 +17,7 @@ export const getVideos = async (email) => {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'x-api-key': API_KEY
+            'x-api-key': IS_PROD ? PROD_API_KEY : API_KEY
         },
         // Since this is calling an API these details are crucial for the lambda function to know which route to execute.
         body: JSON.stringify({

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { updateUserAttributes } from '../../actions/actions';
 import './PaymentModal.css';
 import Log from '../../Log';
-import {API_CREATE_SUBSCRIPTION, API_KEY, getRequestUrl} from '../../constants';
+import {API_CREATE_SUBSCRIPTION, API_KEY, getRequestUrl, IS_PROD, PROD_API_KEY} from '../../constants';
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -125,7 +125,7 @@ class PaymentModal extends Component {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                    'x-api-key': API_KEY,
+                    'x-api-key': IS_PROD ? PROD_API_KEY : API_KEY,
                 },
                 // Since this is calling an API these details are crucial for the lambda function to know which route to execute.
                 body: JSON.stringify({
