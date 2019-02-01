@@ -11,7 +11,8 @@ import * as constants from './constants'
 import Router from './components/Router/Router'
 import Log from './Log';
 import { loginSuccess, fetchVideos} from './actions/actions';
-import { AMPLIFY_CONFIG, erika } from "./constants";
+import { AMPLIFY_CONFIG } from './constants';
+import {IS_PROD} from "./constants";
 
 // Setup Redux middleware and store
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -23,7 +24,7 @@ const store = createStore(rootReducer, constants.INITIAL_STATE, composeEnhancers
 Amplify.configure(AMPLIFY_CONFIG);
 
 // Setup Logger
-if (process.env.NODE_ENV !== 'production') {
+if (!IS_PROD || localStorage.getItem('FORCE_LOGS') === true) {
     localStorage.setItem('debug', 'ignite:*');
 }
 

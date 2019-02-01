@@ -79,6 +79,7 @@ class Profile extends Component {
 
 
     render() {
+        console.log(this.props.auth);
         let currentVideo = null;
         if(!this.props.videos.isFetching) {
             currentVideo = this.props.videos.videoList.sort((a, b) => a.scrubDuration - b.scrubDuration)[0];

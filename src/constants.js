@@ -46,14 +46,14 @@ export const API_FETCH_SIGNED_URL = '/security/signed-url/create';
 export const API_CREATE_SUBSCRIPTION = '/billing/subscription/create';
 
 // Prod Params
-export const PROD_URL = 'https://5c5aslvp9k.execute-api.us-east-1.amazonaws.com/Production';
+export const PROD_URL = 'https://2147bwmah5.execute-api.us-east-1.amazonaws.com/prod';
 
 // Dev Params
-export const DEV_URL = 'https://5c5aslvp9k.execute-api.us-east-1.amazonaws.com/Development';
+export const DEV_URL = 'https://5c5aslvp9k.execute-api.us-east-1.amazonaws.com/dev';
 
 // Configuration Params
 export const API_KEY = 'pgS8gGvkv53xFg4BdgECn38C4CDNZXKj8EqFtQdW';
-export const PROD_API_KEY = 'PVuc5XXpDmavdwxO1lMGHaDI6i94a5ofaIcdAdtS';
+export const PROD_API_KEY = 'mNer7Typlc9npqrkThXZ08xAIWoBXLyG2NEfHDd2';
 
 /**
  * Config passed to AWS Amplify to tell them about our cloud infrastructure and who/how to communicate with it. This is automatically
@@ -77,9 +77,9 @@ export const AMPLIFY_CONFIG = {
         endpoints: [
             {
                 name: "Ignite API", // The name of our API in API Gateway in case we want to use more
-                endpoint: `https://5c5aslvp9k.execute-api.us-east-1.amazonaws.com/${IS_PROD ? 'Production' : 'Development'}`,
+                endpoint: IS_PROD ? PROD_URL : DEV_URL,
                 region: 'us-east-1'
-            },
+            }
         ]
     }
 };

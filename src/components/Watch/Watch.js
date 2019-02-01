@@ -11,7 +11,8 @@ import {
     API_FETCH_SIGNED_URL,
     API_KEY,
     getRequestUrl,
-    IS_PROD
+    IS_PROD,
+    PROD_API_KEY
 } from '../../constants';
 import Alert from '../Alert/Alert';
 import AlertContainer from '../AlertContainer/AlertContainer';
