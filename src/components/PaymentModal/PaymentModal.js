@@ -143,6 +143,7 @@ class PaymentModal extends Component {
                         cvc: cvc,
                         name: `${firstName} ${lastName}`,
                         amount,
+                        customer_id: this.props.auth.user['custom:customer_id']
                     }
                 }),
             };
@@ -159,7 +160,7 @@ class PaymentModal extends Component {
                 } else if(response.body.error) {
                     this.setState({error: response.body.error.message, success: false, loading: false});
                     this.props.onFailedPayment(response.body.error.message);
-                } else if(response.statusCode > 200) {
+                } else if(response.statusCode > 200 || response.status > 200) {
                     this.setState({error: response.body.messages.join(','), success: false, loading: false});
                     this.props.onFailedPayment(response.body.messages.join(','));
                 } else {
@@ -171,8 +172,8 @@ class PaymentModal extends Component {
                     // const r = await Auth.signIn(response.body.user['cognito:username']);
                     // console.log('Attempting to re-sign in user: ', r);
                     // todo come back to this there is a bug in AWS amplify'
-
-                    localStorage.clear(); // todo this will force users to re-sign in when they refresh a page
+                    // todo this is bad and it will force users to re-sign in when they refresh a page
+                    localStorage.clear();
 
                     // Ensures that the user only see's a success message if the operation was actually successful.
                     if(response.status === 200 && response.body.statusCode === 200) {

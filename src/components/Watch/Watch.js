@@ -90,6 +90,10 @@ class Watch extends Component {
                         error: '',
                     });
                 break;
+            case 500:
+                this.pushAlert('warning', 'No Subscription', 'We couldn\'t find an active subscription for your account.');
+                this.setState({ error: 'We couldn\'t find an active subscription for your account. If you would like to subscribe and view this content check out the link below!', isFetching: false });
+                break;
             default:
                 this.pushAlert('danger', 'Oh No', 'Something went wrong retrieving the videos.');
                 // Only show detailed information when its NOT production.
