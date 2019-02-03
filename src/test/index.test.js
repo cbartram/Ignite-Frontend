@@ -203,6 +203,35 @@ describe('Redux Unit Tests', () => {
         done();
     });
 
+    it('Updates state when the REQUEST_BILLING action is dispatched', done => {
+        const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+        const store = createStore(rootReducer, constants.INITIAL_STATE, composeEnhancers(
+            applyMiddleware(thunk)
+        ));
+
+        const updatedState = {
+            auth: {
+                isAuthenticated: false,
+                isFetching: false,
+                user: null,
+                error: null
+            },
+            videos: {},
+            billing: {
+                error: null,
+                isFetching:true,
+            }
+        };
+
+        expect(store.getState()).to.be.a('object').that.deep.equals(constants.INITIAL_STATE);
+        store.dispatch({
+            type: constants.REQUEST_BILLING,
+            payload: true
+        });
+        expect(store.getState()).to.be.a('object').that.deep.equals(updatedState);
+        done();
+    });
+
     it('Updates state when the BILLING_SUCCESS action is dispatched', done => {
         const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
         const store = createStore(rootReducer, constants.INITIAL_STATE, composeEnhancers(
@@ -232,7 +261,8 @@ describe('Redux Unit Tests', () => {
                 premium: 'true',
                 plan: 'Basic Plan',
                 plan_id: 'pl_x1jdha8s7ahD',
-                subscription_id: 'sub_asdjkJA9sd7A'
+                subscription_id: 'sub_asdjkJA9sd7A',
+                trial_end: 152938127
             }
         };
 
@@ -252,7 +282,8 @@ describe('Redux Unit Tests', () => {
                 premium: 'true',
                 plan: 'Basic Plan',
                 plan_id: 'pl_x1jdha8s7ahD',
-                subscription_id: 'sub_asdjkJA9sd7A'
+                subscription_id: 'sub_asdjkJA9sd7A',
+                trial_end: 152938127
             }
         });
         expect(store.getState()).to.be.a('object').that.deep.equals(updatedState);
