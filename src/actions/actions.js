@@ -69,6 +69,8 @@ export const loginFailure = payload => dispatch => {
 /**
  * Handles making the Async API call to retrieve the videos and billing information from users. It will dispatch a success or failure event
  * depending on the status of the API call.
+ * Note: that this action updates both the videos and billing information for a user. If you want to just update the billing
+ * information it would be better to use fetchBilling()
  * @param email String the email of the user to retrieve videos for
  * @returns {Function}
  */
@@ -100,6 +102,35 @@ export const fetchVideos = email => async dispatch => {
         });
     }
 };
+
+/**
+ * Retrieves billing information from the API and stores it in redux.
+ * @param email String the users email to retrieve billing details
+ * @returns {Function}
+ */
+export const fetchBilling = email => async dispatch => {
+    dispatch({
+        type: constants.REQUEST_BILLING,
+        payload: true // Sets isFetching to true (useful for unit testing redux)
+    });
+
+    const response = await getVideos(email);
+
+    if(response.status === 200) {
+        // Dispatch information about billing
+        dispatch({
+            type: constants.BILLING_SUCCESS,
+            payload: response.body.user,
+        });
+    } else if(response.status > 200 || typeof response.status === 'undefined') {
+        // An error occurred
+        dispatch({
+            type: constants.BILLING_FAILURE,
+            payload: { message: `Failed to retrieve billing data from API: ${JSON.stringify(response)}`}
+        });
+    }
+};
+
 
 /**
  * Dispatches an action updating redux store that

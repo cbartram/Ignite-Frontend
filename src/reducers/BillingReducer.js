@@ -8,6 +8,12 @@ import * as constants from '../constants';
  */
 export default (state = {}, action) => {
     switch (action.type) {
+        case constants.REQUEST_BILLING:
+            return {
+                ...state,
+                isFetching: true,
+                error: null,
+            };
         case constants.BILLING_SUCCESS:
             const {
                 customer_id,
@@ -25,8 +31,6 @@ export default (state = {}, action) => {
                 subscription_id,
                 trial_end
             } = action.payload;
-
-            console.log(action.payload);
 
             return {
                 ...state,
