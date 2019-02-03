@@ -166,7 +166,7 @@ class PaymentModal extends Component {
                 } else {
                     // Update redux with the new user attributes
                     this.props.updateUserAttributes(response.body.user);
-
+                    // TODO Update billing attributes with the latest subscription
                     // Re-Signin so AWS Amplify can't retrieve old user data from localStorage
                     // If a user does refresh it will kick them out the login screen
                     // const r = await Auth.signIn(response.body.user['cognito:username']);

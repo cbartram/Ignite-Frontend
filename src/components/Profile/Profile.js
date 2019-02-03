@@ -207,8 +207,14 @@ class Profile extends Component {
                                     Subscriber
                                 </span>
                                 <span className="key">
-                                Plan
-                            </span>
+                                    Plan
+                                </span>
+                                <span className="key">
+                                    Active
+                                </span>
+                                <span className="key">
+                                    Trial End
+                                </span>
                             </div>
                             {/* Values */}
                             <div className="d-flex flex-column align-items-left align-self-center px-3">
@@ -233,6 +239,12 @@ class Profile extends Component {
                                         <span className="value">Basic Plan</span> :
                                         <span className="value missing">No Plan</span>
                                 }
+                                <span className="value">
+                                        { _.isNil(this.props.billing.subscription_active) ? 'None' : this.props.billing.subscription_active }
+                                </span>
+                                <span className="value">
+                                    { _.isNil(this.props.billing.trial_end) ? 'None' : <span className="badge badge-pill badge-primary">{ moment.unix(this.props.billing.trial_end).fromNow() }</span> }
+                                </span>
                             </div>
                         </div>
                     </Card>

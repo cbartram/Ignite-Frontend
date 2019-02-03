@@ -22,8 +22,11 @@ export default (state = {}, action) => {
                 premium,
                 plan,
                 plan_id,
-                subscription_id
+                subscription_id,
+                trial_end
             } = action.payload;
+
+            console.log(action.payload);
 
             return {
                 ...state,
@@ -41,7 +44,8 @@ export default (state = {}, action) => {
                 premium,
                 plan,
                 plan_id,
-                subscription_id
+                subscription_id,
+                trial_end,
             };
         case constants.BILLING_FAILURE:
             return {

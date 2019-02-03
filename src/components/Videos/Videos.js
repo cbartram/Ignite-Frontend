@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Container from "../Container/Container";
-import './Tracks.css';
+import './Videos.css';
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -12,22 +12,37 @@ const mapStateToProps = state => ({
 /**
  * This Component handles the routes which are displayed within index.js
  */
-class Tracks extends Component {
+class Videos extends Component {
 
-    renderVideos() {
-
-        if(typeof this.props.videos.videoList !== 'undefined') {
-            if (this.props.videos.videoList.length === 0) {
-                return (
-                    <div className="d-flex flex-column justify-content-center">
-                        <h3>No Recent Videos</h3>
-                        <Link to="/pricing" className="common-Button common-Button--default">
-                            Subscribe to Watch Videos
-                        </Link>
+    /**
+     * Renders a message telling users to subscribe in order to watch videos
+     */
+    static renderSubscribeMessage() {
+        return (
+            <div>
+                <div className="row">
+                    <div className="col-md-4 offset-md-4">
+                        <p className="common-BodyText">
+                            It looks like you aren't subscribed to ignite. If you would like to subscribe and
+                            watch all the high quality HD full stack development videos you can click the button below!
+                        </p>
                     </div>
-                )
-            }
+                </div>
+                <div className="d-flex flex-row justify-content-center">
+                    <Link to="/pricing" className="common-Button common-Button--default">
+                        Subscribe to Watch Videos
+                    </Link>
+                </div>
+            </div>
+        )
+    }
 
+    /**
+     * Renders a list of videos a user can choose from to watch.
+     * @returns {*}
+     */
+    renderVideos() {
+        if(typeof this.props.videos.videoList !== 'undefined') {
             return this.props.videos.videoList.map(track => {
                 return (
                     <div className="common-Card m-2" key={track.name}>
@@ -66,16 +81,23 @@ class Tracks extends Component {
                 <div className="d-flex flex-row justify-content-center">
                     <h1>Your Recent Videos</h1>
                 </div>
-                <div className="row">
-                    <div className="col-md-8 offset-md-2">
-                        <div className="d-flex flex-row justify-content-between">
-                            { this.renderVideos() }
+                {
+                    (typeof this.props.videos.videoList !== 'undefined' && this.props.videos.videoList.length === 0) &&
+                    Videos.renderSubscribeMessage()
+                }
+                {
+                    (typeof this.props.videos.videoList !== 'undefined' && this.props.videos.videoList.length > 0) &&
+                    <div className="row">
+                        <div className="col-md-8 offset-md-2">
+                            <div className="d-flex flex-row justify-content-between">
+                                { this.renderVideos() }
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
             </Container>
         )
     }
 }
 
-export default connect(mapStateToProps)(Tracks);
+export default connect(mapStateToProps)(Videos);
