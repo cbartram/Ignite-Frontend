@@ -219,9 +219,14 @@ class Profile extends Component {
                                 </div>
                             </div>
                             <div className="d-flex align-items-end justify-content-start mt-3">
-                                <button className="common-Button text-danger no-hover" onClick={() => this.unsubscribe()}>
-                                    Cancel Subscription
-                                </button>
+                                {
+                                    // Only show the button to user's who are subscribed
+                                    this.props.auth.user.premium &&
+                                    <button className="common-Button common-Button--danger"
+                                            onClick={() => this.unsubscribe()}>
+                                        Cancel Subscription
+                                    </button>
+                                }
                             </div>
                         </Card>
                     </div>
