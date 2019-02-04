@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { Auth } from 'aws-amplify';
 import { Link } from 'react-router-dom';
 import Container from "../Container/Container";
-import { loginRequest, loginSuccess, loginFailure, hideErrors } from "../../actions/actions";
+import { loginRequest, loginSuccess, loginFailure, hideErrors, fetchVideos } from "../../actions/actions";
 import Log from '../../Log';
 import Alert from '../Alert/Alert';
 import AlertContainer from '../AlertContainer/AlertContainer';
@@ -26,7 +26,8 @@ const mapDispatchToProps = dispatch => ({
     isFetching: (data) => dispatch(loginRequest(data)),
     loginSuccess: (data) => dispatch(loginSuccess(data)),
     loginFailure: (data) => dispatch(loginFailure(data)),
-    hideErrors: () => dispatch(hideErrors())
+    hideErrors: () => dispatch(hideErrors()),
+    fetchVideos: (email) => dispatch(fetchVideos(email))
 });
 
 /**
@@ -117,8 +118,9 @@ class Signup extends Component {
             await Auth.confirmSignUp(this.state.email, this.state.confirmationCode);
             const user = await Auth.signIn(this.state.email, this.state.password);
 
-            Log.info('Sign-in successful!');
             this.props.loginSuccess(user);
+            Log.info('Sign-in successful!');
+            this.props.fetchVideos(this.state.email);
             this.props.history.push('/videos');
         } catch (err) {
             Log.error('Error confirming user code or logging user in...', err);

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 import LoaderButton from "../LoaderButton/LoaderButton";
@@ -9,6 +8,13 @@ import moment from 'moment';
 import Container from '../Container/Container';
 import Card from '../Card/Card';
 import './Profile.css';
+import {
+    API_DELETE_SUBSCRIPTION,
+    API_KEY,
+    IS_PROD,
+    PROD_API_KEY,
+    getRequestUrl,
+} from "../../constants";
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -76,10 +82,40 @@ class Profile extends Component {
         }
     };
 
+    /**
+     * Un-subscribes a user from their current plan. Note:
+     * If they are NOT in their free trial period it will let them keep
+     * the subscription until the end of their period else it will cancel it immediately if they
+     * are in their trial period.
+     */
+    async unsubscribe() {
+        const params = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'x-api-key': IS_PROD ? PROD_API_KEY : API_KEY,
+            },
+            // Since this is calling an API these details are crucial for the lambda function to know which route to execute.
+            body: JSON.stringify({
+                headers: {},
+                method: 'POST',
+                path: API_DELETE_SUBSCRIPTION,
+                parameters: {}, // Query params
+                body: {
+                    email: this.props.auth.user.email
+                }
+            }),
+        };
+
+        // Attempt to make the API call
+       let response = await (await fetch(getRequestUrl(API_DELETE_SUBSCRIPTION), params)).json();
+       console.log(response);
+    }
+
 
 
     render() {
-        console.log(this.props.auth);
         let currentVideo = null;
         if(!this.props.videos.isFetching) {
             currentVideo = this.props.videos.videoList.sort((a, b) => a.scrubDuration - b.scrubDuration)[0];
@@ -183,8 +219,7 @@ class Profile extends Component {
                                 </div>
                             </div>
                             <div className="d-flex align-items-end justify-content-start mt-3">
-                                <button className="common-Button text-danger no-hover">
-                                    {/* TODO Implement this */}
+                                <button className="common-Button text-danger no-hover" onClick={() => this.unsubscribe()}>
                                     Cancel Subscription
                                 </button>
                             </div>

@@ -44,6 +44,7 @@ export const getRequestUrl = (endpointURI) => {
 export const API_FIND_ALL_USERS = '/users/find';
 export const API_FETCH_SIGNED_URL = '/security/signed-url/create';
 export const API_CREATE_SUBSCRIPTION = '/billing/subscription/create';
+export const API_DELETE_SUBSCRIPTION = '/billing/subscription/delete';
 
 // Prod Params
 export const PROD_URL = 'https://2147bwmah5.execute-api.us-east-1.amazonaws.com/prod';
