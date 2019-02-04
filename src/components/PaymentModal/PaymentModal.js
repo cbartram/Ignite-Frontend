@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import { updateUserAttributes, fetchBilling } from '../../actions/actions';
+import { updateUserAttributes, fetchVideos } from '../../actions/actions';
 import './PaymentModal.css';
 import Log from '../../Log';
 import {API_CREATE_SUBSCRIPTION, API_KEY, getRequestUrl, IS_PROD, PROD_API_KEY} from '../../constants';
@@ -12,7 +12,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
    updateUserAttributes: (payload) => dispatch(updateUserAttributes(payload)),
-   fetchBilling: (email) => dispatch(fetchBilling(email)),
+   fetchVideos: (email) => dispatch(fetchVideos(email)),
 });
 
 class PaymentModal extends Component {
@@ -167,7 +167,7 @@ class PaymentModal extends Component {
                 } else {
                     // Update redux with the new user attributes
                     this.props.updateUserAttributes(response.body.user);
-                    this.props.fetchBilling(this.props.auth.user.email);
+                    this.props.fetchVideos(this.props.auth.user.email);
 
 
                     // TODO Update billing attributes with the latest subscription
