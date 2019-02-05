@@ -18,7 +18,12 @@ export default class Card extends Component {
                    </div>
               }
               <div className={`card-body ${this.props.classNames && this.props.classNames.join(' ')}`}>
-                  { this.props.loading ? <span className="fa fa-circle-notch" /> : this.props.children }
+                  { this.props.loading ?
+                      <div className="d-flex flex-row justify-content-center">
+                          <span className="fa fa-3x fa-circle-notch" style={{ color: '#6772e5' }} />
+                      </div>
+                      : this.props.children
+                  }
               </div>
           </section>
       )

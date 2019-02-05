@@ -123,6 +123,7 @@ class Profile extends Component {
 
        // Update user attributes in redux sychronously (without doing another /users/find call)
        this.props.updateBillingSync(response.body.user.Attributes);
+       this.props.updateVideosSync([]);
     }
 
 
@@ -295,7 +296,7 @@ class Profile extends Component {
                                         { _.isNil(this.props.billing.subscription_active) ? 'None' : this.props.billing.subscription_active }
                                 </span>
                                 <span className="value">
-                                    { _.isNil(this.props.billing.trial_end) ? 'None' : <span className="badge badge-pill badge-primary">{ moment.unix(this.props.billing.trial_end).fromNow() }</span> }
+                                    { (_.isNil(this.props.billing.trial_end) || !this.props.billing.premium) ? 'None' : <span className="badge badge-pill badge-primary">{ moment.unix(this.props.billing.trial_end).fromNow() }</span> }
                                 </span>
                             </div>
                         </div>
