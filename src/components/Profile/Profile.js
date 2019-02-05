@@ -14,12 +14,19 @@ import {
     IS_PROD,
     PROD_API_KEY,
     getRequestUrl,
-} from "../../constants";
+} from '../../constants';
+import { updateBillingSync, updateVideosSync, requestVideos } from '../../actions/actions';
 
 const mapStateToProps = state => ({
     auth: state.auth,
     videos: state.videos,
     billing: state.billing,
+});
+
+const mapDispatchToProps = dispatch => ({
+   updateBillingSync: (payload) => dispatch(updateBillingSync(payload)),
+   updateVideosSync: (videos) => dispatch(updateVideosSync(videos)),
+   requestVideos: () => dispatch(requestVideos()),
 });
 
 /**
@@ -89,6 +96,9 @@ class Profile extends Component {
      * are in their trial period.
      */
     async unsubscribe() {
+        // Dispatch an isFetching for videos so that the loading screen appears
+        this.props.requestVideos();
+
         const params = {
             method: 'POST',
             headers: {
@@ -110,7 +120,9 @@ class Profile extends Component {
 
         // Attempt to make the API call
        let response = await (await fetch(getRequestUrl(API_DELETE_SUBSCRIPTION), params)).json();
-       console.log(response);
+
+       // Update user attributes in redux sychronously (without doing another /users/find call)
+       this.props.updateBillingSync(response.body.user.Attributes);
     }
 
 
@@ -126,7 +138,7 @@ class Profile extends Component {
                 <div className="row">
                     <div className="col-md-10 offset-md-1">
                         {/* Billing Card */}
-                        <Card cardTitle="Billing Information" classNames={['pb-0']}>
+                        <Card loading={this.props.videos.isFetching} cardTitle="Billing Information" classNames={['pb-0']}>
                             <div className="d-flex flex-row justify-content-between">
                                 {/* Keys*/}
                                 <div className="d-flex flex-column align-items-left align-self-center px-3">
@@ -210,7 +222,7 @@ class Profile extends Component {
                                                 </svg>
                                                 •••• { this.props.billing.payment_last_four }
                                                 </span>
-                                                <span className="value">
+                                                <span className="value ml-2">
                                                  { this.props.billing.payment_card_type }
                                                 </span>
                                             </div> :
@@ -221,7 +233,7 @@ class Profile extends Component {
                             <div className="d-flex align-items-end justify-content-start mt-3">
                                 {
                                     // Only show the button to user's who are subscribed
-                                    this.props.auth.user.premium &&
+                                    this.props.billing.premium &&
                                     <button className="common-Button common-Button--danger"
                                             onClick={() => this.unsubscribe()}>
                                         Cancel Subscription
@@ -233,7 +245,7 @@ class Profile extends Component {
                 </div>
                 <div className="d-flex flex-row justify-content-between pl-4">
                     {/* Info Card */}
-                    <Card cardTitle="Account Information">
+                    <Card loading={this.props.videos.isFetching} cardTitle="Account Information">
                         <div className="d-flex flex-row justify-content-between">
                             {/* Keys*/}
                             <div className="d-flex flex-column align-items-left align-self-center px-3">
@@ -266,7 +278,7 @@ class Profile extends Component {
                                 </span>
 
                                 {
-                                    this.props.auth.user['custom:premium'] === 'true' ?
+                                    this.props.billing.premium === 'true' ?
                                         <span className="badge badge-pill badge-success py-1 px-0">
                                   True
                               </span> :
@@ -289,7 +301,7 @@ class Profile extends Component {
                         </div>
                     </Card>
                     {/* Video Card*/}
-                    <Card cardTitle="Your Videos">
+                    <Card loading={this.props.videos.isFetching} cardTitle="Your Videos">
                         <div className="d-flex flex-row justify-content-between">
                             {/* Keys*/}
                             <div className="d-flex flex-column align-items-left align-self-center px-3">
@@ -341,7 +353,7 @@ class Profile extends Component {
                         </div>
                     </Card>
                     {/* Update Card */}
-                    <Card cardTitle="Update Password">
+                    <Card loading={this.props.videos.isFetching} cardTitle="Update Password">
                         <div className="ChangePassword">
                             <form onSubmit={this.handleChangeClick}>
                                 <FormGroup bsSize="large" controlId="oldPassword">
@@ -390,4 +402,4 @@ class Profile extends Component {
     }
 }
 
-export default connect(mapStateToProps)(Profile);
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

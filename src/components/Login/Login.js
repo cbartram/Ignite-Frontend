@@ -12,6 +12,7 @@ import {
     loginSuccess,
     loginRequest,
     fetchVideos,
+    updateVideosSync,
 } from '../../actions/actions';
 import Alert from "../Alert/Alert";
 import AlertContainer from "../AlertContainer/AlertContainer";
@@ -19,6 +20,7 @@ import _ from 'lodash';
 
 const mapStateToProps = state => ({
     auth: state.auth,
+    billing: state.billing,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -26,6 +28,7 @@ const mapDispatchToProps = dispatch => ({
     loginFailure: (data) => dispatch(loginFailure(data)),
     loginRequest: () => dispatch(loginRequest()),
     fetchVideos: (email) => dispatch(fetchVideos(email)),
+    updateVideosSync: (videos) => dispatch(updateVideosSync(videos)),
 });
 
 /**

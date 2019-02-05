@@ -104,6 +104,18 @@ export const fetchVideos = email => async dispatch => {
 };
 
 /**
+ * Synchronously dispatches an action which sets the isFetching property to true in the billing reducer
+ * This will automatically trigger the loading page in most instances.
+ * @returns {Function}
+ */
+export const requestVideos = () => dispatch => {
+  dispatch({
+      type: constants.REQUEST_VIDEOS,
+      payload: true,
+  });
+};
+
+/**
  * Retrieves billing information from the API and stores it in redux.
  * @param email String the users email to retrieve billing details
  * @returns {Function}
@@ -129,6 +141,32 @@ export const fetchBilling = email => async dispatch => {
             payload: { message: `Failed to retrieve billing data from API: ${JSON.stringify(response)}`}
         });
     }
+};
+
+
+/**
+ * Updates billing details for a user synchronously (without making an additional API call)
+ * @param payload Object user billing attributes.
+ * @returns {Function}
+ */
+export const updateBillingSync = (payload) => dispatch => {
+    dispatch({
+        type: constants.BILLING_SUCCESS,
+        payload,
+    })
+};
+
+
+/**
+ * Updates the videos list in redux synchronously (without making and additional API call)
+ * @param videos Array List of video objects.
+ * @returns {Function}
+ */
+export const updateVideosSync = (videos) => dispatch => {
+    dispatch({
+        type: constants.VIDEOS_SUCCESS,
+        payload: videos,
+    })
 };
 
 

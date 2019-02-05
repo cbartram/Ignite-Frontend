@@ -18,7 +18,7 @@ export default class Card extends Component {
                    </div>
               }
               <div className={`card-body ${this.props.classNames && this.props.classNames.join(' ')}`}>
-                { this.props.children }
+                  { this.props.loading ? <span className="fa fa-circle-notch" /> : this.props.children }
               </div>
           </section>
       )

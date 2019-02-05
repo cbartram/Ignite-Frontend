@@ -135,7 +135,7 @@ class PaymentModal extends Component {
                     path: API_CREATE_SUBSCRIPTION,
                     parameters: {}, // Query params
                     body: {
-                        ['cognito:username']: this.props.auth.user['cognito:username'],
+                        'cognito:username': this.props.auth.user['cognito:username'],
                         deviceKey: this.props.auth.user.deviceKey,
                         refreshToken: this.props.auth.user.refreshToken,
                         number: creditCard,
