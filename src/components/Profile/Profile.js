@@ -234,7 +234,7 @@ class Profile extends Component {
                             <div className="d-flex align-items-end justify-content-start mt-3">
                                 {
                                     // Only show the button to user's who are subscribed
-                                    this.props.billing.premium &&
+                                    (this.props.billing.premium && this.props.billing.premium !== 'false' ) &&
                                     <button className="common-Button common-Button--danger"
                                             onClick={() => this.unsubscribe()}>
                                         Cancel Subscription

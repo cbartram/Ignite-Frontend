@@ -44,14 +44,14 @@ class Navbar extends Component {
 
     render() {
         const authLinks = [
-            <Link className="p-2 text-dark" to="/videos" key="videos" onClick={() => this.handleLinkClick()}>Videos</Link>,
-            <Link className="p-2 text-dark" to="/library" key="library" onClick={() => this.handleLinkClick()}>Library</Link>,
-            <Link className="p-2 text-dark" to="/pricing" key="pricing" onClick={() => this.handleLinkClick()}>Pricing</Link>,
+            <Link className="p-3 text-dark" to="/videos" key="videos" onClick={() => this.handleLinkClick()}>Videos</Link>,
+            <Link className="p-3 text-dark" to="/library" key="library" onClick={() => this.handleLinkClick()}>Library</Link>,
+            <Link className="p-3 text-dark" to="/pricing" key="pricing" onClick={() => this.handleLinkClick()}>Pricing</Link>,
         ];
         const standardLinks = [
-            <Link className="p-2 text-dark" to="/login" key="login" onClick={() => this.handleLinkClick()}>Login</Link>,
-            <Link className="p-2 text-dark" to="/signup" key="signup" onClick={() => this.handleLinkClick()}>Sign Up</Link>,
-            <Link className="p-2 text-dark" to="/pricing" key="pricing" onClick={() => this.handleLinkClick()}>Pricing</Link>,
+            <Link className="p-3 text-dark" to="/login" key="login" onClick={() => this.handleLinkClick()}>Login</Link>,
+            <Link className="p-3 text-dark" to="/signup" key="signup" onClick={() => this.handleLinkClick()}>Sign Up</Link>,
+            <Link className="p-3 text-dark" to="/pricing" key="pricing" onClick={() => this.handleLinkClick()}>Pricing</Link>,
         ];
 
         return (
@@ -62,7 +62,7 @@ class Navbar extends Component {
                 <h5 className="my-0 mr-md-auto font-weight-normal">Ignite</h5>
                 <nav className="my-2 my-md-0 mr-md-3">
                     { this.props.auth.user ? authLinks.map(link => link) : standardLinks.map(link => link) }
-                    <Link className="p-2 text-dark" to="/support" onClick={() => this.handleLinkClick()}>Support</Link>
+                    <Link className="p-3 text-dark" to="/support" onClick={() => this.handleLinkClick()}>Support</Link>
                 </nav>
                 <ul className="dropdown-list">
                     {

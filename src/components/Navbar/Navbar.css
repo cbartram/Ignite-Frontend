@@ -1,9 +1,25 @@
 
 
-nav a:hover {
-    transition: border-bottom .3s;
-    text-decoration: none;
-    border-bottom: 3px solid #6772e5;
+nav a:hover::before {
+    /*transition: border-bottom .3s;*/
+    /*border-bottom: 3px solid #6772e5;*/
+    text-decoration: none !important;
+    background-color: #6772e5;
+    opacity: 1;
+    height: 25px;
+    width: 5px;
+    transform: rotateZ(200deg);
+}
+
+nav a::before {
+    text-decoration: none !important;
+    position: absolute;
+    content: " ";
+    margin-top: -12.5px;
+    margin-left: -10px;
+    height: 0;
+    top: 50%;
+    transition: height .3s ease 0s, width;
 }
 
 .fixed {
