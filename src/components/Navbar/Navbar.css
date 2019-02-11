@@ -1,8 +1,4 @@
-
-
 nav a:hover::before {
-    /*transition: border-bottom .3s;*/
-    /*border-bottom: 3px solid #6772e5;*/
     text-decoration: none !important;
     background-color: #6772e5;
     opacity: 1;
