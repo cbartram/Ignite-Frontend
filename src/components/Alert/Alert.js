@@ -34,7 +34,7 @@ export default class Alert extends Component {
                     { this.renderIconType() }
                     <div className="d-flex flex-column ml-3 mt-2">
                         <strong>{this.props.title}</strong>
-                        <div className="text-muted mb-0">
+                        <div className="text-muted mb-0 pr-2">
                             {this.props.children}
                         </div>
                     </div>
