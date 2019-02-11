@@ -11,6 +11,12 @@
     overflow: hidden;
 }
 
+@media all and (min-width: 760px) {
+    .Plan {
+        min-width: 400px;
+    }
+}
+
 .common-UppercaseText {
     font-size: 17px;
     line-height: 28px;
@@ -239,7 +245,6 @@ ul.Plan-list.Plan-list-updated {
 }
 
 .common-StripeGrid .stripeContainer .stripe:nth-child(3) {
-    grid-row: -8;
     grid-row: -6;
     grid-column: span 2/right-gutter-end;
     background-color: #87bbfd;

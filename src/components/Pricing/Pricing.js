@@ -99,11 +99,8 @@ class Pricing extends Component {
                     let message = `Your subscription has been created successfully and will automatically renew on ${ moment().format('MMM Do') }.`;
                     this.pushAlert('success', 'Subscription Successful', message)
                 }} />
-                <div className="d-flex flex-row justify-content-center my-3">
-                    <h1>Simple Plans. Flexible Pricing.</h1>
-                </div>
                 <div className="row">
-                    <div className="col-md-4 offset-md-4">
+                    <div className="col-lg-4 offset-md-4 col-md-4 offset-md-4 col-sm-8 offset-sm-2 px-4 mt-3">
                         <div className="Plan Plan--standard">
                             <h2 className="Plan-title common-UppercaseText">Basic Plan</h2>
                             <div className="Plan-description Plan-description-intergrated px-2">Access a complete suite of high
@@ -168,7 +165,6 @@ class Pricing extends Component {
                             <div className="stripe" />
                             <div className="stripe" />
                             <div className="stripe" />
-
                         </div>
                     </div>
                 </div>

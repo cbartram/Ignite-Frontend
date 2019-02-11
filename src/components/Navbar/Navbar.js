@@ -65,7 +65,7 @@ class Navbar extends Component {
                     <Link className="navbar-brand" to="/">
                         <img src={Logo} width="30" height="30" alt="Ignite Logo" />
                     </Link>
-                    <h5 className="my-0 mr-auto font-weight-normal">Ignite</h5>
+                    <h5 className="my-0 mr-md-auto font-weight-normal">Ignite</h5>
                     <div className="my-2 my-md-0 mr-md-3">
                         { this.props.auth.user ? authLinks.map(link => link) : standardLinks.map(link => link) }
                         <Link className="p-3 text-dark" to="/support" onClick={() => this.handleLinkClick()}>Support</Link>
