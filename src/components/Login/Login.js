@@ -139,39 +139,43 @@ class Login extends Component {
                         )
                     }
                 </AlertContainer>
-                <div className="Login">
-                    <form onSubmit={this.handleSubmit}>
-                        <FormGroup controlId="email" bsSize="large">
-                            <ControlLabel>Email</ControlLabel>
-                            <FormControl
-                                autoFocus
-                                className="form-field-default"
-                                type="email"
-                                value={this.state.email}
-                                onChange={this.handleChange}
-                            />
-                        </FormGroup>
-                        <FormGroup controlId="password" bsSize="large">
-                            <ControlLabel>Password</ControlLabel>
-                            <FormControl
-                                className="form-field-default"
-                                value={this.state.password}
-                                onChange={this.handleChange}
-                                type="password"
-                            />
-                        </FormGroup>
-                        <LoaderButton
-                            block
-                            bsSize="large"
-                            disabled={!this.validateForm()}
-                            type="submit"
-                            isLoading={this.props.auth.isFetching}
-                            text="Login"
-                            style={{marginBottom: 20}}
-                            loadingText="Logging in…"
-                        />
-                        <Link to="/login/reset" className="text-muted">Forgot your password?</Link>
-                    </form>
+                <div className="row">
+                    <div className="col-lg-5 offset-lg-4 col-md-5 offset-md-4 col-sm-3 offset-sm-4 col-xs-3">
+                        <div className="Login">
+                            <form onSubmit={this.handleSubmit}>
+                                <FormGroup controlId="email" bsSize="large">
+                                    <ControlLabel>Email</ControlLabel>
+                                    <FormControl
+                                        autoFocus
+                                        className="form-field-default"
+                                        type="email"
+                                        value={this.state.email}
+                                        onChange={this.handleChange}
+                                    />
+                                </FormGroup>
+                                <FormGroup controlId="password" bsSize="large">
+                                    <ControlLabel>Password</ControlLabel>
+                                    <FormControl
+                                        className="form-field-default"
+                                        value={this.state.password}
+                                        onChange={this.handleChange}
+                                        type="password"
+                                    />
+                                </FormGroup>
+                                <LoaderButton
+                                    block
+                                    bsSize="large"
+                                    disabled={!this.validateForm()}
+                                    type="submit"
+                                    isLoading={this.props.auth.isFetching}
+                                    text="Login"
+                                    style={{marginBottom: 20}}
+                                    loadingText="Logging in…"
+                                />
+                                <Link to="/login/reset" className="text-muted">Forgot your password?</Link>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </Container>
         );
