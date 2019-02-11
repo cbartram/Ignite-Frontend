@@ -238,6 +238,7 @@ class Signup extends Component {
     async resendConfirmationCode() {
         if(this.state.email.length === 0) {
             this.props.loginFailure({ code: 'InvalidEmailException', message: 'You must fill out your email first.'});
+            this.pushAlert('danger', 'Missing Email', '')
         } else {
             // New user must not be null this handles showing the confirmation dialog box
             try {
@@ -304,12 +305,16 @@ class Signup extends Component {
                     )
                 }
                 </AlertContainer>
-                <div className="Signup">
-                    {
-                        this.state.newUser === null
-                        ? this.renderForm()
-                        : this.renderConfirmationForm()
-                    }
+                <div className="row">
+                    <div className="col-lg-4 offset-lg-4 col-md-4 offset-md-4 col-sm-6 offset-sm-3 col-xs-6 offset-xs-2">
+                        <div className="Signup">
+                            {
+                                this.state.newUser === null
+                                ? this.renderForm()
+                                : this.renderConfirmationForm()
+                            }
+                        </div>
+                    </div>
                 </div>
             </Container>
         );

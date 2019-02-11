@@ -41,8 +41,17 @@ class Profile extends Component {
             password: "",
             oldPassword: "",
             isChanging: false,
-            confirmPassword: ""
+            confirmPassword: "",
+            showSlide: false,
         };
+    }
+
+    componentDidMount() {
+        // Determines if we should show the slide icon
+        const isOverflowing = this.slideable.offsetHeight < this.slideable.scrollHeight ||
+            this.slideable.offsetWidth < this.slideable.scrollWidth;
+
+        this.setState({ showSlide: isOverflowing });
     }
 
     /**
@@ -136,7 +145,7 @@ class Profile extends Component {
         }
 
         return (
-            <Container>
+            <Container noFooterMargin style={{backgroundColor: '#fff'}}>
                 <div className="row">
                     <div className="col-md-10 offset-md-1">
                         {/* Billing Card */}
@@ -272,7 +281,7 @@ class Profile extends Component {
                         </Card>
                     </div>
                 </div>
-                <div className="d-flex flex-row justify-content-between pl-4">
+                <div className="d-flex flex-row justify-content-between pl-4 card-slideable" ref={(el) => this.slideable = el}>
                     {/* Info Card */}
                     <Card loading={this.props.videos.isFetching} cardTitle="Account Information">
 
@@ -353,7 +362,6 @@ class Profile extends Component {
                     </Card>
                     {/* Video Card*/}
                     <Card loading={this.props.videos.isFetching} cardTitle="Your Videos">
-
                         <div className="table-responsive">
                             <table className="table table-borderless table-sm">
                                 <tbody>
@@ -422,7 +430,7 @@ class Profile extends Component {
                         </div>
                     </Card>
                     {/* Update Card */}
-                    <Card loading={this.props.videos.isFetching} cardTitle="Update Password">
+                    <Card loading={this.props.videos.isFetching} classNames={['mb-4']} cardTitle="Update Password">
                         <div className="ChangePassword">
                             <form onSubmit={this.handleChangeClick}>
                                 <FormGroup bsSize="large" controlId="oldPassword">
@@ -466,6 +474,14 @@ class Profile extends Component {
                         </div>
                     </Card>
                 </div>
+                {
+                    this.state.showSlide &&
+                    <div className="d-flex flex-row justify-content-center ">
+                        <div className="badge badge-pill badge-secondary">
+                            <i className="fas fa-2x fa-ellipsis-h" />
+                        </div>
+                    </div>
+                }
             </Container>
         )
     }
