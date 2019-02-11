@@ -55,42 +55,49 @@ class Navbar extends Component {
         ];
 
         return (
-            <div className={`d-flex flex-column flex-md-row align-items-center p-3 px-md-4 bg-white border-bottom shadow-sm`} style={{ ...this.props.style, zIndex: 50, position: 'relative'}}>
-                <Link className="navbar-brand" to="/">
-                    <img src={Logo} width="30" height="30" alt="Ignite Logo" />
-                </Link>
-                <h5 className="my-0 mr-md-auto font-weight-normal">Ignite</h5>
-                <nav className="my-2 my-md-0 mr-md-3">
-                    { this.props.auth.user ? authLinks.map(link => link) : standardLinks.map(link => link) }
-                    <Link className="p-3 text-dark" to="/support" onClick={() => this.handleLinkClick()}>Support</Link>
-                </nav>
-                <ul className="dropdown-list">
-                    {
-                        this.props.auth.user && (
-                            <li className="nav-item dropdown">
-                                <button className="btn btn-link dropdown-toggle" id="navbarDropdown" data-toggle="dropdown">
-                                    <div className="avatar-container">
-                                        <img src={this.props.auth.user['custom:profile_picture']} alt="Profile" className="avatar-image" height="30" width="30" />
+            <div className="navbar navbar-expand-lg p-3 px-md-4 bg-white border-bottom shadow-sm">
+                <button className="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon" />
+                </button>
+                <div className="collapse navbar-collapse d-flex flex-column flex-md-row align-items-center" style={{ ...this.props.style, zIndex: 50, position: 'relative'}}>
+                    <Link className="navbar-brand" to="/">
+                        <img src={Logo} width="30" height="30" alt="Ignite Logo" />
+                    </Link>
+                    <h5 className="my-0 mr-md-auto font-weight-normal">Ignite</h5>
+                    <nav className="my-2 my-md-0 mr-md-3">
+                        { this.props.auth.user ? authLinks.map(link => link) : standardLinks.map(link => link) }
+                        <Link className="p-3 text-dark" to="/support" onClick={() => this.handleLinkClick()}>Support</Link>
+                    </nav>
+                    <ul className="dropdown-list">
+                        {
+                            this.props.auth.user && (
+                                <li className="nav-item dropdown">
+                                    <button className="btn btn-link dropdown-toggle" id="navbarDropdown" data-toggle="dropdown">
+                                        <div className="avatar-container">
+                                            <img src={this.props.auth.user['custom:profile_picture']} alt="Profile" className="avatar-image" height="30" width="30" />
+                                        </div>
+                                    </button>
+                                    <div className="dropdown-menu dropdown-menu-right header-nav-item-profile-dropdown mt-2 py-0">
+                                        <h4 className="dropdown-title">
+                                            <Link to="/profile" className="header-nav-item-profile-dropdown-title-link">
+                                                <strong className="header-nav-item-profile-dropdown-title-name">
+                                                    {`${this.props.auth.user['custom:first_name']} ${this.props.auth.user['custom:last_name']}`}
+                                                </strong>
+                                                <span className="header-nav-item-profile-dropdown-title-label">View Profile</span>
+                                            </Link>
+                                        </h4>
+                                        <Link className="dropdown-item" to="/profile">Profile</Link>
+                                        <Link className="dropdown-item" to="/videos">Videos</Link>
+                                        <Link className="dropdown-item" to="/profile">Billing</Link>
+                                        <a className="dropdown-item dropdown-secondary" href="#logout" onClick={() => this.logout()}>Sign Out</a>
                                     </div>
-                                </button>
-                                <div className="dropdown-menu dropdown-menu-right header-nav-item-profile-dropdown mt-2 py-0">
-                                    <h4 className="dropdown-title">
-                                        <Link to="/profile" className="header-nav-item-profile-dropdown-title-link">
-                                            <strong className="header-nav-item-profile-dropdown-title-name">
-                                                {`${this.props.auth.user['custom:first_name']} ${this.props.auth.user['custom:last_name']}`}
-                                            </strong>
-                                            <span className="header-nav-item-profile-dropdown-title-label">View Profile</span>
-                                        </Link>
-                                    </h4>
-                                    <Link className="dropdown-item" to="/profile">Profile</Link>
-                                    <Link className="dropdown-item" to="/videos">Videos</Link>
-                                    <Link className="dropdown-item" to="/profile">Billing</Link>
-                                    <a className="dropdown-item dropdown-secondary" href="#logout" onClick={() => this.logout()}>Sign Out</a>
-                                </div>
-                            </li>
-                        )
-                    }
-                </ul>
+                                </li>
+                            )
+                        }
+                    </ul>
+                </div>
             </div>
         )
     }

@@ -50,6 +50,7 @@
 
 html {
   height: 100%;
+  overflow-x: hidden;
 }
 
 body {
@@ -59,6 +60,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   padding: 0;
   height: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
 }
 
 a {

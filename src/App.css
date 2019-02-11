@@ -24,168 +24,112 @@ h1.common-PageTitle {
     margin-top: 20px;
 }
 
-/* Intro Visual CSS */
-@media (min-width: 880px) {
-    .intro-visual {
-        top: -50px;
-    }
-}
-
-@media (min-width: 670px) {
-    .intro-visual {
-        right: -40px;
-        top: 0;
-        margin-bottom: 0;
-    }
-}
-
-@media (min-width: 420px) {
-    .intro-visual {
-        top: 150px;
-    }
-}
-
-.intro-visual {
-    --logoSize: 50px;
+/* Visual CSS */
+.icon-container {
+    width: 3000px;
+    height: 460px;
     position: relative;
-    top: -120px;
-    height: 0;
-    padding-bottom: 100%;
-    margin-bottom: -190px;
-    -webkit-transition: -webkit-filter .4s ease-in-out;
-    transition: -webkit-filter .4s ease-in-out;
-    transition: filter .4s ease-in-out;
-    transition: filter .4s ease-in-out,-webkit-filter .4s ease-in-out;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
+    left: 50px;
 }
 
-.intro-visual-container {
+.icon {
+    width: 150px;
+    height: 150px;
     position: absolute;
-    width: 75%;
-    height: 75%;
-    top: 50%;
+    /*margin: -75px 0 0 -75px;*/
+    border-radius: 50%;
+    -webkit-box-shadow: 0 15px 35px rgba(0,0,0,.1), 0 3px 10px rgba(0,0,0,.07);
+    box-shadow: 0 15px 35px rgba(0,0,0,.1), 0 3px 10px rgba(0,0,0,.07);
+}
+
+.icon-image-spotify {
+    background-image: url(https://stripe.com/img/v3/customers/logos/header-logos@2x.png?39);
+    background-position: -334px -506px;
+    left: 300px;
+    width: 152px;
+    height: 152px;
+}
+
+.icon-image-2 {
+    background-image: url(https://stripe.com/img/v3/customers/logos/header-logos@2x.png?39);
+    background-position: -334px -806px;
+    width: 152px;
+    left: 150px;
+
+}
+
+.icon-image-3 {
+    background-image: url(https://stripe.com/img/v3/customers/logos/header-logos@2x.png?39);
+    background-position: -434px -306px;
+    width: 152px;
+    left: 100px;
+
+}
+
+.icon-image-4 {
+    background-image: url(https://stripe.com/img/v3/customers/logos/header-logos@2x.png?39);
+    background-position: -934px -406px;
+    width: 152px;
+    left: 50px;
+
+}
+
+.icon-image-5 {
+    background-image: url(https://stripe.com/img/v3/customers/logos/header-logos@2x.png?39);
+    background-position: -34px -606px;
+    width: 152px;
+    left: -100px;
+
+}
+
+.icon-image-6 {
+    background-image: url(https://stripe.com/img/v3/customers/logos/header-logos@2x.png?39);
+    background-position: -634px -6px;
+    width: 152px;
+    left: -200px;
+
+}
+
+.icon-image-7 {
+    background-image: url(https://stripe.com/img/v3/customers/logos/header-logos@2x.png?39);
+    background-position: -434px 406px;
+    width: 152px;
+    left: -300px;
+}
+
+.icon-image-8 {
+    background-image: url(https://stripe.com/img/v3/customers/logos/header-logos@2x.png?39);
+    background-position: -934px -106px;
+    width: 152px;
+    left: -400px;
+}
+
+.icon span {
     left: 50%;
-    -webkit-transform: translate(-50%,-50%);
-    transform: translate(-50%,-50%);
+    bottom: -40px;
+    padding: 5px 12px;
+    background: #fff;
+    -webkit-box-shadow: 0 15px 35px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.07);
+    box-shadow: 0 15px 35px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.07);
+    border-radius: 50px;
+    white-space: nowrap;
+    font-size: 16px;
+    font-weight: 500;
+    color: #566b78;
+    pointer-events: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-transform: translate(-50%,-10px);
+    transform: translate(-50%,-10px);
+    opacity: 0;
+    -webkit-transition-property: opacity,-webkit-transform;
+    transition-property: opacity,-webkit-transform;
+    transition-property: opacity,transform;
+    transition-property: opacity,transform,-webkit-transform;
+    -webkit-transition-duration: .25s;
+    transition-duration: .25s;
+    -webkit-transition-timing-function: ease-out;
+    transition-timing-function: ease-out;
 }
-@media (min-width: 670px) {
-    .intro-visual--measured {
-        -webkit-transform: translate(-50%, -50%) translate(40px, 40px) perspective(2910px) rotateY(-30deg) rotateX(9deg) rotate(5deg) !important;
-        transform: translate(-50%, -50%) translate(40px, 40px) perspective(2910px) rotateY(-30deg) rotateX(9deg) rotate(5deg) !important;
-    }
-}
-
-.intro-visual .layer {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: #fff;
-    border-radius: 100%;
-    will-change: transform,opacity;
-    -webkit-box-shadow: 0 2px 5px 0 rgba(26,26,67,.05), 13px 20px 125px -25px rgba(50,50,93,.5), 16px 20px 75px -37.5px rgba(0,0,0,.6);
-    box-shadow: 0 2px 5px 0 rgba(26,26,67,.05), 13px 20px 125px -25px rgba(50,50,93,.5), 16px 20px 75px -37.5px rgba(0,0,0,.6);
-}
-
-.intro-visual .layer--stripe {
-    overflow: hidden;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    -webkit-filter: blur(1px);
-    filter: blur(1px);
-}
-
-.intro-visual .logo-rotator {
-    /* Transform will be dynamically added */
-    position: absolute;
-    left: calc(50% - var(--logoSize) / 2);
-    top: calc(50% - var(--logoSize) / 2);
-    width: var(--logoSize);
-    height: var(--logoSize);
-    border-radius: 100%;
-}
-
-.intro-visual .logo-scaler {
-    /* First 2 props added dynamically */
-    transform: scale(0.990018);
-    left: 238.296px;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    /*left: 0;*/
-    top: 0;
-    will-change: transform;
-}
-
-.intro-visual .logo {
-    /* Transform added dynamically */
-    transform: rotate(-376.077deg);
-    background-color: #fff;
-    -webkit-box-shadow: 0 13px 27px -5px rgba(50,50,93,.25), 0 8px 16px -8px rgba(0,0,0,.3);
-    box-shadow: 0 13px 27px -5px rgba(50,50,93,.25), 0 8px 16px -8px rgba(0,0,0,.3);
-    border-radius: 500px;
-}
-
-.intro-visual .logo, .intro-visual .logo-scaler {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    will-change: transform;
-}
-
-.HeaderVisualLogo-img1 {
-    background-position: 5px 20px;
-    width: 50px;
-    height: 50px;
-    /* Will be dynamic */
-    background-image: url(https://stripe.com/img/v3/partner_program/logos/partner-header-logos@2x.png?74);
-}
-
-.HeaderVisualLogo-img2 {
-    background-position: 5px 20px;
-    width: 50px;
-    height: 50px;
-    background-image: url(https://stripe.com/img/v3/partner_program/logos/partner-header-logos@2x.png?88);
-}
-
-.HeaderVisualLogo-img3 {
-    background-position: 5px 20px;
-    width: 50px;
-    height: 50px;
-    background-image: url(https://stripe.com/img/v3/partner_program/logos/partner-header-logos@2x.png?88);
-}
-
-.HeaderVisualLogo-img4 {
-    background-position: 5px 20px;
-    width: 50px;
-    height: 50px;
-    background-image: url(https://stripe.com/img/v3/partner_program/logos/partner-header-logos@2x.png?88);
-}
-
-.HeaderVisualLogo-img5 {
-    background-position: 5px 20px;
-    width: 50px;
-    height: 50px;
-    background-image: url(https://stripe.com/img/v3/partner_program/logos/partner-header-logos@2x.png?88);
-}
-
-.HeaderVisualLogo-img6 {
-    background-position: 5px 20px;
-    width: 50px;
-    height: 50px;
-    background-image: url(https://stripe.com/img/v3/partner_program/logos/partner-header-logos@2x.png?88);
-}
-
-
-
