@@ -1,4 +1,8 @@
-nav a:hover::before {
+.navbar {
+    z-index: 100;
+}
+
+.nav-links a:hover::before {
     text-decoration: none !important;
     background-color: #6772e5;
     opacity: 1;
@@ -7,7 +11,7 @@ nav a:hover::before {
     transform: rotateZ(200deg);
 }
 
-nav a::before {
+.nav-links a::before {
     text-decoration: none !important;
     position: absolute;
     content: " ";

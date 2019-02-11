@@ -6,6 +6,7 @@ import {hideErrors, logout} from '../../actions/actions';
 import { Auth } from 'aws-amplify';
 import Log from '../../Log';
 import './Navbar.css';
+import Sidebar from "../Sidebar/Sidebar";
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -20,6 +21,14 @@ const mapDispatchToProps = dispatch => ({
  * Shows the Navbar at the top of the page.
  */
 class Navbar extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            active: false, // True if the sidebar is active
+        }
+    }
+
     /**
      * Handles logging the user out by removing cookies/session history
      * @returns {Promise<void>}
@@ -55,7 +64,8 @@ class Navbar extends Component {
         ];
 
         return (
-            <div className="navbar navbar-expand-lg p-3 px-md-4 bg-white border-bottom shadow-sm">
+            <div>
+            <div className="navbar navbar-expand-lg pt-0 px-md-4 bg-white border-bottom shadow-sm">
                 <button className="navbar-toggler" type="button" data-toggle="collapse"
                         data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false"
                         aria-label="Toggle navigation">
@@ -66,7 +76,7 @@ class Navbar extends Component {
                         <img src={Logo} width="30" height="30" alt="Ignite Logo" />
                     </Link>
                     <h5 className="my-0 mr-md-auto font-weight-normal">Ignite</h5>
-                    <div className="my-2 my-md-0 mr-md-3">
+                    <div className="nav-links my-2 my-md-0 mr-md-3">
                         { this.props.auth.user ? authLinks.map(link => link) : standardLinks.map(link => link) }
                         <Link className="p-3 text-dark" to="/support" onClick={() => this.handleLinkClick()}>Support</Link>
                     </div>
@@ -97,8 +107,22 @@ class Navbar extends Component {
                             )
                         }
                     </ul>
+                    {
+                        this.props.sidebar &&
+                        <button className="common-Button common-Button--default" onClick={() => this.setState({ active: !this.state.active })}>
+                            <span className="fas fa-bars" />
+                        </button>
+                    }
                 </div>
             </div>
+                {
+                    this.props.sidebar &&
+                    <Sidebar
+                        active={this.state.active}
+                        onDismiss={() => this.setState({ active: false })}
+                    />
+                }
+           </div>
         )
     }
 }

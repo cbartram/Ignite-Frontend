@@ -10,9 +10,9 @@ export default class Container extends Component {
     render() {
         return (
             <div className="container-fluid" style={this.props.style}>
-                <Navbar/>
+                <Navbar sidebar={this.props.sidebar} />
                     {this.props.children}
-                {!this.props.noFooter && <Footer/>}
+                <Footer noMargin={this.props.noFooterMargin}/>
             </div>
         );
     }
