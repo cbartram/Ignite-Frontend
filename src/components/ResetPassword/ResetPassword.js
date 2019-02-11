@@ -254,7 +254,7 @@ class ResetPassword extends Component {
 
     render() {
         return (
-            <Container>
+            <Container style={{backgroundColor: '#ffffff'}}>
                 <AlertContainer>
                     {
                         this.state.alerts.map((props, index) =>
@@ -264,12 +264,16 @@ class ResetPassword extends Component {
                         )
                     }
                 </AlertContainer>
-                <div className="ResetPassword">
-                    {!this.state.codeSent
-                        ? this.renderRequestCodeForm()
-                        : !this.state.confirmed
-                            ? this.renderConfirmationForm()
-                            : this.renderSuccessMessage()}
+                <div className="row">
+                    <div className="col-lg-5 offset-lg-4 col-md-5 offset-md-4 col-sm-3 offset-sm-3 col-xs-3 offset-xs-3">
+                        <div className="ResetPassword">
+                            {!this.state.codeSent
+                                ? this.renderRequestCodeForm()
+                                : !this.state.confirmed
+                                    ? this.renderConfirmationForm()
+                                    : this.renderSuccessMessage()}
+                        </div>
+                    </div>
                 </div>
             </Container>
         );
