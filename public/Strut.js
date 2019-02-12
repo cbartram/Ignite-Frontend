@@ -1,183 +1,154 @@
 /**
- * Strut helper functions which are like JQuery
- * @type {{rangePosition: (function(*, *, *): number), random: (function(*, *): *), debounce: (function(*=, *=): Function), throttle: (function(*, *=, *=): Function), queryArray: (function(*=, *=)), ready: Window.Strut.ready, interpolate: (function(*, *, *): number), arrayRandom: (function(*): *), clamp: (function(*=, *=, *=): number)}}
+ * Helper functions to load all the images from a Sprite sheet given the image
+ * URL
+ * @param url String image url.
+ * @param callback Function callback function once all of the loading completes
  */
-window.Strut = {
-    random: function(t, e) {
-        return Math.random() * (e - t) + t
-    },
-    arrayRandom: function(t) {
-        return t[Math.floor(Math.random() * t.length)]
-    },
-    interpolate: function(t, e, n) {
-        return t * (1 - n) + e * n
-    },
-    rangePosition: function(t, e, n) {
-        return (n - t) / (e - t)
-    },
-    clamp: function(t, e, n) {
-        return Math.max(Math.min(t, n), e)
-    },
-    queryArray: function(t, e) {
-        return e || (e = document.body), Array.prototype.slice.call(e.querySelectorAll(t))
-    },
-    ready: function(t) {
-        "loading" !== document.readyState ? t() : document.addEventListener("DOMContentLoaded", t)
-    },
-    debounce: function(t, e) {
-        let n;
-        return function() {
-            clearTimeout(n);
-            n = setTimeout(function() {
-                return t.apply(this, arguments)
-            }, e)
-        }
-    },
-    isMobileViewport: false,
-    isRetina: true,
-    throttle: function(t, e, n) {
-        let i = n || this,
-            o = null,
-            a = null,
-            r = function() {
-                t.apply(i, a), o = null
-            };
-        return function() {
-            o || (a = arguments, o = setTimeout(r, e))
-        }
-    }
-};
-
-Strut.isRetina = window.devicePixelRatio > 1.3;
-Strut.mobileViewportWidth = 670;
-Strut.isMobileViewport = window.innerWidth < Strut.mobileViewportWidth;
-window.addEventListener("resize", function() {
-    Strut.isMobileViewport = window.innerWidth < Strut.mobileViewportWidth
-});
-
-Strut.load = {
-    images: function(t, e) {
-        "string" == typeof t && (t = [t]);
-        let n = -t.length;
-        t.forEach(function(t) {
-            let i = new Image;
-            i.src = t;
-            i.onload = function() {
-                0 === ++n && e && e()
+const loadImages = (url, callback) => {
+    "string" == typeof url && (url = [url]);
+    let n = -url.length;
+    url.forEach((t) => {
+        let i = new Image;
+        i.src = t;
+        i.onload = function() {
+            // Once everything is loaded call the callback function
+            if(0 === ++n && callback) {
+                callback();
             }
-        })
-    }
-};
-Strut.supports = {
-    es6: !!window.Symbol && !!window.Symbol.species,
-    pointerEvents: function() {
-        let t = document.createElement("a").style;
-        return t.cssText = "pointer-events:auto",
-        "auto" === t.pointerEvents
-    }(),
-    positionSticky: Boolean(window.CSS && CSS.supports("(position: -webkit-sticky) or (position: sticky)")),
-    masks: !/MSIE|Trident|Edge/i.test(navigator.userAgent)
+        }
+    })
 };
 
 /**
  * Logo Bubbles shown on the App.js page
- * @param e Config object
+ * @param config Configuration object for the LogoBubbles including things
+ * like x,y position, noise, the container element among others.
  * @constructor
  */
-function LogoBubbles(e) {
-    function n() {
-        c.vertShrink = s(1e3, 800, window.innerHeight), c.vertShrink = l(c.vertShrink, 0, 1)
+function LogoBubbles(config) {
+    // Initialize the logoBubbles object
+    let logoBubbles = {
+        ...config,
+        noiseT: 0,
+        scrollX: 0,
+        vertShrink: 0,
+        playing: false,
+        logosLoaded: false,
+        firstTick: null,
+        lastTick: 0,
+        container: document.querySelector(config.containerSelector),
+        tick, // Function called tick()
+    // logos: config.logos.map((title, index) => ({ index, title })),
+    };
+
+
+    /**
+     * Calls the first tick and initializes the animation.
+     */
+    function initialize() {
+        let e = logoBubbles.container.getBoundingClientRect();
+        if((e.bottom < 0 || e.top > window.innerHeight) && logoBubbles.playing) {
+            logoBubbles.playing = false;
+        } else if(e.bottom > 0 && e.top < window.innerHeight && !logoBubbles.playing) {
+            logoBubbles.playing = true;
+            requestAnimationFrame(function(e) {
+                logoBubbles.tick(e)
+            });
+        }
     }
 
-    function t() {
-        let e = c.container.getBoundingClientRect();
-        (e.bottom < 0 || e.top > window.innerHeight) && 1 === c.playing ? c.playing = !1 : e.bottom > 0 && e.top < window.innerHeight && 0 == c.playing && (c.playing = !0, requestAnimationFrame(function(e) {
-            c.tick(e)
-        }))
+    /**
+     * Main tick loop which updates the x/y style of each of the bubbles
+     * letting them move across the page.
+     * @param bubble Object bubble object
+     */
+    function updatePosition(bubble) {
+        let n = bubble.x + bubble.noiseX + logoBubbles.scrollX;
+        let yTranslate = translateY((bubble.y + bubble.noiseY), logoBubbles.containerHeight, logoBubbles.vertShrink * logoBubbles.maxShrink);
+        n < -200 && (bubble.x += logoBubbles.containerWidth);
+        let o = (computeFadeIn(bubble.introProgress) / 20 + .95) * bubble.scale;
+        bubble.el.style.opacity = computeFadeIn(bubble.introProgress);
+        bubble.el.style.transform = `translate(${n}px, ${yTranslate}px) scale(${o})`;
+
     }
 
-    function o(e) {
-        let n = e.x + e.noiseX + c.scrollX,
-            t = e.y + e.noiseY;
-        t = a(t, c.containerHeight / 2, c.vertShrink * c.maxShrink); n < -200 && (e.x += c.containerWidth);
-        let o = r(e.introProgress) / 20 + .95;
-        o *= e.scale;
-        e.el.style.opacity = r(e.introProgress);
-        let yTransform = a(t, c.containerHeight / 2, c.vertShrink * c.maxShrink);
-        e.el.style.transform = `translate(${n}px, ${t}px) scale(${o})`;
+    /**
+     * Computes how quickly the bubbles fade into the scene
+     * @param introProgress Integer the bubbles intro fade in progress.
+     * @returns {number}
+     */
+    function computeFadeIn(introProgress) {
+        return introProgress < .5 ? 2 * introProgress * introProgress : (4 - 2 * introProgress) * introProgress - 1
     }
 
-    function i(e) {
-        let n = 0,
-            t = 0,
-            o = null;
-        for (n = e.length - 1; n > 0; n -= 1) t = Math.floor(Math.random() * (n + 1)), o = e[n], e[n] = e[t], e[t] = o
+    /**
+     * Computes how the bubbles show translate in the y position.
+     * This function determines where the bubbles are placed within the container.
+     * @param noise
+     * @param containerHeight
+     * @param shrink Integer the shrink (which affects the logo bubbles scale)
+     * @returns {number}
+     */
+    function translateY(noise, containerHeight, shrink) {
+        return noise * (1 - shrink) + (containerHeight / 2) * shrink
     }
 
-    function r(e) {
-        return e < .5 ? 2 * e * e : (4 - 2 * e) * e - 1
-    }
+    /**
+     * Computes the next tick for re-drawing the Bubbles in their next frame
+     * @param time Integer tick event time
+     */
+    function tick(time) {
+            // Ensures the bubbles fade in at "random" times
+            logoBubbles.firstTick || (logoBubbles.firstTick = time);
+            time -= logoBubbles.firstTick;
+            let timeDelta = time - logoBubbles.lastTick;
 
-    function a(e, n, t) {
-        return e * (1 - t) + n * t
-    }
+            logoBubbles.lastTick = time;
+            logoBubbles.noiseT += timeDelta * logoBubbles.noiseSpeed;
+            logoBubbles.scrollX -= timeDelta * logoBubbles.scrollSpeed;
 
-    function s(e, n, t) {
-        return (t - e) / (n - e)
-    }
+            // Main loop which updates
+            for (let t = 0; t < logoBubbles.bubbles.length; t++) {
+                let i = logoBubbles.bubbles[t];
+                i.noiseX = noise(i.seedX + logoBubbles.noiseT) * logoBubbles.noiseScale - logoBubbles.noiseScale / 2,
+                    i.noiseY = noise(i.seedY + logoBubbles.noiseT) * logoBubbles.noiseScale - logoBubbles.noiseScale / 2,
+                logoBubbles.logosLoaded && i.introProgress < 1 && time > i.introDelay && (i.introProgress = Math.min(1, i.introProgress + timeDelta / logoBubbles.introDuration));
+                updatePosition(i)
+            }
+            logoBubbles.playing && requestAnimationFrame(logoBubbles.tick)
+        }
 
-    function l(e, n, t) {
-        return Math.max(Math.min(e, t), n)
-    }
-    let c = this;
-    for (let u in e) c[u] = e[u];
-    c.container = document.querySelector(c.containerSelector), c.noiseT = 0, c.scrollX = 0, c.logos.forEach(function(e, n) {
-        c.logos[n] = {
+    // Set the container element
+    logoBubbles.logos.forEach(function(e, n) {
+        logoBubbles.logos[n] = {
             index: n,
             title: e
         }
-    }),
-        i(c.logos),
-        c.vertShrink = 0,
-        n(),
-        window.addEventListener("resize", n),
-        c.playing = !1,
-        t(),
-        window.addEventListener("scroll", t),
-        c.logosLoaded = !1;
-    let d = "https://stripe.com/img/v3/customers/logos/header-logos" + (Strut.isRetina ? "@2x.png?2" : ".png?2");
-    Strut.load.images(d, function() {
-        c.logosLoaded = !0
     });
-    for (let u = 0; u < c.bubbles.length; u++) {
-        let f = c.bubbles[u],
-            y = u % c.logos.length;
-        f.scale = f.s || 1,
-            f.seedX = 1e4 * Math.random(),
-            f.seedY = 1e4 * Math.random(),
-            f.noiseX = f.noiseY = 0,
-            f.introDelay = Math.random() * c.introDelay,
-            f.introProgress = 0,
-            f.el = document.createElement("div"),
-            f.el.className = c.classPrefix + c.logos[y].title,
-            f.tagEl = document.createElement("span"),
-            f.tagEl.innerHTML = c.logos[y].title,
-            f.el.appendChild(f.tagEl), o(f),
-            c.container.appendChild(f.el)
-    }
-    c.firstTick = null, c.lastTick = 0, c.tick = function(e) {
-        c.firstTick || (c.firstTick = e),
-            e -= c.firstTick;
-        let n = e - c.lastTick;
-        c.lastTick = e, c.noiseT += n * c.noiseSpeed, c.scrollX -= n * c.scrollSpeed;
-        for (let t = 0; t < c.bubbles.length; t++) {
-            let i = c.bubbles[t];
-            i.noiseX = noise(i.seedX + c.noiseT) * c.noiseScale - c.noiseScale / 2,
-            i.noiseY = noise(i.seedY + c.noiseT) * c.noiseScale - c.noiseScale / 2,
-            c.logosLoaded && i.introProgress < 1 && e > i.introDelay && (i.introProgress = Math.min(1, i.introProgress + n / c.introDuration)),
-            o(i)
-        }
-        c.playing && requestAnimationFrame(c.tick)
+
+    // Initialize the first frame of the animation
+    initialize();
+
+    // Load the images
+    loadImages('https://stripe.com/img/v3/customers/logos/header-logos@2x.png?2', () => logoBubbles.logosLoaded = true);
+
+    for (let i = 0; i < logoBubbles.bubbles.length; i++) {
+        let bubble = logoBubbles.bubbles[i];
+        let y = i % logoBubbles.logos.length;
+
+        bubble.scale = bubble.s || 1;
+        bubble.seedX = 1e4 * Math.random();
+        bubble.seedY = 1e4 * Math.random();
+        bubble.noiseX = bubble.noiseY = 0;
+        bubble.introDelay = Math.random() * logoBubbles.introDelay;
+        bubble.introProgress = 0;
+        bubble.el = document.createElement("div");
+        bubble.el.className = logoBubbles.classPrefix + logoBubbles.logos[y].title;
+        bubble.tagEl = document.createElement("span");
+        bubble.tagEl.innerHTML = logoBubbles.logos[y].title;
+        bubble.el.appendChild(bubble.tagEl);
+        updatePosition(bubble);
+        logoBubbles.container.appendChild(bubble.el);
     }
 }
 let bubbles = [{
@@ -301,8 +272,17 @@ let bubbles = [{
     }, {
         x: 1990,
         y: 75
-    }],
-    logos = ["Affirm", "Amazon", "Asana", "BOOK A TIGER", "Blue Apron", "Catawiki", "Deliveroo", "Doordash", "Dribbble", "Facebook", "Fancy", "Fitbit", "Indiegogo", "Instacart", "Kickstarter", "Lyft", "OpenTable", "Panic", "Pinterest", "Postmates", "Rackspace", "Reddit", "SAP", "Salesforce", "Shopify", "Slack", "Spring", "Squarespace", "Target", "TaskRabbit", "Ted", "Teespring", "The Guardian", "TicketSwap", "WeTransfer", "Wish", "Wolfram Alpha", "Xero", "Yelp"];
+    }];
+
+let logos = ["Affirm", "Amazon", "Asana", "BOOK A TIGER",
+        "Blue Apron", "Catawiki", "Deliveroo", "Doordash",
+        "Dribbble", "Facebook", "Fancy", "Fitbit", "Indiegogo",
+        "Instacart", "Kickstarter", "Lyft", "OpenTable", "Panic",
+        "Pinterest", "Postmates", "Rackspace", "Reddit", "SAP", "Salesforce",
+        "Shopify", "Slack", "Spring", "Squarespace", "Target",
+        "TaskRabbit", "Ted", "Teespring", "The Guardian",
+        "TicketSwap", "WeTransfer", "Wish", "Wolfram Alpha",
+        "Xero", "Yelp"];
 
 /**
  * Additional functions
@@ -312,22 +292,23 @@ let perlin,
     perlin_octaves = 4,
     perlin_amp_falloff = .5,
     a = 0;
-    scaled_cosine = function(e) {
-        return .5 * (1 - Math.cos(e * Math.PI))
-    };
-    noise = function(e) {
-        if (null == perlin) {
-            perlin = new Array(PERLIN_SIZE + 1);
-            for (let n = 0; n < PERLIN_SIZE + 1; n++) perlin[n] = Math.random()
-        }
-        e < 0 && (e = -e);
-        for (let t, o, i = Math.floor(e), r = e - i, a = 0, s = .5, l = 0; l < perlin_octaves; l++) t = scaled_cosine(r), o = perlin[i & PERLIN_SIZE], o += t * (perlin[i + 1 & PERLIN_SIZE] - o), a += o * s, s *= perlin_amp_falloff, i <<= 1, (r *= 2) >= 1 && (i++, r--);
-        return a
-    };
+scaled_cosine = (e) => {
+    return .5 * (1 - Math.cos(e * Math.PI))
+};
+noise = (e) => {
+    if (null == perlin) {
+        perlin = new Array(PERLIN_SIZE + 1);
+        for (let n = 0; n < PERLIN_SIZE + 1; n++) perlin[n] = Math.random()
+    }
+    e < 0 && (e = -e);
+    for (let t, o, i = Math.floor(e), r = e - i, a = 0, s = .5, l = 0; l < perlin_octaves; l++) t = scaled_cosine(r), o = perlin[i & PERLIN_SIZE], o += t * (perlin[i + 1 & PERLIN_SIZE] - o), a += o * s, s *= perlin_amp_falloff, i <<= 1, (r *= 2) >= 1 && (i++, r--);
+    return a
+};
 
-
-Strut.ready(()=> {
-   console.log('Ready');
+/**
+ * Load the bubbles once the DOM is ready and all content is ready to be displayed.
+ */
+if("loading" !== document.readyState)
     window.logoBubbles = new LogoBubbles({
         bubbles,
         logos,
@@ -341,5 +322,21 @@ Strut.ready(()=> {
         scrollSpeed: .0175,
         introDelay: 1500,
         introDuration: 1500
-    })
-});
+    });
+else
+   document.addEventListener("DOMContentLoaded", () => {
+       window.logoBubbles = new LogoBubbles({
+           bubbles,
+           logos,
+           classPrefix: "Icon Icon-img",
+           containerSelector: ".icon-container",
+           containerWidth: 3e3,
+           containerHeight: 460,
+           maxShrink: .2,
+           noiseSpeed: 55e-6,
+           noiseScale: 80,
+           scrollSpeed: .0175,
+           introDelay: 1500,
+           introDuration: 1500
+       })
+   });
