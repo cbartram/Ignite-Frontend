@@ -65,7 +65,7 @@ class Navbar extends Component {
 
         return (
             <div>
-            <div className="navbar navbar-expand-lg pt-0 px-md-4 bg-white border-bottom shadow-sm">
+            <div className="navbar navbar-expand-lg px-md-4 bg-white border-bottom shadow-sm">
                 <button className="navbar-toggler" type="button" data-toggle="collapse"
                         data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false"
                         aria-label="Toggle navigation">

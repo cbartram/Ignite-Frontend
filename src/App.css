@@ -32,79 +32,22 @@ h1.common-PageTitle {
     left: 50px;
 }
 
-.icon {
-    width: 150px;
-    height: 150px;
+.Icon {
     position: absolute;
-    /*margin: -75px 0 0 -75px;*/
+    background-image: url(https://stripe.com/img/v3/customers/logos/header-logos@2x.png?2);
+    will-change: transform,opacity;
+    -webkit-background-size: 1076px 1076px;
+    background-size: 1076px 1076px;
+    margin: -45px 0 0 -75px;
     border-radius: 50%;
     -webkit-box-shadow: 0 15px 35px rgba(0,0,0,.1), 0 3px 10px rgba(0,0,0,.07);
     box-shadow: 0 15px 35px rgba(0,0,0,.1), 0 3px 10px rgba(0,0,0,.07);
-}
-
-.icon-image-spotify {
-    background-image: url(https://stripe.com/img/v3/customers/logos/header-logos@2x.png?39);
-    background-position: -334px -506px;
-    left: 300px;
     width: 152px;
     height: 152px;
 }
 
-.icon-image-2 {
-    background-image: url(https://stripe.com/img/v3/customers/logos/header-logos@2x.png?39);
-    background-position: -334px -806px;
-    width: 152px;
-    left: 150px;
-
-}
-
-.icon-image-3 {
-    background-image: url(https://stripe.com/img/v3/customers/logos/header-logos@2x.png?39);
-    background-position: -434px -306px;
-    width: 152px;
-    left: 100px;
-
-}
-
-.icon-image-4 {
-    background-image: url(https://stripe.com/img/v3/customers/logos/header-logos@2x.png?39);
-    background-position: -934px -406px;
-    width: 152px;
-    left: 50px;
-
-}
-
-.icon-image-5 {
-    background-image: url(https://stripe.com/img/v3/customers/logos/header-logos@2x.png?39);
-    background-position: -34px -606px;
-    width: 152px;
-    left: -100px;
-
-}
-
-.icon-image-6 {
-    background-image: url(https://stripe.com/img/v3/customers/logos/header-logos@2x.png?39);
-    background-position: -634px -6px;
-    width: 152px;
-    left: -200px;
-
-}
-
-.icon-image-7 {
-    background-image: url(https://stripe.com/img/v3/customers/logos/header-logos@2x.png?39);
-    background-position: -434px 406px;
-    width: 152px;
-    left: -300px;
-}
-
-.icon-image-8 {
-    background-image: url(https://stripe.com/img/v3/customers/logos/header-logos@2x.png?39);
-    background-position: -934px -106px;
-    width: 152px;
-    left: -400px;
-}
-
-.icon span {
+.Icon span {
+    position: absolute;
     left: 50%;
     bottom: -40px;
     padding: 5px 12px;
@@ -133,3 +76,268 @@ h1.common-PageTitle {
     -webkit-transition-timing-function: ease-out;
     transition-timing-function: ease-out;
 }
+
+.Icon:hover span {
+    opacity: 0.9;
+    transform: translate(-50%, 0);
+}
+
+.Icon-imgAffirm {
+    background-position: 0 0;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgAllianz {
+    background-position: -154px 0;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgAmazon {
+    background-position: 0 -154px;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgBlueApron {
+    background-position: -154px -154px;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgCatawiki {
+    background-position: -308px 0;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgCityofBoston {
+    background-position: -308px -154px;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgDeliveroo {
+    background-position: 0 -308px;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgDiDi {
+    background-position: -154px -308px;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgDoordash {
+    background-position: -308px -308px;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgExpedia {
+    background-position: -462px 0;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgFacebook {
+    background-position: -462px -154px;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgFender {
+    background-position: -462px -308px;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgFitbit {
+    background-position: 0 -462px;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgGoogle {
+    background-position: -154px -462px;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgIndiegogo {
+    background-position: -308px -462px;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgInstacart {
+    background-position: -462px -462px;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgKickstarter {
+    background-position: -616px 0;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgLyft {
+    background-position: -616px -154px;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgNasdaq {
+    background-position: -616px -308px;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgNat-Geo {
+    background-position: -616px -462px;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgOpenTable {
+    background-position: 0 -616px;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgPanic {
+    background-position: -154px -616px;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgPinterest {
+    background-position: -308px -616px;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgPostmates {
+    background-position: -462px -616px;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgRackspace {
+    background-position: -616px -616px;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgReddit {
+    background-position: -770px 0;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgSalesforce {
+    background-position: -770px -154px;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgShopify {
+    background-position: -770px -308px;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgSlack {
+    background-position: -770px -462px;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgSpotify {
+    background-position: -770px -616px;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgSquarespace {
+    background-position: 0 -770px;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgTarget {
+    background-position: -154px -770px;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgTaskRabbit {
+    background-position: -308px -770px;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgTed {
+    background-position: -462px -770px;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgTheGuardian {
+    background-position: -616px -770px;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgTicketSwap {
+    background-position: -770px -770px;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgTwitch {
+    background-position: -924px 0;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgUber {
+    background-position: -924px -154px;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgWeTransfer {
+    background-position: -924px -308px;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgWish {
+    background-position: -924px -462px;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgXero {
+    background-position: -924px -616px;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgYelp {
+    background-position: -924px -770px;
+    width: 152px;
+    height: 152px
+}
+
+.Icon-imgZillow {
+    background-position: 0 -924px;
+    width: 152px;
+    height: 152px
+}
+
+

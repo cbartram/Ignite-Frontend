@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "animateplus": "^2.1.1",
     "aws-amplify": "^1.1.19",
     "debug": "^4.1.1",
     "lodash": "^4.17.11",

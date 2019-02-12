@@ -62,32 +62,7 @@ class App extends Component {
     return (
       <Container>
           {/* Visual Flow */}
-          <div className="icon-container">
-            <div className="icon icon-sm icon-image-spotify" style={{ transform: `translate(${this.state.xTranslations[0]}px, ${this.state.yTranslations[0]}px) scale(.6)`}}>
-                <span>Twitch</span>
-            </div>
-              <div className="icon icon-sm icon-image-2" style={{ transform: `translate(${this.state.xTranslations[1]}px, ${this.state.yTranslations[1]}px) scale(1)`}}>
-                  <span>Twitch</span>
-              </div>
-              <div className="icon icon-sm icon-image-3" style={{ transform: `translate(${this.state.xTranslations[2]}px, ${this.state.yTranslations[2]}px) scale(.6)`}}>
-                  <span>Twitch</span>
-              </div>
-              <div className="icon icon-sm icon-image-4" style={{ transform: `translate(${this.state.xTranslations[3]}px, ${this.state.yTranslations[3]}px) scale(.8)`}}>
-                  <span>Twitch</span>
-              </div>
-              <div className="icon icon-sm icon-image-5" style={{ transform: `translate(${this.state.xTranslations[4]}px, ${this.state.yTranslations[4]}px) scale(.8)`}}>
-                  <span>Twitch</span>
-              </div>
-              <div className="icon icon-sm icon-image-6" style={{ transform: `translate(${this.state.xTranslations[5]}px, ${this.state.yTranslations[5]}px) scale(1)`}}>
-                  <span>Twitch</span>
-              </div>
-              <div className="icon icon-sm icon-image-7" style={{ transform: `translate(${this.state.xTranslations[6]}px, ${this.state.yTranslations[6]}px) scale(1)`}}>
-                  <span>Twitch</span>
-              </div>
-              <div className="icon icon-sm icon-image-8" style={{ transform: `translate(${this.state.xTranslations[7]}px, ${this.state.yTranslations[7]}px) scale(.6)`}}>
-                  <span>Twitch</span>
-              </div>
-          </div>
+          <div className="icon-container" />
           <div className="d-flex flex-row justify-content-center">
               {/* Intro Column*/}
               <div className="col-md-8 offset-md-2">
