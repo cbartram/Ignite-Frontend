@@ -35,6 +35,8 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
     "chai": "^4.2.0",
     "mocha": "^5.2.0"
   }

@@ -1,25 +1,4 @@
 /**
- * Helper functions to load all the images from a Sprite sheet given the image
- * URL
- * @param url String image url.
- * @param callback Function callback function once all of the loading completes
- */
-const loadImages = (url, callback) => {
-    "string" == typeof url && (url = [url]);
-    let n = -url.length;
-    url.forEach((t) => {
-        let i = new Image;
-        i.src = t;
-        i.onload = function() {
-            // Once everything is loaded call the callback function
-            if(0 === ++n && callback) {
-                callback();
-            }
-        }
-    })
-};
-
-/**
  * Logo Bubbles shown on the App.js page
  * @param config Configuration object for the LogoBubbles including things
  * like x,y position, noise, the container element among others.
@@ -38,7 +17,6 @@ function LogoBubbles(config) {
         lastTick: 0,
         container: document.querySelector(config.containerSelector),
         tick, // Function called tick()
-    // logos: config.logos.map((title, index) => ({ index, title })),
     };
 
 
@@ -52,6 +30,7 @@ function LogoBubbles(config) {
         } else if(e.bottom > 0 && e.top < window.innerHeight && !logoBubbles.playing) {
             logoBubbles.playing = true;
             requestAnimationFrame(function(e) {
+                loadImages();
                 logoBubbles.tick(e)
             });
         }
@@ -66,26 +45,16 @@ function LogoBubbles(config) {
         let n = bubble.x + bubble.noiseX + logoBubbles.scrollX;
         let yTranslate = translateY((bubble.y + bubble.noiseY), logoBubbles.containerHeight, logoBubbles.vertShrink * logoBubbles.maxShrink);
         n < -200 && (bubble.x += logoBubbles.containerWidth);
-        let o = (computeFadeIn(bubble.introProgress) / 20 + .95) * bubble.scale;
-        bubble.el.style.opacity = computeFadeIn(bubble.introProgress);
-        bubble.el.style.transform = `translate(${n}px, ${yTranslate}px) scale(${o})`;
-
-    }
-
-    /**
-     * Computes how quickly the bubbles fade into the scene
-     * @param introProgress Integer the bubbles intro fade in progress.
-     * @returns {number}
-     */
-    function computeFadeIn(introProgress) {
-        return introProgress < .5 ? 2 * introProgress * introProgress : (4 - 2 * introProgress) * introProgress - 1
+        let scale = ((bubble.introProgress / 20) + .95) * bubble.scale;
+        bubble.el.style.opacity = bubble.introProgress;
+        bubble.el.style.transform = `translate(${n}px, ${yTranslate}px) scale(${scale})`;
     }
 
     /**
      * Computes how the bubbles show translate in the y position.
      * This function determines where the bubbles are placed within the container.
      * @param noise
-     * @param containerHeight
+     * @param containerHeight Integer the height of the container element
      * @param shrink Integer the shrink (which affects the logo bubbles scale)
      * @returns {number}
      */
@@ -94,7 +63,18 @@ function LogoBubbles(config) {
     }
 
     /**
-     * Computes the next tick for re-drawing the Bubbles in their next frame
+     * Loads the sprite sheet into a Javascript Image object and makes use
+     * of the onload callback function to determine when the image is ready to be processed.
+     * @param url String url of the image.
+     */
+    function loadImages(url = 'https://stripe.com/img/v3/customers/logos/header-logos@2x.png?2') {
+        const image = new Image;
+        image.src = url;
+        image.onload = () => logoBubbles.logosLoaded = true;
+    }
+
+    /**
+     * Computes the next tick for re-drawing the Bubbles in their next frame.
      * @param time Integer tick event time
      */
     function tick(time) {
@@ -108,48 +88,37 @@ function LogoBubbles(config) {
             logoBubbles.scrollX -= timeDelta * logoBubbles.scrollSpeed;
 
             // Main loop which updates
-            for (let t = 0; t < logoBubbles.bubbles.length; t++) {
-                let i = logoBubbles.bubbles[t];
-                i.noiseX = noise(i.seedX + logoBubbles.noiseT) * logoBubbles.noiseScale - logoBubbles.noiseScale / 2,
-                    i.noiseY = noise(i.seedY + logoBubbles.noiseT) * logoBubbles.noiseScale - logoBubbles.noiseScale / 2,
-                logoBubbles.logosLoaded && i.introProgress < 1 && time > i.introDelay && (i.introProgress = Math.min(1, i.introProgress + timeDelta / logoBubbles.introDuration));
-                updatePosition(i)
-            }
+            logoBubbles.bubbles.map(bubble => {
+                if(logoBubbles.logosLoaded && bubble.introProgress < 1 && time > bubble.introDelay)
+                    bubble.introProgress = Math.min(1, bubble.introProgress + timeDelta / logoBubbles.introDuration);
+                updatePosition(bubble);
+            });
+
             logoBubbles.playing && requestAnimationFrame(logoBubbles.tick)
         }
 
     // Set the container element
-    logoBubbles.logos.forEach(function(e, n) {
-        logoBubbles.logos[n] = {
-            index: n,
-            title: e
-        }
-    });
+    logoBubbles.logos = logoBubbles.logos.map((title, index) => ({ index, title }));
 
     // Initialize the first frame of the animation
     initialize();
 
-    // Load the images
-    loadImages('https://stripe.com/img/v3/customers/logos/header-logos@2x.png?2', () => logoBubbles.logosLoaded = true);
-
-    for (let i = 0; i < logoBubbles.bubbles.length; i++) {
-        let bubble = logoBubbles.bubbles[i];
-        let y = i % logoBubbles.logos.length;
-
-        bubble.scale = bubble.s || 1;
-        bubble.seedX = 1e4 * Math.random();
-        bubble.seedY = 1e4 * Math.random();
+    // Sets up each of the DOM nodes for the bubbles
+    logoBubbles.bubbles.map((bubble, index) => {
+        bubble.scale = bubble.s || 1; // Default the scale to 1 if its not set
+        bubble.seedX = 10000 * Math.random();
+        bubble.seedY = 10000 * Math.random();
         bubble.noiseX = bubble.noiseY = 0;
         bubble.introDelay = Math.random() * logoBubbles.introDelay;
         bubble.introProgress = 0;
         bubble.el = document.createElement("div");
-        bubble.el.className = logoBubbles.classPrefix + logoBubbles.logos[y].title;
+        bubble.el.className = logoBubbles.classPrefix + logoBubbles.logos[index].title;
         bubble.tagEl = document.createElement("span");
-        bubble.tagEl.innerHTML = logoBubbles.logos[y].title;
+        bubble.tagEl.innerHTML = logoBubbles.logos[index].title;
         bubble.el.appendChild(bubble.tagEl);
-        updatePosition(bubble);
         logoBubbles.container.appendChild(bubble.el);
-    }
+        updatePosition(bubble);
+    });
 }
 let bubbles = [{
         s: .6,
@@ -283,27 +252,6 @@ let logos = ["Affirm", "Amazon", "Asana", "BOOK A TIGER",
         "TaskRabbit", "Ted", "Teespring", "The Guardian",
         "TicketSwap", "WeTransfer", "Wish", "Wolfram Alpha",
         "Xero", "Yelp"];
-
-/**
- * Additional functions
- */
-let perlin,
-    PERLIN_SIZE = 4095,
-    perlin_octaves = 4,
-    perlin_amp_falloff = .5,
-    a = 0;
-scaled_cosine = (e) => {
-    return .5 * (1 - Math.cos(e * Math.PI))
-};
-noise = (e) => {
-    if (null == perlin) {
-        perlin = new Array(PERLIN_SIZE + 1);
-        for (let n = 0; n < PERLIN_SIZE + 1; n++) perlin[n] = Math.random()
-    }
-    e < 0 && (e = -e);
-    for (let t, o, i = Math.floor(e), r = e - i, a = 0, s = .5, l = 0; l < perlin_octaves; l++) t = scaled_cosine(r), o = perlin[i & PERLIN_SIZE], o += t * (perlin[i + 1 & PERLIN_SIZE] - o), a += o * s, s *= perlin_amp_falloff, i <<= 1, (r *= 2) >= 1 && (i++, r--);
-    return a
-};
 
 /**
  * Load the bubbles once the DOM is ready and all content is ready to be displayed.
