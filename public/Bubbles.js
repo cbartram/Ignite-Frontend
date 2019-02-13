@@ -243,6 +243,7 @@ let bubbles = [{
         y: 75
     }];
 
+// These are placed in the <span /> node and
 let logos = ["Affirm", "Amazon", "Asana", "BOOK A TIGER",
         "Blue Apron", "Catawiki", "Deliveroo", "Doordash",
         "Dribbble", "Facebook", "Fancy", "Fitbit", "Indiegogo",

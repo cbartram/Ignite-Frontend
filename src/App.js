@@ -61,8 +61,16 @@ class App extends Component {
     render() {
     return (
       <Container>
-          {/* Visual Flow */}
-          <div className="icon-container" />
+          <div className="header-hero">
+              <div className="StripeBackground accelerated">
+                  <div className="stripe s0" />
+                  <div className="stripe s1" />
+                  <div className="stripe s2" />
+                  <div className="stripe s3" />
+              </div>
+              {/* Visual Bubbles Flow */}
+              <div className="icon-container" />
+          </div>
           <div className="d-flex flex-row justify-content-center">
               {/* Intro Column*/}
               <div className="col-md-8 offset-md-2">
