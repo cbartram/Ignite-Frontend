@@ -8,6 +8,15 @@
     line-height: 32px;
 }
 
+h2.common-UppercaseText {
+    font-size: 17px;
+    line-height: 28px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .025em;
+    color: #24b47e;
+}
+
 h1.common-PageTitle {
     font-size: 45px;
     line-height: 60px;
@@ -24,6 +33,26 @@ h1.common-PageTitle {
     margin-top: 20px;
 }
 
+.common-Link {
+    color: #6772e5;
+    font-weight: 500;
+    -webkit-transition: color .1s ease;
+    transition: color .1s ease;
+    cursor: pointer;
+}
+
+.common-Link:hover {
+    text-decoration: none;
+    color: #32325d;
+}
+
+.common-Link--arrow:after {
+    font: normal 16px StripeIcons;
+    content: "\2192";
+    padding-left: 5px;
+}
+
+/* Header & Stripes Styles */
 .header-hero {
     position: relative;
     width: 100%;
@@ -406,4 +435,12 @@ h1.common-PageTitle {
     height: 152px
 }
 
+/* Developer Section Styles */
+#developers-section {
+    background: white;
+}
+
+#flexible-learning {
+    border-right: 2px solid #f6f9fc;
+}
 

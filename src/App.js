@@ -9,58 +9,9 @@ const mapStateToProps = state => ({
 });
 
 class App extends Component {
-  constructor(props) {
-      super(props);
-
-      this.state = {
-          xTranslations: [0, 10, 290, 30, 40, 50, 60, 70],
-          xTranslationDefault: [0, 10, 290, 30, 40, 50, 60, 70],
-          yTranslations: [65, 274, 359, 98, 314, 122, 310, 149], // Mutated y translations
-          yTranslationDefault: [65, 274, 359, 98, 314, 122, 310, 149] // Static default y translations used for reference
-      }
-  }
-
-  componentDidMount() {
-      const speed = 1.5; // How fast each of the bubbles move (negative value changes direction)
-      setInterval(() => {
-          let { xTranslations, yTranslations } = this.state;
-
-          xTranslations = xTranslations.map((translation, i) => {
-              // if translation > screen width set to its default
-              if(translation > window.innerWidth + 200) {
-                  return this.state.xTranslationDefault[i]
-              }
-              translation += speed;
-
-              return translation;
-          });
-
-          yTranslations = yTranslations.map((translation, i) => {
-              let maxY = this.state.yTranslationDefault[i] + 10; // The max is + 10 pixels
-              let minY  = this.state.yTranslationDefault[i] - 10; // The min is -10 pixels
-              if(translation >= minY) {
-                  translation -= 1;
-              }
-              if(translation <= maxY) {
-                  translation += 1;
-              } else {
-                  console.log('foo');
-              }
-
-              return translation;
-          });
-
-
-          this.setState({
-              xTranslations,
-              yTranslations,
-          })
-      }, 100);
-  }
-
     render() {
     return (
-      <Container>
+      <Container noFooterMargin>
           <div className="header-hero">
               <div className="StripeBackground accelerated">
                   <div className="stripe s0" />
@@ -85,45 +36,38 @@ class App extends Component {
                   </p>
               </div>
           </div>
-          <div className="d-flex flex-column justify-content-center align-items-center">
-              {/* Render the Login form if the user is logged in */}
-              {
-                  this.props.auth.user === null ?
-                  <div>
-                      <Link to="/login">
-                          <button className="common-Button mr-2">
-                            Login <i className="fas fa-sign-in-alt" />
-                          </button>
+          <section id="developers-section" className="py-4">
+              <div className="row">
+                  <div className="col-md-4 offset-md-3 col-sm-5 offset-sm-1 pl-3" id="flexible-learning">
+                      <img src="https://stripe.com/img/v3/customers/section-icons/sharing.svg" width="66" height="66" alt="Network grid" />
+                      <h2 className="common-UppercaseText mt-4">
+                        Flexible Learning
+                      </h2>
+                      <p className="common-BodyText">
+                          Learning a new skill doesn’t have to interrupt your busy schedule. Our on-demand videos and
+                          interactive code challenges are there for you when you need them. Keep your day job while you
+                          hone your development skills at your own pace.
+                      </p>
+                      <Link className="common-BodyText common-Link common-Link--arrow" to="/">
+                          Learn about Ignite's products
                       </Link>
-                      <Link to="/signup">
-                          <button className="common-Button common-Button--default">
-                              Sign Up <i className="fas fa-plus" />
-                          </button>
+                  </div>
+                  <div className="col-md-4 col-sm-5 pl-3">
+                      <img src="https://stripe.com/img/v3/customers/section-icons/platforms.svg" width="66" height="66" alt="Stack of squares" />
+                      <h2 className="common-UppercaseText mt-4">
+                          Modern Stack
+                      </h2>
+                      <p className="common-BodyText">
+                          Technology changes fast. Our course adapts to the constantly shifting technological landscape
+                          and provides up to date information on how to develop modern full stack applications with a suite
+                          of real world open source tools.
+                      </p>
+                      <Link className="common-BodyText common-Link common-Link--arrow" to="/">
+                          Learn About Ignite
                       </Link>
-                  </div> :
-                  <p>Welcome thanks for logging in!</p>
-              }
-          </div>
-          {/*<div className="common-StripeGrid anchorBottom">*/}
-              {/*<div className="backgroundContainer">*/}
-                  {/*<div className="grid">*/}
-                      {/*<div className="background" />*/}
-                  {/*</div>*/}
-              {/*</div>*/}
-              {/*<div className="stripeContainer" style={{ height: '36%', zIndex: -1}}>*/}
-                  {/*<div className="grid">*/}
-                      {/*<div className="stripe" />*/}
-                      {/*<div className="stripe" />*/}
-                      {/*<div className="stripe" />*/}
-                      {/*<div className="stripe" />*/}
-                      {/*<div className="stripe" />*/}
-                      {/*<div className="stripe" />*/}
-                      {/*<div className="stripe" />*/}
-                      {/*<div className="stripe" />*/}
-                      {/*<div className="stripe" />*/}
-                  {/*</div>*/}
-              {/*</div>*/}
-          {/*</div>*/}
+                  </div>
+              </div>
+          </section>
       </Container>
     );
   }
