@@ -54,13 +54,15 @@ class Videos extends Component {
                                     {track.length}
                                 </p>
                             </div>
-                            <span className="text-muted">
-                           {track.percentComplete === 0 ? 'Not Started' : `${track.percentComplete}% complete!`}
-                        </span>
-                            <Link to={`/watch?v=${btoa(unescape(encodeURIComponent(track.id)))}`}
-                                  className="common-Button common-Button--default mt-2">
-                                Start Now
-                            </Link>
+                            <div className="d-flex flex-column">
+                                <span className="text-muted">
+                               {track.percentComplete === 0 ? 'Not Started' : `${track.percentComplete}% complete!`}
+                                </span>
+                                <Link to={`/watch?v=${btoa(unescape(encodeURIComponent(track.id)))}`}
+                                      className="common-Button common-Button--default mt-2">
+                                    Start Now
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 );

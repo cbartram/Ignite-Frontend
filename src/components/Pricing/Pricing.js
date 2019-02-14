@@ -102,7 +102,7 @@ class Pricing extends Component {
                 <div className="row">
                     <div className="col-lg-4 offset-md-4 col-md-4 offset-md-4 col-sm-8 offset-sm-2 px-4 mt-3">
                         <div className="Plan Plan--standard">
-                            <h2 className="Plan-title common-UppercaseText">Basic Plan</h2>
+                            <h2 className="common-UppercaseText Plan-title">Basic Plan</h2>
                             <div className="Plan-description Plan-description-intergrated px-2">Access a complete suite of high
                                 quality full stack development videos.
                             </div>
@@ -145,26 +145,6 @@ class Pricing extends Component {
                             </ul>
                             {/* If the user is logged in show the payment modal else redirect to the sign up page */}
                             { this.renderButton() }
-                        </div>
-                    </div>
-                </div>
-                <div className="common-StripeGrid anchorBottom">
-                    <div className="backgroundContainer">
-                        <div className="grid">
-                            <div className="background" />
-                        </div>
-                    </div>
-                    <div className="stripeContainer">
-                        <div className="grid">
-                            <div className="stripe" />
-                            <div className="stripe" />
-                            <div className="stripe" />
-                            <div className="stripe" />
-                            <div className="stripe" />
-                            <div className="stripe" />
-                            <div className="stripe" />
-                            <div className="stripe" />
-                            <div className="stripe" />
                         </div>
                     </div>
                 </div>
