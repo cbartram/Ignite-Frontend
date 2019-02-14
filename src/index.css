@@ -66,7 +66,7 @@ body {
 
 a {
   cursor: pointer;
-  text-decoration: none;
+  text-decoration: none !important;
 }
 
 code {
@@ -168,6 +168,10 @@ button:focus {
 h2 {
   margin-bottom: 20px;
   color: #32325d;
+}
+
+ul {
+  list-style: none;
 }
 
 .common-BodyText {

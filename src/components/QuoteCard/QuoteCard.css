@@ -1,0 +1,208 @@
+.QuoteCard {
+    position: relative;
+    display: block;
+    --imageHeight: 300px;
+    --stripeHeight: 64px;
+}
+
+.QuoteCard__card {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    margin: 20px auto;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background: #fff;
+    -webkit-box-shadow: 0 30px 60px -12px rgba(50,50,93,.25), 0 18px 36px -18px rgba(0,0,0,.3);
+    box-shadow: 0 30px 60px -12px rgba(50,50,93,.25), 0 18px 36px -18px rgba(0,0,0,.3);
+    border-radius: 8px;
+    cursor: pointer;
+    -webkit-transition: .3s;
+    transition: .3s;
+    z-index:2;
+}
+
+.RamAnt .QuoteCard .QuoteCard__card {
+    z-index: 1;
+}
+
+.QuoteCard__image img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    -o-object-fit: cover;
+    object-fit: cover;
+    -webkit-transition: .5s;
+    transition: .5s;
+}
+
+.QuoteCard__image {
+    position: relative;
+    height: var(--imageHeight);
+    width: 100%;
+    margin: 0 0 -10px;
+    overflow: hidden;
+    -webkit-transform: none;
+    transform: none;
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+}
+
+.Helm__background--cyan5 {
+    background-color: #45b2e8;
+}
+
+.QuoteCard__image:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 100%;
+    height: 140px;
+    width: 100%;
+    z-index: 2;
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
+    -webkit-transform: skewY(-12deg);
+    transform: skewY(-12deg);
+    background: #fff;
+}
+
+.QuoteCard__icon {
+    /*position: relative;*/
+    width: 40px;
+    height: 40px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background: #fff;
+    border-radius: 50%;
+    -webkit-box-shadow: 0 0 0 2px rgba(82,95,127,.1);
+    box-shadow: 0 0 0 2px rgba(82,95,127,.1);
+    overflow: hidden;
+    -webkit-transition: .2s;
+    transition: .2s;
+    position: absolute;
+    z-index: 4;
+    left: calc(50% - 20px);
+    bottom: calc(10vw - 105px); /* 27px */
+    -webkit-transform: translateY(-2px);
+    transform: translateY(-2px);
+}
+
+.QuoteCard__text p {
+    position: relative;
+    font-size: 21px;
+    font-weight: 400;
+    line-height: 1.45;
+    color: #424770;
+}
+
+.QuoteCard__text p:before {
+    position: absolute;
+    content: open-quote;
+    left: -12px;
+    top: -2px;
+}
+
+.QuoteCard__text p:after {
+    content: close-quote;
+}
+
+.QuoteCard__by {
+    position: relative;
+    margin-top: 20px;
+    font-size: 15px;
+    line-height: 28px;
+    color: rgb(175, 186, 197);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .025em;
+}
+
+.QuoteCard__body {
+    padding: 39px;
+    padding-top: 0;
+    position: relative;
+}
+
+.Helm-Icon {
+    border-radius: 50%;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+
+.Helm-Icon--full svg {
+    width: 100%;
+    height: 100%;
+    transition: 0.2s;
+}
+
+.Helm-Icon--xsmall {
+    height: 16px;
+    width: 16px;
+    background: transparent;
+}
+
+.QuoteCard__stripes {
+    -webkit-transform: skewY(-12deg);
+    transform: skewY(-12deg);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
+}
+
+.RamAnt .QuoteCard__stripes {
+    z-index: 1;
+}
+
+.QuoteCard__stripes>div {
+    height: var(--stripeHeight);
+    position: absolute;
+}
+
+.QuoteCard__stripes>div:first-child {
+    background-color: #6772e5;
+}
+
+.QuoteCard__stripes>div:last-child {
+    background-color: #c4f0ff;
+}
+
+.QuoteCard__stripes>div:first-of-type {
+    /*background-color: red;*/
+    top: calc(var(--imageHeight) - var(--stripeHeight));
+    left: 40px;
+    width: 6000px;
+}
+
+.QuoteCard__stripes>div:last-of-type {
+    /*background-color: green;*/
+    left: -20px;
+    width: calc(100% + 126px);
+    top: var(--imageHeight);
+}

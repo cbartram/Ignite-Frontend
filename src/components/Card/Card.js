@@ -4,7 +4,7 @@ import './Card.css';
 export default class Card extends Component {
   render() {
       return (
-          <section className={`common-Card pricing-box mx-3 my-3 ${this.props.cardTitle ? 'px-0' : ''}`}>
+          <section className={`common-Card pricing-box mx-3 my-3 ${this.props.cardTitle ? 'px-0' : ''}`} style={this.props.style}>
               {
                   this.props.badgeText &&
                   <aside className="common-UppercaseText-Badge profile-badge">{this.props.badgeText}</aside>
