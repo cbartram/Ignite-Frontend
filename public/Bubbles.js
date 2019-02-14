@@ -1,83 +1,85 @@
-/**
- * Logo Bubbles shown on the App.js page
- * @param config Configuration object for the LogoBubbles including things
- * like x,y position, noise, the container element among others.
- * @constructor
- */
-function LogoBubbles(config) {
-    // Initialize the logoBubbles object
-    let logoBubbles = {
-        ...config,
-        noiseT: 0,
-        scrollX: 0,
-        vertShrink: 0,
-        playing: false,
-        logosLoaded: false,
-        firstTick: null,
-        lastTick: 0,
-        container: document.querySelector(config.containerSelector),
-        tick, // Function called tick()
-    };
 
-
+$(document).ready(function() {
     /**
-     * Calls the first tick and initializes the animation.
+     * Logo Bubbles shown on the App.js page
+     * @param config Configuration object for the LogoBubbles including things
+     * like x,y position, noise, the container element among others.
+     * @constructor
      */
-    function initialize() {
-        let e = logoBubbles.container.getBoundingClientRect();
-        if((e.bottom < 0 || e.top > window.innerHeight) && logoBubbles.playing) {
-            logoBubbles.playing = false;
-        } else if(e.bottom > 0 && e.top < window.innerHeight && !logoBubbles.playing) {
-            logoBubbles.playing = true;
-            requestAnimationFrame(function(e) {
-                loadImages();
-                logoBubbles.tick(e)
-            });
+    function LogoBubbles(config) {
+        // Initialize the logoBubbles object
+        let logoBubbles = {
+            ...config,
+            noiseT: 0,
+            scrollX: 0,
+            vertShrink: 0,
+            playing: false,
+            logosLoaded: false,
+            firstTick: null,
+            lastTick: 0,
+            container: document.querySelector(config.containerSelector),
+            tick, // Function called tick()
+        };
+
+
+        /**
+         * Calls the first tick and initializes the animation.
+         */
+        function initialize() {
+            let e = logoBubbles.container.getBoundingClientRect();
+            if((e.bottom < 0 || e.top > window.innerHeight) && logoBubbles.playing) {
+                logoBubbles.playing = false;
+            } else if(e.bottom > 0 && e.top < window.innerHeight && !logoBubbles.playing) {
+                logoBubbles.playing = true;
+                requestAnimationFrame(function(e) {
+                    loadImages();
+                    logoBubbles.tick(e)
+                });
+            }
         }
-    }
 
-    /**
-     * Main tick loop which updates the x/y style of each of the bubbles
-     * letting them move across the page.
-     * @param bubble Object bubble object
-     */
-    function updatePosition(bubble) {
-        let n = bubble.x + bubble.noiseX + logoBubbles.scrollX;
-        let yTranslate = translateY((bubble.y + bubble.noiseY), logoBubbles.containerHeight, logoBubbles.vertShrink * logoBubbles.maxShrink);
-        n < -200 && (bubble.x += logoBubbles.containerWidth);
-        let scale = ((bubble.introProgress / 20) + .95) * bubble.scale;
-        bubble.el.style.opacity = bubble.introProgress;
-        bubble.el.style.transform = `translate(${n}px, ${yTranslate}px) scale(${scale})`;
-    }
+        /**
+         * Main tick loop which updates the x/y style of each of the bubbles
+         * letting them move across the page.
+         * @param bubble Object bubble object
+         */
+        function updatePosition(bubble) {
+            let n = bubble.x + bubble.noiseX + logoBubbles.scrollX;
+            let yTranslate = translateY((bubble.y + bubble.noiseY), logoBubbles.containerHeight, logoBubbles.vertShrink * logoBubbles.maxShrink);
+            n < -200 && (bubble.x += logoBubbles.containerWidth);
+            let scale = ((bubble.introProgress / 20) + .95) * bubble.scale;
+            bubble.el.style.opacity = bubble.introProgress;
+            bubble.el.style.transform = `translate(${n}px, ${yTranslate}px) scale(${scale})`;
+        }
 
-    /**
-     * Computes how the bubbles show translate in the y position.
-     * This function determines where the bubbles are placed within the container.
-     * @param noise
-     * @param containerHeight Integer the height of the container element
-     * @param shrink Integer the shrink (which affects the logo bubbles scale)
-     * @returns {number}
-     */
-    function translateY(noise, containerHeight, shrink) {
-        return noise * (1 - shrink) + (containerHeight / 2) * shrink
-    }
+        /**
+         * Computes how the bubbles show translate in the y position.
+         * This function determines where the bubbles are placed within the container.
+         * @param noise
+         * @param containerHeight Integer the height of the container element
+         * @param shrink Integer the shrink (which affects the logo bubbles scale)
+         * @returns {number}
+         */
+        function translateY(noise, containerHeight, shrink) {
+            return noise * (1 - shrink) + (containerHeight / 2) * shrink
+        }
 
-    /**
-     * Loads the sprite sheet into a Javascript Image object and makes use
-     * of the onload callback function to determine when the image is ready to be processed.
-     * @param url String url of the image.
-     */
-    function loadImages(url = 'https://stripe.com/img/v3/customers/logos/header-logos@2x.png?2') {
-        const image = new Image;
-        image.src = url;
-        image.onload = () => logoBubbles.logosLoaded = true;
-    }
+        /**
+         * Loads the sprite sheet into a Javascript Image object and makes use
+         * of the onload callback function to determine when the image is ready to be processed.
+         * @param url String url of the image.
+         */
+        function loadImages(url = 'https://stripe.com/img/v3/customers/logos/header-logos@2x.png?2') {
+            const image = new Image;
+            image.src = url;
+            image.onload = () => logoBubbles.logosLoaded = true;
+        }
 
-    /**
-     * Computes the next tick for re-drawing the Bubbles in their next frame.
-     * @param time Integer tick event time
-     */
-    function tick(time) {
+        /**
+         * Computes the next tick for re-drawing the Bubbles in their next frame.
+         * @param time Integer tick event time
+         */
+        function tick(time) {
             // Ensures the bubbles fade in at "random" times
             logoBubbles.firstTick || (logoBubbles.firstTick = time);
             time -= logoBubbles.firstTick;
@@ -97,30 +99,30 @@ function LogoBubbles(config) {
             logoBubbles.playing && requestAnimationFrame(logoBubbles.tick)
         }
 
-    // Set the container element
-    logoBubbles.logos = logoBubbles.logos.map((title, index) => ({ index, title }));
+        // Set the container element
+        logoBubbles.logos = logoBubbles.logos.map((title, index) => ({ index, title }));
 
-    // Initialize the first frame of the animation
-    initialize();
+        // Initialize the first frame of the animation
+        initialize();
 
-    // Sets up each of the DOM nodes for the bubbles
-    logoBubbles.bubbles.map((bubble, index) => {
-        bubble.scale = bubble.s || 1; // Default the scale to 1 if its not set
-        bubble.seedX = 10000 * Math.random();
-        bubble.seedY = 10000 * Math.random();
-        bubble.noiseX = bubble.noiseY = 0;
-        bubble.introDelay = Math.random() * logoBubbles.introDelay;
-        bubble.introProgress = 0;
-        bubble.el = document.createElement("div");
-        bubble.el.className = logoBubbles.classPrefix + logoBubbles.logos[index].title;
-        bubble.tagEl = document.createElement("span");
-        bubble.tagEl.innerHTML = logoBubbles.logos[index].title;
-        bubble.el.appendChild(bubble.tagEl);
-        logoBubbles.container.appendChild(bubble.el);
-        updatePosition(bubble);
-    });
-}
-let bubbles = [{
+        // Sets up each of the DOM nodes for the bubbles
+        logoBubbles.bubbles.map((bubble, index) => {
+            bubble.scale = bubble.s || 1; // Default the scale to 1 if its not set
+            bubble.seedX = 10000 * Math.random();
+            bubble.seedY = 10000 * Math.random();
+            bubble.noiseX = bubble.noiseY = 0;
+            bubble.introDelay = Math.random() * logoBubbles.introDelay;
+            bubble.introProgress = 0;
+            bubble.el = document.createElement("div");
+            bubble.el.className = logoBubbles.classPrefix + logoBubbles.logos[index].title;
+            bubble.tagEl = document.createElement("span");
+            bubble.tagEl.innerHTML = logoBubbles.logos[index].title;
+            bubble.el.appendChild(bubble.tagEl);
+            logoBubbles.container.appendChild(bubble.el);
+            updatePosition(bubble);
+        });
+    }
+    let bubbles = [{
         s: .6,
         x: 1134,
         y: 45
@@ -243,8 +245,8 @@ let bubbles = [{
         y: 75
     }];
 
-// These are placed in the <span /> node and
-let logos = ["Affirm", "Amazon", "Asana", "BOOK A TIGER",
+    // These are placed in the <span /> node and
+    let logos = ["Affirm", "Amazon", "Asana", "BOOK A TIGER",
         "Blue Apron", "Catawiki", "Deliveroo", "Doordash",
         "Dribbble", "Facebook", "Fancy", "Fitbit", "Indiegogo",
         "Instacart", "Kickstarter", "Lyft", "OpenTable", "Panic",
@@ -254,38 +256,21 @@ let logos = ["Affirm", "Amazon", "Asana", "BOOK A TIGER",
         "TicketSwap", "WeTransfer", "Wish", "Wolfram Alpha",
         "Xero", "Yelp"];
 
-/**
- * Load the bubbles once the DOM is ready and all content is ready to be displayed.
- */
-if("loading" !== document.readyState)
-    window.logoBubbles = new LogoBubbles({
-        bubbles,
-        logos,
-        classPrefix: "Icon Icon-img",
-        containerSelector: ".icon-container",
-        containerWidth: 3e3,
-        containerHeight: 460,
-        maxShrink: .2,
-        noiseSpeed: 55e-6,
-        noiseScale: 80,
-        scrollSpeed: .0175,
-        introDelay: 1500,
-        introDuration: 1500
-    });
-else
-   document.addEventListener("DOMContentLoaded", () => {
-       window.logoBubbles = new LogoBubbles({
-           bubbles,
-           logos,
-           classPrefix: "Icon Icon-img",
-           containerSelector: ".icon-container",
-           containerWidth: 3e3,
-           containerHeight: 460,
-           maxShrink: .2,
-           noiseSpeed: 55e-6,
-           noiseScale: 80,
-           scrollSpeed: .0175,
-           introDelay: 1500,
-           introDuration: 1500
-       })
-   });
+
+    if(window.location.pathname === '/' && window.location.pathname.length === 1) {
+        window.logoBubbles = new LogoBubbles({
+            bubbles,
+            logos,
+            classPrefix: "Icon Icon-img",
+            containerSelector: ".icon-container",
+            containerWidth: 3e3,
+            containerHeight: 460,
+            maxShrink: .2,
+            noiseSpeed: 55e-6,
+            noiseScale: 80,
+            scrollSpeed: .0175,
+            introDelay: 1500,
+            introDuration: 1500
+        });
+    }
+});
