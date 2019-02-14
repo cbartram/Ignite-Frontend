@@ -45,8 +45,8 @@ class Videos extends Component {
         if(typeof this.props.videos.videoList !== 'undefined') {
             return this.props.videos.videoList.map((track) => {
                 return (
-                    <div className="col-sm-3 col-md-3 pb-2 px-4" key={track.name}>
-                        <div className="common-Card m-2">
+                    <div className="col-md-3 col-lg-3 col-sm-12 pb-2 px-4" key={track.name}>
+                        <div className="common-Card-video m-2">
                             <div className="cover"/>
                             <div className="d-flex flex-row">
                                 <h2 className="common-IntroText mt-0">{track.name}</h2>
