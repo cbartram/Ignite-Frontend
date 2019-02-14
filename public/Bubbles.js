@@ -257,7 +257,8 @@ $(document).ready(function() {
         "Xero", "Yelp"];
 
 
-    if(window.location.pathname === '/' && window.location.pathname.length === 1) {
+    console.log();
+    if(document.querySelector('.icon-container') !== null) {
         window.logoBubbles = new LogoBubbles({
             bubbles,
             logos,

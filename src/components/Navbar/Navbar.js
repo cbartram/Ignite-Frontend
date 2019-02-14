@@ -72,9 +72,9 @@ class Navbar extends Component {
                     <span className="navbar-toggler-icon" />
                 </button>
                 <div className="collapse navbar-collapse d-flex flex-column flex-md-row align-items-center" style={{ ...this.props.style, zIndex: 50, position: 'relative'}}>
-                    <Link className="navbar-brand" to="/">
+                    <a className="navbar-brand" href="/">
                         <img src={Logo} width="30" height="30" alt="Ignite Logo" />
-                    </Link>
+                    </a>
                     <h5 className="my-0 mr-md-auto font-weight-normal">Ignite</h5>
                     <div className="nav-links my-2 my-md-0 mr-md-3">
                         { this.props.auth.user ? authLinks.map(link => link) : standardLinks.map(link => link) }
