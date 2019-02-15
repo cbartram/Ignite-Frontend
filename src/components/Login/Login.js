@@ -3,9 +3,11 @@ import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import { Auth } from 'aws-amplify';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import _ from 'lodash';
 import './Login.css';
 import Log from '../../Log';
 import Container from '../Container/Container';
+import * as constants from '../../constants';
 import LoaderButton from '../LoaderButton/LoaderButton';
 import {
     loginFailure,
@@ -14,9 +16,8 @@ import {
     fetchVideos,
     updateVideosSync,
 } from '../../actions/actions';
-import Alert from "../Alert/Alert";
 import AlertContainer from "../AlertContainer/AlertContainer";
-import _ from 'lodash';
+import Alert from "../Alert/Alert";
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -44,6 +45,10 @@ class Login extends Component {
             isLoading: false,
             alerts: [],
         };
+    }
+
+    componentDidMount() {
+        this.loadFacebookSDK();
     }
 
     /**
@@ -78,7 +83,7 @@ class Login extends Component {
 
         try {
             const res = await Auth.signIn(this.state.email, this.state.password);
-            Log.info('Login Success!');
+            Log.info('Login Success!', res);
             // Fetches both user videos and user billing information
             // using the same API route
             this.props.fetchVideos(this.state.email);
@@ -93,6 +98,28 @@ class Login extends Component {
             this.pushAlert('danger', 'Login Failed', err.message);
         }
     };
+
+    /**
+     * Loads the Facebook SDK into the page
+     */
+    loadFacebookSDK() {
+        window.fbAsyncInit = function() {
+            window.FB.init({
+                appId: constants.FB_APP_ID,
+                autoLogAppEvents: true,
+                xfbml: true,
+                version: 'v3.1'
+            });
+        };
+
+        (function(d, s, id){
+            let js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {return;}
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    }
 
 
     /**
@@ -172,6 +199,14 @@ class Login extends Component {
                                     style={{marginBottom: 20}}
                                     loadingText="Logging in…"
                                 />
+                                {/*<hr/>*/}
+                                {/*<FacebookButton*/}
+                                    {/*onError={() => this.pushAlert('danger', 'Login Issue', 'Failed to login with facebook')}*/}
+                                    {/*onLogin={data => {*/}
+                                        {/*this.props.fetchVideos(this.state.email);*/}
+                                        {/*this.props.loginSuccess(data);*/}
+                                    {/*}}*/}
+                                {/*/>*/}
                                 <Link to="/login/reset" className="text-muted">Forgot your password?</Link>
                             </form>
                         </div>
