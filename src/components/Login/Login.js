@@ -18,6 +18,7 @@ import {
 } from '../../actions/actions';
 import AlertContainer from "../AlertContainer/AlertContainer";
 import Alert from "../Alert/Alert";
+// import FacebookButton from "../FacebookButton/FacebookButton";
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -203,8 +204,13 @@ class Login extends Component {
                                 {/*<FacebookButton*/}
                                     {/*onError={() => this.pushAlert('danger', 'Login Issue', 'Failed to login with facebook')}*/}
                                     {/*onLogin={data => {*/}
-                                        {/*this.props.fetchVideos(this.state.email);*/}
-                                        {/*this.props.loginSuccess(data);*/}
+                                        {/*try {*/}
+                                            {/*this.props.fetchVideos(this.state.email);*/}
+                                            {/*this.props.loginSuccess(data);*/}
+                                        {/*} catch(err) {*/}
+                                            {/*Log.error(err);*/}
+                                            {/*this.pushAlert('danger', 'Login Issue', 'Failed to login with facebook')*/}
+                                        {/*}*/}
                                     {/*}}*/}
                                 {/*/>*/}
                                 <Link to="/login/reset" className="text-muted">Forgot your password?</Link>

@@ -16,6 +16,7 @@ import Alert from '../Alert/Alert';
 import AlertContainer from '../AlertContainer/AlertContainer';
 import './Signup.css';
 import _ from 'lodash';
+// import FacebookButton from "../FacebookButton/FacebookButton";
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -220,6 +221,19 @@ class Signup extends Component {
                         loadingText="Signing up…"
                     />
                 </form>
+                {/*<hr />*/}
+                {/*<FacebookButton*/}
+                    {/*onError={() => this.pushAlert('danger', 'Login Issue', 'Failed to login with facebook')}*/}
+                    {/*onLogin={data => {*/}
+                        {/*try {*/}
+                            {/*this.props.fetchVideos(this.state.email);*/}
+                            {/*this.props.loginSuccess(data);*/}
+                        {/*} catch(err) {*/}
+                            {/*Log.error(err);*/}
+                            {/*this.pushAlert('danger', 'Login Issue', 'Failed to login with facebook')*/}
+                        {/*}*/}
+                    {/*}}*/}
+                {/*/>*/}
                 <div className="d-flex flex-column align-items-center justify-content-center">
                     <button className="btn btn-link" onClick={() => this.resendConfirmationCode()}>Re-send confirmation code.</button>
                     <span className="text-muted">

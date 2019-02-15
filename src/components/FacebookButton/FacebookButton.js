@@ -57,7 +57,8 @@ export default class FacebookButton extends Component {
    * public profile and email address.
    */
   handleClick = () => {
-    window.FB.login(this.checkLoginState, { scope: "public_profile,email" });
+    window.location.replace('https://ignite-app.auth.us-east-1.amazoncognito.com/login?response_type=code&client_id=4nlb23tujafrmojl2hibe9u6sk&redirect_uri=http://localhost:3000/login')
+    // window.FB.login(this.checkLoginState, { scope: "public_profile,email" });
   };
 
   /**
