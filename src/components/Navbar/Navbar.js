@@ -118,6 +118,7 @@ class Navbar extends Component {
                 {
                     this.props.sidebar &&
                     <Sidebar
+                        currentVideoName="HTML Basics"
                         active={this.state.active}
                         onDismiss={() => this.setState({ active: false })}
                     />

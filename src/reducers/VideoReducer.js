@@ -26,6 +26,11 @@ export default (state = {}, action) => {
                 isFetching: false,
                 error: action.payload,
             };
+        case constants.UPDATE_ACTIVE_VIDEO:
+            return {
+                ...state,
+                activeVideoName: action.payload,
+            };
         default:
             return {
                 ...state

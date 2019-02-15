@@ -6,13 +6,13 @@ import { Auth } from 'aws-amplify';
 import _ from 'lodash';
 import Log from '../../Log';
 import Container from '../Container/Container';
-import { logout } from '../../actions/actions';
+import { logout, updateActiveVideo, } from '../../actions/actions';
 import {
     API_FETCH_SIGNED_URL,
     API_KEY,
-    getRequestUrl,
     IS_PROD,
-    PROD_API_KEY
+    PROD_API_KEY,
+    getRequestUrl,
 } from '../../constants';
 import Alert from '../Alert/Alert';
 import AlertContainer from '../AlertContainer/AlertContainer';
@@ -24,6 +24,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     logout: () => dispatch(logout()),
+    updateActiveVideo: (name) => dispatch(updateActiveVideo(name))
 });
 
 class Watch extends Component {
@@ -42,6 +43,8 @@ class Watch extends Component {
   componentDidMount() {
     this.setState({ isFetching: true }, async () => {
       const trackName = atob(this.props.location.search.substring(this.props.location.search.indexOf('=') + 1, this.props.location.search.length));
+      this.props.updateActiveVideo(trackName);
+
         const params = {
             method: 'POST',
             headers: {

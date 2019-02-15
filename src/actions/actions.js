@@ -116,6 +116,19 @@ export const requestVideos = () => dispatch => {
 };
 
 /**
+ * Updates the name of the video the user is currently
+ * watching
+ * @param videoName String video's name
+ * @returns {Function}
+ */
+export const updateActiveVideo = (videoName) => dispatch => {
+  dispatch({
+      type: constants.UPDATE_ACTIVE_VIDEO,
+      payload: videoName
+  })
+};
+
+/**
  * Retrieves billing information from the API and stores it in redux.
  * @param email String the users email to retrieve billing details
  * @returns {Function}

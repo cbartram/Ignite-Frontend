@@ -14,12 +14,28 @@ const mapStateToProps = (state) =>  ({
  * of videos they can select
  */
 class Sidebar extends Component {
-  
-  componentDidMount() {
-    console.log(this.props.videos);
+
+  renderVideos({ name, length, completed }) {
+    return (
+        <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row" key={name}>
+          <div className="pl-4">
+            {
+              typeof this.props.videos.activeVideoName !== 'undefined' && this.props.videos.activeVideoName === name ? <i className="fa fa-pause info-icon" /> : (
+                  completed ? <i className="fa fa-check success-icon" /> :
+                      <i className="fas fa-play play-icon" />
+              )
+            }
+          </div>
+          <span>{ name }</span>
+          <span className="curriculum-chapterDuration pr-2">{ length }</span>
+        </div>
+    )
   }
 
   render() {
+      if(this.props.videos.isFetching)
+        return <h3>Loading...</h3>;
+
       return (
           <div>
             <nav id="sidebar" className={`${this.props.active ? 'sidebar-active': ''}`}>
@@ -33,81 +49,24 @@ class Sidebar extends Component {
                 <h3 className="text-muted">HTML & CSS</h3>
               </div>
               {/* Chapter */}
-              <div className="d-flex pl-4 pr-2">
-                <small className="mr-auto">Chapter 1</small>
-                <span className="curriculum-chapterDuration">17:21</span>
-              </div>
-              <div className="d-flex flex-column align-items-start pl-4">
-                <h4 className="curriculum-heading">
-                  Introduction
-                </h4>
-              </div>
-              {/* Content */}
-              <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row">
-                <div className="pl-4">
-                  <i className="fa fa-check success-icon" />
-                </div>
-                <span>Overview</span>
-                <span className="curriculum-chapterDuration pr-2">18:20</span>
-              </div>
-              <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row">
-                <div className="pl-4">
-                  <i className="fa fa-check success-icon" />
-                </div>
-                <span>Blueprint</span>
-                <span className="curriculum-chapterDuration pr-2">18:20</span>
-              </div>
-              <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row">
-                <div className="pl-4">
-                  <i className="fa fa-check success-icon" />
-                </div>
-                <span>Git & Version Control</span>
-                <span className="curriculum-chapterDuration pr-2">18:20</span>
-              </div>
-              <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row curriculum-row-last">
-                <div className="pl-4">
-                  <i className="fa fa-check success-icon" />
-                </div>
-                <span>CSS</span>
-                <span className="curriculum-chapterDuration pr-2">18:20</span>
-              </div>
-              <div className="d-flex pl-4 pr-2">
-                <small className="mr-auto">Chapter 2</small>
-                <span className="curriculum-chapterDuration">13:43</span>
-              </div>
-              <div className="d-flex flex-column align-items-start pl-4">
-                <h4 className="curriculum-heading">
-                  Javascript
-                </h4>
-              </div>
-              <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row">
-                <div className="pl-4">
-                  <i className="fa fa-check success-icon" />
-                </div>
-                <span>JQuery</span>
-                <span className="curriculum-chapterDuration pr-2">18:20</span>
-              </div>
-              <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row">
-                <div className="pl-4">
-                  <i className="fa fa-check success-icon" />
-                </div>
-                <span>The DOM</span>
-                <span className="curriculum-chapterDuration pr-2">18:20</span>
-              </div>
-              <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row">
-                <div className="pl-4">
-                  <i className="fas fa-play play-icon" />
-                </div>
-                <span>Javascript Basics</span>
-                <span className="curriculum-chapterDuration pr-2">18:20</span>
-              </div>
-              <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row curriculum-row-last">
-                <div className="pl-4">
-                  <i className="fas fa-play play-icon" />
-                </div>
-                <span>NodeJS</span>
-                <span className="curriculum-chapterDuration pr-2">18:20</span>
-              </div>
+              {
+                this.props.videos.videoList.map(({ duration, title, videos }, index) => {
+                  return (
+                      <div key={title}>
+                        <div className="d-flex pl-4 pr-2">
+                          <small className="mr-auto">Chapter {index}</small>
+                          <span className="curriculum-chapterDuration">{ duration }</span>
+                        </div>
+                        <div className="d-flex flex-column align-items-start pl-4 video-item">
+                          <h4 className="curriculum-heading">
+                            { title }
+                          </h4>
+                        </div>
+                        { videos.map((video) => this.renderVideos(video)) }
+                      </div>
+                  )
+                })
+              }
             </nav>
             <SidebarOverlay
                 active={this.props.active}

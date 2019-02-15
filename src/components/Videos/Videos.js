@@ -55,13 +55,12 @@ class Videos extends Component {
      */
     renderVideos() {
         if(typeof this.props.videos.videoList !== 'undefined') {
-            console.log(this.props.videos);
             return this.props.videos.videoList.map(chapter => {
                 return (
-                    <div>
+                    <div key={chapter.title}>
                         <div className="d-flex flex-row justify-content-start">
                             <h2 className="common-UppercaseTitle ml-4">
-                                { chapter.title }
+                                { chapter.title } - {chapter.duration}
                             </h2>
                             <hr />
                         </div>
@@ -82,12 +81,14 @@ class Videos extends Component {
                                                     <p className="common-BodyText">
                                                         { video.description }
                                                     </p>
+                                                    <div className="progress" style={{height: 5 }}>
+                                                        <div className="progress-bar" role="progressbar" style={{width: `${Videos.percentComplete(video)}%`, backgroundColor: '#7795f8' }} />
+                                                    </div>
                                                     <span className="text-muted">
-                                                         { Videos.percentComplete(video) === 0 ? 'Not Started' : `${Videos.percentComplete(video)}% complete!`}
+                                                         { Videos.percentComplete(video) <= 1 ? 'Not Started' : `${Videos.percentComplete(video)}% complete!`}
                                                     </span>
-                                                    <Link to={`/watch?v=${btoa(unescape(encodeURIComponent(video.name)))}`}
-                                                          className="common-Button common-Button--default mt-2">
-                                                        Start Now
+                                                    <Link to={`/watch?v=${btoa(unescape(encodeURIComponent(video.name)))}`} className="common-Button common-Button--default mt-2">
+                                                        { Videos.percentComplete(video) <= 1 ?  'Start Now' : 'Continue'}
                                                     </Link>
                                                 </div>
                                             </div>
