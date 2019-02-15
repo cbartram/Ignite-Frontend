@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
 import Container from "../Container/Container";
 import './Videos.css';
 
@@ -38,35 +39,66 @@ class Videos extends Component {
     }
 
     /**
+     * Computes the percentage of the video the user has completed given
+     * the length of the video and the duration needed to scrub
+     * @param length String Length of the video in mm:ss format
+     * @param scrubDuration Integer the scrub
+     */
+    static percentComplete({ length, scrubDuration }) {
+        const secondsLength = (moment(length, 'mm:ss').minutes() * 60) + moment(length, 'mm:ss').seconds();
+        return ((scrubDuration / secondsLength) * 100).toFixed(0);
+    }
+
+    /**
      * Renders a list of videos a user can choose from to watch.
      * @returns {*}
      */
     renderVideos() {
         if(typeof this.props.videos.videoList !== 'undefined') {
-            return this.props.videos.videoList.map((track) => {
+            console.log(this.props.videos);
+            return this.props.videos.videoList.map(chapter => {
                 return (
-                    <div className="col-md-3 col-lg-3 col-sm-12 pb-2 px-4" key={track.name}>
-                        <div className="common-Card-video m-2">
-                            <div className="cover"/>
-                            <div className="d-flex flex-row">
-                                <h2 className="common-IntroText mt-0">{track.name}</h2>
-                                <p className="common-BodyText pt-1 ml-3">
-                                    {track.length}
-                                </p>
-                            </div>
-                            <div className="d-flex flex-column">
-                                <span className="text-muted">
-                               {track.percentComplete === 0 ? 'Not Started' : `${track.percentComplete}% complete!`}
-                                </span>
-                                <Link to={`/watch?v=${btoa(unescape(encodeURIComponent(track.id)))}`}
-                                      className="common-Button common-Button--default mt-2">
-                                    Start Now
-                                </Link>
-                            </div>
+                    <div>
+                        <div className="d-flex flex-row justify-content-start">
+                            <h2 className="common-UppercaseTitle ml-4">
+                                { chapter.title }
+                            </h2>
+                            <hr />
+                        </div>
+                        <div className="row">
+                            {
+                                chapter.videos.map(video => {
+                                    return (
+                                        <div className="col-md-3 col-lg-3 col-sm-12 pb-2 px-4" key={video.name}>
+                                            <div className="common-Card-video m-2">
+                                                <div className="cover"/>
+                                                <div className="d-flex flex-row">
+                                                    <h2 className="common-IntroText mt-0">{video.name}</h2>
+                                                    <p className="common-BodyText pt-1 ml-3">
+                                                        {video.length}
+                                                    </p>
+                                                </div>
+                                                <div className="d-flex flex-column">
+                                                    <p className="common-BodyText">
+                                                        { video.description }
+                                                    </p>
+                                                    <span className="text-muted">
+                                                         { Videos.percentComplete(video) === 0 ? 'Not Started' : `${Videos.percentComplete(video)}% complete!`}
+                                                    </span>
+                                                    <Link to={`/watch?v=${btoa(unescape(encodeURIComponent(video.name)))}`}
+                                                          className="common-Button common-Button--default mt-2">
+                                                        Start Now
+                                                    </Link>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                            }
                         </div>
                     </div>
-                );
-            })
+                )
+            });
         }
     }
 
@@ -91,9 +123,7 @@ class Videos extends Component {
                 }
                 {
                     (typeof this.props.videos.videoList !== 'undefined' && this.props.videos.videoList.length > 0) &&
-                    <div className="row">
-                      { this.renderVideos() }
-                    </div>
+                     this.renderVideos()
                 }
             </Container>
         )

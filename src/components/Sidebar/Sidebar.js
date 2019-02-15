@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import SidebarOverlay from './SidebarOverlay';
 import './Sidebar.css';
+
+const mapStateToProps = (state) =>  ({
+  videos: state.videos,
+});
 
 /**
  * Sidebar Component which renders
@@ -8,7 +13,12 @@ import './Sidebar.css';
  * When active the user will be presented with a sliding sidebar showing a list
  * of videos they can select
  */
-export default class Sidebar extends Component {
+class Sidebar extends Component {
+  
+  componentDidMount() {
+    console.log(this.props.videos);
+  }
+
   render() {
       return (
           <div>
@@ -107,3 +117,5 @@ export default class Sidebar extends Component {
       )
   }
 }
+
+export default connect(mapStateToProps)(Sidebar);
