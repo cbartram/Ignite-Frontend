@@ -29,7 +29,7 @@ export default (state = {}, action) => {
         case constants.UPDATE_ACTIVE_VIDEO:
             return {
                 ...state,
-                activeVideoName: action.payload,
+                activeVideo: action.payload,
             };
         default:
             return {

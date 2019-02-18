@@ -10,6 +10,7 @@ import Sidebar from "../Sidebar/Sidebar";
 
 const mapStateToProps = state => ({
     auth: state.auth,
+    videos: state.videos,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -116,9 +117,9 @@ class Navbar extends Component {
                 </div>
             </div>
                 {
-                    this.props.sidebar &&
+                    this.props.sidebar && !this.props.videos.isFetching &&
                     <Sidebar
-                        currentVideoName="HTML Basics"
+                        currentVideoName={this.props.videos.activeVideo.name}
                         active={this.state.active}
                         onDismiss={() => this.setState({ active: false })}
                     />

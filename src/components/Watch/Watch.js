@@ -20,6 +20,7 @@ import './Watch.css';
 
 const mapStateToProps = state => ({
     auth: state.auth,
+    videos: state.videos
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -42,9 +43,8 @@ class Watch extends Component {
 
   componentDidMount() {
     this.setState({ isFetching: true }, async () => {
-      const trackName = atob(this.props.location.search.substring(this.props.location.search.indexOf('=') + 1, this.props.location.search.length));
-      this.props.updateActiveVideo(trackName);
-
+        const video = this.props.videos.activeVideo;
+        console.log(video);
         const params = {
             method: 'POST',
             headers: {
@@ -59,7 +59,7 @@ class Watch extends Component {
                 path: API_FETCH_SIGNED_URL,
                 parameters: {}, // Query params
                 body: {
-                    resourceUrl: `${IS_PROD ? 'https://d2hhpuhxg00qg.cloudfront.net' : 'https://dpvchyatyxxeg.cloudfront.net'}/${trackName}_Track.mov`,
+                    resourceUrl: `${IS_PROD ? 'https://d2hhpuhxg00qg.cloudfront.net' : 'https://dpvchyatyxxeg.cloudfront.net'}/chapter${video.chapter}/${video.name}.mov`,
                     jwtToken: this.props.auth.user.jwtToken,
                 }
             }),
@@ -67,12 +67,6 @@ class Watch extends Component {
 
         let response = await (await fetch(getRequestUrl(API_FETCH_SIGNED_URL), params)).json();
         Log.info('Signed URL Response', response);
-
-        if(response.status === 403) {
-            this.pushAlert('warning', 'No Subscription', 'We couldn\'t find an active subscription for your account.');
-            this.setState({ error: 'We couldn\'t find an active subscription for your account. If you would like to subscribe and view this content check out the link below!', isFetching: false });
-          return;
-        }
 
         switch(response.status) {
             case 403:

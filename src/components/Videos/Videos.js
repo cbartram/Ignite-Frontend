@@ -2,12 +2,18 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import Container from "../Container/Container";
+import Container from '../Container/Container';
+import { withRouter } from 'react-router-dom'
+import { updateActiveVideo } from '../../actions/actions';
 import './Videos.css';
 
 const mapStateToProps = state => ({
     auth: state.auth,
     videos: state.videos
+});
+
+const mapDispatchToProps = dispatch => ({
+    updateActiveVideo: (name) => dispatch(updateActiveVideo(name))
 });
 
 /**
@@ -50,6 +56,17 @@ class Videos extends Component {
     }
 
     /**
+     * Handles a watch now video button being clicked and updating the active
+     * video in redux as well as redirecting the user to the /watch page
+     * @param video Object The video object representing the video the user
+     * wishes to watch (the one that was clicked)
+     */
+    handleWatch(video) {
+        this.props.updateActiveVideo(video);
+        this.props.history.push('/watch')
+    }
+
+    /**
      * Renders a list of videos a user can choose from to watch.
      * @returns {*}
      */
@@ -87,9 +104,9 @@ class Videos extends Component {
                                                     <span className="text-muted">
                                                          { Videos.percentComplete(video) <= 1 ? 'Not Started' : `${Videos.percentComplete(video)}% complete!`}
                                                     </span>
-                                                    <Link to={`/watch?v=${btoa(unescape(encodeURIComponent(video.name)))}`} className="common-Button common-Button--default mt-2">
+                                                    <button onClick={() => this.handleWatch(video)} className="common-Button common-Button--default mt-2">
                                                         { Videos.percentComplete(video) <= 1 ?  'Start Now' : 'Continue'}
-                                                    </Link>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -131,4 +148,4 @@ class Videos extends Component {
     }
 }
 
-export default connect(mapStateToProps)(Videos);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Videos));

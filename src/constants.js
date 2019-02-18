@@ -11,7 +11,11 @@ export const INITIAL_STATE = {
         user: null,
         error: null,
     },
-    videos: {},
+    videos: {
+        activeVideo: {
+            name: 'null'
+        }
+    },
     billing: {}
 };
 

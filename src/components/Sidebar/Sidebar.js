@@ -20,7 +20,7 @@ class Sidebar extends Component {
         <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row" key={name}>
           <div className="pl-4">
             {
-              typeof this.props.videos.activeVideoName !== 'undefined' && this.props.videos.activeVideoName === name ? <i className="fa fa-pause info-icon" /> : (
+              typeof this.props.videos.activeVideo !== 'undefined' && this.props.videos.activeVideo.name === name ? <i className="fa fa-pause info-icon" /> : (
                   completed ? <i className="fa fa-check success-icon" /> :
                       <i className="fas fa-play play-icon" />
               )
