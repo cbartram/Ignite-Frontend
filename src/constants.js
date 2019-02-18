@@ -12,6 +12,7 @@ export const INITIAL_STATE = {
         error: null,
     },
     videos: {
+        videoList: [],
         activeVideo: {
             name: 'null'
         }

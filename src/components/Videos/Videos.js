@@ -63,7 +63,8 @@ class Videos extends Component {
      */
     handleWatch(video) {
         this.props.updateActiveVideo(video);
-        this.props.history.push('/watch')
+        // Add the encoded video to the url so if a user refreshes the page we can retrieve the active video
+        this.props.history.push(`/watch?v=${btoa(encodeURI(video.name))}`)
     }
 
     /**

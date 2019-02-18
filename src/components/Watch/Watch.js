@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ReactPlayer from 'react-player'
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
 import _ from 'lodash';
 import Log from '../../Log';
@@ -25,7 +25,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     logout: () => dispatch(logout()),
-    updateActiveVideo: (name) => dispatch(updateActiveVideo(name))
+    updateActiveVideo: (video) => dispatch(updateActiveVideo(video))
 });
 
 class Watch extends Component {
@@ -35,6 +35,7 @@ class Watch extends Component {
     this.state = {
       isFetching: false,
       canPlay: false,
+      playing: true,
       signedUrl: '',
       error: '',
       alerts: [],
@@ -44,7 +45,26 @@ class Watch extends Component {
   componentDidMount() {
     this.setState({ isFetching: true }, async () => {
         const video = this.props.videos.activeVideo;
-        console.log(video);
+        if(video.name === 'null') {
+            try {
+                const videoName = decodeURI(atob(this.props.location.search.substring(this.props.location.search.indexOf('=') + 1, this.props.location.search.length)));
+                // Find the active video from the backup url query param
+                const activeVideo = _.flattenDeep(this.props.videos.videoList.map(chapter => chapter.videos))
+                    .filter(video => video.name === videoName)[0];
+
+                if (typeof activeVideo === 'undefined') {
+                    // User will need to select a new video something went wrong
+                    this.props.history.push('/videos');
+                }
+                this.props.updateActiveVideo(activeVideo);
+                this.props.history.push('/videos'); // TODO its not fast enough or something
+            } catch(err) {
+                Log.error(err);
+                this.props.history.push('/videos');
+            }
+        }
+
+
         const params = {
             method: 'POST',
             headers: {
@@ -59,7 +79,7 @@ class Watch extends Component {
                 path: API_FETCH_SIGNED_URL,
                 parameters: {}, // Query params
                 body: {
-                    resourceUrl: `${IS_PROD ? 'https://d2hhpuhxg00qg.cloudfront.net' : 'https://dpvchyatyxxeg.cloudfront.net'}/chapter${video.chapter}/${video.name}.mov`,
+                    resourceUrl: `${IS_PROD ? 'https://d2hhpuhxg00qg.cloudfront.net' : 'https://dpvchyatyxxeg.cloudfront.net'}/chapter${video.chapter}/${video.s3Name}.mov`,
                     jwtToken: this.props.auth.user.jwtToken,
                 }
             }),
@@ -200,7 +220,8 @@ class Watch extends Component {
                               maxHeight: '100vh',
                               minHeight: '100%'
                           }}
-                          playing
+                          playing={this.state.playing}
+                          onClick={() => this.setState(prev => ({ playing: !prev.playing }))}
                           controls
                       />
                   }
@@ -209,4 +230,4 @@ class Watch extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Watch);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Watch));
