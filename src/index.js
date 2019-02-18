@@ -68,7 +68,6 @@ const dispatchProcess = (requestAction, successActionType, failureActionType = u
     return promise;
 };
 
-
 // Setup Redux middleware and store
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, constants.INITIAL_STATE, composeEnhancers(

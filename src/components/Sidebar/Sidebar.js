@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import SidebarOverlay from './SidebarOverlay';
 import './Sidebar.css';
+import {updateActiveVideo} from "../../actions/actions";
 
 const mapStateToProps = (state) =>  ({
   videos: state.videos,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    updateActiveVideo: (video) => dispatch(updateActiveVideo(video)),
 });
 
 /**
@@ -15,19 +21,32 @@ const mapStateToProps = (state) =>  ({
  */
 class Sidebar extends Component {
 
-  renderVideos({ name, length, completed }) {
+    /**
+     * Updates the active video in redux and redirects the user to
+     * the correct video link
+     * @param video
+     */
+  handleVideoClick(video) {
+      this.props.updateActiveVideo(video);
+      window.location.replace(`/watch?v=${btoa(encodeURI(video.name))}`);
+  }
+
+  /**
+   * Renders a list of videos to the DOM
+   */
+  renderVideos(video) {
     return (
-        <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row" key={name}>
+        <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row" key={video.name} onClick={() => this.handleVideoClick(video)}>
           <div className="pl-4">
             {
-              typeof this.props.videos.activeVideo !== 'undefined' && this.props.videos.activeVideo.name === name ? <i className="fa fa-pause info-icon" /> : (
-                  completed ? <i className="fa fa-check success-icon" /> :
+              typeof this.props.videos.activeVideo !== 'undefined' && this.props.videos.activeVideo.name === video.name ? <i className="fa fa-pause info-icon" /> : (
+                  video.completed ? <i className="fa fa-check success-icon" /> :
                       <i className="fas fa-play play-icon" />
               )
             }
           </div>
-          <span>{ name }</span>
-          <span className="curriculum-chapterDuration pr-2">{ length }</span>
+          <span>{ video.name }</span>
+          <span className="curriculum-chapterDuration pr-2">{ video.length }</span>
         </div>
     )
   }
@@ -54,7 +73,7 @@ class Sidebar extends Component {
                   return (
                       <div key={title}>
                         <div className="d-flex pl-4 pr-2">
-                          <small className="mr-auto">Chapter {index}</small>
+                          <small className="mr-auto">Chapter {index + 1}</small>
                           <span className="curriculum-chapterDuration">{ duration }</span>
                         </div>
                         <div className="d-flex flex-column align-items-start pl-4 video-item">
@@ -77,4 +96,4 @@ class Sidebar extends Component {
   }
 }
 
-export default connect(mapStateToProps)(Sidebar);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Sidebar));

@@ -78,7 +78,7 @@ class Videos extends Component {
                     <div key={chapter.title}>
                         <div className="d-flex flex-row justify-content-start">
                             <h2 className="common-UppercaseTitle ml-4">
-                                { chapter.title } - {chapter.duration}
+                                { chapter.title } - {moment.utc(chapter.videos.map(video => (moment(video.length, 'mm:ss').minutes() * 60) + moment(video.length, 'mm:ss').seconds()).reduce((a, b) => a + b) * 1000).format('mm:ss') }
                             </h2>
                             <hr />
                         </div>

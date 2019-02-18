@@ -45,6 +45,7 @@ class Watch extends Component {
   componentDidMount() {
     this.setState({ isFetching: true }, async () => {
         const video = this.props.videos.activeVideo;
+        let params;
         if(video.name === 'null') {
             try {
                 const videoName = decodeURI(atob(this.props.location.search.substring(this.props.location.search.indexOf('=') + 1, this.props.location.search.length)));
@@ -57,48 +58,70 @@ class Watch extends Component {
                     this.props.history.push('/videos');
                 }
                 this.props.updateActiveVideo(activeVideo);
-                this.props.history.push('/videos'); // TODO its not fast enough or something
+
+                params = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'x-api-key': IS_PROD ? PROD_API_KEY : API_KEY,
+                    },
+                    // Since this is calling an API these details are crucial for the lambda function to know which route to execute.
+                    body: JSON.stringify({
+                        headers: {},
+                        method: 'POST',
+                        path: API_FETCH_SIGNED_URL,
+                        parameters: {}, // Query params
+                        body: {
+                            resourceUrl: `${IS_PROD ? 'https://d2hhpuhxg00qg.cloudfront.net' : 'https://dpvchyatyxxeg.cloudfront.net'}/chapter${activeVideo.chapter}/${activeVideo.s3Name}.mov`,
+                            jwtToken: this.props.auth.user.jwtToken,
+                        }
+                    }),
+                };
             } catch(err) {
                 Log.error(err);
                 this.props.history.push('/videos');
             }
-        }
-
-
-        const params = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'x-api-key': IS_PROD ? PROD_API_KEY : API_KEY,
-            },
-            // Since this is calling an API these details are crucial for the lambda function to know which route to execute.
-            body: JSON.stringify({
-                headers: {},
+        } else {
+            // The active video is set somewhere else
+            params = {
                 method: 'POST',
-                path: API_FETCH_SIGNED_URL,
-                parameters: {}, // Query params
-                body: {
-                    resourceUrl: `${IS_PROD ? 'https://d2hhpuhxg00qg.cloudfront.net' : 'https://dpvchyatyxxeg.cloudfront.net'}/chapter${video.chapter}/${video.s3Name}.mov`,
-                    jwtToken: this.props.auth.user.jwtToken,
-                }
-            }),
-        };
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'x-api-key': IS_PROD ? PROD_API_KEY : API_KEY,
+                },
+                // Since this is calling an API these details are crucial for the lambda function to know which route to execute.
+                body: JSON.stringify({
+                    headers: {},
+                    method: 'POST',
+                    path: API_FETCH_SIGNED_URL,
+                    parameters: {}, // Query params
+                    body: {
+                        resourceUrl: `${IS_PROD ? 'https://d2hhpuhxg00qg.cloudfront.net' : 'https://dpvchyatyxxeg.cloudfront.net'}/chapter${video.chapter}/${video.s3Name}.mov`,
+                        jwtToken: this.props.auth.user.jwtToken,
+                    }
+                }),
+            };
+        }
 
         let response = await (await fetch(getRequestUrl(API_FETCH_SIGNED_URL), params)).json();
         Log.info('Signed URL Response', response);
 
-        switch(response.status) {
+        switch (response.status) {
             case 403:
                 this.pushAlert('warning', 'No Subscription', 'We couldn\'t find an active subscription for your account.');
-                this.setState({ error: 'We couldn\'t find an active subscription for your account. If you would like to subscribe and view this content check out the link below!', isFetching: false });
+                this.setState({
+                    error: 'We couldn\'t find an active subscription for your account. If you would like to subscribe and view this content check out the link below!',
+                    isFetching: false
+                });
                 break;
             case 501:
                 // The JWT token is more than likely expired re-authenticate
                 await this.logout();
                 break;
             case 200:
-                if(ReactPlayer.canPlay(response.body.signedUrl))
+                if (ReactPlayer.canPlay(response.body.signedUrl))
                     this.setState({
                         signedUrl: response.body.signedUrl,
                         canPlay: true,
@@ -108,12 +131,15 @@ class Watch extends Component {
                 break;
             case 500:
                 this.pushAlert('warning', 'No Subscription', 'We couldn\'t find an active subscription for your account.');
-                this.setState({ error: 'We couldn\'t find an active subscription for your account. If you would like to subscribe and view this content check out the link below!', isFetching: false });
+                this.setState({
+                    error: 'We couldn\'t find an active subscription for your account. If you would like to subscribe and view this content check out the link below!',
+                    isFetching: false
+                });
                 break;
             default:
                 this.pushAlert('danger', 'Oh No', 'Something went wrong retrieving the videos.');
                 // Only show detailed information when its NOT production.
-                this.setState({ error: `Something went wrong retrieving the videos refresh the page to try again. ${!IS_PROD && response.body.messages.join(',')}` });
+                this.setState({error: `Something went wrong retrieving the videos refresh the page to try again. ${!IS_PROD && response.body.messages.join(',')}`});
         }
     });
   }
