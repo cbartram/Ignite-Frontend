@@ -213,7 +213,10 @@ class Login extends Component {
                                         {/*}*/}
                                     {/*}}*/}
                                 {/*/>*/}
-                                <Link to="/login/reset" className="text-muted">Forgot your password?</Link>
+                                <div className="d-flex flex-row justify-content-between">
+                                    <Link to="/login/reset" className="text-muted">Forgot your password?</Link>
+                                    <Link to="/signup" className="text-muted">Resend Confirmation</Link>
+                                </div>
                             </form>
                         </div>
                     </div>
