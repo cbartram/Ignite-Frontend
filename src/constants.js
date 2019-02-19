@@ -50,6 +50,7 @@ export const API_FIND_ALL_USERS = '/users/find';
 export const API_FETCH_SIGNED_URL = '/security/signed-url/create';
 export const API_CREATE_SUBSCRIPTION = '/billing/subscription/create';
 export const API_DELETE_SUBSCRIPTION = '/billing/subscription/delete';
+export const API_PING_VIDEO = '/video/ping';
 
 // Prod Params
 export const PROD_URL = 'https://2147bwmah5.execute-api.us-east-1.amazonaws.com/prod';
@@ -105,3 +106,6 @@ export const UPDATE_ACTIVE_VIDEO = 'UPDATE_ACTIVE_VIDEO';
 export const BILLING_SUCCESS = 'BILLING_SUCCESS';
 export const BILLING_FAILURE = 'BILLING_FAILURE';
 export const REQUEST_BILLING = 'REQUEST_BILLING';
+export const PING_REQUEST = 'PING_REQUEST';
+export const PING_RESPONSE_SUCCESS = 'PING_RESPONSE_SUCCESS';
+export const PING_RESPONSE_FAILURE = 'PING_RESPONSE_FAILURE';

@@ -31,6 +31,21 @@ export default (state = {}, action) => {
                 ...state,
                 activeVideo: action.payload,
             };
+        case constants.PING_REQUEST:
+            return {
+                ...state,
+                isFetching: action.payload,
+            };
+        case constants.PING_RESPONSE_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+            }; // TODO:
+        case constants.PING_RESPONSE_FAILURE:
+            return {
+                ...state,
+                isFetching: false,
+            }; // TODO:
         default:
             return {
                 ...state

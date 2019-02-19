@@ -2,7 +2,7 @@
  * This file defines actions which trigger switch statements in the reducer
  */
 import * as constants from '../constants';
-import { getVideos } from '../util';
+import {getVideos, sendVideoData} from '../util';
 
 
 /**
@@ -126,6 +126,34 @@ export const updateActiveVideo = (videoName) => dispatch => {
       type: constants.UPDATE_ACTIVE_VIDEO,
       payload: videoName
   })
+};
+
+/**
+ * Sends a user's current video information (such as duration completed, started watching etc.) to
+ * the backend for storage. This also updates redux with the latest values.
+ * @returns {Function}
+ */
+export const ping = (payload) => async dispatch => {
+    dispatch({
+        type: constants.PING_REQUEST,
+        payload: true // Sets isFetching to true (useful for unit testing redux)
+    });
+
+    const response = await sendVideoData(payload);
+
+    if(response.status === 200) {
+        // Dispatch information about the users video progress
+        dispatch({
+            type: constants.PING_RESPONSE_SUCCESS,
+            payload: response.body,
+        });
+    } else if(response.status > 200 || typeof response.status === 'undefined') {
+        // An error occurred
+        dispatch({
+            type: constants.PING_RESPONSE_FAILURE,
+            payload: { message: `Failed to retrieve billing data from API: ${JSON.stringify(response)}`}
+        });
+    }
 };
 
 /**

@@ -6,7 +6,7 @@ import { Auth } from 'aws-amplify';
 import _ from 'lodash';
 import Log from '../../Log';
 import Container from '../Container/Container';
-import { logout, updateActiveVideo, } from '../../actions/actions';
+import { logout, updateActiveVideo, ping } from '../../actions/actions';
 import {
     API_FETCH_SIGNED_URL,
     API_KEY,
@@ -25,12 +25,15 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     logout: () => dispatch(logout()),
-    updateActiveVideo: (video) => dispatch(updateActiveVideo(video))
+    updateActiveVideo: (video) => dispatch(updateActiveVideo(video)),
+    ping: (payload) => dispatch(ping(payload)),
 });
 
 class Watch extends Component {
   constructor() {
     super();
+
+    this.player = null; // The React Player DOM object
 
     this.state = {
       isFetching: false,
@@ -39,6 +42,7 @@ class Watch extends Component {
       signedUrl: '',
       error: '',
       alerts: [],
+      intervalSet: false, // True if the page is loaded and we are pinging the backend
     }
   }
 
@@ -121,13 +125,14 @@ class Watch extends Component {
                 await this.logout();
                 break;
             case 200:
-                if (ReactPlayer.canPlay(response.body.signedUrl))
+                if (ReactPlayer.canPlay(response.body.signedUrl)) {
                     this.setState({
                         signedUrl: response.body.signedUrl,
                         canPlay: true,
                         isFetching: false,
                         error: '',
                     });
+                }
                 break;
             case 500:
                 this.pushAlert('warning', 'No Subscription', 'We couldn\'t find an active subscription for your account.');
@@ -142,6 +147,24 @@ class Watch extends Component {
                 this.setState({error: `Something went wrong retrieving the videos refresh the page to try again. ${!IS_PROD && response.body.messages.join(',')}`});
         }
     });
+  }
+
+  componentDidUpdate() {
+      if(this.player !== null) {
+          // Ensure we don't set the interval twice
+          if(!this.state.intervalSet) {
+              // Ping the server every 30 seconds to tell them about the user's current progress
+              setInterval(() => {
+                  this.props.ping({
+                      scrubDuration: this.player.getCurrentTime(),
+                      started: true,
+                      completed: (this.player.getCurrentTime() + 10) >= this.player.getDuration()
+                  });
+              }, 20000);
+
+              this.setState({ intervalSet: true });
+          }
+      }
   }
 
     /**
@@ -189,6 +212,15 @@ class Watch extends Component {
         this.setState({ alerts: newAlerts });
     }
 
+    /**
+     * Holds a reference to the ReactPlayer instance to
+     * retrieve real time data about the video
+     * @param player
+     */
+    ref = player => {
+        this.player = player;
+    };
+
     render() {
         if(this.state.isFetching)
             return (
@@ -235,6 +267,7 @@ class Watch extends Component {
                   {
                       this.state.canPlay &&
                       <ReactPlayer
+                          ref={this.ref}
                           url={this.state.signedUrl}
                           width="100%"
                           height="100%"
