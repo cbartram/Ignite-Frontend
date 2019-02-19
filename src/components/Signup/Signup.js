@@ -262,7 +262,7 @@ class Signup extends Component {
             } catch (err) {
                 Log.error('Failed to re-send sign-up confirmation email');
                 this.props.loginFailure(err);
-                this.pushAlert('danger', 'Failed to resent sign-up email', err.message)
+                this.pushAlert('danger', 'Failed to re-send email', err.message)
             }
         }
     }
@@ -306,8 +306,7 @@ class Signup extends Component {
                 {
                     this.state.alerts.map((props, index) =>
                         <Alert onDismiss={() => this.removeAlert(props.id)} {...props} key={index}>
-                            { props.message }
-                            { this.props.auth.error.code === 'UsernameExistsException' ?
+                            { this.props.auth.error !== null && typeof this.props.auth.error.code !== 'undefined' && this.props.auth.error.code === 'UsernameExistsException' ?
                                 (
                                     <span>
                                         { this.props.auth.error.message }
