@@ -145,7 +145,7 @@ export const ping = (payload) => async dispatch => {
         // Dispatch information about the users video progress
         dispatch({
             type: constants.PING_RESPONSE_SUCCESS,
-            payload: response.body,
+            payload: response.body.videos, // Must be an array of chapter objects
         });
     } else if(response.status > 200 || typeof response.status === 'undefined') {
         // An error occurred

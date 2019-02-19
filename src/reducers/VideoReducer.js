@@ -40,12 +40,15 @@ export default (state = {}, action) => {
             return {
                 ...state,
                 isFetching: false,
-            }; // TODO:
+                videoList: action.payload,
+                error: null,
+            };
         case constants.PING_RESPONSE_FAILURE:
             return {
                 ...state,
                 isFetching: false,
-            }; // TODO:
+                error: action.payload,
+            };
         default:
             return {
                 ...state

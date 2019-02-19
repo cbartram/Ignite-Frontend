@@ -34,6 +34,7 @@ class Watch extends Component {
     super();
 
     this.player = null; // The React Player DOM object
+    this.pingInterval = null;
 
     this.state = {
       isFetching: false,
@@ -46,6 +47,10 @@ class Watch extends Component {
     }
   }
 
+/**
+ * Retrieves the active video from redux or the url params
+ * and attempts to get the signed URL to play the video.
+ */
   componentDidMount() {
     this.setState({ isFetching: true }, async () => {
         const video = this.props.videos.activeVideo;
@@ -149,13 +154,25 @@ class Watch extends Component {
     });
   }
 
+/**
+ * Registers a setInterval() where we send the users
+ * video data to the server every 30 seconds.
+ */
   componentDidUpdate() {
-      if(this.player !== null) {
+      if(this.player !== null && typeof this.player !== 'undefined') {
           // Ensure we don't set the interval twice
           if(!this.state.intervalSet) {
+
+              // Seek to the proper place in the video
+              // TODO causes buffering issues with the video
+              // this.player.seekTo(this.props.videos.activeVideo.scrubDuration.toFixed(0));
+
               // Ping the server every 30 seconds to tell them about the user's current progress
-              setInterval(() => {
+              this.pingInterval = setInterval(() => {
                   this.props.ping({
+                      email: this.props.auth.user.email,
+                      chapters: this.props.videos.videoList,
+                      activeVideo: this.props.videos.activeVideo,
                       scrubDuration: this.player.getCurrentTime(),
                       started: true,
                       completed: (this.player.getCurrentTime() + 10) >= this.player.getDuration()
@@ -165,6 +182,11 @@ class Watch extends Component {
               this.setState({ intervalSet: true });
           }
       }
+  }
+
+  componentWillUnmount() {
+      console.log('Unmounting...');
+      if(this.pingInterval !== null) clearInterval(this.pingInterval);
   }
 
     /**

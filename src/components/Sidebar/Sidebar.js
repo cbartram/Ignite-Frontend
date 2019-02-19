@@ -69,11 +69,11 @@ class Sidebar extends Component {
               </div>
               {/* Chapter */}
               {
-                this.props.videos.videoList.map(({ duration, title, videos }, index) => {
+                this.props.videos.videoList.map(({ duration, title, videos, chapter }) => {
                   return (
                       <div key={title}>
                         <div className="d-flex pl-4 pr-2">
-                          <small className="mr-auto">Chapter {index + 1}</small>
+                          <small className="mr-auto">Chapter { chapter }</small>
                           <span className="curriculum-chapterDuration">{ duration }</span>
                         </div>
                         <div className="d-flex flex-column align-items-start pl-4 video-item">
