@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import { Provider } from 'react-redux'
+import _ from 'lodash';
 import * as serviceWorker from './serviceWorker';
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
@@ -10,7 +11,7 @@ import rootReducer from './reducers/rootReducer';
 import * as constants from './constants'
 import Router from './components/Router/Router'
 import Log from './Log';
-import { loginSuccess, fetchVideos} from './actions/actions';
+import { loginSuccess, fetchVideos, updateActiveVideo } from './actions/actions';
 import { AMPLIFY_CONFIG } from './constants';
 import {IS_PROD} from "./constants";
 
@@ -93,11 +94,27 @@ const checkAuthStatus = async () => {
         // Using our custom middleware we can now wait for a async dispatch to complete
         await dispatchProcess(fetchVideos(user.idToken.payload.email), constants.VIDEOS_SUCCESS, constants.VIDEOS_FAILURE);
         // TODO set the active video to the last video in the series that the user was last watching (started: true, completed: false, scrubDuration > 0)
+        let activeVideo = null;
+        const chapters = store.getState().videos.videoList;
+        // Find our best guess at the active video. (started: true, completed: false, scrubDuration > 0)
+        // First we try to meet all 3 criteria
+        _.flattenDeep(chapters.map(chapter => chapter.videos)).forEach(video => {
+            if(video.started && !video.completed && video.scrubDuration > 0)
+                activeVideo = video; // We intentionally want to overwrite this value so we get the latest video in the array
+        });
 
+        // Otherwise just settle for the first video
+        if(activeVideo === null) {
+            Log.info('[INFO] Active Video not found meeting criteria: video.started=true, video.completed=false');
+            activeVideo = chapters[0].videos[0];
+        }
+
+        store.dispatch(updateActiveVideo(activeVideo));
         store.dispatch(loginSuccess(user));
     }
     catch (e) {
         Log.warn('Could not find authenticated user.');
+        // TODO handle a case where the fetchVideos() does not work and log an error on the videos page to the user.
         if (e !== 'No current user')
            Log.error(e);
     }

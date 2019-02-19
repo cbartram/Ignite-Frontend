@@ -164,8 +164,7 @@ class Watch extends Component {
           if(!this.state.intervalSet) {
 
               // Seek to the proper place in the video
-              // TODO causes buffering issues with the video
-              // this.player.seekTo(this.props.videos.activeVideo.scrubDuration.toFixed(0));
+              this.player.seekTo(this.props.videos.activeVideo.scrubDuration.toFixed(0));
 
               // Ping the server every 30 seconds to tell them about the user's current progress
               this.pingInterval = setInterval(() => {
@@ -177,15 +176,18 @@ class Watch extends Component {
                       started: true,
                       completed: (this.player.getCurrentTime() + 10) >= this.player.getDuration()
                   });
-              }, 20000);
+              }, 30 * 1000);
 
               this.setState({ intervalSet: true });
           }
       }
   }
 
+  /**
+  * Called when a user navigates to a different page.
+   * This function clears the ping() interval so its not constantly pinging while a user is not watching a video
+  */
   componentWillUnmount() {
-      console.log('Unmounting...');
       if(this.pingInterval !== null) clearInterval(this.pingInterval);
   }
 

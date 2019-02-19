@@ -105,7 +105,7 @@ class PaymentModal extends Component {
      */
     checkout = () => {
         this.setState({ loading: true }, async () => {
-            console.log('[INFO] Attempting to process card information');
+            Log.info('[INFO] Attempting to process card information');
             const {
                 creditCard,
                 firstName,

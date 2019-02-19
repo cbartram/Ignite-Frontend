@@ -12,6 +12,7 @@ import {
     API_PING_VIDEO,
     getRequestUrl,
 } from './constants';
+import moment from "./components/Videos/Videos";
 
 /**
  * Gets data about the user's videos including: scrub duration, the next video in the queue,

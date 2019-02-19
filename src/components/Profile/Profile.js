@@ -135,15 +135,20 @@ class Profile extends Component {
        this.props.updateVideosSync([]);
     }
 
+    /**
+     * Computes the percentage of the video the user has completed given
+     * the length of the video and the duration needed to scrub
+     * @param length String Length of the video in mm:ss format
+     * @param scrubDuration Integer the scrub
+     */
+    static percentComplete({ length, scrubDuration }) {
+        const secondsLength = (moment(length, 'mm:ss').minutes() * 60) + moment(length, 'mm:ss').seconds();
+        return ((scrubDuration / secondsLength) * 100).toFixed(0);
+    }
+
 
 
     render() {
-        let currentVideo = null;
-        if(!this.props.videos.isFetching) {
-            // TODO if we ever fail to retrieve the videoList from the API this page will break
-            currentVideo = this.props.videos.videoList.sort((a, b) => a.scrubDuration - b.scrubDuration)[0];
-        }
-
         return (
             <Container noFooterMargin style={{backgroundColor: '#fff'}}>
                 <div className="row">
@@ -371,9 +376,9 @@ class Profile extends Component {
                                         </td>
                                         <td>
                                             {
-                                                !_.isNil(currentVideo) ?
-                                                    <span className="value">{ currentVideo.name }</span> :
-                                                    <span className="value missing"> None </span>
+                                                this.props.videos.activeVideo.name !== 'null' ?
+                                                    <span className="value">{ this.props.videos.activeVideo.name }</span> :
+                                                    <span className="value missing">None</span>
                                             }
                                         </td>
                                     </tr>
@@ -383,8 +388,8 @@ class Profile extends Component {
                                         </td>
                                         <td>
                                             {
-                                                !_.isNil(currentVideo) ?
-                                                    <span className="value-code">{ currentVideo.length }</span> :
+                                                this.props.videos.activeVideo.name !== 'null' ?
+                                                    <span className="value-code">{ this.props.videos.activeVideo.length }</span> :
                                                     <span className="value-code missing">0:00</span>
                                             }
                                         </td>
@@ -395,8 +400,8 @@ class Profile extends Component {
                                         </td>
                                         <td>
                                             {
-                                                !_.isNil(currentVideo) ?
-                                                    <span className="value-code">{ currentVideo.scrubDuration }</span> :
+                                                this.props.videos.activeVideo.name !== 'null' ?
+                                                    <span className="value-code">{ moment.utc(this.props.videos.activeVideo.scrubDuration.toFixed(0) * 1000).format('mm:ss') }</span> :
                                                     <span className="value-code missing">0:00</span>
                                             }
                                         </td>
@@ -407,21 +412,9 @@ class Profile extends Component {
                                         </td>
                                         <td>
                                             {
-                                                !_.isNil(currentVideo) ?
-                                                    <span className="value">{ currentVideo.percentComplete }%</span> :
+                                                this.props.videos.activeVideo.name !== 'null' ?
+                                                    <span className="value">{Profile.percentComplete(this.props.videos.activeVideo)}%</span> :
                                                     <span className="value missing">0%</span>
-                                            }
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className="key">
-                                            Next Video
-                                        </td>
-                                        <td>
-                                            {
-                                                !_.isNil(currentVideo) ?
-                                                    <span className="value">{ this.props.videos.videoList.filter(v => v.id === currentVideo.next)[0].name }</span> :
-                                                    <span className="value missing">None</span>
                                             }
                                         </td>
                                     </tr>
