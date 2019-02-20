@@ -14,6 +14,7 @@ import ResetPassword from '../ResetPassword/ResetPassword';
 import Profile from '../Profile/Profile';
 import Legal from '../Legal/Legal';
 import CookiePolicy from '../Legal/CookiePolicy';
+import Terms from "../Legal/Terms";
 
 const mapStateToProps = state => ({
    auth: state.auth,
@@ -38,6 +39,7 @@ class Router extends Component {
                     <Route path="/pricing" component={Pricing} />
                     <Route path="/legal" component={Legal} />
                     <Route path="/cookie" component={CookiePolicy} />
+                    <Route path="/terms" component={Terms} />
                     {/* Catch All unmatched paths with a 404 */}
                     <Route component={NotFound} />
                 </Switch>
