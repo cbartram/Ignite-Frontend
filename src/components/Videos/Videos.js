@@ -133,9 +133,6 @@ class Videos extends Component {
 
         return (
             <Container>
-                <div className="d-flex flex-row justify-content-center">
-                    <h1>Your Recent Videos</h1>
-                </div>
                 {
                     (typeof this.props.videos.videoList !== 'undefined' && this.props.videos.videoList.length === 0) &&
                     Videos.renderSubscribeMessage()

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import Logo from '../../resources/images/logo.png';
 import './Footer.css';
 
@@ -16,30 +17,22 @@ export default class Footer extends Component {
                             <small className="d-block mb-3 text-muted">&copy; 2017-2018</small>
                     </div>
                     <div className="col-6 col-md">
-                        <h5>Features</h5>
+                        <h5>Sitemap</h5>
                         <ul className="list-unstyled text-small">
-                            <li><a className="text-muted" href="#cool">Cool stuff</a></li>
-                            <li><a className="text-muted" href="#foo">Random feature</a></li>
-                            <li><a className="text-muted" href="#team">Team feature</a></li>
-                            <li><a className="text-muted" href="#dev">Stuff for developers</a></li>
+                            <li><Link className="text-muted" to="/pricing">Pricing</Link></li>
+                            <li><Link className="text-muted" to="/videos">Videos</Link></li>
+                            <li><Link className="text-muted" to="/login">Login</Link></li>
+                            <li><Link className="text-muted" to="/signup">Sign Up</Link></li>
+                            <li><Link className="text-muted" to="/cookie">Cookie Policy</Link></li>
                         </ul>
                     </div>
                     <div className="col-6 col-md">
                         <h5>Resources</h5>
                         <ul className="list-unstyled text-small">
-                            <li><a className="text-muted" href="#resource">Resource</a></li>
-                            <li><a className="text-muted" href="#mame">Resource name</a></li>
-                            <li><a className="text-muted" href="#res">Another resource</a></li>
-
-                        </ul>
-                    </div>
-                    <div className="col-6 col-md">
-                        <h5>About</h5>
-                        <ul className="list-unstyled text-small">
-                            <li><a className="text-muted" href="#team">Team</a></li>
-                            <li><a className="text-muted" href="#locations">Locations</a></li>
-                            <li><a className="text-muted" href="#privacy">Privacy</a></li>
-                            <li><a className="text-muted" href="#terms">Terms</a></li>
+                            <li><Link className="text-muted" to="/support">Support</Link></li>
+                            <li><Link className="text-muted" to="/contact">Contact</Link></li>
+                            <li><Link className="text-muted" to="/privacy">Privacy</Link></li>
+                            <li><Link className="text-muted" to="/terms">Terms of Service</Link></li>                            <li><Link className="text-muted" to="/support">Cookie Policy</Link></li>
                         </ul>
                     </div>
                 </div>

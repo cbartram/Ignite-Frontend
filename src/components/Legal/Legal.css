@@ -1,0 +1,58 @@
+#content, header #main-header {
+    width: 770px;
+}
+
+#content {
+    position: relative;
+    padding-top: 33px;
+    padding-left: 32px;
+    border-top: 1px solid rgba(120,134,156,.08);
+}
+
+article header {
+    padding-top: 8px;
+    padding-bottom: 39px;
+    border-bottom: 2px solid #f4f6f7;
+}
+
+article h1 {
+    font-size: 31px;
+    color: #0d2b3e;
+    font-weight: 400;
+}
+
+article p:not(:first-child) {
+    padding-top: 17px;
+}
+
+article section:last-child {
+    border-bottom: 0;
+}
+
+article section {
+    border-bottom: 2px solid #f4f6f7;
+    padding: 39px 0;
+}
+
+article h3 {
+    margin-top: -16px;
+    padding-top: 16px;
+}
+
+article h3 {
+    font-size: 20px;
+    color: #0d2b3e;
+    font-weight: 500;
+}
+
+article ul:not(:first-child) {
+    margin-top: 10px;
+}
+
+article ul {
+    counter-reset: listitem;
+    list-style: none;
+    font-size: 15px;
+    color: #373e42;
+    line-height: 26px;
+}
