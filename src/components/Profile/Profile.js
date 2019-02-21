@@ -15,7 +15,13 @@ import {
     PROD_API_KEY,
     getRequestUrl,
 } from '../../constants';
-import { updateBillingSync, updateVideosSync, requestVideos } from '../../actions/actions';
+import {
+    updateBillingSync,
+    updateVideosSync,
+    requestVideos,
+    updateActiveVideo
+} from '../../actions/actions';
+import Log from '../../Log';
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -25,6 +31,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
    updateBillingSync: (payload) => dispatch(updateBillingSync(payload)),
+   updateActiveVideo: (video) => dispatch(updateActiveVideo(video)),
    updateVideosSync: (videos) => dispatch(updateVideosSync(videos)),
    requestVideos: () => dispatch(requestVideos()),
 });
@@ -43,6 +50,31 @@ class Profile extends Component {
             isChanging: false,
             confirmPassword: "",
         };
+    }
+
+    /**
+     * Sets the active video to the last video in the series
+     * that the user was last watching (started: true, completed: false, scrubDuration > 0)
+     */
+    componentDidMount() {
+        if(this.props.videos.activeVideo.name === 'null') {
+            let activeVideo = null;
+            const chapters = this.props.videos.videoList;
+            // Find our best guess at the active video. (started: true, completed: false, scrubDuration > 0)
+            // First we try to meet all 3 criteria
+            _.flattenDeep(chapters.map(chapter => chapter.videos)).forEach(video => {
+                if (video.started && !video.completed && video.scrubDuration > 0)
+                    activeVideo = video; // We intentionally want to overwrite this value so we get the latest video in the array
+            });
+
+            // Otherwise just settle for the first video
+            if (activeVideo === null) {
+                Log.info('Active Video not found meeting criteria: video.started=true, video.completed=false');
+                activeVideo = chapters[0].videos[0];
+            }
+
+            this.props.updateActiveVideo(activeVideo);
+        }
     }
 
     /**
