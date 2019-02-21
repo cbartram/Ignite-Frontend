@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import { Provider } from 'react-redux'
-import _ from 'lodash';
 import * as serviceWorker from './serviceWorker';
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
@@ -11,7 +10,7 @@ import rootReducer from './reducers/rootReducer';
 import * as constants from './constants'
 import Router from './components/Router/Router'
 import Log from './Log';
-import { loginSuccess, fetchVideos, updateActiveVideo } from './actions/actions';
+import { loginSuccess, fetchVideos } from './actions/actions';
 import { AMPLIFY_CONFIG } from './constants';
 import {IS_PROD} from "./constants";
 

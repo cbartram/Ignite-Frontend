@@ -19,15 +19,16 @@
 .cover {
     position: relative;
     height: 170px;
+    margin: -30px -30px 25px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    overflow: hidden;
+}
+
+.cover-image {
     background-color: #fcd669;
     background-image: url(https://stripe.com/img/v3/atlas/guide/hero-illustration.svg);
     background-size: 1267px 400px;
     background-repeat: no-repeat;
     background-position: -190px -165px;
-    /*    background-position: 0 0;
-    background-size: 100% auto;*/
-    margin: -30px -30px 25px;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    overflow: hidden;
 }

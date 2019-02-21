@@ -68,6 +68,22 @@ class Videos extends Component {
     }
 
     /**
+     * Returns the CSS Classname for a randomized gradient to be applied
+     * to the card header
+     * @returns {string}
+     */
+    static getRandomGradient() {
+        const gradients = [
+            'purple-gradient',
+            'blue-gradient',
+            'aqua-gradient',
+            'peach-gradient'
+        ];
+
+        return gradients[Math.floor(Math.random() * 4)]
+    }
+
+    /**
      * Renders a list of videos a user can choose from to watch.
      * @returns {*}
      */
@@ -86,9 +102,9 @@ class Videos extends Component {
                             {
                                 chapter.videos.map(video => {
                                     return (
-                                        <div className="col-md-3 col-lg-3 col-sm-12 pb-2 px-4" key={video.name}>
+                                        <div className="col-md-3 col-lg-3 col-sm-12 d-flex align-items-stretch pb-2 px-4" key={video.name}>
                                             <div className="common-Card-video m-2">
-                                                <div className="cover"/>
+                                                <div className={`cover ${typeof video.image === 'undefined' ? Videos.getRandomGradient() : 'cover-image'}`}/>
                                                 <div className="d-flex flex-row">
                                                     <h2 className="common-IntroText mt-0">{video.name}</h2>
                                                     <p className="common-BodyText pt-1 ml-3">
