@@ -11,7 +11,7 @@
 }
 
 .common-Card:hover {
-    transform: none;
+    transform: none !important; /* Forces the card not to bump when hovered */
 }
 
 .common-UppercaseText-Badge {

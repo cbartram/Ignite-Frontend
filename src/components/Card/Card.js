@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import './Card.css';
 
+/**
+ * Renders a common card to display information in
+ */
 export default class Card extends Component {
   render() {
       return (
-          <section className={`common-Card pricing-box mx-3 my-3 ${this.props.cardTitle ? 'px-0' : ''}`} style={this.props.style}>
+          <div className={`common-Card pricing-box mx-3 my-3 ${this.props.cardTitle ? 'px-0' : ''}`} style={this.props.style}>
               {
                   this.props.badgeText &&
                   <aside className="common-UppercaseText-Badge profile-badge">{this.props.badgeText}</aside>
@@ -25,7 +28,7 @@ export default class Card extends Component {
                       : this.props.children
                   }
               </div>
-          </section>
+          </div>
       )
   }
 }

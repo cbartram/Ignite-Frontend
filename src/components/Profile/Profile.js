@@ -42,16 +42,7 @@ class Profile extends Component {
             oldPassword: "",
             isChanging: false,
             confirmPassword: "",
-            showSlide: false,
         };
-    }
-
-    componentDidMount() {
-        // Determines if we should show the slide icon
-        const isOverflowing = this.slideable.offsetHeight < this.slideable.scrollHeight ||
-            this.slideable.offsetWidth < this.slideable.scrollWidth;
-
-        this.setState({ showSlide: isOverflowing });
     }
 
     /**
@@ -467,14 +458,6 @@ class Profile extends Component {
                         </div>
                     </Card>
                 </div>
-                {
-                    this.state.showSlide &&
-                    <div className="d-flex flex-row justify-content-center ">
-                        <div className="badge badge-pill badge-secondary">
-                            <i className="fas fa-2x fa-ellipsis-h" />
-                        </div>
-                    </div>
-                }
             </Container>
         )
     }

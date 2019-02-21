@@ -151,9 +151,9 @@ class App extends Component {
                                 </li>
                             </ul>
                             <div className="d-flex flex-row justify-content-center">
-                                <p className="common-BodyText">
-                                    And so much more!
-                                </p>
+                                <button className="common-Button common-Button--default">
+                                    Get Started!
+                                </button>
                             </div>
                         </Card>
                     </div>

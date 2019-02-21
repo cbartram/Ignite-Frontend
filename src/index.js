@@ -93,23 +93,6 @@ const checkAuthStatus = async () => {
 
         // Using our custom middleware we can now wait for a async dispatch to complete
         await dispatchProcess(fetchVideos(user.idToken.payload.email), constants.VIDEOS_SUCCESS, constants.VIDEOS_FAILURE);
-        // TODO set the active video to the last video in the series that the user was last watching (started: true, completed: false, scrubDuration > 0)
-        let activeVideo = null;
-        const chapters = store.getState().videos.videoList;
-        // Find our best guess at the active video. (started: true, completed: false, scrubDuration > 0)
-        // First we try to meet all 3 criteria
-        _.flattenDeep(chapters.map(chapter => chapter.videos)).forEach(video => {
-            if(video.started && !video.completed && video.scrubDuration > 0)
-                activeVideo = video; // We intentionally want to overwrite this value so we get the latest video in the array
-        });
-
-        // Otherwise just settle for the first video
-        if(activeVideo === null) {
-            Log.info('[INFO] Active Video not found meeting criteria: video.started=true, video.completed=false');
-            activeVideo = chapters[0].videos[0];
-        }
-
-        store.dispatch(updateActiveVideo(activeVideo));
         store.dispatch(loginSuccess(user));
     }
     catch (e) {
