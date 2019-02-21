@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import _ from 'lodash';
 import { Link } from 'react-router-dom';
-import Container from '../Container/Container';
 import PaymentModal from '../PaymentModal/PaymentModal';
 import AlertContainer from '../AlertContainer/AlertContainer';
 import Alert from '../Alert/Alert';
 import './Pricing.css';
+import withContainer from "../withContainer";
 
 const mapStateToProps = state => ({
    auth: state.auth,
@@ -79,7 +79,7 @@ class Pricing extends Component {
 
     render() {
         return (
-            <Container>
+            <div>
                 <AlertContainer>
                     {
                         this.state.alerts.map((props, index) =>
@@ -148,9 +148,9 @@ class Pricing extends Component {
                         </div>
                     </div>
                 </div>
-            </Container>
+            </div>
         )
     }
 }
 
-export default connect(mapStateToProps)(Pricing);
+export default withContainer(connect(mapStateToProps)(Pricing));

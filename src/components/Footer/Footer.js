@@ -30,8 +30,8 @@ export default class Footer extends Component {
                         <h5>Resources</h5>
                         <ul className="list-unstyled text-small">
                             <li><Link className="text-muted" to="/support">Support</Link></li>
-                            <li><Link className="text-muted" to="/contact">Contact</Link></li>
-                            <li><Link className="text-muted" to="/privacy">Privacy</Link></li>
+                            <li><Link className="text-muted" to="/legal">Legal</Link></li>
+                            <li><Link className="text-muted" to="/legal">Privacy</Link></li>
                             <li><Link className="text-muted" to="/terms">Terms of Service</Link></li>                            <li><Link className="text-muted" to="/support">Cookie Policy</Link></li>
                         </ul>
                     </div>

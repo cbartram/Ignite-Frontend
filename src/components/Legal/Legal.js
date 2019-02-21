@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import './Legal.css';
-import Container from "../Container/Container";
+import withContainer from "../withContainer";
 
-export default class Legal extends Component {
+class Legal extends Component {
   render() {
       return (
-          <Container>
             <div className="d-flex justify-content-center">
               <article id="content">
                 <header id="pagmt">
@@ -459,7 +458,8 @@ export default class Legal extends Component {
                 </section>
               </article>
             </div>
-          </Container>
       )
   }
 }
+
+export default withContainer(Legal);

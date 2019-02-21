@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import Container from '../Container/Container';
 import './Legal.css';
 import './CookiePolicy.css'
+import withContainer from "../withContainer";
 
-export default class CookiePolicy extends Component {
+class CookiePolicy extends Component {
     render() {
         return (
-            <Container>
                 <div className="d-flex justify-content-center">
                     <article id="content">
                         <header id="cagmt">
@@ -188,7 +187,8 @@ export default class CookiePolicy extends Component {
                         </section>
                     </article>
                 </div>
-            </Container>
         )
     }
 }
+
+export default withContainer(CookiePolicy);
