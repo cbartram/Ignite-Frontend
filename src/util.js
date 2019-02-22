@@ -5,13 +5,50 @@
  */
 import Log from './Log';
 import {
-    API_KEY,
-    API_FIND_ALL_USERS,
     IS_PROD,
+    API_KEY,
     PROD_API_KEY,
+    API_FIND_ALL_USERS,
     API_PING_VIDEO,
+    API_SEND_EMAIL,
     getRequestUrl,
 } from './constants';
+
+/**
+ * Sends an API request to the backend to process and send an email
+ * using AWS SES.
+ * @param from String who this email is from (emails are sent using no-reply@ignitecode.net) but this is the users email
+ * @param subject String the subject line of the email
+ * @param message String the body/message of the email.
+ */
+export const sendEmail = async (from, subject = '', message = '') => {
+    const params = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'x-api-key': IS_PROD ? PROD_API_KEY : API_KEY
+        },
+        // Since this is calling an API these details are crucial for the lambda function to know which route to execute.
+        body: JSON.stringify({
+            headers: {},
+            method: 'POST',
+            path: API_SEND_EMAIL,
+            parameters: {}, // Query params
+            body: {
+                from,
+                subject,
+                message,
+            }
+        }),
+    };
+
+    try {
+        return await (await fetch(getRequestUrl(API_SEND_EMAIL), params)).json();
+    } catch(err) {
+        Log.error('Failed to retrieve videos from API...', err);
+    }
+};
 
 /**
  * Gets data about the user's videos including: scrub duration, the next video in the queue,

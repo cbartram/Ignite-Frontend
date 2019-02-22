@@ -47,6 +47,7 @@ export const getRequestUrl = (endpointURI) => {
 
 // API Parameters
 export const API_FIND_ALL_USERS = '/users/find';
+export const API_SEND_EMAIL = '/support/message';
 export const API_FETCH_SIGNED_URL = '/security/signed-url/create';
 export const API_CREATE_SUBSCRIPTION = '/billing/subscription/create';
 export const API_DELETE_SUBSCRIPTION = '/billing/subscription/delete';
