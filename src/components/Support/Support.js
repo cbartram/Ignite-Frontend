@@ -47,7 +47,13 @@ class Support extends Component {
     this.setState({ isSending: true }, async () => {
       try {
         const response = await sendEmail(this.props.auth.user.email, this.state.subject, this.state.message);
-        this.pushAlert('success', 'Message Sent Successfully', 'Your message has been delivered successfully. We will do our best to respond as soon as possible!')
+        console.log(response);
+        if(response.status === 200)
+          this.pushAlert('success', 'Message Sent Successfully', 'Your message has been delivered successfully. We will do our best to respond as soon as possible!');
+        else {
+          Log.error('Error Sending message!', response);
+          this.pushAlert('danger', 'Failed to Send Message', 'Something went wrong sending your message. Please refresh the page and try again!')
+        }
       } catch(err) {
         Log.error(err);
         this.pushAlert('danger', 'Failed to Send Message', 'Something went wrong sending your message. Please refresh the page and try again!')
