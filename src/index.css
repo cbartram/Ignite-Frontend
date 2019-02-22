@@ -163,6 +163,16 @@ button:focus {
 .common-IntroText {
   font-size: 24px;
   line-height: 36px;
+  font-weight: 300;
+  color: #424770;
+}
+
+.common-Link {
+  color: #6772e5;
+  font-weight: 500;
+  -webkit-transition: color .1s ease;
+  transition: color .1s ease;
+  cursor: pointer;
 }
 
 h2 {

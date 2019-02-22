@@ -1,14 +1,27 @@
 import React from "react";
-import "./NotFound.css";
-import Container from "../Container/Container";
+import { Link } from 'react-router-dom';
+import withContainer from "../withContainer";
+import './NotFound.css';
 
 /**
  * A functional component which is shown when the rout returns a 404
  * @returns {*}
  */
-export default () =>
-    <Container>
-        <div className="NotFound">
-            <h3>Sorry, page not found!</h3>
+const notFound = () =>
+    <div className="row">
+        <div className="d-flex flex-column align-self-center align-items-center ml-4">
+            <i className="fas fa-7x fa-exclamation-triangle" style={{ color: '#ffa27b'}} />
         </div>
-    </Container>;
+        <div className="col-md-8">
+            <div id="error-block" className="container-lg 404">
+                <h1 className="common-SectionTitle">Page not found!</h1>
+                <h2 className="common-IntroText">Sorry, but the page you were looking for could not be found.</h2>
+                <p className="common-BodyText">
+                    You can <Link className="common-Link" to="/">return to our home page</Link>, or <Link className="common-Link" to="https://ignitecode.net/support">drop
+                    us a line</Link> if you can't find what you're looking for.
+                </p>
+            </div>
+        </div>
+    </div>
+
+export default withContainer(notFound);
