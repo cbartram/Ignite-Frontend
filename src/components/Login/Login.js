@@ -50,6 +50,13 @@ class Login extends Component {
 
     componentDidMount() {
         this.loadFacebookSDK();
+        // Show alert if there is a ?redirect= query param
+        if(this.props.location.search) {
+            const pageName = this.props.location.search.substring(this.props.location.search.indexOf('=') + 2, this.props.location.search.length);
+            this.pushAlert('info', 'Login', `You need to login before you can access the ${pageName} page.`);
+        }
+
+
     }
 
     /**
@@ -162,7 +169,10 @@ class Login extends Component {
                         <Alert key={index} onDismiss={() => this.removeAlert(props.id)} {...props}>
                             {props.message}
                             <br />
-                            <Link to="/login/reset">reset your password.</Link>
+                            {
+                                props.type === 'danger' &&
+                                <Link to="/login/reset">reset your password.</Link>
+                            }
                         </Alert>
                         )
                     }
