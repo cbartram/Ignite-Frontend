@@ -37,11 +37,11 @@ class Router extends Component {
                     <AuthenticatedRoute exact path="/videos" component={Videos} isAuthenticated={this.props.auth.user !== null} />
                     <AuthenticatedRoute path="/watch" component={Watch} isAuthenticated={this.props.auth.user !== null} />
                     <AuthenticatedRoute path="/profile" component={Profile} isAuthenticated={this.props.auth.user !== null} />
-                    <Route path="/pricing" component={Pricing} />
-                    <Route path="/legal" component={Legal} />
-                    <Route path="/cookie" component={CookiePolicy} />
-                    <Route path="/terms" component={Terms} />
-                    <Route path="/support" component={Support} />
+                    <AuthenticatedRoute path="/support" component={Support} isAuthenticated={this.props.auth.user !== null} />
+                    <Avenue path="/pricing" component={Pricing} />
+                    <Avenue path="/legal" component={Legal} />
+                    <Avenue path="/cookie" component={CookiePolicy} />
+                    <Avenue path="/terms" component={Terms} />
                     {/* Catch All unmatched paths with a 404 */}
                     <Route component={NotFound} />
                 </Switch>
