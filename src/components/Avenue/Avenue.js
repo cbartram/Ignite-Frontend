@@ -58,13 +58,11 @@ const Avenue = ({ component: Component, props: componentProps, ...rest }) => {
             } else {
                 // If the user is trying to access a route like /login or /signup while logged in
                 // redirect them to what has been parsed from the query string
-                let shouldUseRedirect =
-                    redirect === "" ||
-                    redirect === null ||
-                    typeof redirect === 'undefined' ||
-                    Object.keys(redirect).length === 0 ? '/videos' : redirect;
-
-                return <Redirect to={shouldUseRedirect ? '/videos' : redirect } />
+                if(Object.keys(redirect).length === 0) {
+                    return <Redirect to="/videos" />
+                } else {
+                    return <Redirect to={redirect}/>
+                }
             }
         }}/>
     )

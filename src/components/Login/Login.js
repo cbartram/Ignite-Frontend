@@ -55,8 +55,6 @@ class Login extends Component {
             const pageName = this.props.location.search.substring(this.props.location.search.indexOf('=') + 2, this.props.location.search.length);
             this.pushAlert('info', 'Login', `You need to login before you can access the ${pageName} page.`);
         }
-
-
     }
 
     /**

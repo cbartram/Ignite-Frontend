@@ -8,6 +8,9 @@ const mapStateToProps = state => ({
   auth: state.auth,
 });
 
+/**
+ * Shows the Support page
+ */
 class Support extends Component {
   constructor(props) {
     super(props);
@@ -16,10 +19,6 @@ class Support extends Component {
       subject: '',
       message: '',
     }
-  }
-
-  componentDidMount() {
-    console.log(this.props.auth);
   }
 
   /**
@@ -31,8 +30,19 @@ class Support extends Component {
     this.setState({ [type]: value });
   }
 
+  /**
+   * Submits the form and POST's the data to the server.
+   */
   submit() {
 
+  }
+
+  /**
+   * Ensures both form fields are filled out and valid
+   * @returns {boolean} True if they are valid and false otherwise
+   */
+  validateForm() {
+    return this.state.subject.length > 0 && this.state.message.length > 0;
   }
 
 
