@@ -27,6 +27,7 @@ class Navbar extends Component {
 
         this.state = {
             active: false, // True if the sidebar is active
+            query: '',
         }
     }
 
@@ -122,6 +123,8 @@ class Navbar extends Component {
                         currentVideoName={this.props.videos.activeVideo.name}
                         active={this.state.active}
                         onDismiss={() => this.setState({ active: false })}
+                        onSearch={value => this.setState({ query: value })}
+                        filter={this.state.query}
                     />
                 }
            </div>

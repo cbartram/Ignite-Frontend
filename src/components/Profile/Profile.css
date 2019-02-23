@@ -65,8 +65,3 @@
 .value-lg {
     font-size: 19px;
 }
-
-/* Allow users to scroll through cards */
-.card-slideable {
-    overflow-x: scroll;
-}

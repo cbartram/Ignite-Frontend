@@ -20,7 +20,6 @@ const mapDispatchToProps = (dispatch) => ({
  * of videos they can select
  */
 class Sidebar extends Component {
-
     /**
      * Updates the active video in redux and redirects the user to
      * the correct video link
@@ -63,13 +62,16 @@ class Sidebar extends Component {
               </button>
               <div className="d-flex flex-column justify-content-center align-items-center">
                 <div className="my-3">
-                  <img height="70" width="70" alt="thumbnail" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/170px-HTML5_logo_and_wordmark.svg.png" />
+                    <input className="form-field-default" placeholder="Search Chapters" onChange={(e) => this.props.onSearch(e.target.value)} />
                 </div>
-                <h3 className="text-muted">HTML & CSS</h3>
+                <h3 className="text-muted">{this.props.videos.activeVideo.name}</h3>
               </div>
               {/* Chapter */}
               {
-                this.props.videos.videoList.map(({ duration, title, videos, chapter }) => {
+                  // Filter the list of chapters based on the query the user has typed in.
+                this.props.videos.videoList
+                    .filter(v => v.title.toUpperCase().includes(this.props.filter.toUpperCase()))
+                    .map(({ duration, title, videos, chapter }) => {
                   return (
                       <div key={title}>
                         <div className="d-flex pl-4 pr-2">

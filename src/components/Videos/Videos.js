@@ -77,10 +77,28 @@ class Videos extends Component {
             'purple-gradient',
             'blue-gradient',
             'aqua-gradient',
-            'peach-gradient'
+            'peach-gradient',
+            'warm-flame-gradient',
+            'night-fade-gradient',
+            'spring-warmth-gradient',
+            'juicy-peach-gradient',
+            'rainy-ashville-gradient',
+            'sunny-morning-gradient',
+            'lady-lips-gradient',
+            'winter-neva-gradient',
+            'frozen-dreams-gradient',
+            'dusty-grass-gradient',
+            'tempting-azure-gradient',
+            'amy-crisp-gradient',
+            'mean-fruit-gradient',
+            'deep-blue-gradient',
+            'ripe-malinka-gradient',
+            'morpheus-den-gradient',
+            'rare-wind-gradient',
+            'near-moon-gradient',
         ];
 
-        return gradients[Math.floor(Math.random() * 4)]
+        return gradients[Math.floor(Math.random() * gradients.length)]
     }
 
     /**
@@ -104,7 +122,9 @@ class Videos extends Component {
                                     return (
                                         <div className="col-md-3 col-lg-3 col-sm-12 d-flex align-items-stretch pb-2 px-4" key={video.name}>
                                             <div className="common-Card-video m-2">
-                                                <div className={`cover ${typeof video.image === 'undefined' ? Videos.getRandomGradient() : 'cover-image'}`}/>
+                                                <div className={`d-flex justify-content-center align-items-center cover ${Videos.getRandomGradient()}`}>
+                                                    <span className="gradient-text">{video.name}</span>
+                                                </div>
                                                 <div className="d-flex flex-row">
                                                     <h2 className="common-IntroText mt-0">{video.name}</h2>
                                                     <p className="common-BodyText pt-1 ml-3">

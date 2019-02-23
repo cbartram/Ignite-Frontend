@@ -208,6 +208,6 @@
 .QuoteCard__stripes>div:last-of-type {
     /*background-color: green;*/
     left: -20px;
-    width: calc(100% + 126px);
+    width: calc(100% + 135px);
     top: var(--imageHeight);
 }
