@@ -32,7 +32,10 @@ describe('Redux Unit Tests', () => {
                         deviceKey: 'devicekey'
                     },
                     error: null },
-            videos: {},
+            videos: {
+                videoList: [],
+                activeVideo: { name: 'null' }
+            },
             billing: {},
         };
 
@@ -74,7 +77,10 @@ describe('Redux Unit Tests', () => {
                user: null
            },
            billing: {},
-           videos: {}
+           videos: {
+               videoList: [],
+               activeVideo: { name: 'null' }
+           }
        };
        // Update the state with an action
        store.dispatch(loginFailure({ message: 'Bad unit test' }));
@@ -124,7 +130,10 @@ describe('Redux Unit Tests', () => {
                 }
             },
             billing: {},
-            videos: {}
+            videos: {
+                videoList: [],
+                activeVideo: { name: 'null' }
+            }
         };
 
         const payload = {
@@ -154,6 +163,8 @@ describe('Redux Unit Tests', () => {
             billing: {},
             videos: {
                     isFetching: false,
+                    videoList: [],
+                    activeVideo: { name: 'null' },
                     error: {
                         message: 'Failed to retrieve videos from API'
                     }
@@ -189,6 +200,7 @@ describe('Redux Unit Tests', () => {
                 }, {
                     message: 'test'
                 }],
+                activeVideo: { name: 'null' },
                 isFetching: false,
                 error: null
             }
@@ -216,7 +228,10 @@ describe('Redux Unit Tests', () => {
                 user: null,
                 error: null
             },
-            videos: {},
+            videos: {
+                videoList: [],
+                activeVideo: { name: 'null' }
+            },
             billing: {
                 error: null,
                 isFetching:true,
@@ -245,7 +260,10 @@ describe('Redux Unit Tests', () => {
                 user: null,
                 error: null
             },
-            videos: {},
+            videos: {
+                videoList: [],
+                activeVideo: { name: 'null' }
+            },
             billing: {
                 error: null,
                 isFetching:false,

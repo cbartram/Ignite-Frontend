@@ -121,7 +121,7 @@ class Videos extends Component {
                                 chapter.videos.map(video => {
                                     return (
                                         <div className="col-md-3 col-lg-3 col-sm-12 d-flex align-items-stretch pb-2 px-4" key={video.name}>
-                                            <div className="common-Card-video m-2">
+                                            <div className={`common-Card-video m-2`}>
                                                 <div className={`d-flex justify-content-center align-items-center cover ${Videos.getRandomGradient()}`}>
                                                     <span className="gradient-text">{video.name}</span>
                                                 </div>

@@ -22,8 +22,13 @@
     margin: -30px -30px 25px;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
+    padding: 38px;
     overflow: hidden;
 }
+
+/*.cover-complete {*/
+    /*filter: blur(4px);*/
+/*}*/
 
 .cover-image {
     background-color: #fcd669;

@@ -17,11 +17,11 @@ const notFound = () =>
                 <h1 className="common-SectionTitle">Page not found!</h1>
                 <h2 className="common-IntroText">Sorry, but the page you were looking for could not be found.</h2>
                 <p className="common-BodyText">
-                    You can <Link className="common-Link" to="/">return to our home page</Link>, or <Link className="common-Link" to="https://ignitecode.net/support">drop
+                    You can <Link className="common-Link" to="/">return to our home page</Link>, or <Link className="common-Link" to="/support">drop
                     us a line</Link> if you can't find what you're looking for.
                 </p>
             </div>
         </div>
-    </div>
+    </div>;
 
 export default withContainer(notFound);

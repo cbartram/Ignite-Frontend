@@ -2,12 +2,11 @@ import React, { Component } from "react";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import { Auth } from 'aws-amplify';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import _ from 'lodash';
 import './Login.css';
 import Log from '../../Log';
 import Container from '../Container/Container';
-import * as constants from '../../constants';
 import LoaderButton from '../LoaderButton/LoaderButton';
 import {
     loginFailure,
@@ -49,7 +48,7 @@ class Login extends Component {
     }
 
     componentDidMount() {
-        this.loadFacebookSDK();
+        // this.loadFacebookSDK();
         // Show alert if there is a ?redirect= query param
         if(this.props.location.search) {
             const pageName = this.props.location.search.substring(this.props.location.search.indexOf('=') + 2, this.props.location.search.length);
@@ -108,24 +107,24 @@ class Login extends Component {
     /**
      * Loads the Facebook SDK into the page
      */
-    loadFacebookSDK() {
-        window.fbAsyncInit = function() {
-            window.FB.init({
-                appId: constants.FB_APP_ID,
-                autoLogAppEvents: true,
-                xfbml: true,
-                version: 'v3.1'
-            });
-        };
-
-        (function(d, s, id){
-            let js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) {return;}
-            js = d.createElement(s); js.id = id;
-            js.src = "https://connect.facebook.net/en_US/sdk.js";
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
-    }
+    // loadFacebookSDK() {
+    //     window.fbAsyncInit = function() {
+    //         window.FB.init({
+    //             appId: constants.FB_APP_ID,
+    //             autoLogAppEvents: true,
+    //             xfbml: true,
+    //             version: 'v3.1'
+    //         });
+    //     };
+    //
+    //     (function(d, s, id){
+    //         let js, fjs = d.getElementsByTagName(s)[0];
+    //         if (d.getElementById(id)) {return;}
+    //         js = d.createElement(s); js.id = id;
+    //         js.src = "https://connect.facebook.net/en_US/sdk.js";
+    //         fjs.parentNode.insertBefore(js, fjs);
+    //     }(document, 'script', 'facebook-jssdk'));
+    // }
 
 
     /**
@@ -234,4 +233,4 @@ class Login extends Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Login));
