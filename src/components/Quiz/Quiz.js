@@ -26,18 +26,22 @@ class Quiz extends Component {
               <div className="progress" style={{height: 5 }}>
                 <div className="progress-bar" role="progressbar" style={{width: `${Quiz.percentComplete({ questions: 10, correct: 7 })}%`, backgroundColor: '#7795f8' }} />
               </div>
-              <div className="d-flex flex-column">
-                <div className="d-flex flex-row question">
-                  <input type="radio" />
-                  <p>Here is a question</p>
-                </div>
-                <div className="d-flex flex-row">
-                  <input type="radio" />
-                  <p>Here is a question</p>
-                </div>
-                <div className="d-flex flex-row">
-                  <input type="radio" />
-                  <p>Here is a question</p>
+              <div className="row">
+                <div className="col-md-4 offset-md-3">
+                  <div className="d-flex flex-column">
+                    <div className="d-flex flex-row answer m-3">
+                      <input type="radio" className="question-input" />
+                      <p className="question-text">Here is a question</p>
+                    </div>
+                    <div className="d-flex flex-row answer m-3">
+                      <input type="radio" />
+                      <p className="question-text">Here is a question</p>
+                    </div>
+                    <div className="d-flex flex-row answer m-3">
+                      <input type="radio" />
+                      <p className="question-text">Here is a question</p>
+                    </div>
+                  </div>
                 </div>
               </div>
               </div>

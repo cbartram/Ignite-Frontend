@@ -82,8 +82,12 @@ if (!IS_PROD || localStorage.getItem('FORCE_LOGS') === true) {
     localStorage.setItem('debug', 'ignite:*');
 }
 
-// Checks the cookies/local storage to see if the user has been authenticated recently/remembered.
-const checkAuthStatus = async () => {
+/**
+ * Checks the cookies/local storage to see if the user has been authenticated recently/remembered and loads
+ * necessary data from the user's profile such as their video and quiz progress.
+ * @returns {Promise<void>}
+ */
+const load = async () => {
     Log.info('Checking User Authentication status...');
     try {
         const user = await Auth.currentSession();
@@ -91,6 +95,7 @@ const checkAuthStatus = async () => {
         Log.info('Attempting to retrieve user videos...');
 
         // Using our custom middleware we can now wait for a async dispatch to complete
+        // Fetch videos is misleading because it does not just fetch videos but also billing info and quiz data.
         await dispatchProcess(fetchVideos(user.idToken.payload.email), constants.VIDEOS_SUCCESS, constants.VIDEOS_FAILURE);
         store.dispatch(loginSuccess(user));
     }
@@ -103,8 +108,24 @@ const checkAuthStatus = async () => {
     }
 };
 
+/**
+ * Render function renders the React app to the DOM and is simply a wrapper
+ * to allow for async/await syntax
+ * @returns {Promise<void>}
+ */
 const render = async () => {
-    await checkAuthStatus();
+    // Render a loading page immediately while we wait for our content to load
+    ReactDOM.render(
+        <Provider store={store}>
+            <div className="d-flex flex-row justify-content-center align-items-center">
+                <span className="fa fa-5x fa-circle-notch" style={{ color: '#6772e5' }} />
+            </div>
+        </Provider>
+        , document.getElementById('root'));
+
+    await load();
+
+    // Now render the full page
     ReactDOM.render(
         <Provider store={store}>
             <Router />

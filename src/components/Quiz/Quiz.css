@@ -1,6 +1,4 @@
-.question {
-    left: 0;
-    right: 0;
+.answer {
     background-color: #fff;
     border-radius: 4px;
     -webkit-box-shadow: 0 30px 60px -12px rgba(50,50,93,.25), 0 18px 36px -18px rgba(0,0,0,.3), 0 -12px 36px -8px rgba(0,0,0,.025);
@@ -22,4 +20,8 @@
     overflow: hidden;
     z-index: 10;
     font-size: 17px;
+}
+
+.answer-text {
+  margin-left: 10px;
 }

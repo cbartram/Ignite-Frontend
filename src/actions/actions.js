@@ -67,11 +67,11 @@ export const loginFailure = payload => dispatch => {
 };
 
 /**
- * Handles making the Async API call to retrieve the videos and billing information from users. It will dispatch a success or failure event
- * depending on the status of the API call.
- * Note: that this action updates both the videos and billing information for a user. If you want to just update the billing
+ * Handles making the Async API call to retrieve the videos, quiz data and billing information for the authenticated user.
+ * It will dispatch a success or failure event depending on the status of the API call.
+ * Note: that this action updates the videos, quiz data and billing information for a user. If you want to just update the billing
  * information it would be better to use fetchBilling()
- * @param email String the email of the user to retrieve videos for
+ * @param email String the email of the user to retrieve videos, billing and quiz data for
  * @returns {Function}
  */
 export const fetchVideos = email => async dispatch => {
@@ -87,6 +87,11 @@ export const fetchVideos = email => async dispatch => {
         dispatch({
             type: constants.BILLING_SUCCESS,
             payload: response.body.user,
+        });
+
+        dispatch({
+            type: constants.QUIZZES_SUCCESS,
+            payload: response.body.user.quizzes
         });
 
         // Dispatch information about videos
