@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="4ec36ac8-77e5-4985-93b1-57c48712b128" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/App.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/App.test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/index.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/index.test.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -43,22 +43,34 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/test/App.test.js">
+        <entry file="file://$PROJECT_DIR$/src/test/index.test.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="316">
-              <caret line="348" column="92" selection-start-line="348" selection-start-column="92" selection-end-line="348" selection-end-column="92" />
+            <state relative-caret-position="269">
+              <caret line="370" column="22" lean-forward="true" selection-start-line="370" selection-start-column="22" selection-end-line="370" selection-end-column="22" />
               <folding>
-                <element signature="e#0#26#0" expanded="true" />
+                <element signature="e#0#30#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/reducers/AuthReducer.js">
+        <entry file="file://$PROJECT_DIR$/src/actions/actions.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="308">
-              <caret line="22" column="28" selection-start-line="22" selection-start-column="28" selection-end-line="22" selection-end-column="28" />
+            <state relative-caret-position="-2954">
+              <caret line="57" column="14" lean-forward="true" selection-start-line="57" selection-start-column="14" selection-end-line="57" selection-end-column="14" />
+              <folding>
+                <element signature="e#84#126#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/reducers/BillingReducer.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="324">
+              <caret line="57" column="38" lean-forward="true" selection-start-line="56" selection-start-column="16" selection-end-line="57" selection-end-column="38" />
             </state>
           </provider>
         </entry>
@@ -75,8 +87,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>min-width:</find>
-      <find>.Plan-tit</find>
       <find>a {</find>
       <find>QuoteCard__by</find>
       <find>body</find>
@@ -105,6 +115,8 @@
       <find>Container</find>
       <find>Sign</find>
       <find>Login</find>
+      <find>logout</find>
+      <find>BILLING_FAILURE</find>
     </findStrings>
     <replaceStrings>
       <replace>&lt;/BrowserRouter</replace>
@@ -175,9 +187,9 @@
         <option value="$PROJECT_DIR$/src/components/NotFound/NotFound.js" />
         <option value="$PROJECT_DIR$/src/components/Videos/Videos.css" />
         <option value="$PROJECT_DIR$/src/components/Videos/Videos.js" />
-        <option value="$PROJECT_DIR$/src/test/index.test.js" />
         <option value="$PROJECT_DIR$/src/components/Login/Login.js" />
         <option value="$PROJECT_DIR$/src/test/App.test.js" />
+        <option value="$PROJECT_DIR$/src/test/index.test.js" />
       </list>
     </option>
   </component>
@@ -287,6 +299,12 @@
               <item name="Ignite-Frontend" type="b2602c69:ProjectViewProjectNode" />
               <item name="Ignite-Frontend" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="reducers" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Ignite-Frontend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Ignite-Frontend" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -305,7 +323,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1551051842312" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1551058174969" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs.mocha.mocha_node_package_dir" value="$PROJECT_DIR$/node_modules/mocha" />
@@ -438,13 +456,6 @@
       <workItem from="1549326411312" duration="8384000" />
       <workItem from="1549749050582" duration="84448000" />
       <workItem from="1550516030673" duration="3498000" />
-    </task>
-    <task id="LOCAL-00051" summary="Bug fix for videos not showing up after a user subscribes">
-      <created>1549309838562</created>
-      <option name="number" value="00051" />
-      <option name="presentableId" value="LOCAL-00051" />
-      <option name="project" value="LOCAL" />
-      <updated>1549309838562</updated>
     </task>
     <task id="LOCAL-00052" summary="Added frontend redux update for user unsubscribing">
       <created>1549395774669</created>
@@ -782,11 +793,18 @@
       <option name="project" value="LOCAL" />
       <updated>1551050814413</updated>
     </task>
-    <option name="localTasksCounter" value="100" />
+    <task id="LOCAL-00100" summary="Created Smoke tests for additional React components">
+      <created>1551051879756</created>
+      <option name="number" value="00100" />
+      <option name="presentableId" value="LOCAL-00100" />
+      <option name="project" value="LOCAL" />
+      <updated>1551051879756</updated>
+    </task>
+    <option name="localTasksCounter" value="101" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="329135000" />
+    <option name="totallyTimeSpent" value="330638000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -869,7 +887,6 @@
     <option name="version" value="1" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fixed video overlapping on videos page" />
     <MESSAGE value="Added fully completed landing page" />
     <MESSAGE value="Added facebook button and signin functionality" />
     <MESSAGE value="Removed facebook button until development is complete" />
@@ -894,16 +911,10 @@
     <MESSAGE value="Added full logic for Support messaging" />
     <MESSAGE value="Tweaks and improvements" />
     <MESSAGE value="Minor tweaks and fixed unit tests" />
-    <option name="LAST_COMMIT_MESSAGE" value="Minor tweaks and fixed unit tests" />
+    <MESSAGE value="Created Smoke tests for additional React components" />
+    <option name="LAST_COMMIT_MESSAGE" value="Created Smoke tests for additional React components" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/components/Pricing/Pricing.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="33" column="18" selection-start-line="33" selection-start-column="18" selection-end-line="33" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/FacebookButton/FacebookButton.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="760">
@@ -1207,16 +1218,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/index.test.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="58" selection-start-line="58" selection-end-line="58" />
-          <folding>
-            <element signature="e#0#30#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/Login/Login.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4389">
@@ -1281,29 +1282,46 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/actions/actions.js">
+    <entry file="file://$PROJECT_DIR$/src/test/App.test.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="48" column="25" selection-start-line="48" selection-start-column="13" selection-end-line="48" selection-end-column="25" />
+        <state relative-caret-position="431">
+          <caret line="357" column="3" selection-start-line="357" selection-start-column="3" selection-end-line="357" selection-end-column="3" />
           <folding>
-            <element signature="e#84#126#0" expanded="true" />
+            <element signature="e#0#26#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/reducers/AuthReducer.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
+        <state relative-caret-position="-619">
           <caret line="22" column="28" selection-start-line="22" selection-start-column="28" selection-end-line="22" selection-end-column="28" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/App.test.js">
+    <entry file="file://$PROJECT_DIR$/src/actions/actions.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="316">
-          <caret line="348" column="92" selection-start-line="348" selection-start-column="92" selection-end-line="348" selection-end-column="92" />
+        <state relative-caret-position="-2954">
+          <caret line="57" column="14" lean-forward="true" selection-start-line="57" selection-start-column="14" selection-end-line="57" selection-end-column="14" />
           <folding>
-            <element signature="e#0#26#0" expanded="true" />
+            <element signature="e#84#126#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/reducers/BillingReducer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="57" column="38" lean-forward="true" selection-start-line="56" selection-start-column="16" selection-end-line="57" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/index.test.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="269">
+          <caret line="370" column="22" lean-forward="true" selection-start-line="370" selection-start-column="22" selection-end-line="370" selection-end-column="22" />
+          <folding>
+            <element signature="e#0#30#0" expanded="true" />
           </folding>
         </state>
       </provider>
