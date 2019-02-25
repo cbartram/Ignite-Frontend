@@ -16,6 +16,7 @@ import Legal from '../Legal/Legal';
 import CookiePolicy from '../Legal/CookiePolicy';
 import Terms from "../Legal/Terms";
 import Support from '../Support/Support';
+import Quiz from "../Quiz/Quiz";
 
 const mapStateToProps = state => ({
    auth: state.auth,
@@ -38,6 +39,7 @@ class Router extends Component {
                     <AuthenticatedRoute path="/watch" component={Watch} isAuthenticated={this.props.auth.user !== null} />
                     <AuthenticatedRoute path="/profile" component={Profile} isAuthenticated={this.props.auth.user !== null} />
                     <AuthenticatedRoute path="/support" component={Support} isAuthenticated={this.props.auth.user !== null} />
+                    <AuthenticatedRoute path="/quiz" component={Quiz} isAuthenticated={this.props.auth.user !== null} />
                     <Avenue path="/pricing" component={Pricing} />
                     <Avenue path="/legal" component={Legal} />
                     <Avenue path="/cookie" component={CookiePolicy} />

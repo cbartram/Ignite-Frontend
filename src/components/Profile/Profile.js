@@ -169,8 +169,6 @@ class Profile extends Component {
         return ((scrubDuration / secondsLength) * 100).toFixed(0);
     }
 
-
-
     render() {
         return (
             <Container noFooterMargin style={{backgroundColor: '#fff'}}>
