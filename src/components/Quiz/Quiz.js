@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import { withRouter, Link } from 'react-router-dom';
 import withContainer from '../withContainer';
 import Log from '../../Log';
@@ -23,6 +24,7 @@ class Quiz extends Component {
 
     // Have a default quiz object
     this.state = {
+      activeQuestionIndex: 0,
       quiz: {
         id: '', // A unique identifier for this quiz
         name: '',
@@ -38,10 +40,10 @@ class Quiz extends Component {
           correct: null,
           correctAnswer: 'C',
           answers: [
-            { key: 'A', value:''},
-            { key: 'B', value:''},
-            { key: 'C', value:''},
-            { key: 'D', value:''},
+            { key: 'A', checked: false, value:''},
+            { key: 'B', checked: false, value:''},
+            { key: 'C', checked: false, value:''},
+            { key: 'D', checked: false, value:''},
           ],
           explanation: '',
         }]
@@ -49,9 +51,7 @@ class Quiz extends Component {
       error: false
     }
   }
-  static percentComplete({ questions, correct }) {
-    return ((questions / correct) * 100).toFixed(0);
-  }
+
 
   componentDidMount() {
     // Firstly we need to retrieve the quiz from the URL
@@ -70,6 +70,32 @@ class Quiz extends Component {
       Log.error('Error mounting the <Quiz /> component.', err);
       this.setState({ error: true });
     }
+  }
+
+  /**
+   * Updates the currently selected answer to the parameter answer and de-selects the rest
+   */
+  handleSelect(answer) {
+    let { quiz, activeQuestionIndex } = this.state;
+    // Make them all un-checked
+    quiz.questions[activeQuestionIndex].answers = quiz.questions[activeQuestionIndex].answers.map(o => ({ ...o, checked: false }));
+
+    // Check the correct one
+    let index = _.findIndex(quiz.questions[activeQuestionIndex].answers, o => o.key === answer.key);
+
+    if(index !== -1)
+      quiz.questions[activeQuestionIndex].answers[index].checked = true;
+
+    this.setState({ quiz });
+  }
+
+  /**
+   * Computes the percentage of the progress bar to "fill up" based
+   * on how many questions the user has completed
+   * @returns {string}
+   */
+  percentComplete() {
+    return ((this.state.activeQuestionIndex / this.state.quiz.questions.length) * 100).toFixed(0);
   }
 
   render() {
@@ -102,27 +128,29 @@ class Quiz extends Component {
             <div className="row">
               <div className="col-md-4 offset-md-4">
                 <div className="progress" style={{height: 5 }}>
-                  <div className="progress-bar" role="progressbar" style={{width: `75%`, backgroundColor: '#7795f8' }} />
+                  <div className="progress-bar" role="progressbar" style={{width: `${this.percentComplete()}%`, backgroundColor: '#7795f8' }} />
                 </div>
               </div>
             </div>
             <div className="d-flex justify-content-center">
-              <h3 className="common-UppercaseTitle">Question 5 of {this.state.quiz.questions.length}</h3>
+              <h3 className="common-UppercaseTitle">Question { this.state.activeQuestionIndex + 1 } of {this.state.quiz.questions.length}</h3>
             </div>
             <div className="row">
               <div className="col-md-8 offset-md-2">
                 <div className="d-flex flex-column">
                   <div className="d-flex flex-row justify-content-center m-3">
                     <p className="common-BodyText question-text">
-                      { this.state.quiz.questions[0].ask }
+                      { this.state.quiz.questions[this.state.activeQuestionIndex].ask }
                     </p>
                   </div>
                   {
-                    this.state.quiz.questions[0].answers.map(answer => {
+                    this.state.quiz.questions[this.state.activeQuestionIndex].answers.map(answer => {
                       return (
-                          <div className="d-flex flex-row justify-content-start align-items-center answer m-3" key={answer.key}>
-                            <input type="radio" className="question-input mr-3 " />
-                            <p className="question-text mt-2">{ answer.value }</p>
+                          <div className="d-flex flex-row justify-content-start align-items-center answer m-3" onClick={() => this.handleSelect(answer)} key={answer.key}>
+                            <p className="question-text mt-2">
+                              <input type="radio" className="question-input mr-3" onChange={() => {}} checked={answer.checked} />
+                              { answer.value }
+                            </p>
                           </div>
                       )
                     })
