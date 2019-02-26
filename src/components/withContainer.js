@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import Container from "./Container/Container";
+import _ from 'lodash';
+import Container from './Container/Container';
+import Alert from './Alert/Alert';
+import AlertContainer from './AlertContainer/AlertContainer';
 
 /**
  * Attaches a <Container /> Component around the
@@ -10,10 +13,56 @@ import Container from "./Container/Container";
  */
 const withContainer = (BaseComponent, props = {}) => {
     return class EnhancedComponent extends Component {
+        constructor(props) {
+            super(props);
+
+            this.state = { alerts: [] }
+        }
+
+        /**
+         * Pushes an alert onto the stack to be
+         * visible by users
+         */
+        pushAlert(type, title, message, id = _.uniqueId()) {
+            const { alerts } = this.state;
+            // Push an object of props to be passed to the <Alert /> Component
+            alerts.push({
+                type,
+                title,
+                id,
+                message,
+            });
+
+            this.setState({ alerts });
+        }
+
+        /**
+         * Removes an alert from the stack so that
+         * it is no longer rendered on the page
+         * @param id Integer the unique alert id
+         */
+        removeAlert(id) {
+            const { alerts } = this.state;
+            const newAlerts = [
+                ...alerts.filter(alert => alert.id !== id)
+            ];
+
+            this.setState({ alerts: newAlerts });
+        }
+
         render() {
             return (
                 <Container {...props}>
-                    <BaseComponent/>
+                    <AlertContainer>
+                        {
+                            this.state.alerts.map((props, index) =>
+                                <Alert onDismiss={() => this.removeAlert(props.id)} {...props} key={index}>
+                                    { props.message }
+                                </Alert>
+                            )
+                        }
+                    </AlertContainer>
+                    <BaseComponent pushAlert={(type, title, message, id) => this.pushAlert(type, title, message, id)}/>
                 </Container>
             );
         }

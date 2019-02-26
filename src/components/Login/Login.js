@@ -17,6 +17,7 @@ import {
 } from '../../actions/actions';
 import AlertContainer from "../AlertContainer/AlertContainer";
 import Alert from "../Alert/Alert";
+import withContainer from "../withContainer";
 // import FacebookButton from "../FacebookButton/FacebookButton";
 
 const mapStateToProps = state => ({
@@ -52,7 +53,7 @@ class Login extends Component {
         // Show alert if there is a ?redirect= query param
         if(this.props.location.search) {
             const pageName = this.props.location.search.substring(this.props.location.search.indexOf('=') + 2, this.props.location.search.length);
-            this.pushAlert('info', 'Login', `You need to login before you can access the ${pageName} page.`);
+            this.props.pushAlert('info', 'Login', `You need to login before you can access the ${pageName} page.`);
         }
     }
 
@@ -100,7 +101,7 @@ class Login extends Component {
                 Log.error('Login Failed!', err);
 
             this.props.loginFailure(err);
-            this.pushAlert('danger', 'Login Failed', err.message);
+            this.props.pushAlert('danger', 'Login Failed', err.message);
         }
     };
 
@@ -126,54 +127,8 @@ class Login extends Component {
     //     }(document, 'script', 'facebook-jssdk'));
     // }
 
-
-    /**
-     * Pushes an alert onto the stack to be
-     * visible by users
-     */
-    pushAlert(type, title, message, id = _.uniqueId()) {
-        const { alerts } = this.state;
-        // Push an object of props to be passed to the <Alert /> Component
-        alerts.push({
-            type,
-            title,
-            id,
-            message,
-        });
-
-        this.setState({ alerts });
-    }
-
-    /**
-     * Removes an alert from the stack so that
-     * it is no longer rendered on the page
-     * @param id Integer the unique alert id
-     */
-    removeAlert(id) {
-        const { alerts } = this.state;
-        const newAlerts = [
-            ...alerts.filter(alert => alert.id !== id)
-        ];
-
-        this.setState({ alerts: newAlerts });
-    }
-
     render() {
         return (
-            <Container style={{backgroundColor: '#FFFFFF'}}>
-                <AlertContainer>
-                    { this.state.alerts.map((props, index) =>
-                        <Alert key={index} onDismiss={() => this.removeAlert(props.id)} {...props}>
-                            {props.message}
-                            <br />
-                            {
-                                props.type === 'danger' &&
-                                <Link to="/login/reset">reset your password.</Link>
-                            }
-                        </Alert>
-                        )
-                    }
-                </AlertContainer>
                 <div className="row">
                     <div className="col-lg-5 offset-lg-4 col-md-5 offset-md-4 col-sm-3 offset-sm-4 col-xs-3">
                         <div className="Login">
@@ -228,9 +183,8 @@ class Login extends Component {
                         </div>
                     </div>
                 </div>
-            </Container>
         );
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Login));
+export default withContainer(connect(mapStateToProps, mapDispatchToProps)(withRouter(Login)), { style: { backgroundColor: '#ffffff'}});

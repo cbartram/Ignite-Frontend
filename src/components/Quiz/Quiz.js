@@ -53,6 +53,10 @@ class Quiz extends Component {
   }
 
 
+  /**
+   * Sets the currently active quiz and
+   * checks the users active subscription to allow access to the quiz content
+   */
   componentDidMount() {
     // Firstly we need to retrieve the quiz from the URL
     try {
@@ -96,6 +100,22 @@ class Quiz extends Component {
    */
   percentComplete() {
     return (((this.state.activeQuestionIndex + 1) / this.state.quiz.questions.length) * 100).toFixed(0);
+  }
+
+  /**
+   * Determines if the users answer was
+   * correct or incorrect and shows them an explanation accordingly
+   */
+  gradeQuestion() {
+    const question = this.state.quiz.questions[this.state.activeQuestionIndex];
+    const selectedAnswer = this.state.quiz.questions[this.state.activeQuestionIndex].answers.filter(question => question.checked)[0];
+    // Selected answer will be "undefined" if the user has not chosen and answer
+    if(typeof selectedAnswer !== 'undefined') {
+      console.log('Grading!');
+    } else {
+      console.log('You must select a question first!');
+      this.props.pushAlert('danger', 'Uh Oh', 'You need to select an answer first!');
+    }
   }
 
   render() {
@@ -177,7 +197,8 @@ class Quiz extends Component {
                   <button className="common-Button common-Button--default" disabled={this.state.activeQuestionIndex <= 0} style={{ minWidth: 70 }} onClick={() => this.setState((prev) => ({ activeQuestionIndex: prev.activeQuestionIndex - 1}))}>
                     <span className="fas fa-chevron-left" />
                   </button>
-                  <button className="common-Button common-Button--default">
+                  {/* Disable the submit button once the user has attempted the question */}
+                  <button className="common-Button common-Button--default" onClick={() => this.gradeQuestion()} disabled={this.state.quiz.questions[this.state.activeQuestionIndex].correct !== null}>
                     Submit
                   </button>
                   <button className="common-Button common-Button--default" disabled={this.state.activeQuestionIndex >= this.state.quiz.questions.length - 1} style={{ minWidth: 70 }} onClick={() => this.setState((prev) => ({ activeQuestionIndex: prev.activeQuestionIndex + 1}))}>
