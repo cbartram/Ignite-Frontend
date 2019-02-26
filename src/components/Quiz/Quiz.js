@@ -95,7 +95,7 @@ class Quiz extends Component {
    * @returns {string}
    */
   percentComplete() {
-    return ((this.state.activeQuestionIndex / this.state.quiz.questions.length) * 100).toFixed(0);
+    return (((this.state.activeQuestionIndex + 1) / this.state.quiz.questions.length) * 100).toFixed(0);
   }
 
   render() {
@@ -135,6 +135,7 @@ class Quiz extends Component {
             <div className="d-flex justify-content-center">
               <h3 className="common-UppercaseTitle">Question { this.state.activeQuestionIndex + 1 } of {this.state.quiz.questions.length}</h3>
             </div>
+            {/* Q & A Row */}
             <div className="row">
               <div className="col-md-8 offset-md-2">
                 <div className="d-flex flex-column">
@@ -155,6 +156,22 @@ class Quiz extends Component {
                       )
                     })
                   }
+                </div>
+              </div>
+            </div>
+            {/* Back/forwards row */}
+            <div className="row mt-4">
+              <div className="col-md-6 offset-md-3">
+                <div className="d-flex justify-content-between">
+                  <button className="common-Button common-Button--default" disabled={this.state.activeQuestionIndex <= 0} style={{ minWidth: 70 }} onClick={() => this.setState((prev) => ({ activeQuestionIndex: prev.activeQuestionIndex - 1}))}>
+                    <span className="fas fa-chevron-left" />
+                  </button>
+                  <button className="common-Button common-Button--default">
+                    Submit
+                  </button>
+                  <button className="common-Button common-Button--default" disabled={this.state.activeQuestionIndex >= this.state.quiz.questions.length - 1} style={{ minWidth: 70 }} onClick={() => this.setState((prev) => ({ activeQuestionIndex: prev.activeQuestionIndex + 1}))}>
+                    <span className="fas fa-chevron-right" />
+                  </button>
                 </div>
               </div>
             </div>
