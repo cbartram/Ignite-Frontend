@@ -22,6 +22,19 @@
     font-size: 17px;
 }
 
+.answer:hover {
+    -webkit-transform: translateY(-2px);
+    -moz-transform: translateY(-2px);
+    -ms-transform: translateY(-2px);
+    -o-transform: translateY(-2px);
+    transform: translateY(-2px);
+}
+
 .answer-text {
   margin-left: 10px;
+  font-size: 18px;
+}
+
+.question-text {
+    font-size: 20px;
 }

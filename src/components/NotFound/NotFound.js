@@ -10,7 +10,7 @@ import './NotFound.css';
 const notFound = () =>
     <div className="row">
         <div className="d-flex flex-column align-self-center align-items-center ml-4">
-            <i className="fas fa-7x fa-exclamation-triangle" style={{ color: '#ffa27b'}} />
+            <i className="fas fa-7x fa-exclamation-triangle d-none d-md-block" style={{ color: '#ffa27b'}} />
         </div>
         <div className="col-md-8">
             <div id="error-block" className="container-lg 404">
