@@ -106,13 +106,24 @@ class Quiz extends Component {
                 <i className="fas fa-7x fa-exclamation-triangle d-none d-md-block" style={{ color: '#ffa27b'}} />
               </div>
               <div className="col-md-8">
-                <div id="error-block" className="container-lg 404">
+                <div id="error-block" className="container-lg pb-1">
                   <h1 className="common-SectionTitle">Oh No!</h1>
                   <h2 className="common-IntroText">We couldn't find that quiz</h2>
                   <p className="common-IntroText">
-                    We are having some trouble identifying the correct quiz for you. Please select a proper quiz from our <Link className="common-Link" to="/videos">videos page</Link>
+                    We are having some trouble identifying the correct quiz for you. Please select a proper quiz from our <Link className="common-Link" to="/videos">videos page</Link> or
+                    checkout some quizzes below!
                   </p>
                 </div>
+                {
+                  this.props.quizzes.map(quiz => {
+                    return (
+                        // Purposely render an <a /> instead of <Link /> so that it reloads the page and componentDidMount()
+                        <a href={`/quiz?q=${btoa(quiz.id)}`} className="badge badge-pill badge-primary badge-quiz p-3 ml-4">
+                          { quiz.name }
+                        </a>
+                    )
+                  })
+                }
               </div>
             </div>
         )
