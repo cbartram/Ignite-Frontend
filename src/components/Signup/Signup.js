@@ -9,13 +9,10 @@ import LoaderButton from "../LoaderButton/LoaderButton";
 import { connect } from 'react-redux';
 import { Auth } from 'aws-amplify';
 import { Link } from 'react-router-dom';
-import Container from "../Container/Container";
 import { loginRequest, loginSuccess, loginFailure, hideErrors, fetchVideos } from "../../actions/actions";
 import Log from '../../Log';
-import Alert from '../Alert/Alert';
-import AlertContainer from '../AlertContainer/AlertContainer';
 import './Signup.css';
-import _ from 'lodash';
+import withContainer from "../withContainer";
 // import FacebookButton from "../FacebookButton/FacebookButton";
 
 const mapStateToProps = state => ({
@@ -46,7 +43,6 @@ class Signup extends Component {
             confirmPassword: '',
             confirmationCode: '',
             newUser: null,
-            alerts: [],
         };
     }
 
@@ -102,7 +98,7 @@ class Signup extends Component {
         } catch (err) {
             Log.error('Error Signing up new user...', err);
             this.props.loginFailure(err);
-            this.pushAlert('danger', 'Error Registering Account', err.message);
+            this.props.pushAlert('danger', 'Error Registering Account', err.message);
         }
         this.props.isFetching(false);
     };
@@ -126,7 +122,7 @@ class Signup extends Component {
         } catch (err) {
             Log.error('Error confirming user code or logging user in...', err);
             this.props.loginFailure(err);
-            this.pushAlert('danger', 'Error confirming user', err.message);
+            this.props.pushAlert('danger', 'Error confirming user', err.message);
         }
     };
 
@@ -252,7 +248,7 @@ class Signup extends Component {
     async resendConfirmationCode() {
         if(this.state.email.length === 0) {
             this.props.loginFailure({ code: 'InvalidEmailException', message: 'You must fill out your email first.'});
-            this.pushAlert('danger', 'Missing Email', '')
+            this.props.pushAlert('danger', 'Missing Email', '')
         } else {
             // New user must not be null this handles showing the confirmation dialog box
             try {
@@ -262,76 +258,26 @@ class Signup extends Component {
             } catch (err) {
                 Log.error('Failed to re-send sign-up confirmation email');
                 this.props.loginFailure(err);
-                this.pushAlert('danger', 'Failed to re-send email', err.message)
+                this.props.pushAlert('danger', 'Failed to re-send email', err.message)
             }
         }
     }
 
-    /**
-     * Pushes an alert onto the stack to be
-     * visible by users
-     */
-    pushAlert(type, title, message, id = _.uniqueId()) {
-        const { alerts } = this.state;
-        // Push an object of props to be passed to the <Alert /> Component
-        alerts.push({
-            type,
-            title,
-            id,
-            message,
-        });
-
-        this.setState({ alerts });
-    }
-
-    /**
-     * Removes an alert from the stack so that
-     * it is no longer rendered on the page
-     * @param id Integer the unique alert id
-     */
-    removeAlert(id) {
-        const { alerts } = this.state;
-        const newAlerts = [
-            ...alerts.filter(alert => alert.id !== id)
-        ];
-
-        this.setState({ alerts: newAlerts });
-    }
-
-
     render() {
         return (
-            <Container style={{backgroundColor: '#FFFFFF'}}>
-                <AlertContainer>
-                {
-                    this.state.alerts.map((props, index) =>
-                        <Alert onDismiss={() => this.removeAlert(props.id)} {...props} key={index}>
-                            { this.props.auth.error !== null && typeof this.props.auth.error.code !== 'undefined' && this.props.auth.error.code === 'UsernameExistsException' ?
-                                (
-                                    <span>
-                                        { this.props.auth.error.message }
-                                        <button className="btn btn-link" onClick={() => this.resendConfirmationCode()}>Click here to re-send your confirmation code</button>
-                                    </span>
-                                ) : this.props.auth.error.message
-                            }
-                        </Alert>
-                    )
-                }
-                </AlertContainer>
-                <div className="row">
-                    <div className="col-lg-4 offset-lg-4 col-md-4 offset-md-4 col-sm-6 offset-sm-3 col-xs-6 offset-xs-2">
-                        <div className="Signup">
-                            {
-                                this.state.newUser === null
-                                ? this.renderForm()
-                                : this.renderConfirmationForm()
-                            }
-                        </div>
+            <div className="row">
+                <div className="col-lg-4 offset-lg-4 col-md-4 offset-md-4 col-sm-6 offset-sm-3 col-xs-6 offset-xs-2">
+                    <div className="Signup">
+                        {
+                            this.state.newUser === null
+                            ? this.renderForm()
+                            : this.renderConfirmationForm()
+                        }
                     </div>
                 </div>
-            </Container>
+            </div>
         );
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Signup);
+export default withContainer(connect(mapStateToProps, mapDispatchToProps)(Signup), { style: { backgroundColor: '#ffffff'}});

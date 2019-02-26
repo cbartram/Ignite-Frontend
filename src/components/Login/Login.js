@@ -3,10 +3,8 @@ import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import { Auth } from 'aws-amplify';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
-import _ from 'lodash';
 import './Login.css';
 import Log from '../../Log';
-import Container from '../Container/Container';
 import LoaderButton from '../LoaderButton/LoaderButton';
 import {
     loginFailure,
@@ -15,8 +13,6 @@ import {
     fetchVideos,
     updateVideosSync,
 } from '../../actions/actions';
-import AlertContainer from "../AlertContainer/AlertContainer";
-import Alert from "../Alert/Alert";
 import withContainer from "../withContainer";
 // import FacebookButton from "../FacebookButton/FacebookButton";
 
@@ -44,7 +40,6 @@ class Login extends Component {
             email: "",
             password: "",
             isLoading: false,
-            alerts: [],
         };
     }
 

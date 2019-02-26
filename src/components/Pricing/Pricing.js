@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import _ from 'lodash';
 import { Link } from 'react-router-dom';
 import PaymentModal from '../PaymentModal/PaymentModal';
-import AlertContainer from '../AlertContainer/AlertContainer';
-import Alert from '../Alert/Alert';
 import './Pricing.css';
 import withContainer from "../withContainer";
 
@@ -14,14 +11,6 @@ const mapStateToProps = state => ({
 });
 
 class Pricing extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            alerts: []
-        }
-    }
-
     /**
      * Renders the correct button for the payment screen depending on what kind of user
      * is using the button (non registered, registered but not premium, registered and premium)
@@ -30,7 +19,7 @@ class Pricing extends Component {
         if(this.props.auth.user) {
             // If the user is already premium let them know!
             if(this.props.auth.user['custom:plan'] === 'Basic Plan2') { // TODO change this to "Basic Plan" to prevent re-subscribers
-                return <a href="#basic-plan" onClick={() => this.pushAlert('info', 'Already Subscribed', 'You are already subscribed to this plan!')} className="Plan-button common-UppercaseText common-Link--arrow">
+                return <a href="#basic-plan" onClick={() => this.props.pushAlert('info', 'Already Subscribed', 'You are already subscribed to this plan!')} className="Plan-button common-UppercaseText common-Link--arrow">
                     Join free for 7 days
                 </a>
             } else {
@@ -46,58 +35,18 @@ class Pricing extends Component {
         </Link>;
     }
 
-    /**
-     * Pushes an alert onto the stack to be
-     * visible by users
-     */
-    pushAlert(type, title, message, id = _.uniqueId()) {
-        const { alerts } = this.state;
-        // Push an object of props to be passed to the <Alert /> Component
-        alerts.push({
-            type,
-            title,
-            id,
-            message,
-        });
-
-        this.setState({ alerts });
-    }
-
-    /**
-     * Removes an alert from the stack so that
-     * it is no longer rendered on the page
-     * @param id Integer the unique alert id
-     */
-    removeAlert(id) {
-        const { alerts } = this.state;
-        const newAlerts = [
-            ...alerts.filter(alert => alert.id !== id)
-        ];
-
-        this.setState({ alerts: newAlerts });
-    }
-
     render() {
         return (
             <div>
-                <AlertContainer>
-                    {
-                        this.state.alerts.map((props, index) =>
-                            <Alert onDismiss={() => this.removeAlert(props.id)} {...props} key={index}>
-                                { props.message }
-                            </Alert>
-                        )
-                    }
-                </AlertContainer>
                 {/* Handles showing and processing user payments */}
                 <PaymentModal
                     onFailedPayment={(errorMessage) => {
                         let message = `Unfortunately something went wrong processing your payment: ${errorMessage}`;
-                        this.pushAlert('danger', 'Subscription Failed', message)
+                        this.props.pushAlert('danger', 'Subscription Failed', message)
                     }}
                     onSuccessfulPayment={() => {
                     let message = `Your subscription has been created successfully and will automatically renew on ${ moment().format('MMM Do') }.`;
-                    this.pushAlert('success', 'Subscription Successful', message)
+                    this.props.pushAlert('success', 'Subscription Successful', message)
                 }} />
                 <div className="row">
                     <div className="col-lg-4 offset-md-4 col-md-4 offset-md-4 col-sm-8 offset-sm-2 px-4 mt-3">
