@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { withRouter, Link } from 'react-router-dom';
 import withContainer from '../withContainer';
+import { queryString } from '../../util';
 import { updateQuiz, submitQuiz } from '../../actions/actions';
 import Log from '../../Log';
 import './Quiz.css';
@@ -63,13 +64,24 @@ class Quiz extends Component {
   componentDidMount() {
     // Firstly we need to retrieve the quiz from the URL
     try {
-      const quizId = decodeURI(atob(this.props.location.search.substring(this.props.location.search.indexOf('=') + 1, this.props.location.search.length)));
+      const { q, retake } = queryString();
+      const quizId = decodeURI(atob(q));
       const quiz = this.props.quizzes.filter(q => q.id === quizId)[0];
 
       if (typeof quiz === 'undefined') {
         // More than likely the user messed with the URL Query params -.-
         this.setState({error: true});
       }
+
+      if(retake === "true") {
+        // Update quiz properties to "reset" quiz
+        quiz.correct = 0;
+        quiz.incorrect = 0;
+        quiz.complete = false;
+        quiz.score = 0;
+        quiz.questions = quiz.questions.map(q => ({ ...q, correct: null, answers: q.answers.map(a => ({ ...a, checked: false })) }));
+      }
+
       // The quiz in question (which we will copy to local state)
       this.setState({ quiz });
       // TODO if the user doesn't have an active subscription we cannot provide them access to this content this MUST be done with an API call the server is the only one we can trust

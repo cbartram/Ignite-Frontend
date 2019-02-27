@@ -19,7 +19,6 @@ export default (state = {}, action) => {
             let quizIndex = _.findIndex(state.quizList, quiz => quiz.id === action.payload.id);
             const quizListCopy = [...state.quizList];
             quizListCopy[quizIndex] = action.payload;
-            console.log(quizListCopy);
             return {
                 ...state,
                 quizList: quizListCopy

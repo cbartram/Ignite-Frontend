@@ -144,14 +144,19 @@ class Videos extends Component {
                         <p className="common-BodyText">
                             { quiz.description }
                         </p>
-                        <div className="progress" style={{height: 5 }}>
-                            <div className="progress-bar" role="progressbar" style={{width: `75%`, backgroundColor: '#7795f8' }} />
-                        </div>
-                        <span className="text-muted">
-                            75%
-                         </span>
-                        <Link to={`/quiz?q=${btoa(quiz.id)}`} className="common-Button common-Button--default">
-                            Take Quiz
+                        {
+                            quiz.complete &&
+                            <div>
+                                <div className="progress" style={{height: 5 }}>
+                                    <div className="progress-bar" role="progressbar" style={{width: `${quiz.score}%`, backgroundColor: '#7795f8' }} />
+                                </div>
+                                <span className="text-muted">
+                                    {quiz.score}%
+                                 </span>
+                            </div>
+                        }
+                        <Link to={`/quiz?q=${btoa(quiz.id)}${quiz.complete && '&retake=true'}`} className="common-Button common-Button--default">
+                            { quiz.complete ? 'Re-take Quiz' : 'Take Quiz'}
                         </Link>
                     </div>
                 </div>

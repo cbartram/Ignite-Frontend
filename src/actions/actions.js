@@ -243,6 +243,8 @@ export const submitQuiz = (email, quiz) => async dispatch => {
 
     const response = await storeQuiz(email, quiz);
 
+    console.log(response);
+
     if(response.status === 200) {
         // Dispatch information about billing
         dispatch({
