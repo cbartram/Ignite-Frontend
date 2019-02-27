@@ -56,7 +56,6 @@ class Navbar extends Component {
     render() {
         const authLinks = [
             <Link className="p-3 text-dark" to="/videos" key="videos" onClick={() => this.handleLinkClick()}>Videos</Link>,
-            <Link className="p-3 text-dark" to="/quiz" key="quiz" onClick={() => this.handleLinkClick()}>Practice</Link>,
             <Link className="p-3 text-dark" to="/pricing" key="pricing" onClick={() => this.handleLinkClick()}>Pricing</Link>,
         ];
         const standardLinks = [

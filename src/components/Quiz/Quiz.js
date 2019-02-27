@@ -3,15 +3,18 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { withRouter, Link } from 'react-router-dom';
 import withContainer from '../withContainer';
+import { updateQuiz, submitQuiz } from '../../actions/actions';
 import Log from '../../Log';
 import './Quiz.css';
 
 const mapStateToProps = (state) => ({
+  user: state.auth.user,
   quizzes: state.quizzes.quizList,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-
+  updateQuiz: (quiz) => dispatch(updateQuiz(quiz)),
+  submitQuiz: (email, quiz) => dispatch(submitQuiz(email, quiz)),
 });
 
 /**
@@ -115,8 +118,8 @@ class Quiz extends Component {
    */
   gradeQuestion() {
     const { quiz, activeQuestionIndex } = this.state;
-    const question = this.state.quiz.questions[activeQuestionIndex];
-    const selectedAnswer = this.state.quiz.questions[activeQuestionIndex].answers.filter(question => question.checked)[0];
+    const question = quiz.questions[activeQuestionIndex];
+    const selectedAnswer = quiz.questions[activeQuestionIndex].answers.filter(question => question.checked)[0];
     // Selected answer will be "undefined" if the user has not chosen and answer
     if(typeof selectedAnswer !== 'undefined') {
       question.correct = selectedAnswer.key === question.correctAnswer;
@@ -130,17 +133,17 @@ class Quiz extends Component {
       }
 
       quiz.questions[activeQuestionIndex] = question;
-      this.setState({ quiz });
+      this.setState({ quiz }, () => {
+        // If its the last question send off the results to the server
+        if(activeQuestionIndex === quiz.questions.length - 1) {
+          Log.info('Submitting Quiz results...');
+          this.props.updateQuiz(quiz);
+          this.props.submitQuiz(this.props.user.email, quiz);
+          // TODO Direct users to the quiz summary page
+        }
+      });
     } else
       this.props.pushAlert('danger', 'Uh Oh', 'You need to select an answer first!');
-
-
-    // If its the last question send off the results to the server
-    if(activeQuestionIndex === quiz.questions.length - 1) {
-      // TODO: Update quiz in redux
-      // TODO: Submit quiz from redux to the API
-    }
-
   }
 
   render() {
@@ -189,7 +192,7 @@ class Quiz extends Component {
               </div>
             </div>
             <div className="d-flex justify-content-center">
-              <h3 className="common-UppercaseTitle">Question { this.state.activeQuestionIndex + 1 } of {this.state.quiz.questions.length}</h3>
+              <h3 className="common-UppercaseTitle mt-2">Question { this.state.activeQuestionIndex + 1 } of {this.state.quiz.questions.length}</h3>
             </div>
             {/* Q & A Row */}
             <div className="row">

@@ -11,7 +11,7 @@ import {
     API_FIND_ALL_USERS,
     API_PING_VIDEO,
     API_SEND_EMAIL,
-    getRequestUrl,
+    getRequestUrl, API_SUBMIT_QUIZ,
 } from './constants';
 
 /**
@@ -47,6 +47,37 @@ export const sendEmail = async (from, subject = '', message = '') => {
         return await (await fetch(getRequestUrl(API_SEND_EMAIL), params)).json();
     } catch(err) {
         Log.error('Failed to retrieve videos from API...', err);
+    }
+};
+
+/**
+ * Handles submitting the quiz results to the server for grading and storage.
+ * @param email String Users email address
+ * @param quiz Object quiz object for processing
+ * @returns {Promise<any>}
+ */
+export const storeQuiz = async (email, quiz) => {
+    const params = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'x-api-key': IS_PROD ? PROD_API_KEY : API_KEY
+        },
+        // Since this is calling an API these details are crucial for the lambda function to know which route to execute.
+        body: JSON.stringify({
+            headers: {},
+            method: 'POST',
+            path: API_SUBMIT_QUIZ,
+            parameters: {}, // Query params
+            body: { email, quiz }
+        }),
+    };
+
+    try {
+        return await (await fetch(getRequestUrl(API_SUBMIT_QUIZ), params)).json();
+    } catch(err) {
+        Log.error('Failed to store quiz results...', err);
     }
 };
 

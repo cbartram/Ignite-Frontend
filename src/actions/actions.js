@@ -2,7 +2,7 @@
  * This file defines actions which trigger switch statements in the reducer
  */
 import * as constants from '../constants';
-import {getVideos, sendVideoData} from '../util';
+import {getVideos, sendVideoData, storeQuiz } from '../util';
 
 
 /**
@@ -213,6 +213,49 @@ export const updateVideosSync = (videos) => dispatch => {
         type: constants.VIDEOS_SUCCESS,
         payload: videos,
     })
+};
+
+/**
+ * Synchronously updates a completed quiz in redux.
+ * This will eventually be retrieved from redux and sent to the server for storage.
+ * @param quiz Object quiz object
+ * @returns {Function}
+ */
+export const updateQuiz = (quiz) => dispatch => {
+  dispatch({
+      type: constants.UPDATE_QUIZ,
+      payload: quiz,
+  })
+};
+
+
+/**
+ * Sends the quiz to the server for processing and storage before being returned to the client.
+ * @param email String the users email address
+ * @param quiz Object the quiz object to grade.
+ * @returns {Function}
+ */
+export const submitQuiz = (email, quiz) => async dispatch => {
+    dispatch({
+        type: constants.SUBMIT_QUIZ_REQUEST,
+        payload: true,
+    });
+
+    const response = await storeQuiz(email, quiz);
+
+    if(response.status === 200) {
+        // Dispatch information about billing
+        dispatch({
+            type: constants.UPDATE_QUIZ,
+            payload: response.body.quiz,
+        });
+    } else if(response.status > 200 || typeof response.status === 'undefined') {
+        // An error occurred
+        dispatch({
+            type: constants.SUBMIT_QUIZ_FAILURE,
+            payload: { message: `Failed to grade the quiz: ${JSON.stringify(response)}`}
+        });
+    }
 };
 
 

@@ -1,4 +1,5 @@
 import * as constants from '../constants';
+import _ from 'lodash';
 /**
  * This is the Quiz reducer which handles updating state to reflect the user's current
  * quizz as well as associated data
@@ -14,6 +15,28 @@ export default (state = {}, action) => {
                 quizList: action.payload, // Should be an [] of quiz objects
                 isFetching: false,
             };
+        case constants.UPDATE_QUIZ:
+            let quizIndex = _.findIndex(state.quizList, quiz => quiz.id === action.payload.id);
+            const quizListCopy = [...state.quizList];
+            quizListCopy[quizIndex] = action.payload;
+            console.log(quizListCopy);
+            return {
+                ...state,
+                quizList: quizListCopy
+            };
+        case constants.SUBMIT_QUIZ_REQUEST: {
+            return {
+                ...state,
+                isFetching: true,
+            }
+        }
+        case constants.SUBMIT_QUIZ_FAILURE: {
+            return {
+                ...state,
+                isFetching: false,
+                error: action.payload,
+            }
+        }
         default:
             return {
                 ...state
