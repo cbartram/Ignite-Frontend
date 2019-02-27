@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import _ from 'lodash';
 import withContainer from '../withContainer';
 import Card from '../Card/Card';
 import Log from '../../Log';

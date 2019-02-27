@@ -81,16 +81,23 @@ class Quiz extends Component {
    */
   handleSelect(answer) {
     let { quiz, activeQuestionIndex } = this.state;
-    // Make them all un-checked
-    quiz.questions[activeQuestionIndex].answers = quiz.questions[activeQuestionIndex].answers.map(o => ({ ...o, checked: false }));
 
-    // Check the correct one
-    let index = _.findIndex(quiz.questions[activeQuestionIndex].answers, o => o.key === answer.key);
+    // Only perform this operation if the user has not hit "submit"
+    if(quiz.questions[activeQuestionIndex].correct === null) {
+      // Make them all un-checked
+      quiz.questions[activeQuestionIndex].answers = quiz.questions[activeQuestionIndex].answers.map(o => ({
+        ...o,
+        checked: false
+      }));
 
-    if(index !== -1)
-      quiz.questions[activeQuestionIndex].answers[index].checked = true;
+      // Check the correct one
+      let index = _.findIndex(quiz.questions[activeQuestionIndex].answers, o => o.key === answer.key);
 
-    this.setState({ quiz });
+      if (index !== -1)
+        quiz.questions[activeQuestionIndex].answers[index].checked = true;
+
+      this.setState({quiz});
+    }
   }
 
   /**
@@ -107,15 +114,33 @@ class Quiz extends Component {
    * correct or incorrect and shows them an explanation accordingly
    */
   gradeQuestion() {
-    const question = this.state.quiz.questions[this.state.activeQuestionIndex];
-    const selectedAnswer = this.state.quiz.questions[this.state.activeQuestionIndex].answers.filter(question => question.checked)[0];
+    const { quiz, activeQuestionIndex } = this.state;
+    const question = this.state.quiz.questions[activeQuestionIndex];
+    const selectedAnswer = this.state.quiz.questions[activeQuestionIndex].answers.filter(question => question.checked)[0];
     // Selected answer will be "undefined" if the user has not chosen and answer
     if(typeof selectedAnswer !== 'undefined') {
-      console.log('Grading!');
-    } else {
-      console.log('You must select a question first!');
+      question.correct = selectedAnswer.key === question.correctAnswer;
+
+      if(question.correct) {
+        quiz.correct += 1;
+        this.props.pushAlert('success', 'Correct', question.explanation);
+      } else {
+        quiz.incorrect += 1;
+        this.props.pushAlert('danger', 'Incorrect', question.explanation);
+      }
+
+      quiz.questions[activeQuestionIndex] = question;
+      this.setState({ quiz });
+    } else
       this.props.pushAlert('danger', 'Uh Oh', 'You need to select an answer first!');
+
+
+    // If its the last question send off the results to the server
+    if(activeQuestionIndex === quiz.questions.length - 1) {
+      // TODO: Update quiz in redux
+      // TODO: Submit quiz from redux to the API
     }
+
   }
 
   render() {
@@ -138,7 +163,7 @@ class Quiz extends Component {
                   this.props.quizzes.map(quiz => {
                     return (
                         // Purposely render an <a /> instead of <Link /> so that it reloads the page and componentDidMount()
-                        <a href={`/quiz?q=${btoa(quiz.id)}`} className="badge badge-pill badge-primary badge-quiz p-3 ml-4">
+                        <a key={quiz.id} href={`/quiz?q=${btoa(quiz.id)}`} className="badge badge-pill badge-primary badge-quiz p-3 ml-4">
                           { quiz.name }
                         </a>
                     )
@@ -199,7 +224,7 @@ class Quiz extends Component {
                   </button>
                   {/* Disable the submit button once the user has attempted the question */}
                   <button className="common-Button common-Button--default" onClick={() => this.gradeQuestion()} disabled={this.state.quiz.questions[this.state.activeQuestionIndex].correct !== null}>
-                    Submit
+                    { this.state.activeQuestionIndex === this.state.quiz.questions.length - 1 ? 'Complete Quiz' : 'Submit'}
                   </button>
                   <button className="common-Button common-Button--default" disabled={this.state.activeQuestionIndex >= this.state.quiz.questions.length - 1} style={{ minWidth: 70 }} onClick={() => this.setState((prev) => ({ activeQuestionIndex: prev.activeQuestionIndex + 1}))}>
                     <span className="fas fa-chevron-right" />
