@@ -8,7 +8,7 @@ import {
 import LoaderButton from "../LoaderButton/LoaderButton";
 import { connect } from 'react-redux';
 import { Auth } from 'aws-amplify';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { loginRequest, loginSuccess, loginFailure, hideErrors, fetchVideos } from "../../actions/actions";
 import Log from '../../Log';
 import './Signup.css';
@@ -280,4 +280,4 @@ class Signup extends Component {
     }
 }
 
-export default withContainer(connect(mapStateToProps, mapDispatchToProps)(Signup), { style: { backgroundColor: '#ffffff'}});
+export default withContainer(connect(mapStateToProps, mapDispatchToProps)(withRouter(Signup)), { style: { backgroundColor: '#ffffff'}});

@@ -21,8 +21,8 @@ const mapDispatchToProps = dispatch => ({
  * This Component handles the routes which are displayed within index.js
  */
 class Videos extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         // Retains access to the iteration for each loop in
         // the videos map(). This tells us when we can render a quiz (at the end of a chapter)
@@ -37,6 +37,7 @@ class Videos extends Component {
             <div>
                 <div className="row">
                     <div className="col-md-4 offset-md-4">
+                        <h3 className="common-SectionTitle">No Subscription Found</h3>
                         <p className="common-BodyText">
                             It looks like you aren't subscribed to ignite. If you would like to subscribe and
                             watch all the high quality HD full stack development videos you can click the button below!
@@ -155,7 +156,7 @@ class Videos extends Component {
                                  </span>
                             </div>
                         }
-                        <Link to={`/quiz?q=${btoa(quiz.id)}${quiz.complete && '&retake=true'}`} className="common-Button common-Button--default">
+                        <Link to={`/quiz?q=${btoa(quiz.id)}${quiz.complete ? '&retake=true' : '' }`} className="common-Button common-Button--default">
                             { quiz.complete ? 'Re-take Quiz' : 'Take Quiz'}
                         </Link>
                     </div>
@@ -235,11 +236,13 @@ class Videos extends Component {
         return (
             <Container>
                 {
-                    (typeof this.props.videos.videoList !== 'undefined' && this.props.videos.videoList.length === 0) &&
+                    // Only render an error message if its their first time logging in and they dont have videos or they arent premium
+                    ((typeof this.props.videos.videoList !== 'undefined' && this.props.videos.videoList.length === 0) || !this.props.auth.user.premium) &&
                     Videos.renderSubscribeMessage()
                 }
                 {
-                    (typeof this.props.videos.videoList !== 'undefined' && this.props.videos.videoList.length > 0) &&
+                    // Render a success message on the condition that there is a video list and videos to show and the user is premium
+                    (typeof this.props.videos.videoList !== 'undefined' && this.props.videos.videoList.length > 0 && this.props.auth.user.premium) &&
                      this.renderVideos()
                 }
             </Container>
