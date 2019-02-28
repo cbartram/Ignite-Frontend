@@ -156,6 +156,9 @@ class Profile extends Component {
        // Update user attributes in redux sychronously (without doing another /users/find call)
        this.props.updateBillingSync(response.body.user.Attributes);
        this.props.updateVideosSync([]);
+
+       // Forces a user to re-sign in but ensures they keep no copy of their previous (subscriber) account
+       localStorage.clear();
     }
 
     /**

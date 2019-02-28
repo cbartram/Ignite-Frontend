@@ -19,9 +19,11 @@ const Avenue = ({ component: Component, props: componentProps, ...rest }) => {
             } else {
                 // If the user is trying to access a route like /login or /signup while logged in
                 // redirect them to what has been parsed from the query string
-                if(Object.keys(redirect).length === 0) {
+                if(typeof redirect === 'undefined') {
                     return <Redirect to="/videos" />
                 } else {
+                    if(Object.keys(redirect).length === 0)
+                        return <Redirect to="/videos" />;
                     return <Redirect to={redirect}/>
                 }
             }

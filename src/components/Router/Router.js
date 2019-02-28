@@ -7,7 +7,6 @@ import NotFound from '../NotFound/NotFound';
 import Signup from '../Signup/Signup';
 import Videos from '../Videos/Videos';
 import AuthenticatedRoute from '../AuthenticatedRoute/AuthenticatedRoute';
-import SubscriberRoute from '../SubscriberRoute/SubscriberRoute';
 import Avenue from '../Avenue/Avenue';
 import Pricing from '../Pricing/Pricing';
 import Watch from '../Watch/Watch';
@@ -39,8 +38,8 @@ class Router extends Component {
                     <AuthenticatedRoute exact path="/videos" component={Videos} isAuthenticated={this.props.auth.user !== null} />
                     <AuthenticatedRoute path="/profile" component={Profile} isAuthenticated={this.props.auth.user !== null} />
                     <AuthenticatedRoute path="/support" component={Support} isAuthenticated={this.props.auth.user !== null} />
-                    <SubscriberRoute path="/watch" component={Watch} isAuthenticated={this.props.auth.user !== null} user={this.props.auth.user} />
-                    <SubscriberRoute path="/quiz" component={Quiz} isAuthenticated={this.props.auth.user !== null} user={this.props.auth.user} />
+                    <AuthenticatedRoute path="/watch" component={Watch} isAuthenticated={this.props.auth.user !== null} />
+                    <AuthenticatedRoute path="/quiz" component={Quiz} isAuthenticated={this.props.auth.user !== null} />
                     <Avenue path="/pricing" component={Pricing} />
                     <Avenue path="/legal" component={Legal} />
                     <Avenue path="/cookie" component={CookiePolicy} />

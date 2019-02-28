@@ -204,7 +204,7 @@ class Videos extends Component {
                                                             <div className="progress-bar" role="progressbar" style={{width: `${Videos.percentComplete(video)}%`, backgroundColor: '#7795f8' }} />
                                                         </div>
                                                         <span className="text-muted">
-                                                             { Videos.percentComplete(video) <= 1 ? 'Not Started' : `${Videos.percentComplete(video)}% complete!`}
+                                                             { Videos.percentComplete(video) <= 1 ? 'Not Started' : `${Videos.percentComplete(video) > 100 ? 100 : Videos.percentComplete(video)}% complete!`}
                                                         </span>
                                                         <button onClick={() => this.handleWatch(video)} className="common-Button common-Button--default mt-2">
                                                             { Videos.percentComplete(video) <= 1 ?  'Start Now' : 'Continue'}
@@ -237,12 +237,12 @@ class Videos extends Component {
             <Container>
                 {
                     // Only render an error message if its their first time logging in and they dont have videos or they arent premium
-                    ((typeof this.props.videos.videoList !== 'undefined' && this.props.videos.videoList.length === 0) || !this.props.auth.user.premium) &&
+                    ((typeof this.props.videos.videoList !== 'undefined' && this.props.videos.videoList.length === 0) || this.props.auth.user['custom:premium'] === 'false') &&
                     Videos.renderSubscribeMessage()
                 }
                 {
                     // Render a success message on the condition that there is a video list and videos to show and the user is premium
-                    (typeof this.props.videos.videoList !== 'undefined' && this.props.videos.videoList.length > 0 && this.props.auth.user.premium) &&
+                    (typeof this.props.videos.videoList !== 'undefined' && this.props.videos.videoList.length > 0 && this.props.auth.user['custom:premium'] === 'true') &&
                      this.renderVideos()
                 }
             </Container>

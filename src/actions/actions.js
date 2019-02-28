@@ -2,6 +2,7 @@
  * This file defines actions which trigger switch statements in the reducer
  */
 import * as constants from '../constants';
+import Log from '../Log';
 import {getVideos, sendVideoData, storeQuiz } from '../util';
 
 
@@ -144,19 +145,27 @@ export const ping = (payload) => async dispatch => {
         payload: true // Sets isFetching to true (useful for unit testing redux)
     });
 
-    const response = await sendVideoData(payload);
+    try {
+        const response = await sendVideoData(payload);
 
-    if(response.status === 200) {
-        // Dispatch information about the users video progress
-        dispatch({
-            type: constants.PING_RESPONSE_SUCCESS,
-            payload: response.body.videos, // Must be an array of chapter objects
-        });
-    } else if(response.status > 200 || typeof response.status === 'undefined') {
-        // An error occurred
+        if (response.status === 200) {
+            // Dispatch information about the users video progress
+            dispatch({
+                type: constants.PING_RESPONSE_SUCCESS,
+                payload: response.body.videos, // Must be an array of chapter objects
+            });
+        } else if (response.status > 200 || typeof response.status === 'undefined') {
+            // An error occurred
+            dispatch({
+                type: constants.PING_RESPONSE_FAILURE,
+                payload: {message: `Failed to retrieve billing data from API: ${JSON.stringify(response)}`}
+            });
+        }
+    } catch(err) {
+        Log.error('[ERROR] Error receiving response from ping()', err);
         dispatch({
             type: constants.PING_RESPONSE_FAILURE,
-            payload: { message: `Failed to retrieve billing data from API: ${JSON.stringify(response)}`}
+            payload: {message: err.message}
         });
     }
 };
