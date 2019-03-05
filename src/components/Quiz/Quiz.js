@@ -92,6 +92,14 @@ class Quiz extends Component {
   }
 
   /**
+   * Returns true if any of the answers for the active index are selected
+   * and false otherwise. This determines
+   */
+  isAnswered() {
+    return this.state.quiz.questions[this.state.activeQuestionIndex].answers.map(a => a.checked).filter(b => b === true).length === 1;
+  }
+
+  /**
    * Updates the currently selected answer to the parameter answer and de-selects the rest
    */
   handleSelect(answer) {
@@ -238,10 +246,19 @@ class Quiz extends Component {
                     <span className="fas fa-chevron-left" />
                   </button>
                   {/* Disable the submit button once the user has attempted the question */}
-                  <button className="common-Button common-Button--default" onClick={() => this.gradeQuestion()} disabled={this.state.quiz.questions[this.state.activeQuestionIndex].correct !== null}>
-                    { this.state.activeQuestionIndex === this.state.quiz.questions.length - 1 ? 'Complete Quiz' : 'Submit'}
-                  </button>
-                  <button className="common-Button common-Button--default" disabled={this.state.activeQuestionIndex >= this.state.quiz.questions.length - 1} style={{ minWidth: 70 }} onClick={() => this.setState((prev) => ({ activeQuestionIndex: prev.activeQuestionIndex + 1}))}>
+                  {
+                    this.state.activeQuestionIndex === this.state.quiz.questions.length - 1 &&
+                    <button className="common-Button common-Button--default" onClick={() => this.gradeQuestion()} disabled={this.state.quiz.questions[this.state.activeQuestionIndex].correct !== null || !this.isAnswered()}>
+                      Complete Quiz
+                    </button>
+                  }
+                  <button className="common-Button common-Button--default"
+                          disabled={this.state.activeQuestionIndex >= this.state.quiz.questions.length - 1 || !this.isAnswered()}
+                          style={{ minWidth: 70 }}
+                          onClick={() => {
+                            this.gradeQuestion();
+                            this.setState((prev) => ({ activeQuestionIndex: prev.activeQuestionIndex + 1}))
+                          }}>
                     <span className="fas fa-chevron-right" />
                   </button>
                 </div>
