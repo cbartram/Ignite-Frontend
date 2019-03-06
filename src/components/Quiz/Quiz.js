@@ -241,25 +241,24 @@ class Quiz extends Component {
             {/* Back/forwards row */}
             <div className="row mt-4">
               <div className="col-md-6 offset-md-3">
-                <div className="d-flex justify-content-between">
-                  <button className="common-Button common-Button--default" disabled={this.state.activeQuestionIndex <= 0} style={{ minWidth: 70 }} onClick={() => this.setState((prev) => ({ activeQuestionIndex: prev.activeQuestionIndex - 1}))}>
-                    <span className="fas fa-chevron-left" />
-                  </button>
-                  {/* Disable the submit button once the user has attempted the question */}
-                  {
-                    this.state.activeQuestionIndex === this.state.quiz.questions.length - 1 &&
-                    <button className="common-Button common-Button--default" onClick={() => this.gradeQuestion()} disabled={this.state.quiz.questions[this.state.activeQuestionIndex].correct !== null || !this.isAnswered()}>
-                      Complete Quiz
-                    </button>
-                  }
-                  <button className="common-Button common-Button--default"
-                          disabled={this.state.activeQuestionIndex >= this.state.quiz.questions.length - 1 || !this.isAnswered()}
-                          style={{ minWidth: 70 }}
-                          onClick={() => {
-                            this.gradeQuestion();
-                            this.setState((prev) => ({ activeQuestionIndex: prev.activeQuestionIndex + 1}))
-                          }}>
-                    <span className="fas fa-chevron-right" />
+                <div className="d-flex justify-content-center">
+                  <button
+                      className="common-Button common-Button--default"
+                      disabled={!this.isAnswered()}
+                      style={{ minWidth: 70 }}
+                      onClick={() => {
+                          this.gradeQuestion();
+                          // On the last question do NOT increment the activeQuestionIndex
+                          if(this.state.activeQuestionIndex !== this.state.quiz.questions.length - 1) {
+                            this.setState((prev) => ({activeQuestionIndex: prev.activeQuestionIndex + 1}))
+                          } else {
+                            // TODO show the user their quiz results!
+                          }
+                      }}>
+                    {
+                      this.state.activeQuestionIndex === this.state.quiz.questions.length - 1 ?
+                      <span>Submit Quiz <i className="fas fa-arrow-right" /></span> : <span>Next <i className="fas fa-chevron-right" /></span>
+                    }
                   </button>
                 </div>
               </div>

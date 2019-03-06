@@ -21,6 +21,7 @@ export default (state = {}, action) => {
             quizListCopy[quizIndex] = action.payload;
             return {
                 ...state,
+                isFetching: false,
                 quizList: quizListCopy
             };
         case constants.SUBMIT_QUIZ_REQUEST: {

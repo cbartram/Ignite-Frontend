@@ -4,6 +4,7 @@
     <list default="true" id="4ec36ac8-77e5-4985-93b1-57c48712b128" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Quiz/Quiz.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Quiz/Quiz.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/reducers/QuizReducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/reducers/QuizReducer.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -45,10 +46,22 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/Quiz/Quiz.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="196">
-              <caret line="250" column="220" selection-start-line="250" selection-start-column="220" selection-end-line="250" selection-end-column="220" />
+            <state relative-caret-position="444">
+              <caret line="259" column="72" selection-start-line="259" selection-start-column="72" selection-end-line="259" selection-end-column="72" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/reducers/QuizReducer.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="271">
+              <caret line="23" column="34" selection-start-line="23" selection-start-column="34" selection-end-line="23" selection-end-column="34" />
+              <folding>
+                <element signature="e#0#42#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -159,7 +172,6 @@
         <option value="$PROJECT_DIR$/src/components/Support/Support.js" />
         <option value="$PROJECT_DIR$/src/constants.js" />
         <option value="$PROJECT_DIR$/src/components/Navbar/Navbar.js" />
-        <option value="$PROJECT_DIR$/src/reducers/QuizReducer.js" />
         <option value="$PROJECT_DIR$/src/util.js" />
         <option value="$PROJECT_DIR$/src/components/Signup/Signup.js" />
         <option value="$PROJECT_DIR$/src/components/withContainer.js" />
@@ -169,6 +181,7 @@
         <option value="$PROJECT_DIR$/src/components/Videos/Videos.js" />
         <option value="$PROJECT_DIR$/src/components/Router/Router.js" />
         <option value="$PROJECT_DIR$/src/components/Avenue/Avenue.js" />
+        <option value="$PROJECT_DIR$/src/reducers/QuizReducer.js" />
         <option value="$PROJECT_DIR$/src/components/Quiz/Quiz.js" />
       </list>
     </option>
@@ -310,7 +323,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1551820930757" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1551888249409" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs.mocha.mocha_node_package_dir" value="$PROJECT_DIR$/node_modules/mocha" />
@@ -345,7 +358,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="npm.Test">
+  <component name="RunManager" selected="npm.Build">
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <properties />
@@ -443,13 +456,6 @@
       <workItem from="1549326411312" duration="8384000" />
       <workItem from="1549749050582" duration="84448000" />
       <workItem from="1550516030673" duration="3498000" />
-    </task>
-    <task id="LOCAL-00066" summary="Responsive signup page, and profile page tweaks">
-      <created>1549916499646</created>
-      <option name="number" value="00066" />
-      <option name="presentableId" value="LOCAL-00066" />
-      <option name="project" value="LOCAL" />
-      <updated>1549916499646</updated>
     </task>
     <task id="LOCAL-00067" summary="Added login page animation">
       <created>1549936822233</created>
@@ -787,11 +793,18 @@
       <option name="project" value="LOCAL" />
       <updated>1551364043034</updated>
     </task>
-    <option name="localTasksCounter" value="115" />
+    <task id="LOCAL-00115" summary="Fixed user experience for quizzes">
+      <created>1551820979759</created>
+      <option name="number" value="00115" />
+      <option name="presentableId" value="LOCAL-00115" />
+      <option name="project" value="LOCAL" />
+      <updated>1551820979759</updated>
+    </task>
+    <option name="localTasksCounter" value="116" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="367802000" />
+    <option name="totallyTimeSpent" value="369001000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -806,7 +819,7 @@
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4992224" visible="true" weight="0.17277168" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4992224" visible="true" weight="0.17277168" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -815,13 +828,13 @@
       <window_info id="Favorites" order="6" sideWeight="0.5007776" side_tool="true" weight="0.16544567" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3291536" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.34273773" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.34273773" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.20585161" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.28213167" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.28213167" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="10" show_stripe_button="false" />
       <window_info anchor="bottom" id="Docker" order="11" show_stripe_button="false" />
@@ -874,7 +887,6 @@
     <option name="version" value="1" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Tweaks to video style with custom gradient" />
     <MESSAGE value="Multiple tweaks and improvements and withContainer() HOC" />
     <MESSAGE value="Added generic form handling for support page" />
     <MESSAGE value="Added login alert when query param is present" />
@@ -899,7 +911,8 @@
     <MESSAGE value="Added quiz retaking functionality" />
     <MESSAGE value="Fixed multiple critical access control bugs within the frontend" />
     <MESSAGE value="Removed the Subscriber route and fixed issue with redirections on login" />
-    <option name="LAST_COMMIT_MESSAGE" value="Removed the Subscriber route and fixed issue with redirections on login" />
+    <MESSAGE value="Fixed user experience for quizzes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed user experience for quizzes" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/components/Card/Card.css">
@@ -1220,16 +1233,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/reducers/QuizReducer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="317">
-          <caret line="19" column="25" selection-start-line="19" selection-start-column="25" selection-end-line="19" selection-end-column="25" />
-          <folding>
-            <element signature="e#0#42#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/Signup/Signup.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-7">
@@ -1327,10 +1330,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/reducers/QuizReducer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="271">
+          <caret line="23" column="34" selection-start-line="23" selection-start-column="34" selection-end-line="23" selection-end-column="34" />
+          <folding>
+            <element signature="e#0#42#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/Quiz/Quiz.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="196">
-          <caret line="250" column="220" selection-start-line="250" selection-start-column="220" selection-end-line="250" selection-end-column="220" />
+        <state relative-caret-position="444">
+          <caret line="259" column="72" selection-start-line="259" selection-start-column="72" selection-end-line="259" selection-end-column="72" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
           </folding>
