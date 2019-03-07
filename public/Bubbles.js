@@ -1,5 +1,4 @@
-
-$(document).ready(function() {
+$(function() {
     /**
      * Logo Bubbles shown on the App.js page
      * @param config Configuration object for the LogoBubbles including things

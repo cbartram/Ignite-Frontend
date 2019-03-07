@@ -20,7 +20,7 @@ export default class Card extends Component {
                       </div>
                    </div>
               }
-              <div className={`card-body ${this.props.classNames && this.props.classNames.join(' ')}`}>
+              <div className={`card-body ${this.props.classNames ? this.props.classNames.join(' ') : ''}`}>
                   { this.props.loading ?
                       <div className="d-flex flex-row justify-content-center">
                           <span className="fa fa-3x fa-circle-notch" style={{ color: '#6772e5' }} />

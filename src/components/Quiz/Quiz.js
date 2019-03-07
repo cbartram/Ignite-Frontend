@@ -142,24 +142,17 @@ class Quiz extends Component {
     const selectedAnswer = quiz.questions[activeQuestionIndex].answers.filter(question => question.checked)[0];
     // Selected answer will be "undefined" if the user has not chosen and answer
     if(typeof selectedAnswer !== 'undefined') {
-      question.correct = selectedAnswer.key === question.correctAnswer;
-
-      if(question.correct) {
-        quiz.correct += 1;
-        this.props.pushAlert('success', 'Correct', question.explanation);
-      } else {
-        quiz.incorrect += 1;
-        this.props.pushAlert('danger', 'Incorrect', question.explanation);
-      }
-
-      quiz.questions[activeQuestionIndex] = question;
+      question.correct = selectedAnswer.key === question.correctAnswer; // Boolean value if they got the question right
+      question.correct ? quiz.correct += 1 : quiz.incorrect += 1; // Increase/Decrease their score
+      quiz.questions[activeQuestionIndex] = question; // Update the question object
       this.setState({ quiz }, () => {
         // If its the last question send off the results to the server
         if(activeQuestionIndex === quiz.questions.length - 1) {
           Log.info('Submitting Quiz results...');
           this.props.updateQuiz(quiz);
           this.props.submitQuiz(this.props.user.email, quiz);
-          // TODO Direct users to the quiz summary page
+          // Show the user their quiz results!
+          this.props.history.push(`/quiz/results?q=${encodeURI(btoa(this.state.quiz.id))}`);
         }
       });
     } else
@@ -186,7 +179,7 @@ class Quiz extends Component {
                   this.props.quizzes.map(quiz => {
                     return (
                         // Purposely render an <a /> instead of <Link /> so that it reloads the page and componentDidMount()
-                        <a key={quiz.id} href={`/quiz?q=${btoa(quiz.id)}`} className="badge badge-pill badge-primary badge-quiz p-3 ml-4">
+                        <a key={quiz.id} href={`/quiz?q=${btoa(quiz.id)}&retake=true`} className="badge badge-pill badge-primary badge-quiz p-3 ml-4">
                           { quiz.name }
                         </a>
                     )
@@ -251,8 +244,6 @@ class Quiz extends Component {
                           // On the last question do NOT increment the activeQuestionIndex
                           if(this.state.activeQuestionIndex !== this.state.quiz.questions.length - 1) {
                             this.setState((prev) => ({activeQuestionIndex: prev.activeQuestionIndex + 1}))
-                          } else {
-                            // TODO show the user their quiz results!
                           }
                       }}>
                     {
