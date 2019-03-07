@@ -117,7 +117,7 @@ class QuizResults extends Component {
             <h3 className="common-SectionTitle">
               Grading Quiz One Moment...
             </h3>
-            <i className="fa fa-4x fa-circle-notch" style={{backgroundColor: '#7795f8'}} />
+            <i className="fa fa-4x fa-circle-notch" style={{color: '#7795f8'}} />
           </div>
       )
     }
