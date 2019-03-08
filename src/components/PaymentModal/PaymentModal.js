@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { updateUserAttributes, fetchVideos } from '../../actions/actions';
 import './PaymentModal.css';
 import Log from '../../Log';
+import { updateCache } from '../../util';
 import {API_CREATE_SUBSCRIPTION, API_KEY, getRequestUrl, IS_PROD, PROD_API_KEY} from '../../constants';
 
 const mapStateToProps = state => ({
@@ -43,7 +44,7 @@ class PaymentModal extends Component {
                 creditCard: false,
                 cvc: false,
             },
-        }
+        };
     }
 
     updateField = (fieldName, e) => {
@@ -166,18 +167,30 @@ class PaymentModal extends Component {
                     this.props.onFailedPayment(response.body.messages.join(','));
                 } else {
                     // Update redux with the new user attributes
-                    this.props.updateUserAttributes(response.body.user);
+                    this.props.updateUserAttributes({ ...response.body.user, 'custom:at_period_end': 'false', 'custom:unsub_timestamp': 'null' });
                     this.props.fetchVideos(this.props.auth.user.email);
-
-
-                    // TODO Update billing attributes with the latest subscription
-                    // Re-Signin so AWS Amplify can't retrieve old user data from localStorage
-                    // If a user does refresh it will kick them out the login screen
-                    // const r = await Auth.signIn(response.body.user['cognito:username']);
-                    // console.log('Attempting to re-sign in user: ', r);
-                    // todo come back to this there is a bug in AWS amplify'
-                    // todo this is bad and it will force users to re-sign in when they refresh a page
-                    localStorage.clear();
+                    updateCache({
+                        idToken: response.body.user.jwtToken,
+                        refreshToken: response.body.user.refreshToken,
+                        deviceKey: response.body.user.deviceKey,
+                        userData: JSON.stringify({
+                            UserAttributes:[{ Name: "custom:customer_id", Value: response.body.user['custom:customer_id']},
+                                    { Name:"custom:subscription_id", Value: response.body.user['custom:subscription_id']},
+                                    { Name:"sub", Value: response.body.user.sub},
+                                    { Name:"email_verified", Value: response.body.user.email_verified },
+                                    { Name:"custom:unsub_timestamp", Value: response.body.user['custom:unsub_timestamp']},
+                                    { Name:"custom:plan_id", Value: response.body.user['custom:plan_id']},
+                                    { Name:"custom:at_period_end", Value: response.body.user['custom:at_period_end']},
+                                    { Name:"custom:last_name", Value:response.body.user['custom:last_name']},
+                                    { Name:"custom:plan", Value: response.body.user['custom:plan']},
+                                    { Name:"custom:profile_picture", Value: response.body.user["custom:profile_picture"]},
+                                    { Name:"custom:first_name", Value: response.body.user["custom:first_name"]},
+                                    { Name:"custom:premium", Value: response.body.user["custom:premium"]},
+                                    { Name:"email", Value: response.body.user.email }
+                                ],
+                        Username: response.body.user['cognito:username']
+                        }),
+                    });
 
                     // Ensures that the user only see's a success message if the operation was actually successful.
                     if(response.status === 200 && response.body.statusCode === 200) {
@@ -213,6 +226,7 @@ class PaymentModal extends Component {
                 }
             } catch(err) {
                 Log.error(err);
+                this.props.onFailedPayment(err.message);
                 this.setState({ error: err.message, success: false, loading: false });
             }
         });

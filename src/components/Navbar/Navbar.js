@@ -38,7 +38,7 @@ class Navbar extends Component {
     async logout() {
         Log.info('Logging out...');
         try {
-            await Auth.signOut();
+            await Auth.signOut({ global: true });
             this.props.logout();
         } catch(err) {
             Log.error('Failed to logout user...', err)

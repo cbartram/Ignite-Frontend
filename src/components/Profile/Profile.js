@@ -24,6 +24,7 @@ import {
     videosFetched,
 } from '../../actions/actions';
 import Log from '../../Log';
+import { updateCache } from '../../util';
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -182,7 +183,7 @@ class Profile extends Component {
                this.props.loadingComplete(); // Turns off the loading spinners
                this.props.pushAlert('success', 'Subscription Cancelled', 'Your subscription has been cancelled. You will not be billed at the end of the period but can still view our videos' +
                    'until the end of your period.');
-               localStorage.clear();
+               updateCache({ idToken: response.body.idToken });
 
            } else {
                 // Their subscription was cancelled immediately
@@ -199,8 +200,7 @@ class Profile extends Component {
                this.props.updateVideosSync([]);
                this.props.pushAlert('success', 'Subscription Cancelled', 'Your subscription has been cancelled. You no longer have access to view video content');
 
-               // Forces a user to re-sign in but ensures they keep no copy of their previous (subscriber) account
-               localStorage.clear();
+               updateCache({ idToken: response.body.idToken });
            }
        } else {
             // There was an error un-subscribing

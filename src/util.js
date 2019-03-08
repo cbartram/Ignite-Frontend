@@ -89,6 +89,45 @@ export const sendEmail = async (from, subject = '', message = '') => {
     }
 };
 
+
+/**
+ * Updates the keys in the local storage cache so that
+ * they match the updated values in AWS Cognito.
+ * @param values Object the key of each property in this object must be one of the following values
+ * [idToken, accessToken, refreshToken, deviceKey, deviceGroupKey, userData]
+ * This object provides the new values that should replace each of the respective items in local storage.
+ */
+export const updateCache = (values) => {
+    const keys = Object.keys(localStorage);
+    keys.map(key => {
+       let keyId = key.substring(key.lastIndexOf('.') + 1, key.length);
+
+       // Only update what was provided in the values object nothing more nothing less
+       if(typeof values[keyId] !== 'undefined') {
+           switch (keyId) {
+               case 'accessToken':
+                   localStorage.setItem(key, values['accessToken']);
+                   break;
+               case 'userData':
+                   localStorage.setItem(key, values['userData']);
+                   break;
+               case 'deviceGroupKey':
+                   localStorage.setItem(key, values['deviceGroupKey']);
+                   break;
+               case 'idToken':
+                   localStorage.setItem(key, values['idToken']);
+                   break;
+               case 'deviceKey':
+                   localStorage.setItem(key, values['deviceKey']);
+                   break;
+               case 'refreshToken':
+                   localStorage.setItem(key, values['refreshToken']);
+                   break;
+           }
+       }
+    });
+};
+
 /**
  * Handles submitting the quiz results to the server for grading and storage.
  * @param email String Users email address

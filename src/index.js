@@ -117,10 +117,9 @@ const render = async () => {
     // Render a loading page immediately while we wait for our content to load
     ReactDOM.render(
         <Provider store={store}>
-            <div className="d-flex flex-column justify-content-center align-items-center">
-                <img src={Logo} alt="Ignite Logo" className="mb-4" />
-                <span className="fa fa-5x fa-circle-notch mt-4" style={{ color: '#6772e5' }} />
-                <h1 className="common-UppercaseTitle mt-3">Loading Profile...</h1>
+            <div className="d-flex flex-column align-items-center" style={{height: '100%', width: '100%'}}>
+                <span className="fa fa-2x fa-circle-notch mt-4" style={{ color: '#6772e5' }} />
+                <h1 className="common-UppercaseTitle mt-3">Loading...</h1>
             </div>
         </Provider>
         ,document.getElementById('root'));
