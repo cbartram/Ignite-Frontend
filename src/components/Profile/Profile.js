@@ -19,7 +19,9 @@ import {
     updateBillingSync,
     updateVideosSync,
     requestVideos,
-    updateActiveVideo
+    updateActiveVideo,
+    updateUserAttributes,
+    videosFetched,
 } from '../../actions/actions';
 import Log from '../../Log';
 
@@ -31,9 +33,11 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
    updateBillingSync: (payload) => dispatch(updateBillingSync(payload)),
+   unsubscribeUser: (user) => dispatch(updateUserAttributes(user)),
    updateActiveVideo: (video) => dispatch(updateActiveVideo(video)),
    updateVideosSync: (videos) => dispatch(updateVideosSync(videos)),
    requestVideos: () => dispatch(requestVideos()),
+   loadingComplete: () => dispatch(videosFetched())
 });
 
 /**
@@ -57,23 +61,28 @@ class Profile extends Component {
      * that the user was last watching (started: true, completed: false, scrubDuration > 0)
      */
     componentDidMount() {
-        if(this.props.videos.activeVideo.name === 'null') {
-            let activeVideo = null;
-            const chapters = this.props.videos.videoList;
-            // Find our best guess at the active video. (started: true, completed: false, scrubDuration > 0)
-            // First we try to meet all 3 criteria
-            _.flattenDeep(chapters.map(chapter => chapter.videos)).forEach(video => {
-                if (video.started && !video.completed && video.scrubDuration > 0)
-                    activeVideo = video; // We intentionally want to overwrite this value so we get the latest video in the array
-            });
+        try {
+            if (this.props.videos.activeVideo.name === 'null') {
+                let activeVideo = null;
+                const chapters = this.props.videos.videoList;
+                // Find our best guess at the active video. (started: true, completed: false, scrubDuration > 0)
+                // First we try to meet all 3 criteria
+                _.flattenDeep(chapters.map(chapter => chapter.videos)).forEach(video => {
+                    if (video.started && !video.completed && video.scrubDuration > 0)
+                        activeVideo = video; // We intentionally want to overwrite this value so we get the latest video in the array
+                });
 
-            // Otherwise just settle for the first video
-            if (activeVideo === null) {
-                Log.info('Active Video not found meeting criteria: video.started=true, video.completed=false');
-                activeVideo = chapters[0].videos[0];
+                // Otherwise just settle for the first video
+                if (activeVideo === null) {
+                    Log.info('Active Video not found meeting criteria: video.started=true, video.completed=false');
+                    activeVideo = chapters[0].videos[0];
+                }
+
+                this.props.updateActiveVideo(activeVideo);
             }
-
-            this.props.updateActiveVideo(activeVideo);
+        } catch(err) {
+            Log.error('Something went wrong loading this page!');
+            this.props.pushAlert('warning', 'Issue Loading Videos', 'We had an issue loading your most recently watched videos.');
         }
     }
 
@@ -145,22 +154,54 @@ class Profile extends Component {
                 path: API_DELETE_SUBSCRIPTION,
                 parameters: {}, // Query params
                 body: {
-                    email: this.props.auth.user.email
+                    email: this.props.auth.user.email,
+                    deviceKey: this.props.auth.user.deviceKey,
+                    username: this.props.auth.user['cognito:username'],
+                    refreshToken: this.props.auth.user.refreshToken,
                 }
             }),
         };
 
         // Attempt to make the API call
        let response = await (await fetch(getRequestUrl(API_DELETE_SUBSCRIPTION), params)).json();
+       console.log(response);
 
-       if(response.status <= 200 && response.body.user !== null) {
+       // To test the subscription end feature set trial_end field in DynamoDB to 1551164545
 
-           // Update user attributes in redux sychronously (without doing another /users/find call)
-           this.props.updateBillingSync(response.body.user.Attributes);
-           this.props.updateVideosSync([]);
+       if(response.status <= 200) {
+           // At this point the user may have been unsubscribed at_period_end in which case we will want
+           // to hide the unsubscribe button and update the user in redux from dynamodb with the new at_period_end: true property
+           // but avoid actually updating any of the users properties/billing info since they are still technically subscribers
+           if(response.body.atPeriodEnd || response.body.cancelConfirmation.cancel_at_period_end) {
+               Log.info(`The users subscription will end in: ${moment.unix(response.body.cancelConfirmation.current_period_end).fromNow()}`);
+               this.props.unsubscribeUser({
+                   'custom:at_period_end': 'true',
+                   'custom:unsub_timestamp': response.body.cancelConfirmation.current_period_end.toString(),
+                   jwtToken: response.body.idToken,
+               });
+               this.props.loadingComplete(); // Turns off the loading spinners
+               this.props.pushAlert('success', 'Subscription Cancelled', 'Your subscription has been cancelled. You will not be billed at the end of the period but can still view our videos' +
+                   'until the end of your period.');
+               localStorage.clear();
 
-           // Forces a user to re-sign in but ensures they keep no copy of their previous (subscriber) account
-           localStorage.clear();
+           } else {
+                // Their subscription was cancelled immediately
+               // Update user attributes in redux sychronously (without doing another /users/find call)
+               this.props.updateBillingSync(response.body.user.Attributes);
+               this.props.unsubscribeUser({
+                   'custom:customer_id': 'null',
+                   'custom:subscription_id': 'null',
+                   'custom:plan_id': 'null',
+                   'custom:plan': 'none',
+                   'custom:premium': 'false',
+                   jwtToken: response.body.idToken,
+               });
+               this.props.updateVideosSync([]);
+               this.props.pushAlert('success', 'Subscription Cancelled', 'Your subscription has been cancelled. You no longer have access to view video content');
+
+               // Forces a user to re-sign in but ensures they keep no copy of their previous (subscriber) account
+               localStorage.clear();
+           }
        } else {
             // There was an error un-subscribing
            this.props.updateVideosSync([]);
@@ -177,6 +218,22 @@ class Profile extends Component {
     static percentComplete({ length, scrubDuration }) {
         const secondsLength = (moment(length, 'mm:ss').minutes() * 60) + moment(length, 'mm:ss').seconds();
         return ((scrubDuration / secondsLength) * 100).toFixed(0);
+    }
+
+
+    /**
+     * Renders the date when the bill will renew for the user
+     */
+    renderRenewalDate() {
+        if(this.props.auth.user['custom:at_period_end'] === 'true') {
+            return <span className="badge badge-pill badge-secondary py-1 px-2">Subscription Cancelled</span>
+        }
+
+        if(_.isNil(this.props.billing.next_invoice_date)) {
+            return <span className="value">None</span>
+        }
+
+        return <span className="badge badge-pill badge-primary py-1 px-2">{moment.unix(this.props.billing.next_invoice_date).format('MMMM Do')}</span>
     }
 
     render() {
@@ -209,15 +266,7 @@ class Profile extends Component {
                                             <tr>
                                                 <td className="key">Renews On</td>
                                                 <td>
-                                                    {
-                                                        _.isNil(this.props.billing.next_invoice_date) ?
-                                                            <span className="value">
-                                                            None
-                                                        </span> :
-                                                            <span className="badge badge-pill badge-primary py-1 px-2">
-                                                            {moment.unix(this.props.billing.next_invoice_date).format('MMMM Do')}
-                                                        </span>
-                                                    }
+                                                    { this.renderRenewalDate() }
                                                 </td>
                                             </tr>
                                             <tr>
@@ -306,8 +355,9 @@ class Profile extends Component {
                             </div>
                             <div className="d-flex align-items-end justify-content-start mt-3">
                                 {
-                                    // Only show the button to user's who are subscribed
-                                    (this.props.billing.premium && this.props.billing.premium !== 'false' ) &&
+                                    // Only show the button to user's who are actively subscribed
+                                    // (dont show to users whos subscription will end at the close of the next period)
+                                    (this.props.billing.premium && this.props.billing.premium !== 'false' && this.props.auth.user['custom:at_period_end'] !== 'true' ) &&
                                     <button className="common-Button common-Button--danger"
                                             onClick={() => this.unsubscribe()}>
                                         Cancel Subscription
@@ -317,7 +367,8 @@ class Profile extends Component {
                         </Card>
                     </div>
                 </div>
-                <div className="d-flex flex-row justify-content-between pl-4 card-slideable" ref={(el) => this.slideable = el}>
+                <div className="row">
+                    <div className="col-md-4">
                     {/* Info Card */}
                     <Card loading={this.props.videos.isFetching} cardTitle="Account Information">
 
@@ -392,10 +443,25 @@ class Profile extends Component {
                                             </span>
                                         </td>
                                     </tr>
+                                    {
+                                        this.props.auth.user['custom:at_period_end'] === 'true' &&
+                                        <tr>
+                                            <td className="key">
+                                                Subscription Ends
+                                            </td>
+                                            <td>
+                                                <span className="value">
+                                                    <span className="badge badge-pill badge-secondary px-2 py-1">{ moment.unix(this.props.auth.user['custom:unsub_timestamp']).fromNow() }</span>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    }
                                 </tbody>
                             </table>
                         </div>
                     </Card>
+                    </div>
+                    <div className="col-md-4">
                     {/* Video Card*/}
                     <Card loading={this.props.videos.isFetching} cardTitle="Your Videos">
                         <div className="table-responsive">
@@ -453,6 +519,8 @@ class Profile extends Component {
                             </table>
                         </div>
                     </Card>
+                    </div>
+                    <div className="col-md-4">
                     {/* Update Card */}
                     <Card loading={this.props.videos.isFetching} classNames={['mb-4']} cardTitle="Update Password">
                         <div className="ChangePassword">
@@ -497,6 +565,7 @@ class Profile extends Component {
                             </form>
                         </div>
                     </Card>
+                    </div>
                 </div>
             </div>
         )

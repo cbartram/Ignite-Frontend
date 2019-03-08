@@ -87,7 +87,9 @@ class Signup extends Component {
                     'custom:plan_id': 'null',
                     'custom:subscription_id': 'null',
                     'custom:premium': 'false',
-                    'custom:plan': 'none'
+                    'custom:plan': 'none',
+                    'custom:at_period_end': 'false',
+                    'custom:unsub_timestamp': 'null'
                 }
             });
 

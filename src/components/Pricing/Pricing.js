@@ -17,7 +17,7 @@ class Pricing extends Component {
     renderButton() {
         if(this.props.auth.user) {
             // If the user is already premium let them know!
-            if(this.props.auth.user['custom:plan'] === 'Basic Plan')
+            if(this.props.auth.user['custom:plan'] === 'Basic Plan2')
                 return <a href="#basic-plan" onClick={() => this.props.pushAlert('info', 'Already Subscribed', 'You are already subscribed to this plan!')} className="Plan-button common-UppercaseText common-Link--arrow">
                     Join free for 7 days
                 </a>;

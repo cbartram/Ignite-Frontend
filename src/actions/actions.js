@@ -20,6 +20,19 @@ export const updateUserAttributes = (payload) => dispatch => {
     });
 };
 
+
+/**
+ * This is used to update the isFetching property on the videos reducer
+ * without actually modifying any type of video data. Its used when we only want the
+ * loading icons on the frontend and this basically shuts them off.
+ * @returns {Function}
+ */
+export const videosFetched = () => dispatch => {
+    dispatch({
+        type: constants.VIDEOS_FETCHED,
+    })
+};
+
 /**
  * Updates the store to notify the user that the request has been sent and the data is loading.
  * @returns {Function}

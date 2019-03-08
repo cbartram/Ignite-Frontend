@@ -49,6 +49,11 @@
     background-color: #d6ecff;
 }
 
+.badge-secondary {
+    color: #4f566b;
+    background-color: #e3e8ee;
+}
+
 .badge-warning {
     background-color: rgb(255, 231, 203);
     color: #ff996b;

@@ -13,6 +13,12 @@ export default (state = {}, action) => {
                 ...state,
                 isFetching: action.payload,
             };
+        case constants.VIDEOS_FETCHED:
+            return {
+                ...state,
+                isFetching: false, // Simply sets the isFetching property to false so the loading stops
+                // This is useful if you want to control loading without updating any data
+            };
         case constants.VIDEOS_SUCCESS:
             return {
                 ...state,
