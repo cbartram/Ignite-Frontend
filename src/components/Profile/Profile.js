@@ -5,7 +5,7 @@ import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 import LoaderButton from "../LoaderButton/LoaderButton";
 import { Auth } from 'aws-amplify';
 import moment from 'moment';
-import Container from '../Container/Container';
+import withContainer from '../withContainer';
 import Card from '../Card/Card';
 import './Profile.css';
 import {
@@ -153,12 +153,19 @@ class Profile extends Component {
         // Attempt to make the API call
        let response = await (await fetch(getRequestUrl(API_DELETE_SUBSCRIPTION), params)).json();
 
-       // Update user attributes in redux sychronously (without doing another /users/find call)
-       this.props.updateBillingSync(response.body.user.Attributes);
-       this.props.updateVideosSync([]);
+       if(response.status <= 200 && response.body.user !== null) {
 
-       // Forces a user to re-sign in but ensures they keep no copy of their previous (subscriber) account
-       localStorage.clear();
+           // Update user attributes in redux sychronously (without doing another /users/find call)
+           this.props.updateBillingSync(response.body.user.Attributes);
+           this.props.updateVideosSync([]);
+
+           // Forces a user to re-sign in but ensures they keep no copy of their previous (subscriber) account
+           localStorage.clear();
+       } else {
+            // There was an error un-subscribing
+           this.props.updateVideosSync([]);
+           this.props.pushAlert('danger', 'Unsubscribe Failed', 'Something went wrong trying to un-subscribe you from your plan. Please try again shortly!')
+       }
     }
 
     /**
@@ -174,7 +181,7 @@ class Profile extends Component {
 
     render() {
         return (
-            <Container noFooterMargin style={{backgroundColor: '#fff'}}>
+            <div>
                 <div className="row">
                     <div className="col-md-10 offset-md-1">
                         {/* Billing Card */}
@@ -491,9 +498,9 @@ class Profile extends Component {
                         </div>
                     </Card>
                 </div>
-            </Container>
+            </div>
         )
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default withContainer(connect(mapStateToProps, mapDispatchToProps)(Profile), { noFooterMargin: true, style: {backgroundColor: '#fff'}});

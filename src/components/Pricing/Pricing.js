@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import moment from 'moment';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import PaymentModal from '../PaymentModal/PaymentModal';
 import './Pricing.css';
 import withContainer from "../withContainer";
@@ -18,16 +17,15 @@ class Pricing extends Component {
     renderButton() {
         if(this.props.auth.user) {
             // If the user is already premium let them know!
-            if(this.props.auth.user['custom:plan'] === 'Basic Plan2') { // TODO change this to "Basic Plan" to prevent re-subscribers
+            if(this.props.auth.user['custom:plan'] === 'Basic Plan')
                 return <a href="#basic-plan" onClick={() => this.props.pushAlert('info', 'Already Subscribed', 'You are already subscribed to this plan!')} className="Plan-button common-UppercaseText common-Link--arrow">
                     Join free for 7 days
-                </a>
-            } else {
+                </a>;
+             else
                 // Else show them the payment form
                 return <a href="#join" data-toggle="modal" data-target="#payment-modal" className="Plan-button common-UppercaseText common-Link--arrow">
                     Join free for 7 days
                 </a>
-            }
         }
         // User is not signed in prompt them to signup
         return  <Link to="/signup" className="Plan-button common-UppercaseText common-Link--arrow">
@@ -45,8 +43,7 @@ class Pricing extends Component {
                         this.props.pushAlert('danger', 'Subscription Failed', message)
                     }}
                     onSuccessfulPayment={() => {
-                    let message = `Your subscription has been created successfully and will automatically renew on ${ moment().format('MMM Do') }.`;
-                    this.props.pushAlert('success', 'Subscription Successful', message)
+                        this.props.history.push('/videos')
                 }} />
                 <div className="row">
                     <div className="col-lg-4 offset-md-4 col-md-4 offset-md-4 col-sm-8 offset-sm-2 px-4 mt-3">
@@ -102,4 +99,4 @@ class Pricing extends Component {
     }
 }
 
-export default withContainer(connect(mapStateToProps)(Pricing));
+export default withContainer(connect(mapStateToProps)(withRouter(Pricing)));

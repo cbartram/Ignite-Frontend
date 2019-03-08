@@ -12,6 +12,7 @@ export default (state = {}, action) => {
         case constants.QUIZZES_SUCCESS:
             return {
                 ...state,
+                error: null,
                 quizList: action.payload, // Should be an [] of quiz objects
                 isFetching: false,
             };
@@ -22,11 +23,13 @@ export default (state = {}, action) => {
             return {
                 ...state,
                 isFetching: false,
+                error: null,
                 quizList: quizListCopy
             };
         case constants.SUBMIT_QUIZ_REQUEST: {
             return {
                 ...state,
+                error: null,
                 isFetching: true,
             }
         }
