@@ -94,7 +94,18 @@ export const fetchVideos = email => async dispatch => {
         payload: true // Sets isFetching to true (useful for unit testing redux)
     });
 
-    const response = await getVideos(email);
+    let response = null;
+
+    try {
+        response = await getVideos(email);
+    } catch(err) {
+        Log.error('Failed to load user data from actions.js API call.', err);
+        // An error occurred
+        dispatch({
+            type: constants.VIDEOS_FAILURE,
+            payload: { message: `Failed to retrieve billing/video data from API: ${JSON.stringify(response)}`}
+        });
+    }
 
     if(response.status === 200) {
         // Dispatch information about billing
@@ -113,7 +124,7 @@ export const fetchVideos = email => async dispatch => {
             type: constants.VIDEOS_SUCCESS,
             payload: response.body.user.videos,
         });
-    } else if(response.status > 200 || typeof response.status === 'undefined') {
+    } else if(response.status > 200 || typeof response.status === 'undefined' || response === null) {
         // An error occurred
         dispatch({
             type: constants.VIDEOS_FAILURE,

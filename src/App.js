@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import './App.css';
 import Card from "./components/Card/Card";
 import QuoteCard from "./components/QuoteCard/QuoteCard";
+import InstructorImage from './resources/images/instructor_picture.jpg';
 
 const mapStateToProps = state => ({
    auth: state.auth,
@@ -205,7 +206,7 @@ class App extends Component {
                   </div>
                   <div className="col-md-4">
                       <QuoteCard
-                          imageUrl="https://i.ibb.co/GsFDr1G/IMG-1356.jpg"
+                          imageUrl={InstructorImage}
                           quote="Teach people to code and they can build an app. Teach someone to think
                                  like a full stack develop and they can conquer any problem they are faced with."
                           by="Christian Bartram"

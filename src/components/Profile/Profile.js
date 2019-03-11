@@ -112,7 +112,6 @@ class Profile extends Component {
      */
     handleChangeClick = async event => {
         event.preventDefault();
-
         this.setState({ isChanging: true });
 
         try {
@@ -126,7 +125,7 @@ class Profile extends Component {
                 this.props.history.push('/profile');
             });
         } catch (e) {
-            alert(e.message);
+            this.props.pushAlert('danger', 'Incorrect Password', 'There was an issue updating your password. ' + e.message);
             this.setState({ isChanging: false });
         }
     };
