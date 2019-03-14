@@ -6,6 +6,7 @@ import Container from '../Container/Container';
 import { withRouter } from 'react-router-dom'
 import { updateActiveVideo } from '../../actions/actions';
 import './Videos.css';
+import Card from "../Card/Card";
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -171,55 +172,89 @@ class Videos extends Component {
      */
     renderVideos() {
         if(typeof this.props.videos.videoList !== 'undefined') {
-            return this.props.videos.videoList.map(chapter => {
-                return (
-                    <div key={chapter.title}>
-                        <div className="d-flex flex-row justify-content-start">
-                            <h2 className="common-UppercaseTitle ml-4">
-                                { chapter.title } - {moment.utc(chapter.videos.map(video => (moment(video.length, 'mm:ss').minutes() * 60) + moment(video.length, 'mm:ss').seconds()).reduce((a, b) => a + b) * 1000).format('mm:ss') }
-                            </h2>
-                            <hr />
-                        </div>
+            return (
+                <div>
+                    <Card>
+                        <h3 className="common-SectionTitle">
+                            Welcome to Videos
+                        </h3>
                         <div className="row">
-                            {
-                                chapter.videos.map((video, index) => {
-                                    this.iter = index;
-                                    return (
-                                            <div className="col-md-3 col-lg-3 col-sm-12 d-flex align-items-stretch pb-2 px-4" key={video.name}>
-                                                <div className={`common-Card-video m-2`}>
-                                                    <div className={`d-flex justify-content-center align-items-center cover ${Videos.getRandomGradient()}`}>
-                                                        <span className="gradient-text">{video.name}</span>
-                                                    </div>
-                                                    <div className="d-flex flex-row">
-                                                        <h2 className="common-IntroText mt-0">{video.name}</h2>
-                                                        <p className="common-BodyText pt-1 ml-3">
-                                                            {video.length}
-                                                        </p>
-                                                    </div>
-                                                    <div className="d-flex flex-column">
-                                                        <p className="common-BodyText">
-                                                            { video.description }
-                                                        </p>
-                                                        <div className="progress" style={{height: 5 }}>
-                                                            <div className="progress-bar" role="progressbar" style={{width: `${Videos.percentComplete(video)}%`, backgroundColor: '#7795f8' }} />
+                            <div className="col-md-8">
+                                <p className="common-BodyText">
+                                    These videos are a customized list of chapters, quizzes and workshops that provide a guided learning path for a particular subject.
+                                    Each course or quiz in a chapter builds on the previous one, so that as you progress through the videos you gain a solid
+                                    understanding of the broader topic and how it fits into full stack development.
+                                </p>
+                            </div>
+                            <div className="col-md-3 offset-md-1">
+                                <svg width="150" height="150" viewBox="0 0 40 40">
+                                    <g stroke="#0CB" strokeWidth="2" fill="none">
+                                        <path d="M4 35c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2h32c1.1 0 2 .9 2 2v26c0 1.1-.9 2-2 2H4z" />
+                                        <path d="M14 20h8" />
+                                        <path d="M8 12l4 3.5L8 19" />
+                                    </g>
+                                </svg>
+                            </div>
+                            {/*<svg width="40" height="40">*/}
+                                {/*<g stroke="#0CB" strokeWidth="2" fill="none">*/}
+                                    {/*<path d="M4 35c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2h32c1.1 0 2 .9 2 2v26c0 1.1-.9 2-2 2H4z" strokeDasharray="128.56021118164062" strokeDashoffset="128.56021118164062" style={{opacity: 1}} />*/}
+                                    {/*<path d="M14 20h8" strokeDasharray="8" strokeDashoffset="8" style={{opacity: 1 }} />*/}
+                                    {/*<path d="M8 12l4 3.5L8 19" strokeDasharray="10.630146026611328" strokeDashoffset="10.630146026611328" style={{ opacity: 1 }} />*/}
+                                {/*</g>*/}
+                            {/*</svg>*/}
+                        </div>
+                    </Card>
+                    { this.props.videos.videoList.map(chapter => {
+                    return (
+                        <div key={chapter.title}>
+                            <div className="d-flex flex-row justify-content-start">
+                                <h2 className="common-UppercaseTitle big-font ml-4">
+                                    { chapter.title } - {moment.utc(chapter.videos.map(video => (moment(video.length, 'mm:ss').minutes() * 60) + moment(video.length, 'mm:ss').seconds()).reduce((a, b) => a + b) * 1000).format('mm:ss') }
+                                </h2>
+                                <hr />
+                            </div>
+                            <div className="row">
+                                {
+                                    chapter.videos.map((video, index) => {
+                                        this.iter = index;
+                                        return (
+                                                <div className="col-md-3 col-lg-3 col-sm-12 d-flex align-items-stretch pb-2 px-4" key={video.name}>
+                                                    <div className="common-Card-video m-2">
+                                                        <div className={`d-flex justify-content-center align-items-center cover ${Videos.getRandomGradient()}`}>
+                                                            <span className="gradient-text">{video.name}</span>
                                                         </div>
-                                                        <span className="text-muted">
-                                                             { Videos.percentComplete(video) <= 1 ? 'Not Started' : `${Videos.percentComplete(video) > 100 ? 100 : Videos.percentComplete(video)}% complete!`}
-                                                        </span>
-                                                        <button onClick={() => this.handleWatch(video)} className="common-Button common-Button--default mt-2">
-                                                            { Videos.percentComplete(video) <= 1 ?  'Start Now' : 'Continue'}
-                                                        </button>
+                                                        <div className="d-flex flex-row">
+                                                            <h2 className="common-IntroText mt-0">{video.name}</h2>
+                                                            <p className="common-BodyText pt-1 ml-3">
+                                                                {video.length}
+                                                            </p>
+                                                        </div>
+                                                        <div className="d-flex flex-column">
+                                                            <p className="common-BodyText">
+                                                                { video.description }
+                                                            </p>
+                                                            <div className="progress" style={{height: 5 }}>
+                                                                <div className="progress-bar" role="progressbar" style={{width: `${Videos.percentComplete(video)}%`, backgroundColor: '#7795f8' }} />
+                                                            </div>
+                                                            <span className="text-muted">
+                                                                 { Videos.percentComplete(video) <= 1 ? 'Not Started' : `${Videos.percentComplete(video) > 100 ? 100 : Videos.percentComplete(video)}% complete!`}
+                                                            </span>
+                                                            <button onClick={() => this.handleWatch(video)} className="common-Button common-Button--default mt-2">
+                                                                { Videos.percentComplete(video) <= 1 ?  'Start Now' : 'Continue'}
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                    )
-                                })
-                            }
-                            { Videos.isLastIteration(chapter.videos, this.iter) && this.renderQuiz(this.props.quizzes.quizList.filter(q => q.chapter === chapter.chapter)) }
+                                        )
+                                    })
+                                }
+                                { Videos.isLastIteration(chapter.videos, this.iter) && this.renderQuiz(this.props.quizzes.quizList.filter(q => q.chapter === chapter.chapter)) }
+                            </div>
                         </div>
-                    </div>
-                )
-            });
+                    )
+                }) }
+                </div>
+            );
         }
     }
 
