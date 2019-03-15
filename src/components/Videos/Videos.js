@@ -28,6 +28,32 @@ class Videos extends Component {
         // Retains access to the iteration for each loop in
         // the videos map(). This tells us when we can render a quiz (at the end of a chapter)
         this.iter = 0;
+        this.state = {
+            gradients: [
+                'purple-gradient',
+                'blue-gradient',
+                'aqua-gradient',
+                'peach-gradient',
+                'warm-flame-gradient',
+                'night-fade-gradient',
+                'spring-warmth-gradient',
+                'juicy-peach-gradient',
+                'rainy-ashville-gradient',
+                'sunny-morning-gradient',
+                'lady-lips-gradient',
+                'winter-neva-gradient',
+                'frozen-dreams-gradient',
+                'dusty-grass-gradient',
+                'tempting-azure-gradient',
+                'amy-crisp-gradient',
+                'mean-fruit-gradient',
+                'deep-blue-gradient',
+                'ripe-malinka-gradient',
+                'morpheus-den-gradient',
+                'rare-wind-gradient',
+                'near-moon-gradient',
+            ]
+        }
     }
 
     /**
@@ -78,40 +104,6 @@ class Videos extends Component {
     }
 
     /**
-     * Returns the CSS Classname for a randomized gradient to be applied
-     * to the card header
-     * @returns {string}
-     */
-    static getRandomGradient() {
-        const gradients = [
-            'purple-gradient',
-            'blue-gradient',
-            'aqua-gradient',
-            'peach-gradient',
-            'warm-flame-gradient',
-            'night-fade-gradient',
-            'spring-warmth-gradient',
-            'juicy-peach-gradient',
-            'rainy-ashville-gradient',
-            'sunny-morning-gradient',
-            'lady-lips-gradient',
-            'winter-neva-gradient',
-            'frozen-dreams-gradient',
-            'dusty-grass-gradient',
-            'tempting-azure-gradient',
-            'amy-crisp-gradient',
-            'mean-fruit-gradient',
-            'deep-blue-gradient',
-            'ripe-malinka-gradient',
-            'morpheus-den-gradient',
-            'rare-wind-gradient',
-            'near-moon-gradient',
-        ];
-
-        return gradients[Math.floor(Math.random() * gradients.length)]
-    }
-
-    /**
      * Returns true if the array is on its last iteration given an index
      * @param arr Array
      * @param index Integer index to check
@@ -126,14 +118,14 @@ class Videos extends Component {
      * @param quizArr Array passed in from quiz.filter() could be []
      * @returns {*}
      */
-    renderQuiz(quizArr) {
+    renderQuiz(quizArr, index) {
         if(quizArr.length === 0)
             return null;
         let quiz = quizArr[0];
         return (
             <div className="col-md-3 col-lg-3 col-sm-12 d-flex align-items-stretch pb-2 px-4" key={quiz.name}>
                 <div className={`common-Card-video m-2`}>
-                    <div className={`d-flex justify-content-center align-items-center cover ${Videos.getRandomGradient()}`}>
+                    <div className={`d-flex justify-content-center align-items-center cover ${this.state.gradients[index]}`}>
                         <span className="gradient-text">{quiz.name}</span>
                     </div>
                     <div className="d-flex flex-row">
@@ -204,55 +196,56 @@ class Videos extends Component {
                             {/*</svg>*/}
                         </div>
                     </Card>
-                    { this.props.videos.videoList.map(chapter => {
-                    return (
-                        <div key={chapter.title}>
-                            <div className="d-flex flex-row justify-content-start">
-                                <h2 className="common-UppercaseTitle big-font ml-4">
-                                    { chapter.title } - {moment.utc(chapter.videos.map(video => (moment(video.length, 'mm:ss').minutes() * 60) + moment(video.length, 'mm:ss').seconds()).reduce((a, b) => a + b) * 1000).format('mm:ss') }
-                                </h2>
-                                <hr />
-                            </div>
-                            <div className="row">
-                                {
-                                    chapter.videos.map((video, index) => {
-                                        this.iter = index;
-                                        return (
-                                                <div className="col-md-3 col-lg-3 col-sm-12 d-flex align-items-stretch pb-2 px-4" key={video.name}>
-                                                    <div className="common-Card-video m-2">
-                                                        <div className={`d-flex justify-content-center align-items-center cover ${Videos.getRandomGradient()}`}>
-                                                            <span className="gradient-text">{video.name}</span>
-                                                        </div>
-                                                        <div className="d-flex flex-row">
-                                                            <h2 className="common-IntroText mt-0">{video.name}</h2>
-                                                            <p className="common-BodyText pt-1 ml-3">
-                                                                {video.length}
-                                                            </p>
-                                                        </div>
-                                                        <div className="d-flex flex-column">
-                                                            <p className="common-BodyText">
-                                                                { video.description }
-                                                            </p>
-                                                            <div className="progress" style={{height: 5 }}>
-                                                                <div className="progress-bar" role="progressbar" style={{width: `${Videos.percentComplete(video)}%`, backgroundColor: '#7795f8' }} />
+                    {
+                        this.props.videos.videoList.map((chapter, i) => {
+                            return (
+                                <div key={chapter.title}>
+                                    <div className="d-flex flex-row justify-content-start">
+                                        <h2 className="common-UppercaseTitle big-font ml-4">
+                                            { chapter.title } - {moment.utc(chapter.videos.map(video => (moment(video.length, 'mm:ss').minutes() * 60) + moment(video.length, 'mm:ss').seconds()).reduce((a, b) => a + b) * 1000).format('mm:ss') }
+                                        </h2>
+                                        <hr />
+                                    </div>
+                                    <div className="row">
+                                        {
+                                            chapter.videos.map((video, index) => {
+                                                this.iter = index;
+                                                return (
+                                                        <div className="col-md-3 col-lg-3 col-sm-12 d-flex align-items-stretch pb-2 px-4" key={video.name}>
+                                                            <div className="common-Card-video m-2">
+                                                                <div className={`d-flex justify-content-center align-items-center cover ${this.state.gradients[i]}`}>
+                                                                    <span className="gradient-text">{video.name}</span>
+                                                                </div>
+                                                                <div className="d-flex flex-row">
+                                                                    <h2 className="common-IntroText mt-0">{video.name}</h2>
+                                                                    <p className="common-BodyText pt-1 ml-3">
+                                                                        {video.length}
+                                                                    </p>
+                                                                </div>
+                                                                <div className="d-flex flex-column">
+                                                                    <p className="common-BodyText">
+                                                                        { video.description }
+                                                                    </p>
+                                                                    <div className="progress" style={{height: 5 }}>
+                                                                        <div className="progress-bar" role="progressbar" style={{width: `${Videos.percentComplete(video)}%`, backgroundColor: '#7795f8' }} />
+                                                                    </div>
+                                                                    <span className="text-muted">
+                                                                         { Videos.percentComplete(video) <= 1 ? 'Not Started' : `${Videos.percentComplete(video) > 100 ? 100 : Videos.percentComplete(video)}% complete!`}
+                                                                    </span>
+                                                                    <button onClick={() => this.handleWatch(video)} className="common-Button common-Button--default mt-2">
+                                                                        { Videos.percentComplete(video) <= 1 ?  'Start Now' : 'Continue'}
+                                                                    </button>
+                                                                </div>
                                                             </div>
-                                                            <span className="text-muted">
-                                                                 { Videos.percentComplete(video) <= 1 ? 'Not Started' : `${Videos.percentComplete(video) > 100 ? 100 : Videos.percentComplete(video)}% complete!`}
-                                                            </span>
-                                                            <button onClick={() => this.handleWatch(video)} className="common-Button common-Button--default mt-2">
-                                                                { Videos.percentComplete(video) <= 1 ?  'Start Now' : 'Continue'}
-                                                            </button>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                        )
-                                    })
-                                }
-                                { Videos.isLastIteration(chapter.videos, this.iter) && this.renderQuiz(this.props.quizzes.quizList.filter(q => q.chapter === chapter.chapter)) }
-                            </div>
-                        </div>
-                    )
-                }) }
+                                                )
+                                            })
+                                        }
+                                        { Videos.isLastIteration(chapter.videos, this.iter) && this.renderQuiz(this.props.quizzes.quizList.filter(q => q.chapter === chapter.chapter), i) }
+                                    </div>
+                                </div>
+                            )
+                        })}
                 </div>
             );
         }

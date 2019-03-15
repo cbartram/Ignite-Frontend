@@ -214,7 +214,7 @@ class Watch extends Component {
     render() {
         if(this.state.isFetching)
             return (
-                <div className="d-flex justify-content-center mt-5">
+                <div className="d-flex justify-content-center mt-5 mb-5">
                     <i className="fas fa-7x fa-circle-notch" style={{ color: '#6772e5' }} />
                 </div>
             );

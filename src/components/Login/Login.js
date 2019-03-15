@@ -95,8 +95,17 @@ class Login extends Component {
             else
                 Log.error('Login Failed!', err);
 
-            this.props.loginFailure(err);
-            this.props.pushAlert('danger', 'Login Failed', err.message);
+            // Their device key is messed up
+            if(err.message.includes('device') || err.message.includes('key')) {
+                localStorage.clear();
+                const res = await Auth.signIn(this.state.email, this.state.password);
+                Log.info('Login Success!', res);
+                this.props.fetchVideos(this.state.email);
+                this.props.loginSuccess(res);
+            } else {
+                this.props.loginFailure(err);
+                this.props.pushAlert('danger', 'Login Failed', err.message);
+            }
         }
     };
 
