@@ -1,21 +1,18 @@
-.Plan--standard {
-    background: #fff;
-    z-index: 10;
+.blurred {
+    z-index: 11;
+    transition: filter .3s;
+    filter: blur(3px);
+    -webkit-filter: blur(3px);
 }
 
 .Plan {
+    background: #fff;
+    z-index: 10;
     -webkit-box-shadow: 0 15px 35px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.07);
     box-shadow: 0 15px 35px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.07);
-    position: relative;
     border-radius: 4px;
-    overflow: hidden;
 }
 
-@media all and (min-width: 760px) {
-    .Plan {
-        min-width: 400px;
-    }
-}
 
 .common-UppercaseText {
     font-size: 17px;
@@ -109,8 +106,9 @@ ul.Plan-list.Plan-list-updated {
 }
 
 .Plan-button {
+    width: 100%;
+    cursor: pointer;
     background: #f6f9fc;
-    display: block;
     color: #32325d;
     text-align: center;
     text-decoration: none;

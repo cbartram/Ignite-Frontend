@@ -1,6 +1,7 @@
 {
   "extends": "react-app",
   "rules": {
-    "no-useless-computed-key": 0
+    "no-useless-computed-key": 0,
+    "anchor-has-content": 0
   }
 }

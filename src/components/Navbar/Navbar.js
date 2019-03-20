@@ -55,65 +55,64 @@ class Navbar extends Component {
 
     render() {
         const authLinks = [
-            <Link className="p-3 text-dark" to="/videos" key="videos" onClick={() => this.handleLinkClick()}>Videos</Link>,
-            <Link className="p-3 text-dark" to="/pricing" key="pricing" onClick={() => this.handleLinkClick()}>Pricing</Link>,
+            <Link className="nav-item nav-link p-3 text-dark" to="/videos" key="videos" onClick={() => this.handleLinkClick()}>Videos</Link>,
+            <Link className="nav-item nav-link p-3 text-dark" to="/pricing" key="pricing" onClick={() => this.handleLinkClick()}>Pricing</Link>,
         ];
         const standardLinks = [
-            <Link className="p-3 text-dark" to="/login" key="login" onClick={() => this.handleLinkClick()}>Login</Link>,
-            <Link className="p-3 text-dark" to="/signup" key="signup" onClick={() => this.handleLinkClick()}>Sign Up</Link>,
-            <Link className="p-3 text-dark" to="/pricing" key="pricing" onClick={() => this.handleLinkClick()}>Pricing</Link>,
+            <Link className="nav-item nav-link p-3 text-dark" to="/login" key="login" onClick={() => this.handleLinkClick()}>Login</Link>,
+            <Link className="nav-item nav-link p-3 text-dark" to="/signup" key="signup" onClick={() => this.handleLinkClick()}>Sign Up</Link>,
+            <Link className="nav-item nav-link p-3 text-dark" to="/pricing" key="pricing" onClick={() => this.handleLinkClick()}>Pricing</Link>,
         ];
 
         return (
             <div>
             <div className="navbar navbar-expand-lg px-md-4 bg-white border-bottom shadow-sm">
-                <button className="navbar-toggler" type="button" data-toggle="collapse"
-                        data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false"
-                        aria-label="Toggle navigation">
-                    <span className="navbar-toggler-icon" />
+                <a className="navbar-brand" href="/">
+                    <img src={Logo} width="30" height="30" alt="Ignite Logo" />
+                </a>
+                <h5 className="my-0 mr-md-auto font-weight-normal">Ignite</h5>
+                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <i className="fas fa-bars" style={{ color: '#6772e5'}} />
                 </button>
-                <div className="collapse navbar-collapse d-flex flex-column flex-md-row align-items-center" style={{ ...this.props.style, zIndex: 50, position: 'relative'}}>
-                    <a className="navbar-brand" href="/">
-                        <img src={Logo} width="30" height="30" alt="Ignite Logo" />
-                    </a>
-                    <h5 className="my-0 mr-md-auto font-weight-normal">Ignite</h5>
-                    <div className="nav-links my-2 my-md-0 mr-md-3">
-                        { this.props.auth.user ? authLinks.map(link => link) : standardLinks.map(link => link) }
-                        <Link className="p-3 text-dark" to="/support" onClick={() => this.handleLinkClick()}>Support</Link>
-                    </div>
-                    <ul className="dropdown-list">
-                        {
-                            this.props.auth.user && (
-                                <li className="nav-item dropdown">
-                                    <button className="btn btn-link dropdown-toggle" id="navbarDropdown" data-toggle="dropdown">
-                                        <div className="avatar-container">
-                                            <img src={this.props.auth.user['custom:profile_picture']} alt="Profile" className="avatar-image" height="30" width="30" />
+                <div className="collapse navbar-collapse" id="navbar-collapse">
+                    <div className="navbar-nav d-flex justify-content-end">
+
+                    { this.props.auth.user ? authLinks.map(link => link) : standardLinks.map(link => link) }
+                    <Link className="nav-item nav-link p-3 text-dark" to="/support" onClick={() => this.handleLinkClick()}>Support</Link>
+                        <ul className="dropdown-list">
+                            {
+                                this.props.auth.user && (
+                                    <li className="nav-item dropdown">
+                                        <button className="btn btn-link dropdown-toggle" id="navbarDropdown" data-toggle="dropdown">
+                                            <div className="avatar-container">
+                                                <img src={this.props.auth.user['custom:profile_picture']} alt="Profile" className="avatar-image" height="30" width="30" />
+                                            </div>
+                                        </button>
+                                        <div className="dropdown-menu dropdown-menu-right header-nav-item-profile-dropdown mt-2 py-0">
+                                            <h4 className="dropdown-title">
+                                                <Link to="/profile" className="header-nav-item-profile-dropdown-title-link">
+                                                    <strong className="header-nav-item-profile-dropdown-title-name">
+                                                        {`${this.props.auth.user['custom:first_name']} ${this.props.auth.user['custom:last_name']}`}
+                                                    </strong>
+                                                    <span className="header-nav-item-profile-dropdown-title-label">View Profile</span>
+                                                </Link>
+                                            </h4>
+                                            <Link className="dropdown-item" to="/profile">Profile</Link>
+                                            <Link className="dropdown-item" to="/videos">Videos</Link>
+                                            <Link className="dropdown-item" to="/profile">Billing</Link>
+                                            <a className="dropdown-item dropdown-secondary" href="#logout" onClick={() => this.logout()}>Sign Out</a>
                                         </div>
-                                    </button>
-                                    <div className="dropdown-menu dropdown-menu-right header-nav-item-profile-dropdown mt-2 py-0">
-                                        <h4 className="dropdown-title">
-                                            <Link to="/profile" className="header-nav-item-profile-dropdown-title-link">
-                                                <strong className="header-nav-item-profile-dropdown-title-name">
-                                                    {`${this.props.auth.user['custom:first_name']} ${this.props.auth.user['custom:last_name']}`}
-                                                </strong>
-                                                <span className="header-nav-item-profile-dropdown-title-label">View Profile</span>
-                                            </Link>
-                                        </h4>
-                                        <Link className="dropdown-item" to="/profile">Profile</Link>
-                                        <Link className="dropdown-item" to="/videos">Videos</Link>
-                                        <Link className="dropdown-item" to="/profile">Billing</Link>
-                                        <a className="dropdown-item dropdown-secondary" href="#logout" onClick={() => this.logout()}>Sign Out</a>
-                                    </div>
-                                </li>
-                            )
+                                    </li>
+                                )
+                            }
+                        </ul>
+                        {
+                            this.props.sidebar &&
+                            <button className="common-Button common-Button--default" onClick={() => this.setState({ active: !this.state.active })}>
+                                <span className="fas fa-bars" />
+                            </button>
                         }
-                    </ul>
-                    {
-                        this.props.sidebar &&
-                        <button className="common-Button common-Button--default" onClick={() => this.setState({ active: !this.state.active })}>
-                            <span className="fas fa-bars" />
-                        </button>
-                    }
+                    </div>
                 </div>
             </div>
                 {

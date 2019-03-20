@@ -2,7 +2,7 @@
     z-index: 100;
 }
 
-.nav-links a:hover::before {
+.navbar-nav a:hover::before {
     text-decoration: none !important;
     background-color: #6772e5;
     opacity: 1;
@@ -11,7 +11,7 @@
     transform: rotateZ(200deg);
 }
 
-.nav-links a::before {
+.navbar-nav a::before {
     text-decoration: none !important;
     position: absolute;
     content: " ";

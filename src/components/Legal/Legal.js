@@ -13,7 +13,7 @@ class Legal extends Component {
                 </header>
 
                 <section>
-                  <h3 id="welcome-to-Ignite">Welcome to Ignite!<a className="anchor" href="#welcome-to-Ignite"/></h3>
+                  <h3 id="welcome-to-Ignite">Welcome to Ignite!</h3>
 
                   <p>Ignite, Inc. and its affiliates (collectively “Ignite”, “we” and “us”) respect your privacy. We offer
                     services that enable you to learn about full stack development.</p>
