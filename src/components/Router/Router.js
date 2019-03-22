@@ -47,6 +47,7 @@ class Router extends Component {
                     <Avenue path="/cookie" component={CookiePolicy} />
                     <Avenue path="/terms" component={Terms} />
                     {/* Catch All unmatched paths with a 404 */}
+                    <Route path="/sitemap.xml" onEnter={() => window.location.reload()} />
                     <Route component={NotFound} />
                 </Switch>
             </BrowserRouter>
