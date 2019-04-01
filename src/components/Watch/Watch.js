@@ -307,7 +307,15 @@ class Watch extends Component {
                     </div>
                 );
             case 3:
-                return (<h4>4</h4>);
+                return (
+                    <div className="p-2">
+                        <iframe
+                            src="https://codesandbox.io/embed/new?codemirror=1"
+                            style={{width: '100%', height: 500, border:0, borderRadius: 4, overflow: 'hidden'}}
+                            sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"
+                        />
+                    </div>
+                );
         }
     }
 
