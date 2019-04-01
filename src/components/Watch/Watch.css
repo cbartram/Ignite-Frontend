@@ -55,21 +55,21 @@ small {
     background: white;
 }
 
-.nav-tabs .nav-link {
-    border: 0;
+.tab-container {
+    background: white;
 }
 
 .nav-tabs {
     background: white;
+    border-bottom: 2px solid #b5bec2;
 }
 
-.nav-link {
-    color: #7b8b8e;
-    transition: color .15s ease;
-    border-bottom: 2px solid rgba(0,0,0,0.08);
+.tab {
+    border-bottom-color: #b5bec2;
+    margin-right: 30px;
 }
 
-.nav-link .active {
+.active-tab {
     color:#343b3d;
     border-bottom: 2px solid #000000;
 }

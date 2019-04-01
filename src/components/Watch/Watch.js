@@ -377,22 +377,24 @@ class Watch extends Component {
                           { this.props.videos.activeVideo.description }
                       </p>
                   </div>
-                  <ul className="nav nav-tabs pb-3">
-                      <li className="nav-item">
-                          <button className={`nav-link ${this.state.activeTab === 0 && 'active'}`} onClick={() => this.setState({ activeTab: 0 })}>Questions</button>
-                      </li>
-                      <li className="nav-item">
-                          <button className={`nav-link ${this.state.activeTab === 1 && 'active'}`} onClick={() => this.setState({ activeTab: 1 })}>Downloads</button>
-                      </li>
-                      <li className="nav-item">
-                          <button className={`nav-link ${this.state.activeTab === 2 && 'active'}`} onClick={() => this.setState({ activeTab: 2 })}>Github</button>
-                      </li>
-                      <li className="nav-item">
-                          <button className={`nav-link ${this.state.activeTab === 3 && 'active'}`} onClick={() => this.setState({ activeTab: 3 })}>Practice</button>
-                      </li>
-                  </ul>
-                  <div style={{ background: 'white' }}>
-                    { this.renderTabContent() }
+                  <div className="tab-container px-3">
+                      <ul className="nav nav-tabs">
+                          <li>
+                              <button className={`tab ${this.state.activeTab === 0 ? 'active-tab' : ''}`} onClick={() => this.setState({ activeTab: 0 })}>Questions</button>
+                          </li>
+                          <li>
+                              <button className={`tab ${this.state.activeTab === 1 ? 'active-tab' : ''}`} onClick={() => this.setState({ activeTab: 1 })}>Downloads</button>
+                          </li>
+                          <li>
+                              <button className={`tab ${this.state.activeTab === 2 ? 'active-tab' : ''}`} onClick={() => this.setState({ activeTab: 2 })}>Github</button>
+                          </li>
+                          <li>
+                              <button className={`tab ${this.state.activeTab === 3 ? 'active-tab' : ''}`} onClick={() => this.setState({ activeTab: 3 })}>Practice</button>
+                          </li>
+                      </ul>
+                      <div style={{ background: 'white' }}>
+                        { this.renderTabContent() }
+                      </div>
                   </div>
                 </div>
           );
