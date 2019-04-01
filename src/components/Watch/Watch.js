@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import ReactPlayer from 'react-player'
 import { Link, withRouter } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
+import moment from 'moment';
 import _ from 'lodash';
 import Log from '../../Log';
 import { logout, updateActiveVideo, ping } from '../../actions/actions';
@@ -35,6 +36,7 @@ class Watch extends Component {
     this.pingInterval = null;
 
     this.state = {
+      activeTab: 0,
       isFetching: false,
       canPlay: false,
       playing: true,
@@ -188,6 +190,10 @@ class Watch extends Component {
       if(this.pingInterval !== null) clearInterval(this.pingInterval);
   }
 
+  handleTabClick() {
+
+  }
+
     /**
      * Handles logging the user out by removing cookies/session history
      * @returns {Promise<void>}
@@ -211,6 +217,100 @@ class Watch extends Component {
         this.player = player;
     };
 
+    renderTabContent() {
+        switch (this.state.activeTab) {
+            case 0:
+                return (
+                    <div className="p-2">
+                        <div className="d-flex">
+                            <div className="avatar-container sm-avatar-container m-2">
+                                <img
+                                    alt="Adam Rubinson"
+                                    className="avatar-image avatar-image-sm"
+                                    src="https://secure.gravatar.com/avatar/7762d0145e4f9da9b9957fbca1b76865?s=96&amp;d=https%3A%2F%2Fstatic.teamtreehouse.com%2Fassets%2Fcontent%2Fdefault_avatar-ea7cf6abde4eec089a4e03cc925d0e893e428b2b6971b12405a9b118c837eaa2.png&amp;r=pg"
+                                />
+                            </div>
+                            <div className="flex-column ml-2 mt-1">
+                                <h5 className="question-title">
+                                    I have a question about this
+                                </h5>
+                                <p className="text-muted">Posted on <strong>{ moment().format('MMM DD, YYYY') }</strong> by <strong>Adam Rubinson</strong></p>
+                            </div>
+                            <div className="flex-column ml-auto mt-1 mr-2">
+                                <p className="answer-count">4</p>
+                                <p className="text-muted">Answers</p>
+                            </div>
+                        </div>
+                        <hr />
+                        <div className="d-flex">
+                            <div className="avatar-container sm-avatar-container m-2">
+                                <img
+                                    alt="Adam Rubinson"
+                                    className="avatar-image avatar-image-sm"
+                                    src="https://secure.gravatar.com/avatar/7762d0145e4f9da9b9957fbca1b76865?s=96&amp;d=https%3A%2F%2Fstatic.teamtreehouse.com%2Fassets%2Fcontent%2Fdefault_avatar-ea7cf6abde4eec089a4e03cc925d0e893e428b2b6971b12405a9b118c837eaa2.png&amp;r=pg"
+                                />
+                            </div>
+                            <div className="flex-column ml-2 mt-1">
+                                <h5 className="question-title">
+                                    How do I install javascript?
+                                </h5>
+                                <p className="text-muted">Posted on <strong>{ moment().format('MMM DD, YYYY') }</strong> by <strong>Jane Appleseed</strong></p>
+                            </div>
+                            <div className="flex-column ml-auto mt-1 mr-2">
+                                <p className="answer-count">2</p>
+                                <p className="text-muted">Answers</p>
+                            </div>
+                        </div>
+                        <hr />
+                        <div className="d-flex">
+                            <div className="avatar-container sm-avatar-container m-2">
+                                <img
+                                    alt="Adam Rubinson"
+                                    className="avatar-image avatar-image-sm"
+                                    src="https://secure.gravatar.com/avatar/7762d0145e4f9da9b9957fbca1b76865?s=96&amp;d=https%3A%2F%2Fstatic.teamtreehouse.com%2Fassets%2Fcontent%2Fdefault_avatar-ea7cf6abde4eec089a4e03cc925d0e893e428b2b6971b12405a9b118c837eaa2.png&amp;r=pg"
+                                />
+                            </div>
+                            <div className="flex-column ml-2 mt-1">
+                                <h5 className="question-title">
+                                    When can I get my development environment up
+                                </h5>
+                                <p className="text-muted">Posted on <strong>{ moment().format('MMM DD, YYYY') }</strong> by <strong>John Doe</strong></p>
+                            </div>
+                            <div className="flex-column ml-auto mt-1 mr-2">
+                                <p className="answer-count">7</p>
+                                <p className="text-muted">Answers</p>
+                            </div>
+                        </div>
+                    </div>
+                );
+            case 1:
+                return (
+                    <div className="p-2">
+                        <div className="d-flex ml-3">
+                            <i className="far fa-file-archive fa-3x"/>
+                            <div className="flex-column project-files">
+                                <p className="ml-2 mb-0">Project Files</p>
+                                <p className="text-muted ml-2">Zip File</p>
+                            </div>
+                        </div>
+                    </div>
+                );
+            case 2:
+                return (
+                    <div className="p-2">
+                        <div className="d-flex ml-3">
+                            <button className="common-Button common-Button--default">
+                                View Source Code
+                                <i className="fab fa-github pl-2" style={{ color: '#FFFFFF'}} />
+                            </button>
+                        </div>
+                    </div>
+                );
+            case 3:
+                return (<h4>4</h4>);
+        }
+    }
+
     render() {
         if(this.state.isFetching)
             return (
@@ -232,24 +332,62 @@ class Watch extends Component {
                 </div>
           );
 
+      //  Render the rest of the page
       if(this.state.canPlay)
-      return <ReactPlayer
-          ref={this.ref}
-          url={this.state.signedUrl}
-          width="100%"
-          height="100%"
-          style={{
-              position: 'relative',
-              width: '100%',
-              height: '100%',
-              maxWidth: '100%',
-              maxHeight: '100vh',
-              minHeight: '100%'
-          }}
-          playing={this.state.playing}
-          onClick={() => this.setState(prev => ({ playing: !prev.playing }))}
-          controls
-      />;
+          return (
+              <div>
+                  <ReactPlayer
+                      ref={this.ref}
+                      url={this.state.signedUrl}
+                      width="100%"
+                      height="100%"
+                      style={{
+                          position: 'relative',
+                          width: '100%',
+                          height: '100%',
+                          maxWidth: '100%',
+                          maxHeight: '100vh',
+                          minHeight: '100%'
+                      }}
+                      playing={this.state.playing}
+                      onClick={() => this.setState(prev => ({ playing: !prev.playing }))}
+                      controls
+                  />
+                  <div className="video-meta-container p-3">
+                      <div className="d-flex">
+                          <h2 className="mr-auto">
+                              { this.props.videos.activeVideo.name }
+                          </h2>
+                          <h4 className="text-muted">
+                              { this.props.videos.activeVideo.length }
+                          </h4>
+                      </div>
+                      <span className="text-muted">
+                          with Christian Bartram
+                      </span>
+                      <p className="common-BodyText mt-2">
+                          { this.props.videos.activeVideo.description }
+                      </p>
+                  </div>
+                  <ul className="nav nav-tabs pb-3">
+                      <li className="nav-item">
+                          <button className={`nav-link ${this.state.activeTab === 0 && 'active'}`} onClick={() => this.setState({ activeTab: 0 })}>Questions</button>
+                      </li>
+                      <li className="nav-item">
+                          <button className={`nav-link ${this.state.activeTab === 1 && 'active'}`} onClick={() => this.setState({ activeTab: 1 })}>Downloads</button>
+                      </li>
+                      <li className="nav-item">
+                          <button className={`nav-link ${this.state.activeTab === 2 && 'active'}`} onClick={() => this.setState({ activeTab: 2 })}>Github</button>
+                      </li>
+                      <li className="nav-item">
+                          <button className={`nav-link ${this.state.activeTab === 3 && 'active'}`} onClick={() => this.setState({ activeTab: 3 })}>Practice</button>
+                      </li>
+                  </ul>
+                  <div style={{ background: 'white' }}>
+                    { this.renderTabContent() }
+                  </div>
+                </div>
+          );
 
       return null;
   }

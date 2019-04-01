@@ -13,7 +13,6 @@ import Log from './Log';
 import { loginSuccess, fetchVideos } from './actions/actions';
 import { AMPLIFY_CONFIG } from './constants';
 import {IS_PROD} from "./constants";
-import Logo from './resources/images/logo.png';
 
 // Object holding action types as keys and promises as values which need resolutions
 const typeResolvers = {};

@@ -123,6 +123,8 @@ export const updateCache = (values) => {
                case 'refreshToken':
                    localStorage.setItem(key, values['refreshToken']);
                    break;
+               default:
+                   break;
            }
        }
     });
@@ -135,6 +137,7 @@ export const updateCache = (values) => {
  * @returns {Promise<any>}
  */
 export const storeQuiz = async (email, quiz) => {
+    console.log(quiz);
     const params = {
         method: 'POST',
         headers: {

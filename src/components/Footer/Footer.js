@@ -32,7 +32,8 @@ export default class Footer extends Component {
                             <li><Link className="text-muted" to="/support">Support</Link></li>
                             <li><Link className="text-muted" to="/legal">Legal</Link></li>
                             <li><Link className="text-muted" to="/legal">Privacy</Link></li>
-                            <li><Link className="text-muted" to="/terms">Terms of Service</Link></li>                            <li><Link className="text-muted" to="/support">Cookie Policy</Link></li>
+                            <li><Link className="text-muted" to="/terms">Terms of Service</Link></li>
+                            <li><Link className="text-muted" target="_blank" to="/sitemap.xml">Sitemap</Link></li>
                         </ul>
                     </div>
                 </div>
