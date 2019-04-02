@@ -43,6 +43,7 @@ class Watch extends Component {
       signedUrl: '',
       error: '',
       intervalSet: false, // True if the page is loaded and we are pinging the backend
+      didNotify: false, // True if there was an error on the ping() and we have already notified the user. This prevents constant notifications
     }
   }
 
@@ -175,6 +176,14 @@ class Watch extends Component {
                       started: true,
                       completed: (this.player.getCurrentTime() + 10) >= this.player.getDuration()
                   });
+
+                  // There was an error from the ping and the user doesnt know their video data isnt being saved
+                  if(this.props.videos.error !== null && !this.state.didNotify) {
+                      Log.warn('Ping failed. Check internet connection');
+                      this.props.pushAlert('warning', 'Issue Saving', 'There was an issue saving your video progress. Make sure your wifi is active!');
+                      this.setState({ didNotify: true });
+                  }
+
               }, 30 * 1000);
 
               this.setState({ intervalSet: true });
