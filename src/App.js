@@ -31,7 +31,7 @@ class App extends Component {
                 <span className="common-UppercaseTitle">
                     Welcome to Ignite
                 </span>
-                <h1 className="common-PageTitle">Learn to Code Quickly</h1>
+                <h1 className="common-PageTitle">Build the next great App</h1>
                   <p className="common-IntroText">
                       Our course on full stack development will teach you all the core concepts necessary to have a firm
                       understanding of modern day development practices. We've designed a program that helps to accelerate

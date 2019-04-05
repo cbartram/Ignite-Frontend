@@ -129,10 +129,10 @@ h1.common-PageTitle {
 
 .Icon {
     position: absolute;
-    background-image: url(https://stripe.com/img/v3/customers/logos/header-logos@2x.png?2);
+    background-image: url(https://stripe.com/img/v3/customers/logos/header-logos@2x.png);
     will-change: transform,opacity;
     -webkit-background-size: 1076px 1076px;
-    background-size: 1076px 1076px;
+    background-size: 1076px 921px;
     margin: -45px 0 0 -75px;
     border-radius: 50%;
     -webkit-box-shadow: 0 15px 35px rgba(0,0,0,.1), 0 3px 10px rgba(0,0,0,.07);
@@ -155,17 +155,12 @@ h1.common-PageTitle {
     font-weight: 500;
     color: #566b78;
     pointer-events: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
     user-select: none;
     -webkit-transform: translate(-50%,-10px);
     transform: translate(-50%,-10px);
     opacity: 0;
     -webkit-transition-property: opacity,-webkit-transform;
-    transition-property: opacity,-webkit-transform;
     transition-property: opacity,transform;
-    transition-property: opacity,transform,-webkit-transform;
     -webkit-transition-duration: .25s;
     transition-duration: .25s;
     -webkit-transition-timing-function: ease-out;

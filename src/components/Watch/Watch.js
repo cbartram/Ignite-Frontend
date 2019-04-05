@@ -180,6 +180,7 @@ class Watch extends Component {
                   // There was an error from the ping and the user doesnt know their video data isnt being saved
                   if(this.props.videos.error !== null && !this.state.didNotify) {
                       Log.warn('Ping failed. Check internet connection');
+                      clearInterval(this.pingInterval); // Stop pinging
                       this.props.pushAlert('warning', 'Issue Saving', 'There was an issue saving your video progress. Make sure your wifi is active!');
                       this.setState({ didNotify: true });
                   }

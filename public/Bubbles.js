@@ -68,7 +68,7 @@ $(function() {
          * of the onload callback function to determine when the image is ready to be processed.
          * @param url String url of the image.
          */
-        function loadImages(url = 'https://stripe.com/img/v3/customers/logos/header-logos@2x.png?2') {
+        function loadImages(url = 'https://stripe.com/img/v3/customers/logos/header-logos@2x.png') {
             const image = new Image;
             image.src = url;
             image.onload = () => logoBubbles.logosLoaded = true;
