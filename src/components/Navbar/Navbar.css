@@ -2,7 +2,7 @@
     z-index: 100;
 }
 
-.navbar-nav a:hover::before {
+.navbar-nav a:hover:not(.dropdown-link)::before {
     text-decoration: none !important;
     background-color: #6772e5;
     opacity: 1;
@@ -20,6 +20,26 @@
     height: 0;
     top: 50%;
     transition: height .3s ease 0s, width;
+}
+
+/*
+ * Triggered when the navbar collapses
+ */
+@media only screen and (max-width: 767px) {
+    .navbar-nav a:hover::before {
+        text-decoration: underline !important;
+        background-color: white;
+        opacity: 1;
+        height: 0;
+        width: 0;
+        transform: rotateZ(200deg);
+    }
+
+    /* Hide the avatar when the navbar is collapsed */
+    .user-avatar {
+        display: none;
+    }
+
 }
 
 .fixed {

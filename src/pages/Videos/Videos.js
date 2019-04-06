@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import moment from 'moment';
-import Container from '../Container/Container';
+import moment from 'moment/moment';
+import Container from '../../components/Container/Container';
 import { withRouter } from 'react-router-dom'
 import { updateActiveVideo } from '../../actions/actions';
 import './Videos.css';
-import Card from "../Card/Card";
+import Card from "../../components/Card/Card";
 
 const mapStateToProps = state => ({
     auth: state.auth,

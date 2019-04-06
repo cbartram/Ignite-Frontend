@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './Legal.css';
 import './Terms.css';
-import withContainer from "../withContainer";
+import withContainer from "../../components/withContainer";
 
 class Terms extends Component {
     render() {

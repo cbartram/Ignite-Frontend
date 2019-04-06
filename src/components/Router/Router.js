@@ -2,22 +2,22 @@ import React, { Component } from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import { connect } from 'react-redux';
 import App from '../../App';
-import Login from '../Login/Login';
+import Login from '../../pages/Login/Login';
 import NotFound from '../NotFound/NotFound';
-import Signup from '../Signup/Signup';
-import Videos from '../Videos/Videos';
+import Signup from '../../pages/Signup/Signup';
+import Videos from '../../pages/Videos/Videos';
 import AuthenticatedRoute from '../AuthenticatedRoute/AuthenticatedRoute';
 import Avenue from '../Avenue/Avenue';
-import Pricing from '../Pricing/Pricing';
-import Watch from '../Watch/Watch';
+import Pricing from '../../pages/Pricing/Pricing';
+import Watch from '../../pages/Watch/Watch';
 import ResetPassword from '../ResetPassword/ResetPassword';
-import Profile from '../Profile/Profile';
-import Legal from '../Legal/Legal';
-import CookiePolicy from '../Legal/CookiePolicy';
-import Terms from '../Legal/Terms';
-import Support from '../Support/Support';
-import Quiz from '../Quiz/Quiz';
-import QuizResults from "../QuizResults/QuizResults";
+import Profile from '../../pages/Profile/Profile';
+import Legal from '../../pages/Legal/Legal';
+import CookiePolicy from '../../pages/Legal/CookiePolicy';
+import Terms from '../../pages/Legal/Terms';
+import Support from '../../pages/Support/Support';
+import Quiz from '../../pages/Quiz/Quiz';
+import QuizResults from "../../pages/QuizResults/QuizResults";
 
 const mapStateToProps = state => ({
    auth: state.auth,

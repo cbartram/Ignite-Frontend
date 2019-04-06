@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
-import LoaderButton from "../LoaderButton/LoaderButton";
-import { Auth } from 'aws-amplify';
-import moment from 'moment';
-import withContainer from '../withContainer';
-import Card from '../Card/Card';
+import LoaderButton from "../../components/LoaderButton/LoaderButton";
+import { Auth } from 'aws-amplify/lib/index';
+import moment from 'moment/moment';
+import withContainer from '../../components/withContainer';
+import Card from '../../components/Card/Card';
 import './Profile.css';
 import {
     API_DELETE_SUBSCRIPTION,

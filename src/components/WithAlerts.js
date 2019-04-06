@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './AlertContainer/AlertContainer.css';
-import moment from "./Signup/Signup";
+import moment from "../pages/Signup/Signup";
 import {Link} from "react-router-dom";
-import Alert from "./Login/Login";
+import Alert from "../pages/Login/Login";
 
 /**
  * Component which renders a list of <Alert /> components

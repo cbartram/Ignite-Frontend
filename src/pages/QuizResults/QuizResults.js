@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {Link, withRouter} from 'react-router-dom';
-import withContainer from '../withContainer';
+import withContainer from '../../components/withContainer';
 import { queryString } from '../../util';
 import { updateQuiz, submitQuiz } from '../../actions/actions';
 import Log from '../../Log';
 import './QuizResults.css';
-import Card from "../Card/Card";
+import Card from "../../components/Card/Card";
 
 const mapStateToProps = (state) => ({
   user: state.auth.user,

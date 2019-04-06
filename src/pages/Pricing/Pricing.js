@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import PaymentModal from '../PaymentModal/PaymentModal';
+import PaymentModal from '../../components/PaymentModal/PaymentModal';
 import './Pricing.css';
-import withContainer from "../withContainer";
+import withContainer from "../../components/withContainer";
 import PricingCard from "./PricingCard";
 
 const mapStateToProps = state => ({

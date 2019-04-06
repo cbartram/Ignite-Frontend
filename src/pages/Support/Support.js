@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import withContainer from '../withContainer';
-import Card from '../Card/Card';
+import withContainer from '../../components/withContainer';
+import Card from '../../components/Card/Card';
 import Log from '../../Log';
-import LoaderButton from '../LoaderButton/LoaderButton';
+import LoaderButton from '../../components/LoaderButton/LoaderButton';
 import { sendEmail } from '../../util';
 import './Support.css';
 

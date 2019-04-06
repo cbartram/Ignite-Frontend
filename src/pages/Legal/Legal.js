@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './Legal.css';
-import withContainer from "../withContainer";
+import withContainer from "../../components/withContainer";
 
 class Legal extends Component {
   render() {

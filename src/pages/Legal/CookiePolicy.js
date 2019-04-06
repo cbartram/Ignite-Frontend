@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './Legal.css';
 import './CookiePolicy.css'
-import withContainer from "../withContainer";
+import withContainer from "../../components/withContainer";
 
 class CookiePolicy extends Component {
     render() {

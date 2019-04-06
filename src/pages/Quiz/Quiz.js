@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { withRouter, Link } from 'react-router-dom';
-import withContainer from '../withContainer';
+import withContainer from '../../components/withContainer';
 import { queryString } from '../../util';
 import { updateQuiz, submitQuiz } from '../../actions/actions';
 import Log from '../../Log';

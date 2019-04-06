@@ -5,14 +5,14 @@ import {
     FormControl,
     ControlLabel
 } from "react-bootstrap";
-import LoaderButton from "../LoaderButton/LoaderButton";
+import LoaderButton from "../../components/LoaderButton/LoaderButton";
 import { connect } from 'react-redux';
-import { Auth } from 'aws-amplify';
+import { Auth } from 'aws-amplify/lib/index';
 import { Link, withRouter } from 'react-router-dom';
 import { loginRequest, loginSuccess, loginFailure, hideErrors, fetchVideos } from "../../actions/actions";
 import Log from '../../Log';
 import './Signup.css';
-import withContainer from "../withContainer";
+import withContainer from "../../components/withContainer";
 // import FacebookButton from "../FacebookButton/FacebookButton";
 
 const mapStateToProps = state => ({

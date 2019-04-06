@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
-import { Auth } from 'aws-amplify';
+import { Auth } from 'aws-amplify/lib/index';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import './Login.css';
 import Log from '../../Log';
-import LoaderButton from '../LoaderButton/LoaderButton';
+import LoaderButton from '../../components/LoaderButton/LoaderButton';
 import {
     loginFailure,
     loginSuccess,
@@ -13,7 +13,7 @@ import {
     fetchVideos,
     updateVideosSync,
 } from '../../actions/actions';
-import withContainer from "../withContainer";
+import withContainer from "../../components/withContainer";
 // import FacebookButton from "../FacebookButton/FacebookButton";
 
 const mapStateToProps = state => ({

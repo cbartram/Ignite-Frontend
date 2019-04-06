@@ -8,30 +8,30 @@ import thunk from 'redux-thunk';
 import { BrowserRouter  }from 'react-router-dom';
 import { updateActiveVideo, loginSuccess } from "../actions/actions";
 
-import Login from '../components/Login/Login'
+import Login from '../pages/Login/Login'
 import App from '../App';
 import Navbar from '../components/Navbar/Navbar';
 import Router from '../components/Router/Router';
 import NotFound from '../components/NotFound/NotFound';
 import Container from '../components/Container/Container';
-import Watch from '../components/Watch/Watch';
+import Watch from '../pages/Watch/Watch';
 import ResetPassword from '../components/ResetPassword/ResetPassword';
-import Pricing from '../components/Pricing/Pricing';
+import Pricing from '../pages/Pricing/Pricing';
 import PaymentModal from '../components/PaymentModal/PaymentModal';
 import Footer from '../components/Footer/Footer';
 import Card from '../components/Card/Card';
 import Alert from '../components/Alert/Alert';
 import QuoteCard from "../components/QuoteCard/QuoteCard";
 import Sidebar from "../components/Sidebar/Sidebar";
-import Legal from "../components/Legal/Legal";
-import CookiePolicy from "../components/Legal/CookiePolicy";
-import Terms from "../components/Legal/Terms";
-import Support from "../components/Support/Support";
+import Legal from "../pages/Legal/Legal";
+import CookiePolicy from "../pages/Legal/CookiePolicy";
+import Terms from "../pages/Legal/Terms";
+import Support from "../pages/Support/Support";
 import FacebookButton from "../components/FacebookButton/FacebookButton";
 import LoaderButton from '../components/LoaderButton/LoaderButton';
-import Signup from "../components/Signup/Signup";
-import Videos from "../components/Videos/Videos";
-import Profile from "../components/Profile/Profile";
+import Signup from "../pages/Signup/Signup";
+import Videos from "../pages/Videos/Videos";
+import Profile from "../pages/Profile/Profile";
 import withContainer from "../components/withContainer";
 
 // Create store used throughout the unit tests

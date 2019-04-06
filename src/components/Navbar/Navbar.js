@@ -81,7 +81,7 @@ class Navbar extends Component {
                         <ul className="dropdown-list">
                             {
                                 this.props.auth.user && (
-                                    <li className="nav-item dropdown">
+                                    <li className="nav-item dropdown user-avatar">
                                         <button className="btn btn-link dropdown-toggle" id="navbarDropdown" data-toggle="dropdown">
                                             <div className="avatar-container">
                                                 <img src={this.props.auth.user['custom:profile_picture']} alt="Profile" className="avatar-image" height="30" width="30" />
@@ -89,17 +89,17 @@ class Navbar extends Component {
                                         </button>
                                         <div className="dropdown-menu dropdown-menu-right header-nav-item-profile-dropdown mt-2 py-0">
                                             <h4 className="dropdown-title">
-                                                <Link to="/profile" className="header-nav-item-profile-dropdown-title-link">
+                                                <Link to="/profile" className="header-nav-item-profile-dropdown-title-link dropdown-link">
                                                     <strong className="header-nav-item-profile-dropdown-title-name">
                                                         {`${this.props.auth.user['custom:first_name']} ${this.props.auth.user['custom:last_name']}`}
                                                     </strong>
                                                     <span className="header-nav-item-profile-dropdown-title-label">View Profile</span>
                                                 </Link>
                                             </h4>
-                                            <Link className="dropdown-item" to="/profile">Profile</Link>
-                                            <Link className="dropdown-item" to="/videos">Videos</Link>
-                                            <Link className="dropdown-item" to="/profile">Billing</Link>
-                                            <a className="dropdown-item dropdown-secondary" href="#logout" onClick={() => this.logout()}>Sign Out</a>
+                                            <Link className="dropdown-item dropdown-link" to="/profile">Profile</Link>
+                                            <Link className="dropdown-item dropdown-link" to="/videos">Videos</Link>
+                                            <Link className="dropdown-item dropdown-link" to="/profile">Billing</Link>
+                                            <a className="dropdown-item dropdown-link dropdown-secondary" href="#logout" onClick={() => this.logout()}>Sign Out</a>
                                         </div>
                                     </li>
                                 )
@@ -108,11 +108,11 @@ class Navbar extends Component {
                         {
                             this.props.sidebar &&
                             <button className="common-Button common-Button--default" onClick={() => this.setState({ active: !this.state.active })}>
-                                <span className="fas fa-bars" />
+                                Video List <span className="fas fa-bars" />
                             </button>
                         }
+                      </div>
                     </div>
-                </div>
             </div>
                 {
                     this.props.sidebar && !this.props.videos.isFetching &&

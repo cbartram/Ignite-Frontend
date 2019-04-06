@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ReactPlayer from 'react-player'
 import { Link, withRouter } from 'react-router-dom';
-import { Auth } from 'aws-amplify';
-import moment from 'moment';
+import { Auth } from 'aws-amplify/lib/index';
+import moment from 'moment/moment';
 import _ from 'lodash';
 import Log from '../../Log';
 import { logout, updateActiveVideo, ping } from '../../actions/actions';
@@ -15,7 +15,7 @@ import {
     getRequestUrl,
 } from '../../constants';
 import './Watch.css';
-import withContainer from "../withContainer";
+import withContainer from "../../components/withContainer";
 
 const mapStateToProps = state => ({
     auth: state.auth,
