@@ -16,6 +16,7 @@ import {
 } from '../../constants';
 import './Watch.css';
 import withContainer from "../../components/withContainer";
+import Modal from "../../components/Modal/Modal";
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -291,6 +292,11 @@ class Watch extends Component {
                                 <p className="text-muted">Answers</p>
                             </div>
                         </div>
+                        <div className="d-flex justify-content-center">
+                            <button className="common-Button common-Button--default" data-toggle="modal" data-target="#exampleModal">
+                                Ask a Question
+                            </button>
+                        </div>
                     </div>
                 );
             case 1:
@@ -354,6 +360,10 @@ class Watch extends Component {
       if(this.state.canPlay)
           return (
               <div>
+                  {/* Modal */}
+                  <Modal id="exampleModal">
+                      <p>Hi this is some text</p>
+                  </Modal>
                   <ReactPlayer
                       ref={this.ref}
                       url={this.state.signedUrl}
@@ -365,7 +375,8 @@ class Watch extends Component {
                           height: '100%',
                           maxWidth: '100%',
                           maxHeight: '100vh',
-                          minHeight: '100%'
+                          minHeight: '100%',
+                          marginBottom: 20
                       }}
                       playing={this.state.playing}
                       onClick={() => this.setState(prev => ({ playing: !prev.playing }))}

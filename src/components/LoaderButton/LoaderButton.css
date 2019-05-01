@@ -5,8 +5,8 @@
 }
 
 .common-Button--default:hover:enabled {
-    color: #fff;
-    background-color: #7795f8;
+    color: #fff !important;
+    background-color: #7795f8 !important;
 }
 
 .common-Button--default:hover:disabled {

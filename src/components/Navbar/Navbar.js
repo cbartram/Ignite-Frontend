@@ -70,7 +70,7 @@ class Navbar extends Component {
                 <a className="navbar-brand" href="/">
                     <img src={Logo} width="30" height="30" alt="Ignite Logo" />
                 </a>
-                <h5 className="my-0 mr-md-auto font-weight-normal">Ignite</h5>
+                <h5 className="my-0 mr-2 font-weight-normal">Ignite</h5>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                     <i className="fas fa-bars" style={{ color: '#6772e5'}} />
                 </button>
