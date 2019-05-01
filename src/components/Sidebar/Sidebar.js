@@ -27,11 +27,12 @@ class Sidebar extends Component {
      */
   handleVideoClick(video) {
       this.props.updateActiveVideo(video);
-      window.location.replace(`/watch?v=${btoa(encodeURI(video.name))}`);
+      window.location.replace(`/watch?v=${btoa(encodeURI(video.name))}`); // Purposely reloads the page
   }
 
   /**
    * Renders a list of videos to the DOM
+   * @param video Object the video to render { name: 'FOO', length: '20:10' }
    */
   renderVideos(video) {
     return (

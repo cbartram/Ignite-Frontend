@@ -77,9 +77,7 @@ const store = createStore(rootReducer, constants.INITIAL_STATE, composeEnhancers
 Amplify.configure(AMPLIFY_CONFIG);
 
 // Setup Logger
-if (!IS_PROD || localStorage.getItem('FORCE_LOGS') === true) {
-    localStorage.setItem('debug', 'ignite:*');
-}
+if (!IS_PROD || localStorage.getItem('FORCE_LOGS') === true) localStorage.setItem('debug', 'ignite:*');
 
 /**
  * Checks the cookies/local storage to see if the user has been authenticated recently/remembered and loads

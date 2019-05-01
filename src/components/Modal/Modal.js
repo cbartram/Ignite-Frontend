@@ -4,7 +4,7 @@ import './Modal.css';
 export default class Modal extends Component {
   render() {
       return (
-          <div className="modal fade" id={this.props.id} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div className="modal fade" id={this.props.id} tabIndex="-1" role="dialog">
             <div className="modal-dialog" role="document">
               <div className="modal-content">
                 <div className="modal-header">
@@ -15,9 +15,8 @@ export default class Modal extends Component {
                   { this.props.children }
                 </div>
                 <div className="modal-footer">
-                  <button type="button" className="common-Button" data-dismiss="modal">Close
-                  </button>
-                  <button type="button" className="common-Button common-Button--default">Save changes</button>
+                  <button type="button" className="common-Button" data-dismiss="modal">{this.props.cancelText}</button>
+                  <button type="button" className="common-Button common-Button--default">{this.props.submitText}</button>
                 </div>
               </div>
             </div>

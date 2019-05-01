@@ -107,7 +107,7 @@ class Navbar extends Component {
                         </ul>
                         {
                             this.props.sidebar &&
-                            <button className="common-Button common-Button--default" onClick={() => this.setState({ active: !this.state.active })}>
+                            <button className="common-Button common-Button--default" onClick={() => this.setState({ active: !this.state.active }, () => this.props.disableScroll())}>
                                 Video List <span className="fas fa-bars" />
                             </button>
                         }
@@ -119,7 +119,7 @@ class Navbar extends Component {
                     <Sidebar
                         currentVideoName={this.props.videos.activeVideo.name}
                         active={this.state.active}
-                        onDismiss={() => this.setState({ active: false })}
+                        onDismiss={() => this.setState({ active: false }, () => this.props.restoreScroll())}
                         onSearch={value => this.setState({ query: value })}
                         filter={this.state.query}
                     />

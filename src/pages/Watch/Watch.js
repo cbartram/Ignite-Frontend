@@ -4,6 +4,7 @@ import ReactPlayer from 'react-player'
 import { Link, withRouter } from 'react-router-dom';
 import { Auth } from 'aws-amplify/lib/index';
 import moment from 'moment/moment';
+import Markdown from 'react-markdown';
 import _ from 'lodash';
 import Log from '../../Log';
 import { logout, updateActiveVideo, ping } from '../../actions/actions';
@@ -37,7 +38,12 @@ class Watch extends Component {
     this.pingInterval = null;
 
     this.state = {
-      activeTab: 0,
+      activeTab: 0, // Active tab for questions, practice, downloads etc...
+      activeModalTab: 0,  // Active tab in modal edit/preview
+      question: {
+          title: '',
+          content: '',
+      },
       isFetching: false,
       canPlay: false,
       playing: true,
@@ -205,6 +211,17 @@ class Watch extends Component {
 
   }
 
+ /**
+  * Handles updating local state whenever the title or content changes while a user is constructing a question
+  * @param field String the field to update (either title or content)
+  * @param value String the value to update the field with (whatever the user typed)
+  */
+  onChange(field, value) {
+      const { question } = this.state;
+      question[field] = value;
+      this.setState({ question })
+  }
+
     /**
      * Handles logging the user out by removing cookies/session history
      * @returns {Promise<void>}
@@ -361,8 +378,47 @@ class Watch extends Component {
           return (
               <div>
                   {/* Modal */}
-                  <Modal id="exampleModal">
-                      <p>Hi this is some text</p>
+                  <Modal
+                      id="exampleModal"
+                      title="Ask Question"
+                      subtitle="Ask a question about this video and get an answer"
+                      submitText="Start Discussion"
+                      cancelText="Cancel"
+                  >
+                      <div className="d-flex justify-content-start mb-3">
+                          <div className="btn-group btn-group-toggle" data-toggle="buttons">
+                              <label className="btn btn-secondary active" onClick={() => this.setState({ activeModalTab: 0 })}>
+                                  <input type="radio" name="options" id="option1" autoComplete="off" />
+                                  Write &nbsp;
+                                  <i className="fas fa-pencil-alt" />
+                              </label>
+                              <label className="btn btn-secondary" onClick={() => this.setState({ activeModalTab: 1 })}>
+                                  <input type="radio" name="options" id="option2" autoComplete="off" />
+                                  Preview &nbsp;
+                                  <i className="fa fa-eye" />
+                              </label>
+                          </div>
+                      </div>
+                      {
+                          this.state.activeModalTab === 0 ?
+                              <div>
+                                  <div className="form-group">
+                                      <label>Title</label>
+                                      <input type="email" className="form-control" value={this.state.question.title} placeholder="Enter Question Title" onChange={({target}) => this.onChange('title', target.value)} />
+                                      <small className="form-text text-muted">Good questions are short
+                                          specific and concise!
+                                      </small>
+                                  </div>
+                                  <div className="form-group">
+                                      <label>Content</label>
+                                      <textarea className="form-control" placeholder="Add question details..." rows="10" onChange={({target}) => this.onChange('content', target.value)}>
+                                          {this.state.question.content}
+                                      </textarea>
+                                      <small className="form-text text-muted">Hint: You can use <a href="https://guides.github.com/features/mastering-markdown/" target="_blank" rel="noopener noreferrer">markdown</a> here!</small>
+                                  </div>
+                              </div> :
+                              <Markdown source={this.state.question.content.length === 0 ? 'Nothing yet!' : this.state.question.content} />
+                      }
                   </Modal>
                   <ReactPlayer
                       ref={this.ref}
