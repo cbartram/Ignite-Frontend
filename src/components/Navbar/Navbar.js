@@ -107,7 +107,7 @@ class Navbar extends Component {
                         </ul>
                         {
                             this.props.sidebar &&
-                            <button className="common-Button common-Button--default" onClick={() => this.setState({ active: !this.state.active }, () => this.props.disableScroll())}>
+                            <button className="common-Button common-Button--default mt-2" onClick={() => this.setState({ active: !this.state.active }, () => this.props.disableScroll())}>
                                 Video List <span className="fas fa-bars" />
                             </button>
                         }

@@ -7,7 +7,12 @@ import moment from 'moment/moment';
 import Markdown from 'react-markdown';
 import _ from 'lodash';
 import Log from '../../Log';
-import { logout, updateActiveVideo, ping } from '../../actions/actions';
+import {
+    logout,
+    updateActiveVideo,
+    ping,
+    askQuestion,
+} from '../../actions/actions';
 import {
     API_FETCH_SIGNED_URL,
     API_KEY,

@@ -11,6 +11,7 @@ import {
     API_FIND_ALL_USERS,
     API_PING_VIDEO,
     API_SEND_EMAIL,
+    API_POST_QUESTION,
     getRequestUrl, API_SUBMIT_QUIZ,
 } from './constants';
 
@@ -137,7 +138,6 @@ export const updateCache = (values) => {
  * @returns {Promise<any>}
  */
 export const storeQuiz = async (email, quiz) => {
-    console.log(quiz);
     const params = {
         method: 'POST',
         headers: {
@@ -159,6 +159,37 @@ export const storeQuiz = async (email, quiz) => {
         return await (await fetch(getRequestUrl(API_SUBMIT_QUIZ), params)).json();
     } catch(err) {
         Log.error('Failed to store quiz results...', err);
+    }
+};
+
+/**
+ * Creates the fetch() call used to create a new forum question about a video
+ * @param body Object the body of the request. This should include the user id, video id, title of
+ * the post, and body of the post (not to be confused with the body of the request).
+ * @returns {Promise<any>}
+ */
+export const postQuestion = async (body) => {
+    const params = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'x-api-key': IS_PROD ? PROD_API_KEY : API_KEY
+        },
+        // Since this is calling an API these details are crucial for the lambda function to know which route to execute.
+        body: JSON.stringify({
+            headers: {},
+            method: 'POST',
+            path: API_POST_QUESTION,
+            parameters: {}, // Query params
+            body
+        }),
+    };
+
+    try {
+        return await (await fetch(getRequestUrl(API_POST_QUESTION), params)).json();
+    } catch(err) {
+        Log.error('Failed to post question...', err);
     }
 };
 

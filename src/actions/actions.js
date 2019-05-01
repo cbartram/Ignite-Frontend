@@ -3,7 +3,12 @@
  */
 import * as constants from '../constants';
 import Log from '../Log';
-import {getVideos, sendVideoData, storeQuiz } from '../util';
+import {
+    getVideos,
+    postQuestion,
+    sendVideoData,
+    storeQuiz
+} from '../util';
 
 
 /**
@@ -182,7 +187,7 @@ export const ping = (payload) => async dispatch => {
             // An error occurred
             dispatch({
                 type: constants.PING_RESPONSE_FAILURE,
-                payload: {message: `Failed to retrieve billing data from API: ${JSON.stringify(response)}`}
+                payload: {message: `Failed to ping data to server: ${JSON.stringify(response)}`}
             });
         }
     } catch(err) {
@@ -190,6 +195,42 @@ export const ping = (payload) => async dispatch => {
         dispatch({
             type: constants.PING_RESPONSE_FAILURE,
             payload: {message: err.message}
+        });
+    }
+};
+
+/**
+ * Makes a POST request to the server to create a new question about a video
+ * @param payload Object the payload includes the question title, video id, user who posted, and question contents.
+ * @returns {Function}
+ */
+export const askQuestion = (payload) => async dispatch => {
+    dispatch({
+        type: constants.QUESTION_REQUEST,
+        payload: true // Sets isFetching to true (useful for unit testing redux)
+    });
+
+    try {
+        const response = await postQuestion(payload);
+
+        if (response.status === 200) {
+
+            dispatch({
+                type: constants.QUESTION_RESPONSE_SUCCESS,
+                payload: response.body,
+            });
+        } else if (response.status > 200 || typeof response.status === 'undefined') {
+            // An error occurred
+            dispatch({
+                type: constants.QUESTION_RESPONSE_FAILURE,
+                payload: { message: `Failed to create a new question using the API: ${JSON.stringify(response)}`}
+            });
+        }
+    } catch(err) {
+        Log.error('[ERROR] Error receiving response from ping()', err);
+        dispatch({
+            type: constants.QUESTION_RESPONSE_FAILURE,
+            payload: { message: err.message }
         });
     }
 };
