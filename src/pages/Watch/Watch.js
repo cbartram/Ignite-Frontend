@@ -27,7 +27,8 @@ import Modal from "../../components/Modal/Modal";
 const mapStateToProps = state => ({
     auth: state.auth,
     user: state.auth.user,
-    videos: state.videos
+    videos: state.videos,
+    isCreatingPost: state.posts.isFetching
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -47,6 +48,7 @@ class Watch extends Component {
     this.state = {
       activeTab: 0, // Active tab for questions, practice, downloads etc...
       activeModalTab: 0,  // Active tab in modal edit/preview
+      open: false,
       question: {
           title: '',
           content: '',
@@ -252,6 +254,46 @@ class Watch extends Component {
         this.player = player;
     };
 
+    /**
+     * Creates a new post (question) and if successful
+     * the post is stored in redux and updated on this page.
+     */
+    createPost() {
+        if(_.size(this.state.question.title) === 0 || _.size(this.state.question.content) === 0) {
+            this.props.pushAlert('danger', 'Empty Fields', 'One of your fields for your post is empty. Make sure you add both a title and some content for your question.');
+        } else {
+            this.props.askQuestion({
+                video_id: `${this.props.videos.activeVideo.chapter}.${this.props.videos.activeVideo.sortKey}`, // Chapter.video (9.6) ch 9 vid 6,
+                user: {
+                    first_name: this.props.user['custom:first_name'],
+                    last_name: this.props.user['custom:last_name'],
+                    avatar: this.props.user['custom:profile_picture']
+                },
+                title: this.state.question.title,
+                content: this.state.question.content
+            }).then(() => {
+                // It was successful close the modal and show a success alert
+                this.handleClose();
+                this.props.pushAlert('success', 'Post Created', 'Your question has been posted successfully!');
+            }).catch(() => {
+                // It failed show an error
+                this.props.pushAlert('danger', 'Failed to Post', 'There was an issue creating a new post. Check your internet connection and try again!');
+            });
+        }
+    }
+
+    handleClose() {
+        document.body.className = '';
+        document.body.removeChild(document.getElementsByClassName('modal-backdrop')[0]);
+        this.setState({ open: false });
+    }
+
+
+    /**
+     * Renders different content in each of the bootstrap
+     * tabs depending on which tab is currently active. Active tab is tracked
+     * through local state
+     */
     renderTabContent() {
         switch (this.state.activeTab) {
             case 0:
@@ -317,12 +359,13 @@ class Watch extends Component {
                             </div>
                         </div>
                         <div className="d-flex justify-content-center">
-                            <button className="common-Button common-Button--default" data-toggle="modal" data-target="#exampleModal">
+                            <button className="common-Button common-Button--default" onClick={() => this.setState({ open: true })} data-toggle="modal" data-target="#exampleModal">
                                 Ask a Question
                             </button>
                         </div>
                     </div>
                 );
+            //    TODO  and remove <div className="modal-backdrop fade show"></div>
             case 1:
                 return (
                     <div className="p-2">
@@ -384,24 +427,16 @@ class Watch extends Component {
       if(this.state.canPlay)
           return (
               <div>
-                  {/* Modal */}
                   <Modal
                       id="exampleModal"
                       title="Ask Question"
                       subtitle="Ask a question about this video and get an answer"
                       submitText="Start Discussion"
                       cancelText="Cancel"
-                      onCancelClick={() => {}}
-                      onSubmitClick={() => this.props.askQuestion({
-                          video_id: `${this.props.videos.activeVideo.chapter}.${this.props.videos.activeVideo.sortKey}`, // Chapter.video (9.6) ch 9 vid 6,
-                          user: {
-                              first_name: this.props.user['custom:first_name'],
-                              last_name: this.props.user['custom:last_name'],
-                              avatar: this.props.user['custom:profile_picture']
-                          },
-                          title: this.state.question.title,
-                          content: this.state.question.content
-                      })}
+                      open={this.state.open}
+                      isLoading={this.props.isCreatingPost}
+                      onCancelClick={() => this.handleClose()}
+                      onSubmitClick={() => this.createPost()}
                   >
                       <div className="d-flex justify-content-start mb-3">
                           <div className="btn-group btn-group-toggle" data-toggle="buttons">

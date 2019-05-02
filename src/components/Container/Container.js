@@ -15,9 +15,7 @@ export default class Container extends Component {
                     disableScroll={() => document.body.style.overflow = "hidden"}
                     restoreScroll={() => document.body.style.overflow = "scroll"}
                 />
-                    <div className="possibly-scrollable-div">
-                        {this.props.children}
-                    </div>
+                    {this.props.children}
                 <Footer noMargin={this.props.noFooterMargin}/>
             </div>
         );

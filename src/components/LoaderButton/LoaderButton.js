@@ -1,5 +1,4 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
 import './LoaderButton.css';
 
 /**
@@ -14,11 +13,11 @@ import './LoaderButton.css';
  * @returns {*}
  */
 export default ({ isLoading, text, loadingText, className = '', disabled = false, ...props }) =>
-    <Button
+    <button
         className={`LoaderButton common-Button common-Button--default ${className}`}
         disabled={disabled || isLoading}
         {...props}
     >
         {isLoading && <i className="fas fa-circle-notch" />}
         {!isLoading ? text : loadingText}
-    </Button>;
+    </button>;
