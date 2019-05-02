@@ -15,8 +15,8 @@ export default class Modal extends Component {
                   { this.props.children }
                 </div>
                 <div className="modal-footer">
-                  <button type="button" className="common-Button" data-dismiss="modal">{this.props.cancelText}</button>
-                  <button type="button" className="common-Button common-Button--default">{this.props.submitText}</button>
+                  <button type="button" className="common-Button" data-dismiss="modal" onClick={() => this.props.onCancelClick()}>{this.props.cancelText}</button>
+                  <button type="button" className="common-Button common-Button--default" onClick={() => this.props.onSubmitClick()}>{this.props.submitText}</button>
                 </div>
               </div>
             </div>

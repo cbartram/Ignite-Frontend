@@ -26,6 +26,7 @@ import Modal from "../../components/Modal/Modal";
 
 const mapStateToProps = state => ({
     auth: state.auth,
+    user: state.auth.user,
     videos: state.videos
 });
 
@@ -33,6 +34,7 @@ const mapDispatchToProps = dispatch => ({
     logout: () => dispatch(logout()),
     updateActiveVideo: (video) => dispatch(updateActiveVideo(video)),
     ping: (payload) => dispatch(ping(payload)),
+    askQuestion: (payload) => dispatch(askQuestion(payload)),
 });
 
 class Watch extends Component {
@@ -95,7 +97,7 @@ class Watch extends Component {
                         parameters: {}, // Query params
                         body: {
                             resourceUrl: `${IS_PROD ? 'https://d2hhpuhxg00qg.cloudfront.net' : 'https://dpvchyatyxxeg.cloudfront.net'}/chapter${activeVideo.chapter}/${activeVideo.s3Name}.mov`,
-                            jwtToken: this.props.auth.user.jwtToken,
+                            jwtToken: this.props.user.jwtToken,
                         }
                     }),
                 };
@@ -120,7 +122,7 @@ class Watch extends Component {
                     parameters: {}, // Query params
                     body: {
                         resourceUrl: `${IS_PROD ? 'https://d2hhpuhxg00qg.cloudfront.net' : 'https://dpvchyatyxxeg.cloudfront.net'}/chapter${video.chapter}/${video.s3Name}.mov`,
-                        jwtToken: this.props.auth.user.jwtToken,
+                        jwtToken: this.props.user.jwtToken,
                     }
                 }),
             };
@@ -181,7 +183,7 @@ class Watch extends Component {
               // Ping the server every 30 seconds to tell them about the user's current progress
               this.pingInterval = setInterval(() => {
                   this.props.ping({
-                      email: this.props.auth.user.email,
+                      email: this.props.user.email,
                       chapters: this.props.videos.videoList,
                       activeVideo: this.props.videos.activeVideo,
                       scrubDuration: this.player.getCurrentTime(),
@@ -389,6 +391,17 @@ class Watch extends Component {
                       subtitle="Ask a question about this video and get an answer"
                       submitText="Start Discussion"
                       cancelText="Cancel"
+                      onCancelClick={() => {}}
+                      onSubmitClick={() => this.props.askQuestion({
+                          video_id: `${this.props.videos.activeVideo.chapter}.${this.props.videos.activeVideo.sortKey}`, // Chapter.video (9.6) ch 9 vid 6,
+                          user: {
+                              first_name: this.props.user['custom:first_name'],
+                              last_name: this.props.user['custom:last_name'],
+                              avatar: this.props.user['custom:profile_picture']
+                          },
+                          title: this.state.question.title,
+                          content: this.state.question.content
+                      })}
                   >
                       <div className="d-flex justify-content-start mb-3">
                           <div className="btn-group btn-group-toggle" data-toggle="buttons">
@@ -416,9 +429,7 @@ class Watch extends Component {
                                   </div>
                                   <div className="form-group">
                                       <label>Content</label>
-                                      <textarea className="form-control" placeholder="Add question details..." rows="10" onChange={({target}) => this.onChange('content', target.value)}>
-                                          {this.state.question.content}
-                                      </textarea>
+                                      <textarea className="form-control" value={this.state.question.content} placeholder="Add question details..." rows="10" onChange={({target}) => this.onChange('content', target.value)} />
                                       <small className="form-text text-muted">Hint: You can use <a href="https://guides.github.com/features/mastering-markdown/" target="_blank" rel="noopener noreferrer">markdown</a> here!</small>
                                   </div>
                               </div> :

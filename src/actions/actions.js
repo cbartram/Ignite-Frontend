@@ -213,23 +213,25 @@ export const askQuestion = (payload) => async dispatch => {
     try {
         const response = await postQuestion(payload);
 
+        console.log(response);
+
         if (response.status === 200) {
 
             dispatch({
-                type: constants.QUESTION_RESPONSE_SUCCESS,
+                type: constants.QUESTION_CREATE_RESPONSE_SUCCESS,
                 payload: response.body,
             });
         } else if (response.status > 200 || typeof response.status === 'undefined') {
             // An error occurred
             dispatch({
-                type: constants.QUESTION_RESPONSE_FAILURE,
+                type: constants.QUESTION_CREATE_RESPONSE_FAILURE,
                 payload: { message: `Failed to create a new question using the API: ${JSON.stringify(response)}`}
             });
         }
     } catch(err) {
         Log.error('[ERROR] Error receiving response from ping()', err);
         dispatch({
-            type: constants.QUESTION_RESPONSE_FAILURE,
+            type: constants.QUESTION_CREATE_RESPONSE_FAILURE,
             payload: { message: err.message }
         });
     }
