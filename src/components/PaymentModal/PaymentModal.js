@@ -239,11 +239,8 @@ class PaymentModal extends Component {
                     <div className="modal-content">
                         <div className="modal-header">
                             <h5 className="modal-title">Subscribe to Ignite</h5>
-                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
                         </div>
-                        <div className="modal-body">
+                        <div className="modal-body" style={{ background: '#fff'}}>
                             <div className="form-row text firstname">
                                 <label className="firstname" htmlFor="firstname">Your first name</label>
                                 <input
@@ -388,7 +385,7 @@ class PaymentModal extends Component {
                                 />
                             </div>
                             <p className="text-muted px-2 mt-3">
-                                You will be billed $20.00 monthly starting today and recurring on the { moment().format('Do') } of the month. You
+                                You will be billed $7.00 monthly starting today and recurring on the { moment().format('Do') } of the month. You
                                 can unsubscribe at any time by visiting your profile page.
                             </p>
                         </div>

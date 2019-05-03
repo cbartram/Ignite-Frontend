@@ -11,6 +11,7 @@
 
 .common-Button--default:hover:disabled {
     color: #fff;
+    /*background-color: #7795f8;*/
 }
 
 .common-Button:hover:enabled {

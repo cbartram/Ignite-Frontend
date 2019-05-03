@@ -316,44 +316,69 @@ class Watch extends Component {
     renderTabContent() {
         switch (this.state.activeTab) {
             case 0:
-                return (
-                    <div className="p-2">
-                        {
-                            this.props.posts.questions[`${this.props.videos.activeVideo.chapter}.${this.props.videos.activeVideo.sortKey}`].map((post, idx) => {
-                                return (
-                                    <div key={idx} role="button" onClick={() => this.handlePostClick(post.question_id)}>
-                                        <div className="d-flex">
-                                            <div className="avatar-container sm-avatar-container m-2">
-                                                <img
-                                                    alt="profile_picture"
-                                                    className="avatar-image avatar-image-sm"
-                                                    src="https://secure.gravatar.com/avatar/7762d0145e4f9da9b9957fbca1b76865?s=96&amp;d=https%3A%2F%2Fstatic.teamtreehouse.com%2Fassets%2Fcontent%2Fdefault_avatar-ea7cf6abde4eec089a4e03cc925d0e893e428b2b6971b12405a9b118c837eaa2.png&amp;r=pg"
-                                                />
-                                            </div>
-                                            <div className="flex-column ml-2 mt-1">
-                                                <h5 className="question-title">
-                                                    {post.title}
-                                                </h5>
-                                                <p className="text-muted">Posted on <strong>{ moment(post.createdAt).format('MMM DD, YYYY') }</strong> by <strong>{post.content_creator.first_name} {post.content_creator.last_name}</strong></p>
-                                            </div>
-                                            <div className="flex-column ml-auto mt-1 mr-2">
-                                                <p className="answer-count">{post.up_votes}</p>
-                                                <p className="text-muted">Votes</p>
-                                            </div>
-                                        </div>
-                                        <hr />
-                                    </div>
-                                );
-                            })
-                        }
-                        <div className="d-flex justify-content-center">
-                            <button className="common-Button common-Button--default" onClick={() => this.setState({ open: true })} data-toggle="modal" data-target="#exampleModal">
+                const questions = this.props.posts.questions[`${this.props.videos.activeVideo.chapter}.${this.props.videos.activeVideo.sortKey}`]
+                if(_.isUndefined(questions))
+                    return (
+                        <div className="d-flex flex-column align-items-center" style={{height: '100%', width: '100%'}}>
+                            <span className="fa fa-2x fa-circle-notch mt-4" style={{ color: '#6772e5' }} />
+                            <h4 className="common-UppercaseTitle mt-3">Loading...</h4>
+                        </div>
+                    );
+
+                if (questions.length === 0)
+                    return (
+                        <div className="d-flex flex-column align-items-center justify-content-center my-3">
+                            <h3>No Questions asked!</h3>
+                            <button className="common-Button common-Button--default"
+                                    onClick={() => this.setState({open: true})} data-toggle="modal"
+                                    data-target="#exampleModal">
                                 Ask a Question
                             </button>
                         </div>
-                    </div>
-                );
-            //    TODO  and remove <div className="modal-backdrop fade show"></div>
+                    );
+
+                    return (
+                        <div className="p-2">
+                            {
+                                questions.map((post, idx) => {
+                                    return (
+                                        <div key={idx} role="button"
+                                             onClick={() => this.handlePostClick(post.question_id)}>
+                                            <div className="d-flex">
+                                                <div className="avatar-container sm-avatar-container m-2">
+                                                    <img
+                                                        alt="profile_picture"
+                                                        className="avatar-image avatar-image-sm"
+                                                        src="https://secure.gravatar.com/avatar/7762d0145e4f9da9b9957fbca1b76865?s=96&amp;d=https%3A%2F%2Fstatic.teamtreehouse.com%2Fassets%2Fcontent%2Fdefault_avatar-ea7cf6abde4eec089a4e03cc925d0e893e428b2b6971b12405a9b118c837eaa2.png&amp;r=pg"
+                                                    />
+                                                </div>
+                                                <div className="flex-column ml-2 mt-1">
+                                                    <h5 className="question-title">
+                                                        {post.title}
+                                                    </h5>
+                                                    <p className="text-muted">Posted
+                                                        on <strong>{moment(post.createdAt).format('MMM DD, YYYY')}</strong> by <strong>{post.content_creator.first_name} {post.content_creator.last_name}</strong>
+                                                    </p>
+                                                </div>
+                                                <div className="flex-column ml-auto mt-1 mr-2">
+                                                    <p className="answer-count">{post.up_votes}</p>
+                                                    <p className="text-muted">Votes</p>
+                                                </div>
+                                            </div>
+                                            <hr/>
+                                        </div>
+                                    );
+                                })
+                            }
+                            <div className="d-flex justify-content-center">
+                                <button className="common-Button common-Button--default"
+                                        onClick={() => this.setState({open: true})} data-toggle="modal"
+                                        data-target="#exampleModal">
+                                    Ask a Question
+                                </button>
+                            </div>
+                        </div>
+                    );
             case 1:
                 return (
                     <div className="p-2">
@@ -508,7 +533,7 @@ class Watch extends Component {
                               <button className={`tab ${this.state.activeTab === 3 ? 'active-tab' : ''}`} onClick={() => this.setState({ activeTab: 3 })}>Practice</button>
                           </li>
                       </ul>
-                      <div style={{ background: 'white' }}>
+                      <div>
                         { this.renderTabContent() }
                       </div>
                   </div>
@@ -519,4 +544,4 @@ class Watch extends Component {
   }
 }
 
-export default withContainer(connect(mapStateToProps, mapDispatchToProps)(withRouter(Watch)), { sidebar: true, noFooterMargin: true });
+export default withContainer(connect(mapStateToProps, mapDispatchToProps)(withRouter(Watch)), { sidebar: true, noFooterMargin: true, style: { background: '#fff'} });

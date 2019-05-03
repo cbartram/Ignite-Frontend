@@ -69,7 +69,7 @@ export const queryString = (name = null, url = window.location.href) => {
 export const post = async (body, path, requestType, successType, failureType, dispatch) => {
     dispatch({
         type: requestType,
-        payload: true // Sets isFetching to true (useful for unit testing redux)
+        payload: body // Sets isFetching to true (useful for unit testing redux)
     });
 
     try {

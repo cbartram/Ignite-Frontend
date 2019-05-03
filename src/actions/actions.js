@@ -206,39 +206,7 @@ export const ping = (payload) => async dispatch => {
  * @returns {Function}
  */
 export const askQuestion = (payload) => async dispatch => {
-    dispatch({
-        type: constants.QUESTION_REQUEST,
-        payload: true // Sets isFetching to true (useful for unit testing redux)
-    });
-
-    try {
-        const response = await postQuestion(payload);
-
-        return new Promise((resolve, reject) => {
-            if (response.status === 200) {
-                dispatch({
-                    type: constants.QUESTION_CREATE_RESPONSE_SUCCESS,
-                    payload: response.body,
-                });
-
-                resolve();
-            } else if (response.status > 200 || typeof response.status === 'undefined') {
-                // An error occurred
-                dispatch({
-                    type: constants.QUESTION_CREATE_RESPONSE_FAILURE,
-                    payload: { message: `Failed to create a new question using the API: ${JSON.stringify(response)}`}
-                });
-
-                reject();
-            }
-        });
-    } catch(err) {
-        Log.error('[ERROR] Error receiving response from ping()', err);
-        dispatch({
-            type: constants.QUESTION_CREATE_RESPONSE_FAILURE,
-            payload: { message: err.message }
-        });
-    }
+    await post(payload, constants.API_POST_QUESTION, constants.CREATE_QUESTION_REQUEST, constants.QUESTION_CREATE_RESPONSE_SUCCESS, constants.QUESTION_CREATE_RESPONSE_FAILURE, dispatch);
 };
 
 /**
@@ -247,7 +215,7 @@ export const askQuestion = (payload) => async dispatch => {
  * @returns {Function}
  */
 export const findQuestions = (payload) => async dispatch => {
-    await post({ video_id: payload }, constants.API_POST_FIND_QUESTIONS, constants.QUESTION_REQUEST, constants.QUESTION_FIND_POSTS_SUCCESS, constants.QUESTION_FIND_POSTS_ERROR, dispatch);
+    await post({ video_id: payload }, constants.API_POST_FIND_QUESTIONS, constants.FIND_QUESTION_REQUEST, constants.QUESTION_FIND_POSTS_SUCCESS, constants.QUESTION_FIND_POSTS_ERROR, dispatch);
 };
 
 /**
