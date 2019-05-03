@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import ReactPlayer from 'react-player'
 import { Link, withRouter } from 'react-router-dom';
 import { Auth } from 'aws-amplify/lib/index';
-import moment from 'moment/moment';
 import Markdown from 'react-markdown';
 import _ from 'lodash';
 import Log from '../../Log';
@@ -24,6 +23,7 @@ import {
 import './Watch.css';
 import withContainer from "../../components/withContainer";
 import Modal from "../../components/Modal/Modal";
+import ForumContainer from "./ForumContainer";
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -81,10 +81,9 @@ class Watch extends Component {
                 const activeVideo = _.flattenDeep(this.props.videos.videoList.map(chapter => chapter.videos))
                     .filter(video => video.name === videoName)[0];
 
-                if (typeof activeVideo === 'undefined') {
-                    // User will need to select a new video something went wrong
-                    this.props.history.push('/videos');
-                }
+                // User will need to select a new video something went wrong
+                if (_.isUndefined(activeVideo)) this.props.history.push('/videos');
+
                 this.props.updateActiveVideo(activeVideo);
                 this.props.findQuestions( `${activeVideo.chapter}.${activeVideo.sortKey}`);
 
@@ -135,41 +134,25 @@ class Watch extends Component {
         }
 
         let response = await (await fetch(getRequestUrl(API_FETCH_SIGNED_URL), params)).json();
-        Log.info('Signed URL Response', response);
-
-        switch (response.status) {
-            case 403:
-                this.props.pushAlert('warning', 'No Subscription', 'We couldn\'t find an active subscription for your account.');
-                this.setState({
-                    error: 'We couldn\'t find an active subscription for your account. If you would like to subscribe and view this content check out the link below!',
-                    isFetching: false
-                });
-                break;
-            case 501:
-                // The JWT token is more than likely expired re-authenticate
-                await this.logout();
-                break;
-            case 200:
-                if (ReactPlayer.canPlay(response.body.signedUrl)) {
-                    this.setState({
-                        signedUrl: response.body.signedUrl,
-                        canPlay: true,
-                        isFetching: false,
-                        error: '',
-                    });
-                }
-                break;
-            case 500:
-                this.props.pushAlert('warning', 'No Subscription', 'Something went wrong retrieving the video you requested.');
-                this.setState({
-                    error: 'We couldn\'t find an active subscription for your account. If you would like to subscribe and view this content check out the link below!',
-                    isFetching: false
-                });
-                break;
-            default:
-                this.props.pushAlert('danger', 'Oh No', 'Something went wrong retrieving the videos.');
-                // Only show detailed information when its NOT production.
-                this.setState({error: `Something went wrong retrieving the videos refresh the page to try again. ${!IS_PROD && response.body.messages.join(',')}`});
+        if(response.status > 200) {
+            this.props.pushAlert('warning', 'No Subscription', 'We couldn\'t find an active subscription for your account.');
+            this.setState({
+                error: 'We couldn\'t find an active subscription for your account or something went wrong fetching the video. If you would like to subscribe and view this content check out the link below!',
+                isFetching: false
+            });
+        } else if (ReactPlayer.canPlay(response.body.signedUrl)) {
+            this.setState({
+                signedUrl: response.body.signedUrl,
+                canPlay: true,
+                isFetching: false,
+                error: '',
+            });
+        } else {
+            this.props.pushAlert('danger', 'Oh No', 'We cant seem to play this video refresh your page and try again.');
+            this.setState({
+                error: 'We couldn\'t find an active subscription for your account or something went wrong fetching the video. If you would like to subscribe and view this content check out the link below!',
+                isFetching: false
+            });
         }
     });
   }
@@ -220,10 +203,6 @@ class Watch extends Component {
       if(this.pingInterval !== null) clearInterval(this.pingInterval);
   }
 
-  handleTabClick() {
-
-  }
-
  /**
   * Handles updating local state whenever the title or content changes while a user is constructing a question
   * @param field String the field to update (either title or content)
@@ -235,19 +214,19 @@ class Watch extends Component {
       this.setState({ question })
   }
 
-    /**
-     * Handles logging the user out by removing cookies/session history
-     * @returns {Promise<void>}
-     */
-    async logout() {
-        Log.info('JWT is expired re-authenticating');
-        try {
-            await Auth.signOut();
-            this.props.logout();
-        } catch(err) {
-            Log.error('Failed to logout user...', err)
-        }
+  /**
+   * Handles logging the user out by removing cookies/session history
+   * @returns {Promise<void>}
+   */
+  async logout() {
+    Log.info('JWT is expired re-authenticating');
+    try {
+        await Auth.signOut();
+        this.props.logout();
+    } catch(err) {
+        Log.error('Failed to logout user...', err)
     }
+  }
 
     /**
      * Holds a reference to the ReactPlayer instance to
@@ -298,17 +277,6 @@ class Watch extends Component {
     }
 
     /**
-     * Handles opening and closing
-     * the post drawer when it is clicked
-     * to reveal the body of the post as well as any answers
-     * @param question_id String the question id: question-{UUID}
-     */
-    handlePostClick(question_id) {
-
-    }
-
-
-    /**
      * Renders different content in each of the bootstrap
      * tabs depending on which tab is currently active. Active tab is tracked
      * through local state
@@ -316,69 +284,10 @@ class Watch extends Component {
     renderTabContent() {
         switch (this.state.activeTab) {
             case 0:
-                const questions = this.props.posts.questions[`${this.props.videos.activeVideo.chapter}.${this.props.videos.activeVideo.sortKey}`]
-                if(_.isUndefined(questions))
-                    return (
-                        <div className="d-flex flex-column align-items-center" style={{height: '100%', width: '100%'}}>
-                            <span className="fa fa-2x fa-circle-notch mt-4" style={{ color: '#6772e5' }} />
-                            <h4 className="common-UppercaseTitle mt-3">Loading...</h4>
-                        </div>
-                    );
-
-                if (questions.length === 0)
-                    return (
-                        <div className="d-flex flex-column align-items-center justify-content-center my-3">
-                            <h3>No Questions asked!</h3>
-                            <button className="common-Button common-Button--default"
-                                    onClick={() => this.setState({open: true})} data-toggle="modal"
-                                    data-target="#exampleModal">
-                                Ask a Question
-                            </button>
-                        </div>
-                    );
-
-                    return (
-                        <div className="p-2">
-                            {
-                                questions.map((post, idx) => {
-                                    return (
-                                        <div key={idx} role="button"
-                                             onClick={() => this.handlePostClick(post.question_id)}>
-                                            <div className="d-flex">
-                                                <div className="avatar-container sm-avatar-container m-2">
-                                                    <img
-                                                        alt="profile_picture"
-                                                        className="avatar-image avatar-image-sm"
-                                                        src="https://secure.gravatar.com/avatar/7762d0145e4f9da9b9957fbca1b76865?s=96&amp;d=https%3A%2F%2Fstatic.teamtreehouse.com%2Fassets%2Fcontent%2Fdefault_avatar-ea7cf6abde4eec089a4e03cc925d0e893e428b2b6971b12405a9b118c837eaa2.png&amp;r=pg"
-                                                    />
-                                                </div>
-                                                <div className="flex-column ml-2 mt-1">
-                                                    <h5 className="question-title">
-                                                        {post.title}
-                                                    </h5>
-                                                    <p className="text-muted">Posted
-                                                        on <strong>{moment(post.createdAt).format('MMM DD, YYYY')}</strong> by <strong>{post.content_creator.first_name} {post.content_creator.last_name}</strong>
-                                                    </p>
-                                                </div>
-                                                <div className="flex-column ml-auto mt-1 mr-2">
-                                                    <p className="answer-count">{post.up_votes}</p>
-                                                    <p className="text-muted">Votes</p>
-                                                </div>
-                                            </div>
-                                            <hr/>
-                                        </div>
-                                    );
-                                })
-                            }
-                            <div className="d-flex justify-content-center">
-                                <button className="common-Button common-Button--default"
-                                        onClick={() => this.setState({open: true})} data-toggle="modal"
-                                        data-target="#exampleModal">
-                                    Ask a Question
-                                </button>
-                            </div>
-                        </div>
-                    );
+                return <ForumContainer
+                    questions={this.props.posts.questions[`${this.props.videos.activeVideo.chapter}.${this.props.videos.activeVideo.sortKey}`]}
+                    onQuestionAsk={() => this.setState({ open: true })}
+                />;
             case 1:
                 return (
                     <div className="p-2">

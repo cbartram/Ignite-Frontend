@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {Link, withRouter} from 'react-router-dom';
+import { withRouter} from 'react-router-dom';
 import withContainer from '../../components/withContainer';
 import { queryString } from '../../util';
 import { updateQuiz, submitQuiz } from '../../actions/actions';

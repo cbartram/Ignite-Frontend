@@ -1,0 +1,81 @@
+import React, { Component } from 'react';
+import _ from "lodash";
+import ForumRow from "./ForumRow";
+
+/**
+ * Handles the state and logic for opening and closing
+ * the question/answer dropdown wells in the Watch page.
+ */
+export default class ForumContainer extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            expandedQuestion: {},
+        }
+    }
+
+    expandRow(question_id) {
+        this.setState({ expandedQuestion: {} }, () => {
+            const { expandedQuestion } = this.state;
+            let tablesExpanded = expandedQuestion;
+
+            if(tablesExpanded[question_id]) {
+                console.log('Somehow its expanded already?');
+                tablesExpanded[question_id] = !tablesExpanded[question_id];
+            } else {
+                console.log('Not yet expanded setting to true');
+                tablesExpanded[question_id] = true;
+            }
+
+            this.setState({
+                expandedQuestion: tablesExpanded
+            });
+        });
+    }
+
+    isOpen(question_id) {
+        if(_.isUndefined(this.state.expandedQuestion[question_id]))
+            return false;
+        return this.state.expandedQuestion[question_id];
+    }
+
+    render() {
+        if(_.isUndefined(this.props.questions))
+            return (
+                <div className="d-flex flex-column align-items-center" style={{height: '100%', width: '100%'}}>
+                    <span className="fa fa-2x fa-circle-notch mt-4" style={{ color: '#6772e5' }} />
+                    <h4 className="common-UppercaseTitle mt-3">Loading...</h4>
+                </div>
+            );
+
+        if (this.props.questions.length === 0)
+            return (
+                <div className="d-flex flex-column align-items-center justify-content-center my-3">
+                    <h3>No Questions asked!</h3>
+                    <button className="common-Button common-Button--default"
+                            onClick={() => this.props.onQuestionAsk()} data-toggle="modal"
+                            data-target="#exampleModal">
+                        Ask a Question
+                    </button>
+                </div>
+            );
+
+        return (
+            <div className="p-2">
+                {
+                    this.props.questions.map((post, idx) => {
+                        return <ForumRow open={this.isOpen(post.question_id)} onClick={(id) => this.expandRow(id)} post={post} key={idx} />
+                    })
+                }
+                <div className="d-flex justify-content-center">
+                    <button className="common-Button common-Button--default"
+                            onClick={() => this.props.onQuestionAsk()} data-toggle="modal"
+                            data-target="#exampleModal">
+                        Ask a Question
+                    </button>
+                </div>
+            </div>
+        )
+    }
+}

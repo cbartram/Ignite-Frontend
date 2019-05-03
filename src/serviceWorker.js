@@ -93,9 +93,7 @@ function registerValidSW(swUrl, config) {
         };
       };
     })
-    .catch(error => {
-      console.error('Error during service worker registration:', error);
-    });
+    .catch(error => console.error('Error during service worker registration:', error));
 }
 
 function checkValidServiceWorker(swUrl, config) {
@@ -128,8 +126,6 @@ function checkValidServiceWorker(swUrl, config) {
 
 export function unregister() {
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.ready.then(registration => {
-      registration.unregister();
-    });
+    navigator.serviceWorker.ready.then(registration => registration.unregister());
   }
 }

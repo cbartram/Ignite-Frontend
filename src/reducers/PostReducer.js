@@ -1,5 +1,4 @@
 import * as constants from '../constants';
-import _ from 'lodash';
 import {QUESTION_FIND_POSTS_ERROR} from "../constants";
 
 /**
