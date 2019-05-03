@@ -7,7 +7,8 @@ import {
     getVideos,
     postQuestion,
     sendVideoData,
-    storeQuiz
+    storeQuiz,
+    post,
 } from '../util';
 
 
@@ -238,6 +239,15 @@ export const askQuestion = (payload) => async dispatch => {
             payload: { message: err.message }
         });
     }
+};
+
+/**
+ * Retrieves a list of questions for a particular video
+ * @param payload Object { video_id: '9.6' }
+ * @returns {Function}
+ */
+export const findQuestions = (payload) => async dispatch => {
+    await post({ video_id: payload }, constants.API_POST_FIND_QUESTIONS, constants.QUESTION_REQUEST, constants.QUESTION_FIND_POSTS_SUCCESS, constants.QUESTION_FIND_POSTS_ERROR, dispatch);
 };
 
 /**

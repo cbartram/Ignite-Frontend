@@ -12,7 +12,7 @@ import {
     API_PING_VIDEO,
     API_SEND_EMAIL,
     API_POST_QUESTION,
-    getRequestUrl, API_SUBMIT_QUIZ,
+    getRequestUrl, API_SUBMIT_QUIZ, API_POST_FIND_QUESTIONS, default as constants,
 } from './constants';
 
 /**
@@ -52,6 +52,70 @@ export const queryString = (name = null, url = window.location.href) => {
     }
 
     return result;
+};
+
+
+/**
+ * Makes a generic POST request to the API to retrieve, insert, or update
+ * data and dispatches actions to redux to update application state based on the response.
+ * @param body Object the body to be included in the post request
+ * @param path String the API path to POST to. This should begin with a /
+ * @param requestType String the redux dispatch type for making the API request
+ * @param successType String the redux dispatch type when the request is successful
+ * @param failureType String the redux dispatch type when the request has failed.
+ * @param dispatch Function redux dispatch function
+ * @returns {Promise<*|Promise<any>|undefined>}
+ */
+export const post = async (body, path, requestType, successType, failureType, dispatch) => {
+    dispatch({
+        type: requestType,
+        payload: true // Sets isFetching to true (useful for unit testing redux)
+    });
+
+    try {
+        const params = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'x-api-key': IS_PROD ? PROD_API_KEY : API_KEY,
+            },
+            body: JSON.stringify({
+                headers: {},
+                method: 'POST',
+                path,
+                parameters: {},
+                body
+            }),
+        };
+
+        const response = await (await fetch(getRequestUrl(path), params)).json();
+
+        return new Promise((resolve, reject) => {
+            if (response.status === 200) {
+                dispatch({
+                    type: successType,
+                    payload: response.body,
+                });
+
+                resolve();
+            } else if (response.status > 200 || typeof response.status === 'undefined') {
+                // An error occurred
+                dispatch({
+                    type: failureType,
+                    payload: { message: `There was an error retrieving data from the API: ${JSON.stringify(response)}`}
+                });
+
+                reject();
+            }
+        });
+    } catch(err) {
+        Log.error('[ERROR] Error receiving response from API', err);
+        dispatch({
+            type: failureType,
+            payload: { message: err.message }
+        });
+    }
 };
 
 /**
@@ -190,6 +254,35 @@ export const postQuestion = async (body) => {
         return await (await fetch(getRequestUrl(API_POST_QUESTION), params)).json();
     } catch(err) {
         Log.error('Failed to post question...', err);
+    }
+};
+
+/**
+ * Retrieves all questions for a video given the video_id
+ * @param video_id String video id: should be videoChapter.videoNumber ex 9.6
+ * @returns {Promise<any>}
+ */
+export const findQuestions = async (video_id) => {
+    const params = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'x-api-key': IS_PROD ? PROD_API_KEY : API_KEY,
+        },
+        body: JSON.stringify({
+            headers: {},
+            method: 'POST',
+            path: API_POST_FIND_QUESTIONS,
+            parameters: {},
+            body: { video_id }
+        }),
+    };
+
+    try {
+        return await (await fetch(getRequestUrl(API_POST_FIND_QUESTIONS), params)).json();
+    } catch(err) {
+        Log.error('Failed to retrieve post questions...', err);
     }
 };
 
