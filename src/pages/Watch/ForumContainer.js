@@ -69,6 +69,7 @@ export default class ForumContainer extends Component {
                             post={post}
                             key={idx}
                             onReply={(answer) => this.props.onAnswerPosted({ ...post, ...answer})}
+                            answers={this.props.answers}
                         />
                     })
                 }

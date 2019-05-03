@@ -225,7 +225,7 @@ export const findQuestions = (payload) => async dispatch => {
  * @returns {Function}
  */
 export const findAnswers = (payload) => async dispatch => {
-    await post(payload, constants.API_ANSWER_FIND, constants.FIND_ANSWER_REQUEST, constants.FIND_ANSWER_SUCCESS, constants.FIND_ANSWER_FAILURE, dispatch);
+    await post({ video_id: payload }, constants.API_ANSWER_FIND, constants.FIND_ANSWER_REQUEST, constants.FIND_ANSWER_SUCCESS, constants.FIND_ANSWER_FAILURE, dispatch);
 };
 
 /**

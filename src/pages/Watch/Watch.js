@@ -87,9 +87,14 @@ class Watch extends Component {
 
                 // User will need to select a new video something went wrong
                 if (_.isUndefined(activeVideo)) this.props.history.push('/videos');
+                const video_id = `${activeVideo.chapter}.${activeVideo.sortKey}`;
 
                 this.props.updateActiveVideo(activeVideo);
-                this.props.findQuestions( `${activeVideo.chapter}.${activeVideo.sortKey}`);
+
+                // TODO MAJOR IMPROVEMENT
+                // TODO These two routes can be consolidated on the backend very easily and on the frontend
+                this.props.findQuestions(video_id);
+                this.props.findAnswers(video_id);
 
                 params = {
                     method: 'POST',
@@ -304,8 +309,10 @@ class Watch extends Component {
     renderTabContent() {
         switch (this.state.activeTab) {
             case 0:
+                const video_id = `${this.props.videos.activeVideo.chapter}.${this.props.videos.activeVideo.sortKey}`;
                 return <ForumContainer
-                            questions={this.props.posts.questions[`${this.props.videos.activeVideo.chapter}.${this.props.videos.activeVideo.sortKey}`]}
+                            questions={this.props.posts.questions[video_id]}
+                            answers={this.props.posts.answers[video_id]}
                             onQuestionAsk={() => this.setState({ open: true })}
                             onAnswerPosted={(answer) => this.createAnswer(answer)}
                         />;
