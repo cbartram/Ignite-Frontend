@@ -15,17 +15,15 @@ export default class ForumContainer extends Component {
         }
     }
 
-    expandRow(question_id) {
+    expandRow(id) {
         this.setState({ expandedQuestion: {} }, () => {
             const { expandedQuestion } = this.state;
             let tablesExpanded = expandedQuestion;
 
-            if(tablesExpanded[question_id]) {
-                console.log('Somehow its expanded already?');
-                tablesExpanded[question_id] = !tablesExpanded[question_id];
+            if(tablesExpanded[id]) {
+                tablesExpanded[id] = !tablesExpanded[id];
             } else {
-                console.log('Not yet expanded setting to true');
-                tablesExpanded[question_id] = true;
+                tablesExpanded[id] = true;
             }
 
             this.setState({
@@ -65,7 +63,13 @@ export default class ForumContainer extends Component {
             <div className="p-2">
                 {
                     this.props.questions.map((post, idx) => {
-                        return <ForumRow open={this.isOpen(post.question_id)} onClick={(id) => this.expandRow(id)} post={post} key={idx} />
+                        return <ForumRow
+                            open={this.isOpen(post.sort_id)}
+                            onClick={(id) => this.expandRow(id)}
+                            post={post}
+                            key={idx}
+                            onReply={(answer) => this.props.onAnswerPosted({ ...post, ...answer})}
+                        />
                     })
                 }
                 <div className="d-flex justify-content-center">

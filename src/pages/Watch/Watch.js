@@ -12,6 +12,8 @@ import {
     ping,
     askQuestion,
     findQuestions,
+    answerQuestion,
+    findAnswers,
 } from '../../actions/actions';
 import {
     API_FETCH_SIGNED_URL,
@@ -39,6 +41,8 @@ const mapDispatchToProps = dispatch => ({
     ping: (payload) => dispatch(ping(payload)),
     askQuestion: (payload) => dispatch(askQuestion(payload)),
     findQuestions: (payload) => dispatch(findQuestions(payload)),
+    answerQuestion: (payload) => dispatch(answerQuestion(payload)),
+    findAnswers: (payload) => dispatch(findAnswers(payload)),
 });
 
 class Watch extends Component {
@@ -258,11 +262,27 @@ class Watch extends Component {
                 // It was successful close the modal and show a success alert
                 this.handleClose();
                 this.props.pushAlert('success', 'Post Created', 'Your question has been posted successfully!');
-            }).catch(() => {
+            }).catch((err) => {
+                Log.error(err);
                 // It failed show an error
                 this.props.pushAlert('danger', 'Failed to Post', 'There was an issue creating a new post. Check your internet connection and try again!');
             });
         }
+    }
+
+    /**
+     * Creates a new answer using the API
+     * and updates redux with the result
+     * @param answer
+     */
+    createAnswer(answer) {
+        this.props.answerQuestion(answer)
+        .then(() => {
+            this.props.pushAlert('success', 'Answer Posted', 'Your answer has been posted successfully!');
+        }).catch(() => {
+            // It failed show an error
+            this.props.pushAlert('danger', 'Failed to Post', 'There was an issue answering this question. Check your internet connection and try again!');
+        });
     }
 
     /**
@@ -285,9 +305,10 @@ class Watch extends Component {
         switch (this.state.activeTab) {
             case 0:
                 return <ForumContainer
-                    questions={this.props.posts.questions[`${this.props.videos.activeVideo.chapter}.${this.props.videos.activeVideo.sortKey}`]}
-                    onQuestionAsk={() => this.setState({ open: true })}
-                />;
+                            questions={this.props.posts.questions[`${this.props.videos.activeVideo.chapter}.${this.props.videos.activeVideo.sortKey}`]}
+                            onQuestionAsk={() => this.setState({ open: true })}
+                            onAnswerPosted={(answer) => this.createAnswer(answer)}
+                        />;
             case 1:
                 return (
                     <div className="p-2">
@@ -360,7 +381,7 @@ class Watch extends Component {
                       onCancelClick={() => this.handleClose()}
                       onSubmitClick={() => this.createPost()}
                   >
-                      <div className="d-flex justify-content-start mb-3">
+                      <div className="d-flex justify-content-center mb-3">
                           <div className="btn-group btn-group-toggle" data-toggle="buttons">
                               <label className="btn btn-secondary active" onClick={() => this.setState({ activeModalTab: 0 })}>
                                   <input type="radio" name="options" id="option1" autoComplete="off" />

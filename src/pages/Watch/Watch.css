@@ -104,3 +104,15 @@ small {
     height: 50px;
     border: 2px solid #edeff0;
 }
+
+.well {
+    background-color: #f5f5f5;
+    padding: 0 20px 20px;
+    overflow: auto;
+    min-height: 250px;
+    max-height: 2000px;
+    transition: max-height .5s ease;
+    box-shadow: inset 2px 2px 4px rgba(0, 0, 0, .05);
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
+    border-top: 1px solid rgba(0, 0, 0, .1);
+}

@@ -1,7 +1,16 @@
 import React, { Component } from 'react';
 import moment from "moment";
+import Markdown from "react-markdown";
 
 export default class ForumRow extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            answerText: '',
+            preview: false,
+        }
+    }
 
     /**
      * Renders a basic well which shows
@@ -12,15 +21,43 @@ export default class ForumRow extends Component {
     renderWell() {
         return (
             <div className="well">
-                <h3>Im the well!</h3>
+
+                <Markdown source={ this.props.post.content } />
+
+                <div className="d-flex justify-content-center mb-3">
+                    <div className="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label className="btn btn-secondary active" onClick={() => this.setState({ preview: false })}>
+                            <input type="radio" name="options" id="option1" autoComplete="off" />
+                            Write &nbsp;
+                            <i className="fas fa-pencil-alt" />
+                        </label>
+                        <label className="btn btn-secondary" onClick={() => this.setState({ preview: true })}>
+                            <input type="radio" name="options" id="option2" autoComplete="off" />
+                            Preview &nbsp;
+                            <i className="fa fa-eye" />
+                        </label>
+                    </div>
+                </div>
+                {
+                    this.state.preview ? <Markdown source={this.state.answerText} /> :
+                    <div className="form-group">
+                        <textarea className="form-control" value={this.state.answerText} placeholder="Draft Answer..." rows="8" onChange={({target}) => this.setState({ answerText: target.value })} />
+                        <small className="form-text text-muted">Hint: You can use <a href="https://guides.github.com/features/mastering-markdown/" target="_blank" rel="noopener noreferrer">markdown</a> here!</small>
+                        <div className="d-flex justify-content-end">
+                            <button className="common-Button common-Button--default" onClick={() => this.props.onReply({ question_id: this.props.post.sort_id, content: this.state.answerText,  type: 'ANSWER'})}>
+                                Reply <i className="fas fa-reply" />
+                            </button>
+                        </div>
+                    </div>
+                }
             </div>
         )
     }
 
     render() {
         return (
-            <div style={{ cursor: 'pointer' }} role="button" onClick={() => this.props.onClick(this.props.post.question_id)}>
-                <div className="d-flex">
+            <div>
+                <div className="d-flex" style={{ cursor: 'pointer' }} role="button" onClick={() => this.props.onClick(this.props.post.sort_id)}>
                     <div className="avatar-container sm-avatar-container m-2">
                         <img
                             alt="profile_picture"
@@ -41,7 +78,7 @@ export default class ForumRow extends Component {
                         <p className="text-muted">Votes</p>
                     </div>
                 </div>
-                <hr/>
+                <hr style={this.props.open ? { marginBottom: 0} : {} }/>
                 {
                     this.props.open && this.renderWell()
                 }

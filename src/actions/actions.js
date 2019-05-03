@@ -219,6 +219,25 @@ export const findQuestions = (payload) => async dispatch => {
 };
 
 /**
+ * Retrieves all answers for a given video given the
+ * video id and sort key (sort_id) answer-*
+ * @param payload Object
+ * @returns {Function}
+ */
+export const findAnswers = (payload) => async dispatch => {
+    await post(payload, constants.API_ANSWER_FIND, constants.FIND_ANSWER_REQUEST, constants.FIND_ANSWER_SUCCESS, constants.FIND_ANSWER_FAILURE, dispatch);
+};
+
+/**
+ * Creates a new answer and ties it to a question being asked
+ * @param payload Object
+ * @returns {Function}
+ */
+export const answerQuestion = (payload) => async dispatch => {
+    await post(payload, constants.API_ANSWER_CREATE, constants.CREATE_ANSWER_REQUEST, constants.CREATE_ANSWER_SUCCESS, constants.CREATE_ANSWER_FAILURE, dispatch);
+};
+
+/**
  * Retrieves billing information from the API and stores it in redux.
  * @param email String the users email to retrieve billing details
  * @returns {Function}

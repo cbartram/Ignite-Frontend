@@ -55,6 +55,8 @@ export const API_PING_VIDEO = '/video/ping';
 export const API_SUBMIT_QUIZ = '/quiz/grade';
 export const API_POST_QUESTION = '/posts/create';
 export const API_POST_FIND_QUESTIONS = '/posts/find';
+export const API_ANSWER_CREATE = '/posts/answer/create';
+export const API_ANSWER_FIND = '/posts/answer/find';
 
 // Prod Params
 export const PROD_URL = 'https://2147bwmah5.execute-api.us-east-1.amazonaws.com/prod';
@@ -124,3 +126,9 @@ export const QUESTION_CREATE_RESPONSE_FAILURE = 'QUESTION_RESPONSE_FAILURE';
 export const FIND_QUESTION_REQUEST = 'FIND_QUESTION_REQUEST';
 export const QUESTION_FIND_POSTS_SUCCESS = 'QUESTION_FIND_POSTS_SUCCESS';
 export const QUESTION_FIND_POSTS_ERROR = 'QUESTION_FIND_POSTS_ERROR';
+export const CREATE_ANSWER_REQUEST = 'CREATE_ANSWER_REQUEST';
+export const CREATE_ANSWER_SUCCESS = 'CREATE_ANSWER_SUCCESS';
+export const CREATE_ANSWER_FAILURE = 'CREATE_ANSWER_FAILURE';
+export const FIND_ANSWER_REQUEST = 'FIND_ANSWER_REQUEST';
+export const FIND_ANSWER_SUCCESS = 'FIND_ANSWER_SUCCESS';
+export const FIND_ANSWER_FAILURE = 'FIND_ANSWER_FAILURE';

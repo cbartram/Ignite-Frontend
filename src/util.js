@@ -98,7 +98,7 @@ export const post = async (body, path, requestType, successType, failureType, di
                     payload: response.body,
                 });
 
-                resolve();
+                resolve(response);
             } else if (response.status > 200 || typeof response.status === 'undefined') {
                 // An error occurred
                 dispatch({
@@ -106,7 +106,7 @@ export const post = async (body, path, requestType, successType, failureType, di
                     payload: { message: `There was an error retrieving data from the API: ${JSON.stringify(response)}`}
                 });
 
-                reject();
+                reject(response);
             }
         });
     } catch(err) {
