@@ -16,7 +16,6 @@ export default class ForumContainer extends Component {
     }
 
     expandRow(id) {
-        this.setState({ expandedQuestion: {} }, () => {
             const { expandedQuestion } = this.state;
             let tablesExpanded = expandedQuestion;
 
@@ -26,10 +25,16 @@ export default class ForumContainer extends Component {
                 tablesExpanded[id] = true;
             }
 
+            // Close all other drawers that aren't the drawer that was open
+            Object.keys(tablesExpanded).forEach(key => {
+                if(key !== id) {
+                   tablesExpanded[key] = false;
+                }
+            });
+
             this.setState({
                 expandedQuestion: tablesExpanded
             });
-        });
     }
 
     isOpen(question_id) {
