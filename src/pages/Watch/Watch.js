@@ -53,11 +53,11 @@ class Watch extends Component {
     this.state = {
       activeTab: 0, // Active tab for questions, practice, downloads etc...
       activeModalTab: 0,  // Active tab in modal edit/preview
-      open: false,
       question: {
           title: '',
           content: '',
       },
+      open: false,
       isFetching: false,
       canPlay: false,
       playing: true,
@@ -279,20 +279,10 @@ class Watch extends Component {
         .then(() => {
             this.props.pushAlert('success', 'Answer Posted', 'Your answer has been posted successfully!');
         }).catch((err) => {
+            Log.error('[ERROR] Error creating answer', err);
             // It failed show an error
             this.props.pushAlert('danger', 'Failed to Post', 'There was an issue answering this question. Check your internet connection and try again!');
         });
-    }
-
-    /**
-     * Handles closing the modal programmatically
-     * and removing items from the DOM which the bootstrap
-     * modal creates.
-     */
-    handleClose() {
-        document.body.className = '';
-        document.body.removeChild(document.getElementsByClassName('modal-backdrop')[0]);
-        this.setState({ open: false });
     }
 
     /**
@@ -307,7 +297,7 @@ class Watch extends Component {
 
                 return <ForumContainer
                             questions={this.props.posts.questions[video_id]}
-                            onQuestionAsk={() => this.setState({ open: true })}
+                            onQuestionAsk={() => this.handleShow()}
                             onAnswerPosted={(answer) => this.createAnswer(answer)}
                         />;
             case 1:
@@ -346,6 +336,31 @@ class Watch extends Component {
         }
     }
 
+
+    /**
+     * Handles closing the modal programmatically
+     * and removing items from the DOM which the bootstrap
+     * modal creates.
+     */
+    handleClose() {
+        document.body.className = '';
+        document.body.removeChild(document.getElementsByClassName('modal-backdrop')[0]);
+        this.setState({ open: false });
+    }
+
+    /**
+     * Handles showing the modal when the trigger button is clicked.
+     */
+    handleShow() {
+        document.body.className = 'modal-open';
+        const backdrop = document.createElement('div');
+        backdrop.className = 'modal-backdrop fade show';
+
+        // TODO Add event listener to backdrop so that it closes modal on click
+        document.body.appendChild(backdrop);
+        this.setState({ open: true });
+    }
+
     render() {
         if(this.state.isFetching)
             return (
@@ -379,7 +394,7 @@ class Watch extends Component {
                       cancelText="Cancel"
                       open={this.state.open}
                       isLoading={this.props.isCreatingPost}
-                      onCancelClick={() => this.handleClose()}
+                      onClose={() => this.handleClose()}
                       onSubmitClick={() => this.createPost()}
                   >
                       <div className="d-flex justify-content-center mb-3">

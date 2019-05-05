@@ -56,9 +56,7 @@ export default class ForumContainer extends Component {
             return (
                 <div className="d-flex flex-column align-items-center justify-content-center my-3">
                     <h3>No Questions asked!</h3>
-                    <button className="common-Button common-Button--default"
-                            onClick={() => this.props.onQuestionAsk()} data-toggle="modal"
-                            data-target="#exampleModal">
+                    <button className="common-Button common-Button--default" onClick={() => this.props.onQuestionAsk()}>
                         Ask a Question
                     </button>
                 </div>
@@ -86,9 +84,7 @@ export default class ForumContainer extends Component {
                     })
                 }
                 <div className="d-flex justify-content-center">
-                    <button className="common-Button common-Button--default"
-                            onClick={() => this.props.onQuestionAsk()} data-toggle="modal"
-                            data-target="#exampleModal">
+                    <button className="common-Button common-Button--default" onClick={() => this.props.onQuestionAsk()}>
                         Ask a Question
                     </button>
                 </div>

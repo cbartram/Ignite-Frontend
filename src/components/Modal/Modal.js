@@ -2,7 +2,19 @@ import React, { Component } from 'react';
 import LoaderButton from '../LoaderButton/LoaderButton';
 import './Modal.css';
 
+/**
+ * Shows a Modal popup that is configurable
+ * with custom content.
+ */
 export default class Modal extends Component {
+  // constructor(props) {
+  //   super(props);
+  //
+  //   this.state = {
+  //     open: false,
+  //   }
+  // }
+
   render() {
       return (
           <div
@@ -22,7 +34,7 @@ export default class Modal extends Component {
                   { this.props.children }
                 </div>
                 <div className="modal-footer">
-                  <button type="button" className="common-Button" data-dismiss="modal" onClick={() => this.props.onCancelClick()}>{this.props.cancelText}</button>
+                  <button type="button" className="common-Button" data-dismiss="modal" onClick={() => this.props.onClose()}>{this.props.cancelText}</button>
                   <LoaderButton
                       isLoading={this.props.isLoading}
                       text={this.props.submitText}
