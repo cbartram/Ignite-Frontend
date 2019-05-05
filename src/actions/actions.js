@@ -219,16 +219,6 @@ export const findQuestions = (payload) => async dispatch => {
 };
 
 /**
- * Retrieves all answers for a given video given the
- * video id and sort key (sort_id) answer-*
- * @param payload Object
- * @returns {Function}
- */
-export const findAnswers = (payload) => async dispatch => {
-    await post({ video_id: payload }, constants.API_ANSWER_FIND, constants.FIND_ANSWER_REQUEST, constants.FIND_ANSWER_SUCCESS, constants.FIND_ANSWER_FAILURE, dispatch);
-};
-
-/**
  * Creates a new answer and ties it to a question being asked
  * @param payload Object
  * @returns {Function}

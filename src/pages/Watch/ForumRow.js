@@ -21,12 +21,13 @@ export default class ForumRow extends Component {
     renderWell() {
         return (
             <div className="well">
-
-                {/* Render the answers*/}
+                <Markdown source={ this.props.post.content } />
                 {
-                    this.props.answers[this.props.post.sort_id].map(answer => {
+                    this.props.answers.length === 0 ?
+                    <h3>No Answers yet!</h3> :
+                    this.props.answers.map((answer, idx) => {
                         return (
-                            <div className="d-flex">
+                            <div className="d-flex" key={idx}>
                                 <div className="avatar-container sm-avatar-container m-2">
                                     <img
                                         alt="profile_picture"
@@ -50,10 +51,6 @@ export default class ForumRow extends Component {
                         )
                     })
                 }
-
-
-                <Markdown source={ this.props.post.content } />
-
                 <div className="d-flex justify-content-center mb-3">
                     <div className="btn-group btn-group-toggle" data-toggle="buttons">
                         <label className="btn btn-secondary active" onClick={() => this.setState({ preview: false })}>

@@ -13,7 +13,6 @@ import {
     askQuestion,
     findQuestions,
     answerQuestion,
-    findAnswers,
 } from '../../actions/actions';
 import {
     API_FETCH_SIGNED_URL,
@@ -42,7 +41,6 @@ const mapDispatchToProps = dispatch => ({
     askQuestion: (payload) => dispatch(askQuestion(payload)),
     findQuestions: (payload) => dispatch(findQuestions(payload)),
     answerQuestion: (payload) => dispatch(answerQuestion(payload)),
-    findAnswers: (payload) => dispatch(findAnswers(payload)),
 });
 
 class Watch extends Component {
@@ -90,11 +88,7 @@ class Watch extends Component {
                 const video_id = `${activeVideo.chapter}.${activeVideo.sortKey}`;
 
                 this.props.updateActiveVideo(activeVideo);
-
-                // TODO MAJOR IMPROVEMENT
-                // TODO These two routes can be consolidated on the backend very easily and on the frontend
                 this.props.findQuestions(video_id);
-                this.props.findAnswers(video_id);
 
                 params = {
                     method: 'POST',
@@ -284,7 +278,7 @@ class Watch extends Component {
         this.props.answerQuestion(answer)
         .then(() => {
             this.props.pushAlert('success', 'Answer Posted', 'Your answer has been posted successfully!');
-        }).catch(() => {
+        }).catch((err) => {
             // It failed show an error
             this.props.pushAlert('danger', 'Failed to Post', 'There was an issue answering this question. Check your internet connection and try again!');
         });
@@ -310,9 +304,9 @@ class Watch extends Component {
         switch (this.state.activeTab) {
             case 0:
                 const video_id = `${this.props.videos.activeVideo.chapter}.${this.props.videos.activeVideo.sortKey}`;
+
                 return <ForumContainer
                             questions={this.props.posts.questions[video_id]}
-                            answers={this.props.posts.answers[video_id]}
                             onQuestionAsk={() => this.setState({ open: true })}
                             onAnswerPosted={(answer) => this.createAnswer(answer)}
                         />;

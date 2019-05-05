@@ -1,8 +1,6 @@
+import findIndex from 'lodash/findIndex';
 import {
     QUESTION_FIND_POSTS_ERROR,
-    FIND_ANSWER_REQUEST,
-    FIND_ANSWER_SUCCESS,
-    FIND_ANSWER_FAILURE,
     CREATE_ANSWER_REQUEST,
     CREATE_ANSWER_SUCCESS,
     CREATE_ANSWER_FAILURE,
@@ -66,30 +64,6 @@ export default (state = {}, action) => {
                 isFetching: false,
                 error: action.payload,
             };
-        case FIND_ANSWER_REQUEST:
-            return {
-                ...state,
-                isFetching: true,
-                answers: {
-                    [action.payload.video_id]: []
-                }
-            };
-        case FIND_ANSWER_SUCCESS:
-            console.log(action.payload.result);
-            return {
-               ...state,
-                isFetching: false,
-                answers: {
-                    [action.payload.result.video_id]: action.payload.result.Items
-                }
-            };
-        case FIND_ANSWER_FAILURE:
-            return {
-                ...state,
-                error: action.payload,
-                isFetching: false,
-            };
-
         case CREATE_ANSWER_REQUEST:
             return {
                 ...state,
@@ -97,12 +71,23 @@ export default (state = {}, action) => {
                 error: null,
             };
         case CREATE_ANSWER_SUCCESS:
-            console.log(action.payload.result);
+            // Find the index where the answers question id matches the sort id of the question (aka find the question this answer belongs too)
+            const idx = findIndex(state.questions[action.payload.result.video_id], ({ sort_id }) => sort_id === action.payload.result.question_id);
             return {
                 ...state,
-                answers: {
-                    [action.payload.result.question_id]: [action.payload.result, ...state.answers[action.payload.result.question_id]]
-                }
+                isFetching: false,
+                questions: {
+                    ...state.questions,
+                    // Return a new array of all the questions with the added answer to 1 of the questions
+                    [action.payload.result.video_id]: state.questions[action.payload.result.video_id].map((q, i) => {
+                            if(i === idx)
+                                return {
+                                    ...q,
+                                    answers: [action.payload.result, ...q.answers]
+                                };
+                            return q;
+                        })
+                },
             };
         case CREATE_ANSWER_FAILURE:
             return {

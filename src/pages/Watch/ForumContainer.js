@@ -63,13 +63,20 @@ export default class ForumContainer extends Component {
             <div className="p-2">
                 {
                     this.props.questions.map((post, idx) => {
+                        let answers = null;
+                        if(_.isUndefined(post.answers))
+                            answers = [];
+
+                        else
+                            answers = post.answers;
+
                         return <ForumRow
                             open={this.isOpen(post.sort_id)}
                             onClick={(id) => this.expandRow(id)}
                             post={post}
                             key={idx}
                             onReply={(answer) => this.props.onAnswerPosted({ ...post, ...answer})}
-                            answers={this.props.answers}
+                            answers={answers}
                         />
                     })
                 }
