@@ -21,13 +21,14 @@ export default class ForumRow extends Component {
     renderWell() {
         return (
             <div className="well">
-                <Markdown source={ this.props.post.content } />
+                <div className="card my-3 pt-3" style={{ paddingLeft: 55 }}>
+                    <Markdown source={ this.props.post.content } />
+                </div>
                 {
-                    this.props.answers.length === 0 ?
-                    <h3>No Answers yet!</h3> :
+                    this.props.answers.length === 0 ? null :
                     this.props.answers.map((answer, idx) => {
                         return (
-                            <div className="d-flex" key={idx}>
+                            <div className={`d-flex card flex-row my-3 ${answer.answered ? 'answered': ''}`} key={idx}>
                                 <div className="avatar-container sm-avatar-container m-2">
                                     <img
                                         alt="profile_picture"
@@ -36,12 +37,10 @@ export default class ForumRow extends Component {
                                     />
                                 </div>
                                 <div className="flex-column ml-2 mt-1">
-                                    <p className="text-muted">Posted
-                                        on <strong>{moment(answer.createdAt).format('MMM DD, YYYY')}</strong> by <strong>{answer.content_creator.first_name} {answer.content_creator.last_name}</strong>
+                                    <p className="text-muted">
+                                        <strong>{answer.content_creator.first_name} {answer.content_creator.last_name}</strong> on <strong>{moment(answer.createdAt).format('MMM DD, YYYY')}</strong>
                                     </p>
-                                    <p>
-                                        { answer.content }
-                                    </p>
+                                    <Markdown source={answer.content} />
                                 </div>
                                 <div className="flex-column ml-auto mt-1 mr-2">
                                     <p className="answer-count">{answer.up_votes}</p>
@@ -71,7 +70,10 @@ export default class ForumRow extends Component {
                         <textarea className="form-control" value={this.state.answerText} placeholder="Draft Answer..." rows="8" onChange={({target}) => this.setState({ answerText: target.value })} />
                         <small className="form-text text-muted">Hint: You can use <a href="https://guides.github.com/features/mastering-markdown/" target="_blank" rel="noopener noreferrer">markdown</a> here!</small>
                         <div className="d-flex justify-content-end">
-                            <button className="common-Button common-Button--default" onClick={() => this.props.onReply({ question_id: this.props.post.sort_id, content: this.state.answerText,  type: 'ANSWER'})}>
+                            <button className="common-Button common-Button--default" onClick={() => {
+                                this.props.onReply({ question_id: this.props.post.sort_id, content: this.state.answerText,  type: 'ANSWER'});
+                                this.setState({ answerText: '' }); // Reset the form fields
+                            }}>
                                 Reply <i className="fas fa-reply" />
                             </button>
                         </div>

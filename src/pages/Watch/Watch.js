@@ -253,6 +253,7 @@ class Watch extends Component {
                 user: {
                     first_name: this.props.user['custom:first_name'],
                     last_name: this.props.user['custom:last_name'],
+                    email: this.props.user.email,
                     avatar: this.props.user['custom:profile_picture']
                 },
                 title: this.state.question.title,
@@ -260,6 +261,7 @@ class Watch extends Component {
             }).then(() => {
                 // It was successful close the modal and show a success alert
                 this.handleClose();
+                this.setState({ question: { title: '', content: '' }});
                 this.props.pushAlert('success', 'Post Created', 'Your question has been posted successfully!');
             }).catch((err) => {
                 Log.error(err);
