@@ -3,11 +3,8 @@ import { Auth } from "aws-amplify";
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
 import {
-    HelpBlock,
     FormGroup,
-    Glyphicon,
     FormControl,
-    ControlLabel
 } from 'react-bootstrap';
 import LoaderButton from '../LoaderButton/LoaderButton';
 import {
@@ -127,7 +124,7 @@ class ResetPassword extends Component {
         return (
             <form onSubmit={this.handleSendCodeClick}>
                 <FormGroup bsSize="large" controlId="email">
-                    <ControlLabel>Email</ControlLabel>
+                    <label>Email</label>
                     <FormControl
                         className="form-field-default"
                         autoFocus
@@ -157,7 +154,7 @@ class ResetPassword extends Component {
         return (
             <form onSubmit={this.handleConfirmClick}>
                 <FormGroup bsSize="large" controlId="code">
-                    <ControlLabel>Confirmation Code</ControlLabel>
+                    <label>Confirmation Code</label>
                     <FormControl
                         autoFocus
                         className="form-field-default"
@@ -165,14 +162,14 @@ class ResetPassword extends Component {
                         value={this.state.code}
                         onChange={this.handleChange}
                     />
-                    <HelpBlock>
+                    <small>
                         Please check your email ({this.state.email}) for the confirmation
                         code.
-                    </HelpBlock>
+                    </small>
                 </FormGroup>
                 <hr />
                 <FormGroup bsSize="large" controlId="password">
-                    <ControlLabel>New Password</ControlLabel>
+                    <label>New Password</label>
                     <FormControl
                         className="form-field-default"
                         type="password"
@@ -181,7 +178,7 @@ class ResetPassword extends Component {
                     />
                 </FormGroup>
                 <FormGroup bsSize="large" controlId="confirmPassword">
-                    <ControlLabel>Confirm Password</ControlLabel>
+                    <label>Confirm Password</label>
                     <FormControl
                         className="form-field-default"
                         type="password"
@@ -206,7 +203,6 @@ class ResetPassword extends Component {
         this.props.pushAlert('success', 'Success', 'Your password has been reset successfully!');
         return (
             <div className="success">
-                <Glyphicon glyph="ok" />
                 <p>Your password has been reset.</p>
                 <p>
                     <Link to="/login">

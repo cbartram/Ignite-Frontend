@@ -525,7 +525,7 @@ class Profile extends Component {
                         <div className="ChangePassword">
                             <form onSubmit={this.handleChangeClick}>
                                 <FormGroup bsSize="large" controlId="oldPassword">
-                                    <ControlLabel>Old Password</ControlLabel>
+                                    <label>Old Password</label>
                                     <FormControl
                                         type="password"
                                         className="form-field-default"
@@ -535,7 +535,7 @@ class Profile extends Component {
                                 </FormGroup>
                                 <hr />
                                 <FormGroup bsSize="large" controlId="password">
-                                    <ControlLabel>New Password</ControlLabel>
+                                    <label>New Password</label>
                                     <FormControl
                                         type="password"
                                         className="form-field-default"
@@ -544,7 +544,7 @@ class Profile extends Component {
                                     />
                                 </FormGroup>
                                 <FormGroup bsSize="large" controlId="confirmPassword">
-                                    <ControlLabel>Confirm Password</ControlLabel>
+                                    <label>Confirm Password</label>
                                     <FormControl
                                         type="password"
                                         className="form-field-default"

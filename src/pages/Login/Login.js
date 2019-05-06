@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { FormGroup, FormControl } from "react-bootstrap";
 import { Auth } from 'aws-amplify/lib/index';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
@@ -138,7 +138,7 @@ class Login extends Component {
                         <div className="Login">
                             <form onSubmit={this.handleSubmit}>
                                 <FormGroup controlId="email" bsSize="large">
-                                    <ControlLabel>Email</ControlLabel>
+                                    <label>Email</label>
                                     <FormControl
                                         autoFocus
                                         className="form-field-default"
@@ -148,7 +148,7 @@ class Login extends Component {
                                     />
                                 </FormGroup>
                                 <FormGroup controlId="password" bsSize="large">
-                                    <ControlLabel>Password</ControlLabel>
+                                    <label>Password</label>
                                     <FormControl
                                         className="form-field-default"
                                         value={this.state.password}

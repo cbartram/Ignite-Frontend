@@ -98,6 +98,7 @@ const load = async () => {
     }
     catch (e) {
         Log.warn('Could not find authenticated user.');
+        console.log('No User found error caught.');
         // TODO handle a case where the fetchVideos() does not work and log an error on the videos page to the user.
         if (e !== 'No current user') {
             Log.error(e);

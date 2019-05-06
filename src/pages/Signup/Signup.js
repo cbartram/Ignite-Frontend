@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import {
-    HelpBlock,
     FormGroup,
     FormControl,
-    ControlLabel
 } from "react-bootstrap";
 import LoaderButton from "../../components/LoaderButton/LoaderButton";
 import { connect } from 'react-redux';
@@ -137,7 +135,7 @@ class Signup extends Component {
         return (
             <form onSubmit={this.handleConfirmationSubmit}>
                 <FormGroup controlId="confirmationCode" bsSize="large">
-                    <ControlLabel>Confirmation Code</ControlLabel>
+                    <label>Confirmation Code</label>
                     <FormControl
                         autoFocus
                         className="form-field-default"
@@ -145,7 +143,7 @@ class Signup extends Component {
                         value={this.state.confirmationCode}
                         onChange={this.handleChange}
                     />
-                    <HelpBlock>Please check your email for the confirmation code.</HelpBlock>
+                    <small>Please check your email for the confirmation code.</small>
                 </FormGroup>
                 <LoaderButton
                     block
@@ -165,7 +163,7 @@ class Signup extends Component {
             <div>
                 <form onSubmit={this.handleSubmit}>
                     <FormGroup controlId="first_name" bsSize="large">
-                        <ControlLabel>First Name</ControlLabel>
+                        <label>First Name</label>
                         <FormControl
                             className="form-field-default"
                             type="text"
@@ -174,7 +172,7 @@ class Signup extends Component {
                         />
                     </FormGroup>
                     <FormGroup controlId="last_name" bsSize="large">
-                        <ControlLabel>Last Name</ControlLabel>
+                        <label>Last Name</label>
                         <FormControl
                             className="form-field-default"
                             type="text"
@@ -183,7 +181,7 @@ class Signup extends Component {
                         />
                     </FormGroup>
                     <FormGroup controlId="email" bsSize="large">
-                        <ControlLabel>Email</ControlLabel>
+                        <label>Email</label>
                         <FormControl
                             className="form-field-default"
                             type="email"
@@ -192,7 +190,7 @@ class Signup extends Component {
                         />
                     </FormGroup>
                     <FormGroup controlId="password" bsSize="large">
-                        <ControlLabel>Password</ControlLabel>
+                        <label>Password</label>
                         <FormControl
                             className="form-field-default"
                             value={this.state.password}
@@ -201,7 +199,7 @@ class Signup extends Component {
                         />
                     </FormGroup>
                     <FormGroup controlId="confirmPassword" bsSize="large">
-                        <ControlLabel>Confirm Password</ControlLabel>
+                        <label>Confirm Password</label>
                         <FormControl
                             className="form-field-default"
                             value={this.state.confirmPassword}
