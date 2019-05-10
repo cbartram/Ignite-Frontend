@@ -524,7 +524,7 @@ class Profile extends Component {
                     <Card loading={this.props.videos.isFetching} classNames={['mb-4']} cardTitle="Update Password">
                         <div className="ChangePassword">
                             <form onSubmit={this.handleChangeClick}>
-                                <FormGroup bsSize="large" controlId="oldPassword">
+                                <FormGroup>
                                     <label>Old Password</label>
                                     <FormControl
                                         type="password"
@@ -534,7 +534,7 @@ class Profile extends Component {
                                     />
                                 </FormGroup>
                                 <hr />
-                                <FormGroup bsSize="large" controlId="password">
+                                <FormGroup>
                                     <label>New Password</label>
                                     <FormControl
                                         type="password"
@@ -543,7 +543,7 @@ class Profile extends Component {
                                         onChange={this.handleChange}
                                     />
                                 </FormGroup>
-                                <FormGroup bsSize="large" controlId="confirmPassword">
+                                <FormGroup>
                                     <label>Confirm Password</label>
                                     <FormControl
                                         type="password"
@@ -553,9 +553,7 @@ class Profile extends Component {
                                     />
                                 </FormGroup>
                                 <LoaderButton
-                                    block
                                     type="submit"
-                                    bsSize="large"
                                     text="Change Password"
                                     loadingText="Updating…"
                                     disabled={!this.validateForm()}

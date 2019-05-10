@@ -13,7 +13,7 @@ export default (state = {}, action) => {
             return {
                 ...state,
                 error: null,
-                quizList: JSON.parse(action.payload), // Should be an [] of quiz objects
+                quizList: action.payload, // Should be an [] of quiz objects
                 isFetching: false,
             };
         case constants.UPDATE_QUIZ:

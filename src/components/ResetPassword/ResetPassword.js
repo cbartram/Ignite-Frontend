@@ -123,7 +123,7 @@ class ResetPassword extends Component {
     renderRequestCodeForm() {
         return (
             <form onSubmit={this.handleSendCodeClick}>
-                <FormGroup bsSize="large" controlId="email">
+                <FormGroup controlId="email">
                     <label>Email</label>
                     <FormControl
                         className="form-field-default"
@@ -136,7 +136,6 @@ class ResetPassword extends Component {
                 <LoaderButton
                     block
                     type="submit"
-                    bsSize="large"
                     loadingText="Sending…"
                     text="Send Confirmation"
                     isLoading={this.state.isSendingCode}
@@ -153,7 +152,7 @@ class ResetPassword extends Component {
     renderConfirmationForm() {
         return (
             <form onSubmit={this.handleConfirmClick}>
-                <FormGroup bsSize="large" controlId="code">
+                <FormGroup controlId="code">
                     <label>Confirmation Code</label>
                     <FormControl
                         autoFocus
@@ -168,7 +167,7 @@ class ResetPassword extends Component {
                     </small>
                 </FormGroup>
                 <hr />
-                <FormGroup bsSize="large" controlId="password">
+                <FormGroup controlId="password">
                     <label>New Password</label>
                     <FormControl
                         className="form-field-default"
@@ -177,7 +176,7 @@ class ResetPassword extends Component {
                         onChange={this.handleChange}
                     />
                 </FormGroup>
-                <FormGroup bsSize="large" controlId="confirmPassword">
+                <FormGroup controlId="confirmPassword">
                     <label>Confirm Password</label>
                     <FormControl
                         className="form-field-default"
@@ -189,7 +188,6 @@ class ResetPassword extends Component {
                 <LoaderButton
                     block
                     type="submit"
-                    bsSize="large"
                     text="Confirm"
                     loadingText="Confirm…"
                     isLoading={this.state.isConfirming}

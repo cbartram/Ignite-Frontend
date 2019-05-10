@@ -137,7 +137,7 @@ class Login extends Component {
                     <div className="col-lg-5 offset-lg-4 col-md-5 offset-md-4 col-sm-3 offset-sm-4 col-xs-3">
                         <div className="Login">
                             <form onSubmit={this.handleSubmit}>
-                                <FormGroup controlId="email" bsSize="large">
+                                <FormGroup>
                                     <label>Email</label>
                                     <FormControl
                                         autoFocus
@@ -147,7 +147,7 @@ class Login extends Component {
                                         onChange={this.handleChange}
                                     />
                                 </FormGroup>
-                                <FormGroup controlId="password" bsSize="large">
+                                <FormGroup>
                                     <label>Password</label>
                                     <FormControl
                                         className="form-field-default"
@@ -157,8 +157,6 @@ class Login extends Component {
                                     />
                                 </FormGroup>
                                 <LoaderButton
-                                    block
-                                    bsSize="large"
                                     disabled={!this.validateForm()}
                                     type="submit"
                                     isLoading={this.props.auth.isFetching}

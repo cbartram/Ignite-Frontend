@@ -134,7 +134,7 @@ class Signup extends Component {
     renderConfirmationForm() {
         return (
             <form onSubmit={this.handleConfirmationSubmit}>
-                <FormGroup controlId="confirmationCode" bsSize="large">
+                <FormGroup controlId="confirmationCode">
                     <label>Confirmation Code</label>
                     <FormControl
                         autoFocus
@@ -147,7 +147,6 @@ class Signup extends Component {
                 </FormGroup>
                 <LoaderButton
                     block
-                    bsSize="large"
                     disabled={!this.validateConfirmationForm()}
                     type="submit"
                     isLoading={this.props.auth.isFetching}
@@ -162,7 +161,7 @@ class Signup extends Component {
         return (
             <div>
                 <form onSubmit={this.handleSubmit}>
-                    <FormGroup controlId="first_name" bsSize="large">
+                    <FormGroup controlId="first_name">
                         <label>First Name</label>
                         <FormControl
                             className="form-field-default"
@@ -171,7 +170,7 @@ class Signup extends Component {
                             onChange={this.handleChange}
                         />
                     </FormGroup>
-                    <FormGroup controlId="last_name" bsSize="large">
+                    <FormGroup controlId="last_name">
                         <label>Last Name</label>
                         <FormControl
                             className="form-field-default"
@@ -180,7 +179,7 @@ class Signup extends Component {
                             onChange={this.handleChange}
                         />
                     </FormGroup>
-                    <FormGroup controlId="email" bsSize="large">
+                    <FormGroup controlId="email">
                         <label>Email</label>
                         <FormControl
                             className="form-field-default"
@@ -189,7 +188,7 @@ class Signup extends Component {
                             onChange={this.handleChange}
                         />
                     </FormGroup>
-                    <FormGroup controlId="password" bsSize="large">
+                    <FormGroup controlId="password">
                         <label>Password</label>
                         <FormControl
                             className="form-field-default"
@@ -198,7 +197,7 @@ class Signup extends Component {
                             type="password"
                         />
                     </FormGroup>
-                    <FormGroup controlId="confirmPassword" bsSize="large">
+                    <FormGroup controlId="confirmPassword">
                         <label>Confirm Password</label>
                         <FormControl
                             className="form-field-default"
@@ -209,7 +208,6 @@ class Signup extends Component {
                     </FormGroup>
                     <LoaderButton
                         block
-                        bsSize="large"
                         disabled={!this.validateForm()}
                         type="submit"
                         isLoading={this.props.auth.isFetching}

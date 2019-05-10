@@ -137,6 +137,7 @@ class Watch extends Component {
         }
 
         let response = await (await fetch(getRequestUrl(API_FETCH_SIGNED_URL), params)).json();
+        // TODO make this the way it was when checking for specific response codes and giving specific messages
         if(response.status > 200) {
             this.props.pushAlert('warning', 'No Subscription', 'We couldn\'t find an active subscription for your account.');
             this.setState({
@@ -297,11 +298,18 @@ class Watch extends Component {
             case 0:
                 const video_id = `${this.props.videos.activeVideo.chapter}.${this.props.videos.activeVideo.sortKey}`;
 
-                return <ForumContainer
-                            questions={this.props.posts.questions[video_id]}
-                            onQuestionAsk={() => this.handleShow()}
-                            onAnswerPosted={(answer) => this.createAnswer(answer)}
-                        />;
+                if(!_.isUndefined(this.props.posts.questions)) {
+                    return <ForumContainer
+                        questions={this.props.posts.questions[video_id]}
+                        onQuestionAsk={() => this.handleShow()}
+                        onAnswerPosted={(answer) => this.createAnswer(answer)}
+                    />;
+                } else {
+                    return <div className="d-flex flex-column align-items-center" style={{height: '100%', width: '100%'}}>
+                        <span className="fa fa-2x fa-circle-notch mt-4" style={{ color: '#6772e5' }} />
+                        <h4 className="common-UppercaseTitle mt-3">Loading...</h4>
+                    </div>
+                }
             case 1:
                 return (
                     <div className="p-2">

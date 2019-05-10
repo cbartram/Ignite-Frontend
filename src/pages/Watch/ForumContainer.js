@@ -44,14 +44,6 @@ export default class ForumContainer extends Component {
     }
 
     render() {
-        if(_.isUndefined(this.props.questions))
-            return (
-                <div className="d-flex flex-column align-items-center" style={{height: '100%', width: '100%'}}>
-                    <span className="fa fa-2x fa-circle-notch mt-4" style={{ color: '#6772e5' }} />
-                    <h4 className="common-UppercaseTitle mt-3">Loading...</h4>
-                </div>
-            );
-
         if (this.props.questions.length === 0)
             return (
                 <div className="d-flex flex-column align-items-center justify-content-center my-3">
