@@ -141,6 +141,7 @@ class Login extends Component {
                                     <label>Email</label>
                                     <FormControl
                                         autoFocus
+                                        id="email"
                                         className="form-field-default"
                                         type="email"
                                         value={this.state.email}
@@ -150,6 +151,7 @@ class Login extends Component {
                                 <FormGroup>
                                     <label>Password</label>
                                     <FormControl
+                                        id="password"
                                         className="form-field-default"
                                         value={this.state.password}
                                         onChange={this.handleChange}

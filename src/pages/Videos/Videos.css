@@ -1,4 +1,4 @@
-.common-Card-video {
+.card {
     position: relative;
     background-color: #fff;
     border-radius: 8px;
@@ -32,22 +32,16 @@
     overflow: hidden;
 }
 
-/*.cover-complete {*/
-    /*filter: blur(4px);*/
-/*}*/
-
-.cover-image {
-    background-color: #fcd669;
-    background-image: url(https://stripe.com/img/v3/atlas/guide/hero-illustration.svg);
-    background-size: 1267px 400px;
-    background-repeat: no-repeat;
-    background-position: -190px -165px;
-}
-
 .gradient-text {
     color: white;
     font-size: 25px;
     font-weight: 800;
+}
+
+.ui.dimmer {
+    background: rgba(82,95,127,.7);
+    border-radius: 8px;
+    height: 100.2%;
 }
 
 .aqua-gradient {

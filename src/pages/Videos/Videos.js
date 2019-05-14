@@ -2,24 +2,38 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import moment from 'moment/moment';
+import Card from 'react-bootstrap/Card';
+import { Loader, Dimmer } from 'semantic-ui-react';
 import Container from '../../components/Container/Container';
 import { withRouter } from 'react-router-dom'
-import { updateActiveVideo } from '../../actions/actions';
+import {
+    updateActiveVideo,
+    getSignedUrl,
+    findQuestions,
+} from '../../actions/actions';
+import { IS_PROD } from "../../constants";
+import Jumbotron from "../../components/Card/Card";
+import Log from '../../Log';
 import './Videos.css';
-import Card from "../../components/Card/Card";
 
 const mapStateToProps = state => ({
     auth: state.auth,
+    user: state.auth.user,
     videos: state.videos,
     quizzes: state.quizzes,
 });
 
 const mapDispatchToProps = dispatch => ({
-    updateActiveVideo: (name) => dispatch(updateActiveVideo(name))
+    updateActiveVideo: (name) => dispatch(updateActiveVideo(name)),
+    getSignedUrl: (payload) => dispatch(getSignedUrl(payload)),
+    findQuestions: (payload) => dispatch(findQuestions(payload)),
 });
 
 /**
- * This Component handles the routes which are displayed within index.js
+ * This Component handles showing the user all
+ * the full stack development videos they can choose from. It is responsible
+ * for pre-loading all of the information about a chosen video such as
+ * the signed url, the questions/answers, and the active video
  */
 class Videos extends Component {
     constructor(props) {
@@ -29,6 +43,8 @@ class Videos extends Component {
         // the videos map(). This tells us when we can render a quiz (at the end of a chapter)
         this.iter = 0;
         this.state = {
+            isLoading: false,
+            loadingVideo: null, // The id of the video that is loading
             gradients: [
                 'purple-gradient',
                 'blue-gradient',
@@ -98,9 +114,22 @@ class Videos extends Component {
      * wishes to watch (the one that was clicked)
      */
     handleWatch(video) {
-        this.props.updateActiveVideo(video);
-        // Add the encoded video to the url so if a user refreshes the page we can retrieve the active video
-        this.props.history.push(`/watch?v=${btoa(encodeURI(video.name))}`)
+        this.setState({ isLoading: true, loadingVideo: `${video.chapter}.${video.sortKey}` }, async () => {
+            try {
+                await this.props.getSignedUrl({
+                    video,
+                    resourceUrl: `${IS_PROD ? 'https://d2hhpuhxg00qg.cloudfront.net' : 'https://dpvchyatyxxeg.cloudfront.net'}/chapter${video.chapter}/${video.s3Name}.mov`,
+                    jwtToken: this.props.user.jwtToken
+                });
+                await this.props.findQuestions(`${video.chapter}.${video.sortKey}`);
+
+                // Add the encoded video to the url so if a user refreshes the page we can retrieve the active video
+                this.props.history.push(`/watch?v=${btoa(encodeURI(video.name))}`);
+            } catch(err) {
+                Log.error(err.message);
+                this.props.pushAlert('danger', 'Oh No!', 'There was an issue retrieving the url for your video refresh the page and try again!');
+            }
+        });
     }
 
     /**
@@ -116,6 +145,7 @@ class Videos extends Component {
     /**
      * Renders a quiz card to the DOM
      * @param quizArr Array passed in from quiz.filter() could be []
+     * @param index Integer the index of the quizArray so that we know to put it as the last item in the array.
      * @returns {*}
      */
     renderQuiz(quizArr, index) {
@@ -124,36 +154,38 @@ class Videos extends Component {
         let quiz = quizArr[0];
         return (
             <div className="col-md-3 col-lg-3 col-sm-12 d-flex align-items-stretch pb-2 px-4" key={quiz.name}>
-                <div className={`common-Card-video m-2`}>
+                <Card>
                     <div className={`d-flex justify-content-center align-items-center cover ${this.state.gradients[index]}`}>
                         <span className="gradient-text">{quiz.name}</span>
                     </div>
-                    <div className="d-flex flex-row">
-                        <h2 className="common-IntroText mt-0">{quiz.name}</h2>
-                        <p className="common-BodyText pt-1 ml-3">
-                            {quiz.completed}
-                        </p>
-                    </div>
-                    <div className="d-flex flex-column">
-                        <p className="common-BodyText">
-                            { quiz.description }
-                        </p>
-                        {
-                            quiz.complete &&
-                            <div>
-                                <div className="progress" style={{height: 5 }}>
-                                    <div className="progress-bar" role="progressbar" style={{width: `${quiz.score}%`, backgroundColor: '#7795f8' }} />
-                                </div>
-                                <span className="text-muted">
+                    <Card.Body className="p-0">
+                        <div className="d-flex flex-row">
+                            <h2 className="common-IntroText mt-0">{quiz.name}</h2>
+                            <p className="common-BodyText pt-1 ml-3">
+                                {quiz.completed}
+                            </p>
+                        </div>
+                        <div className="d-flex flex-column">
+                            <p className="common-BodyText">
+                                { quiz.description }
+                            </p>
+                            {
+                                quiz.complete &&
+                                <div>
+                                    <div className="progress" style={{height: 5 }}>
+                                        <div className="progress-bar" role="progressbar" style={{width: `${quiz.score}%`, backgroundColor: '#7795f8' }} />
+                                    </div>
+                                    <span className="text-muted">
                                     {quiz.score}%
                                  </span>
-                            </div>
-                        }
-                        <Link to={`/quiz?q=${btoa(quiz.id)}${quiz.complete ? '&retake=true' : '' }`} className="common-Button common-Button--default">
-                            { quiz.complete ? 'Re-take Quiz' : 'Take Quiz'}
-                        </Link>
-                    </div>
-                </div>
+                                </div>
+                            }
+                            <Link to={`/quiz?q=${btoa(quiz.id)}${quiz.complete ? '&retake=true' : '' }`} className="common-Button common-Button--default">
+                                { quiz.complete ? 'Re-take Quiz' : 'Take Quiz'}
+                            </Link>
+                        </div>
+                    </Card.Body>
+                </Card>
             </div>
         )
     }
@@ -166,7 +198,7 @@ class Videos extends Component {
         if(typeof this.props.videos.videoList !== 'undefined') {
             return (
                 <div>
-                    <Card>
+                    <Jumbotron>
                         <h3 className="common-SectionTitle">
                             Welcome to Videos
                         </h3>
@@ -195,7 +227,7 @@ class Videos extends Component {
                                 {/*</g>*/}
                             {/*</svg>*/}
                         </div>
-                    </Card>
+                    </Jumbotron>
                     {
                         this.props.videos.videoList.map((chapter, i) => {
                             return (
@@ -208,35 +240,41 @@ class Videos extends Component {
                                     </div>
                                     <div className="row">
                                         {
+                                            // TODO Move the API call to fetch video, and find questions etc... into this file bc we know about the video being clicked
                                             chapter.videos.map((video, index) => {
                                                 this.iter = index;
                                                 return (
                                                         <div className="col-md-3 col-lg-3 col-sm-12 d-flex align-items-stretch pb-2 px-4" key={video.name}>
-                                                            <div className="common-Card-video m-2">
+                                                            <Card>
+                                                                <Dimmer active={this.state.isLoading && this.state.loadingVideo === `${video.chapter}.${video.sortKey}`}>
+                                                                    <Loader>Loading</Loader>
+                                                                </Dimmer>
                                                                 <div className={`d-flex justify-content-center align-items-center cover ${this.state.gradients[i]}`}>
                                                                     <span className="gradient-text">{video.name}</span>
                                                                 </div>
-                                                                <div className="d-flex flex-row">
-                                                                    <h2 className="common-IntroText mt-0">{video.name}</h2>
-                                                                    <p className="common-BodyText pt-1 ml-3">
-                                                                        {video.length}
-                                                                    </p>
-                                                                </div>
-                                                                <div className="d-flex flex-column">
-                                                                    <p className="common-BodyText">
-                                                                        { video.description }
-                                                                    </p>
-                                                                    <div className="progress" style={{height: 5 }}>
-                                                                        <div className="progress-bar" role="progressbar" style={{width: `${Videos.percentComplete(video)}%`, backgroundColor: '#7795f8' }} />
+                                                                <Card.Body className="p-0">
+                                                                    <div className="d-flex flex-row">
+                                                                        <h2 className="common-IntroText mt-0">{video.name}</h2>
+                                                                        <p className="common-BodyText pt-1 ml-3">
+                                                                            {video.length}
+                                                                        </p>
                                                                     </div>
-                                                                    <span className="text-muted">
+                                                                    <div className="d-flex flex-column">
+                                                                        <p className="common-BodyText">
+                                                                            { video.description }
+                                                                        </p>
+                                                                        <div className="progress" style={{height: 5 }}>
+                                                                            <div className="progress-bar" role="progressbar" style={{width: `${Videos.percentComplete(video)}%`, backgroundColor: '#7795f8' }} />
+                                                                        </div>
+                                                                        <span className="text-muted">
                                                                          { Videos.percentComplete(video) <= 1 ? 'Not Started' : `${Videos.percentComplete(video) > 100 ? 100 : Videos.percentComplete(video)}% complete!`}
                                                                     </span>
-                                                                    <button onClick={() => this.handleWatch(video)} className="common-Button common-Button--default mt-2">
-                                                                        { Videos.percentComplete(video) <= 1 ?  'Start Now' : 'Continue'}
-                                                                    </button>
-                                                                </div>
-                                                            </div>
+                                                                        <button onClick={() => this.handleWatch(video)} className="common-Button common-Button--default mt-2">
+                                                                            { Videos.percentComplete(video) <= 1 ?  'Start Now' : 'Continue'}
+                                                                        </button>
+                                                                    </div>
+                                                                </Card.Body>
+                                                            </Card>
                                                         </div>
                                                 )
                                             })

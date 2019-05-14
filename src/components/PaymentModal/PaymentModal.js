@@ -66,7 +66,7 @@ class PaymentModal extends Component {
         this.setState({
             fields: {
                 ...this.state.fields,
-                expirationMonth
+                expirationMonth: expirationMonth.toString()
             }
         });
     };
@@ -241,7 +241,10 @@ class PaymentModal extends Component {
                             <h5 className="modal-title">Subscribe to Ignite</h5>
                         </div>
                         <div className="modal-body" style={{ background: '#fff'}}>
-                            <div className="form-row text firstname">
+                            <input type="hidden" value="expiration" />
+                            <input type="hidden" value="expirationMonth" />
+                            <input type="hidden" value="prayer" />
+                        <div className="form-row text firstname">
                                 <label className="firstname" htmlFor="firstname">Your first name</label>
                                 <input
                                     onBlur={() => this.handleFieldBlur('firstName')}
@@ -293,6 +296,7 @@ class PaymentModal extends Component {
                                     onFocus={() => this.setState({ monthVisible: true })}
                                     onChange={() => {}}
                                     type="text"
+                                    autoComplete="new-password"
                                     pattern="[0-9]*"
                                     placeholder="08"
                                     value={this.state.fields.expirationMonth}
@@ -300,42 +304,15 @@ class PaymentModal extends Component {
                                 />
                                 <div className={`select-dropdown ${!this.state.monthVisible && 'hidden'}`}>
                                     <ul className="select-results">
-                                        <li className="select-result" onMouseDown={() => this.handleMonthSelect('01')}>
-                                            01
-                                        </li>
-                                        <li className="select-result" onMouseDown={() => this.handleMonthSelect('02')}>
-                                            02
-                                        </li>
-                                        <li className="select-result" onMouseDown={() => this.handleMonthSelect('03')}>
-                                            03
-                                        </li>
-                                        <li className="select-result" onMouseDown={() => this.handleMonthSelect('04')}>
-                                            04
-                                        </li>
-                                        <li className="select-result" onMouseDown={() => this.handleMonthSelect('05')}>
-                                            05
-                                        </li>
-                                        <li className="select-result" onMouseDown={() => this.handleMonthSelect('06')}>
-                                            06
-                                        </li>
-                                        <li className="select-result" onMouseDown={() => this.handleMonthSelect('07')}>
-                                            07
-                                        </li>
-                                        <li className="select-result" onMouseDown={() => this.handleMonthSelect('08')}>
-                                            08
-                                        </li>
-                                        <li className="select-result" onMouseDown={() => this.handleMonthSelect('09')}>
-                                            09
-                                        </li>
-                                        <li className="select-result" onMouseDown={() => this.handleMonthSelect('10')}>
-                                            10
-                                        </li>
-                                        <li className="select-result" onMouseDown={() => this.handleMonthSelect('11')}>
-                                            11
-                                        </li>
-                                        <li className="select-result" onMouseDown={() => this.handleMonthSelect('12')}>
-                                            12
-                                        </li>
+                                        {
+                                            Array.apply(null, { length: 12 }).map(Number.call, Number).map(i => {
+                                                return (
+                                                    <li className="select-result" key={i} onMouseDown={() => this.handleMonthSelect(i + 1)}>
+                                                        { i + 1}
+                                                    </li>
+                                                )
+                                            })
+                                        }
                                     </ul>
                                 </div>
                             </div>
@@ -348,6 +325,7 @@ class PaymentModal extends Component {
                                     onFocus={() => this.setState({ visible: true })}
                                     onChange={() => {}}
                                     type="text"
+                                    autoComplete="some-new-password"
                                     pattern="[0-9]*"
                                     placeholder="18"
                                     value={this.state.fields.expirationYear}

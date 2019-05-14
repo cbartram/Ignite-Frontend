@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
+import { FormGroup, FormControl } from 'react-bootstrap';
+import { withRouter } from "react-router-dom";
 import LoaderButton from "../../components/LoaderButton/LoaderButton";
 import { Auth } from 'aws-amplify/lib/index';
 import moment from 'moment/moment';
@@ -357,7 +358,7 @@ class Profile extends Component {
                                     // Only show the button to user's who are actively subscribed
                                     // (dont show to users whos subscription will end at the close of the next period)
                                     (this.props.billing.premium && this.props.billing.premium !== 'false' && this.props.auth.user['custom:at_period_end'] !== 'true' ) &&
-                                    <button className="common-Button common-Button--danger"
+                                    <button className="btn btn-danger"
                                             onClick={() => this.unsubscribe()}>
                                         Cancel Subscription
                                     </button>
@@ -527,6 +528,7 @@ class Profile extends Component {
                                 <FormGroup>
                                     <label>Old Password</label>
                                     <FormControl
+                                        id="oldPassword"
                                         type="password"
                                         className="form-field-default"
                                         onChange={this.handleChange}
@@ -537,6 +539,7 @@ class Profile extends Component {
                                 <FormGroup>
                                     <label>New Password</label>
                                     <FormControl
+                                        id="password"
                                         type="password"
                                         className="form-field-default"
                                         value={this.state.password}
@@ -546,6 +549,7 @@ class Profile extends Component {
                                 <FormGroup>
                                     <label>Confirm Password</label>
                                     <FormControl
+                                        id="confirmPassword"
                                         type="password"
                                         className="form-field-default"
                                         onChange={this.handleChange}
@@ -569,4 +573,4 @@ class Profile extends Component {
     }
 }
 
-export default withContainer(connect(mapStateToProps, mapDispatchToProps)(Profile), { noFooterMargin: true, style: {backgroundColor: '#fff'}});
+export default withContainer(withRouter(connect(mapStateToProps, mapDispatchToProps)(Profile)), { noFooterMargin: true, style: {backgroundColor: '#fff'}});

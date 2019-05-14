@@ -5,12 +5,10 @@ import * as constants from '../constants';
 import Log from '../Log';
 import {
     getVideos,
-    postQuestion,
     sendVideoData,
     storeQuiz,
     post,
 } from '../util';
-
 
 /**
  * Updates a users attributes within redux
@@ -225,6 +223,15 @@ export const findQuestions = (payload) => async dispatch => {
  */
 export const answerQuestion = (payload) => async dispatch => {
     await post(payload, constants.API_ANSWER_CREATE, constants.CREATE_ANSWER_REQUEST, constants.CREATE_ANSWER_SUCCESS, constants.CREATE_ANSWER_FAILURE, dispatch);
+};
+
+/**
+ * Creates a signed url for accessing protected video resources on amazon S3.
+ * @param payload Object { resourceUrl, jwtToken }
+ * @returns {Function}
+ */
+export const getSignedUrl = (payload) => async dispatch => {
+    await post(payload, constants.API_FETCH_SIGNED_URL, constants.GET_SIGNED_URL_REQUEST, constants.GET_SIGNED_URL_SUCCESS, constants.GET_SIGNED_URL_FAILURE, dispatch);
 };
 
 /**
