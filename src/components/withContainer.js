@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import Container from './Container/Container';
 import Alert from './Alert/Alert';
-import AlertContainer from './AlertContainer/AlertContainer';
 
 /**
  * Attaches a <Container /> Component around the
@@ -53,15 +52,18 @@ const withContainer = (BaseComponent, props = {}) => {
         render() {
             return (
                 <Container {...props}>
-                    <AlertContainer>
-                        {
-                            this.state.alerts.map((props, index) =>
-                                <Alert onDismiss={() => this.removeAlert(props.id)} {...props} key={index}>
-                                    { props.message }
-                                </Alert>
-                            )
-                        }
-                    </AlertContainer>
+                    {
+                        this.state.alerts.length > 0 &&
+                        <div className="alert-container">
+                            {
+                                this.state.alerts.map((props, index) =>
+                                    <Alert onDismiss={() => this.removeAlert(props.id)} {...props} key={index}>
+                                        { props.message }
+                                    </Alert>
+                                )
+                            }
+                        </div>
+                    }
                     <BaseComponent pushAlert={(type, title, message, id) => this.pushAlert(type, title, message, id)}/>
                 </Container>
             );

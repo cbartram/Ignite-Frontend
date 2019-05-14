@@ -15,6 +15,7 @@ import { IS_PROD } from "../../constants";
 import Jumbotron from "../../components/Card/Card";
 import Log from '../../Log';
 import './Videos.css';
+import withContainer from "../../components/withContainer";
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -124,7 +125,7 @@ class Videos extends Component {
                 await this.props.findQuestions(`${video.chapter}.${video.sortKey}`);
 
                 // Add the encoded video to the url so if a user refreshes the page we can retrieve the active video
-                this.props.history.push(`/watch?v=${btoa(encodeURI(video.name))}`);
+                this.props.history.push('/watch');
             } catch(err) {
                 Log.error(err.message);
                 this.props.pushAlert('danger', 'Oh No!', 'There was an issue retrieving the url for your video refresh the page and try again!');
@@ -190,105 +191,6 @@ class Videos extends Component {
         )
     }
 
-    /**
-     * Renders a list of videos a user can choose from to watch.
-     * @returns {*}
-     */
-    renderVideos() {
-        if(typeof this.props.videos.videoList !== 'undefined') {
-            return (
-                <div>
-                    <Jumbotron>
-                        <h3 className="common-SectionTitle">
-                            Welcome to Videos
-                        </h3>
-                        <div className="row">
-                            <div className="col-md-8">
-                                <p className="common-BodyText">
-                                    These videos are a customized list of chapters, quizzes and workshops that provide a guided learning path for a particular subject.
-                                    Each course or quiz in a chapter builds on the previous one, so that as you progress through the videos you gain a solid
-                                    understanding of the broader topic and how it fits into full stack development.
-                                </p>
-                            </div>
-                            <div className="col-md-3 offset-md-1">
-                                <svg width="150" height="150" viewBox="0 0 40 40">
-                                    <g stroke="#0CB" strokeWidth="2" fill="none">
-                                        <path d="M4 35c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2h32c1.1 0 2 .9 2 2v26c0 1.1-.9 2-2 2H4z" />
-                                        <path d="M14 20h8" />
-                                        <path d="M8 12l4 3.5L8 19" />
-                                    </g>
-                                </svg>
-                            </div>
-                            {/*<svg width="40" height="40">*/}
-                                {/*<g stroke="#0CB" strokeWidth="2" fill="none">*/}
-                                    {/*<path d="M4 35c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2h32c1.1 0 2 .9 2 2v26c0 1.1-.9 2-2 2H4z" strokeDasharray="128.56021118164062" strokeDashoffset="128.56021118164062" style={{opacity: 1}} />*/}
-                                    {/*<path d="M14 20h8" strokeDasharray="8" strokeDashoffset="8" style={{opacity: 1 }} />*/}
-                                    {/*<path d="M8 12l4 3.5L8 19" strokeDasharray="10.630146026611328" strokeDashoffset="10.630146026611328" style={{ opacity: 1 }} />*/}
-                                {/*</g>*/}
-                            {/*</svg>*/}
-                        </div>
-                    </Jumbotron>
-                    {
-                        this.props.videos.videoList.map((chapter, i) => {
-                            return (
-                                <div key={chapter.title}>
-                                    <div className="d-flex flex-row justify-content-start">
-                                        <h2 className="common-UppercaseTitle big-font ml-4">
-                                            { chapter.title } - {moment.utc(chapter.videos.map(video => (moment(video.length, 'mm:ss').minutes() * 60) + moment(video.length, 'mm:ss').seconds()).reduce((a, b) => a + b) * 1000).format('mm:ss') }
-                                        </h2>
-                                        <hr />
-                                    </div>
-                                    <div className="row">
-                                        {
-                                            // TODO Move the API call to fetch video, and find questions etc... into this file bc we know about the video being clicked
-                                            chapter.videos.map((video, index) => {
-                                                this.iter = index;
-                                                return (
-                                                        <div className="col-md-3 col-lg-3 col-sm-12 d-flex align-items-stretch pb-2 px-4" key={video.name}>
-                                                            <Card>
-                                                                <Dimmer active={this.state.isLoading && this.state.loadingVideo === `${video.chapter}.${video.sortKey}`}>
-                                                                    <Loader>Loading</Loader>
-                                                                </Dimmer>
-                                                                <div className={`d-flex justify-content-center align-items-center cover ${this.state.gradients[i]}`}>
-                                                                    <span className="gradient-text">{video.name}</span>
-                                                                </div>
-                                                                <Card.Body className="p-0">
-                                                                    <div className="d-flex flex-row">
-                                                                        <h2 className="common-IntroText mt-0">{video.name}</h2>
-                                                                        <p className="common-BodyText pt-1 ml-3">
-                                                                            {video.length}
-                                                                        </p>
-                                                                    </div>
-                                                                    <div className="d-flex flex-column">
-                                                                        <p className="common-BodyText">
-                                                                            { video.description }
-                                                                        </p>
-                                                                        <div className="progress" style={{height: 5 }}>
-                                                                            <div className="progress-bar" role="progressbar" style={{width: `${Videos.percentComplete(video)}%`, backgroundColor: '#7795f8' }} />
-                                                                        </div>
-                                                                        <span className="text-muted">
-                                                                         { Videos.percentComplete(video) <= 1 ? 'Not Started' : `${Videos.percentComplete(video) > 100 ? 100 : Videos.percentComplete(video)}% complete!`}
-                                                                    </span>
-                                                                        <button onClick={() => this.handleWatch(video)} className="common-Button common-Button--default mt-2">
-                                                                            { Videos.percentComplete(video) <= 1 ?  'Start Now' : 'Continue'}
-                                                                        </button>
-                                                                    </div>
-                                                                </Card.Body>
-                                                            </Card>
-                                                        </div>
-                                                )
-                                            })
-                                        }
-                                        { Videos.isLastIteration(chapter.videos, this.iter) && this.renderQuiz(this.props.quizzes.quizList.filter(q => q.chapter === chapter.chapter), i) }
-                                    </div>
-                                </div>
-                            )
-                        })}
-                </div>
-            );
-        }
-    }
-
     render() {
         if(this.props.videos.isFetching)
             return (
@@ -299,21 +201,100 @@ class Videos extends Component {
                 </Container>
             );
 
+        if(((typeof this.props.videos.videoList !== 'undefined' && this.props.videos.videoList.length === 0) || this.props.auth.user['custom:premium'] === 'false'))
+            return Videos.renderSubscribeMessage();
+
         return (
-            <Container>
+            <div>
+                <Jumbotron>
+                    <h3 className="common-SectionTitle">
+                        Welcome to Videos
+                    </h3>
+                    <div className="row">
+                        <div className="col-md-8">
+                            <p className="common-BodyText">
+                                These videos are a customized list of chapters, quizzes and workshops that provide a guided learning path for a particular subject.
+                                Each course or quiz in a chapter builds on the previous one, so that as you progress through the videos you gain a solid
+                                understanding of the broader topic and how it fits into full stack development.
+                            </p>
+                        </div>
+                        <div className="col-md-3 offset-md-1">
+                            <svg width="150" height="150" viewBox="0 0 40 40">
+                                <g stroke="#0CB" strokeWidth="2" fill="none">
+                                    <path d="M4 35c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2h32c1.1 0 2 .9 2 2v26c0 1.1-.9 2-2 2H4z" />
+                                    <path d="M14 20h8" />
+                                    <path d="M8 12l4 3.5L8 19" />
+                                </g>
+                            </svg>
+                        </div>
+                        {/*<svg width="40" height="40">*/}
+                        {/*<g stroke="#0CB" strokeWidth="2" fill="none">*/}
+                        {/*<path d="M4 35c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2h32c1.1 0 2 .9 2 2v26c0 1.1-.9 2-2 2H4z" strokeDasharray="128.56021118164062" strokeDashoffset="128.56021118164062" style={{opacity: 1}} />*/}
+                        {/*<path d="M14 20h8" strokeDasharray="8" strokeDashoffset="8" style={{opacity: 1 }} />*/}
+                        {/*<path d="M8 12l4 3.5L8 19" strokeDasharray="10.630146026611328" strokeDashoffset="10.630146026611328" style={{ opacity: 1 }} />*/}
+                        {/*</g>*/}
+                        {/*</svg>*/}
+                    </div>
+                </Jumbotron>
                 {
-                    // Only render an error message if its their first time logging in and they dont have videos or they arent premium
-                    ((typeof this.props.videos.videoList !== 'undefined' && this.props.videos.videoList.length === 0) || this.props.auth.user['custom:premium'] === 'false') &&
-                    Videos.renderSubscribeMessage()
-                }
-                {
-                    // Render a success message on the condition that there is a video list and videos to show and the user is premium
-                    (typeof this.props.videos.videoList !== 'undefined' && this.props.videos.videoList.length > 0 && this.props.auth.user['custom:premium'] === 'true') &&
-                     this.renderVideos()
-                }
-            </Container>
-        )
+                    this.props.videos.videoList.map((chapter, i) => {
+                        return (
+                            <div key={chapter.title}>
+                                <div className="d-flex flex-row justify-content-start">
+                                    <h2 className="common-UppercaseTitle big-font ml-4">
+                                        { chapter.title } - {moment.utc(chapter.videos.map(video => (moment(video.length, 'mm:ss').minutes() * 60) + moment(video.length, 'mm:ss').seconds()).reduce((a, b) => a + b) * 1000).format('mm:ss') }
+                                    </h2>
+                                    <hr />
+                                </div>
+                                <div className="row">
+                                    {
+                                        // TODO Move the API call to fetch video, and find questions etc... into this file bc we know about the video being clicked
+                                        chapter.videos.map((video, index) => {
+                                            this.iter = index;
+                                            return (
+                                                <div className="col-md-3 col-lg-3 col-sm-12 d-flex align-items-stretch pb-2 px-4" key={video.name}>
+                                                    <Card>
+                                                        <Dimmer active={this.state.isLoading && this.state.loadingVideo === `${video.chapter}.${video.sortKey}`}>
+                                                            <Loader>Loading</Loader>
+                                                        </Dimmer>
+                                                        <div className={`d-flex justify-content-center align-items-center cover ${this.state.gradients[i]}`}>
+                                                            <span className="gradient-text">{video.name}</span>
+                                                        </div>
+                                                        <Card.Body className="p-0">
+                                                            <div className="d-flex flex-row">
+                                                                <h2 className="common-IntroText mt-0">{video.name}</h2>
+                                                                <p className="common-BodyText pt-1 ml-3">
+                                                                    {video.length}
+                                                                </p>
+                                                            </div>
+                                                            <div className="d-flex flex-column">
+                                                                <p className="common-BodyText">
+                                                                    { video.description }
+                                                                </p>
+                                                                <div className="progress" style={{height: 5 }}>
+                                                                    <div className="progress-bar" role="progressbar" style={{width: `${Videos.percentComplete(video)}%`, backgroundColor: '#7795f8' }} />
+                                                                </div>
+                                                                <span className="text-muted">
+                                                                         { Videos.percentComplete(video) <= 1 ? 'Not Started' : `${Videos.percentComplete(video) > 100 ? 100 : Videos.percentComplete(video)}% complete!`}
+                                                                    </span>
+                                                                <button onClick={() => this.handleWatch(video)} className="common-Button common-Button--default mt-2">
+                                                                    { Videos.percentComplete(video) <= 1 ?  'Start Now' : 'Continue'}
+                                                                </button>
+                                                            </div>
+                                                        </Card.Body>
+                                                    </Card>
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                    { Videos.isLastIteration(chapter.videos, this.iter) && this.renderQuiz(this.props.quizzes.quizList.filter(q => q.chapter === chapter.chapter), i) }
+                                </div>
+                            </div>
+                        )
+                    })}
+            </div>
+        );
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Videos));
+export default withContainer(connect(mapStateToProps, mapDispatchToProps)(withRouter(Videos)));
