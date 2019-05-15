@@ -5,6 +5,7 @@ import PaymentModal from '../../components/PaymentModal/PaymentModal';
 import './Pricing.css';
 import withContainer from "../../components/withContainer";
 import PricingCard from "./PricingCard";
+import Log from '../../Log';
 
 const mapStateToProps = state => ({
    auth: state.auth,
@@ -40,12 +41,11 @@ class Pricing extends Component {
                 {/* Handles showing and processing user payments */}
                 <PaymentModal
                     onFailedPayment={(errorMessage) => {
-                        let message = `Unfortunately something went wrong processing your payment: ${errorMessage}`;
-                        this.props.pushAlert('danger', 'Subscription Failed', message)
+                        Log.error(errorMessage);
+                        this.props.pushAlert('danger', 'Subscription Failed', 'Unfortunately something went wrong processing your payment')
                     }}
-                    onSuccessfulPayment={() => {
-                        this.props.history.push('/videos')
-                }} />
+                    onSuccessfulPayment={() => this.props.history.push('/videos')}
+                />
                 <div className="row">
                     <div className="col-lg-4 col-md-4 col-sm-10 d-flex align-items-stretch align-self-end p-4">
                         <PricingCard

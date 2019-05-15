@@ -244,3 +244,7 @@ ul {
   /*-webkit-box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);*/
   /*box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);*/
 }
+
+.ui.loader:after {
+  border-color: #6772e5 transparent transparent;
+}

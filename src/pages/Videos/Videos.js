@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import moment from 'moment/moment';
 import Card from 'react-bootstrap/Card';
+import _ from 'lodash';
 import { Loader, Dimmer } from 'semantic-ui-react';
-import Container from '../../components/Container/Container';
 import { withRouter } from 'react-router-dom'
 import {
     updateActiveVideo,
@@ -73,28 +73,8 @@ class Videos extends Component {
         }
     }
 
-    /**
-     * Renders a message telling users to subscribe in order to watch videos
-     */
-    static renderSubscribeMessage() {
-        return (
-            <div>
-                <div className="row">
-                    <div className="col-md-4 offset-md-4">
-                        <h3 className="common-SectionTitle">No Subscription Found</h3>
-                        <p className="common-BodyText">
-                            It looks like you aren't subscribed to ignite. If you would like to subscribe and
-                            watch all the high quality HD full stack development videos you can click the button below!
-                        </p>
-                    </div>
-                </div>
-                <div className="d-flex flex-row justify-content-center">
-                    <Link to="/pricing" className="common-Button common-Button--default">
-                        Subscribe to Watch Videos
-                    </Link>
-                </div>
-            </div>
-        )
+    componentDidMount() {
+        if(this.props.location.search) this.props.pushAlert('info', 'Select a Video', 'You need to select a new video to watch!');
     }
 
     /**
@@ -123,8 +103,6 @@ class Videos extends Component {
                     jwtToken: this.props.user.jwtToken
                 });
                 await this.props.findQuestions(`${video.chapter}.${video.sortKey}`);
-
-                // Add the encoded video to the url so if a user refreshes the page we can retrieve the active video
                 this.props.history.push('/watch');
             } catch(err) {
                 Log.error(err.message);
@@ -154,7 +132,7 @@ class Videos extends Component {
             return null;
         let quiz = quizArr[0];
         return (
-            <div className="col-md-3 col-lg-3 col-sm-12 d-flex align-items-stretch pb-2 px-4" key={quiz.name}>
+            <div className="col-md-3 col-lg-3 col-sm-12 d-flex align-items-stretch pb-2 px-4 my-4" key={quiz.name}>
                 <Card>
                     <div className={`d-flex justify-content-center align-items-center cover ${this.state.gradients[index]}`}>
                         <span className="gradient-text">{quiz.name}</span>
@@ -192,17 +170,28 @@ class Videos extends Component {
     }
 
     render() {
-        if(this.props.videos.isFetching)
-            return (
-                <Container>
-                    <div className="d-flex justify-content-center mt-5">
-                        <i className="fas fa-7x fa-circle-notch" style={{ color: '#6772e5' }} />
-                    </div>
-                </Container>
-            );
+        // Only returned when history.push('/videos') happens
+        if(this.props.videos.isFetching) return <Loader active />;
 
-        if(((typeof this.props.videos.videoList !== 'undefined' && this.props.videos.videoList.length === 0) || this.props.auth.user['custom:premium'] === 'false'))
-            return Videos.renderSubscribeMessage();
+        if(((!_.isUndefined(this.props.videos.videoList) && _.size(this.props.videos.videoList) === 0) || this.props.auth.user['custom:premium'] === 'false'))
+            return (
+                <div>
+                    <div className="row">
+                        <div className="col-md-4 offset-md-4">
+                            <h3 className="common-SectionTitle">No Subscription Found</h3>
+                            <p className="common-BodyText">
+                                It looks like you aren't subscribed to ignite. If you would like to subscribe and
+                                watch all the high quality HD full stack development videos you can click the button below!
+                            </p>
+                        </div>
+                    </div>
+                    <div className="d-flex mt-3 justify-content-center">
+                        <Link to="/pricing" className="common-Button common-Button--default">
+                            Subscribe to Watch Videos
+                        </Link>
+                    </div>
+                </div>
+            );
 
         return (
             <div>
@@ -252,7 +241,7 @@ class Videos extends Component {
                                         chapter.videos.map((video, index) => {
                                             this.iter = index;
                                             return (
-                                                <div className="col-md-3 col-lg-3 col-sm-12 d-flex align-items-stretch pb-2 px-4" key={video.name}>
+                                                <div className="col-md-3 col-lg-3 col-sm-12 d-flex align-items-stretch pb-2 px-4 my-4" key={video.name}>
                                                     <Card>
                                                         <Dimmer active={this.state.isLoading && this.state.loadingVideo === `${video.chapter}.${video.sortKey}`}>
                                                             <Loader>Loading</Loader>

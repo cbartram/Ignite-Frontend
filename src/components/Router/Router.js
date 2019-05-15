@@ -3,9 +3,10 @@ import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import { connect } from 'react-redux';
 import App from '../../App';
 import Login from '../../pages/Login/Login';
-import NotFound from '../NotFound/NotFound';
+import NotFound from '../../pages/NotFound/NotFound';
 import Signup from '../../pages/Signup/Signup';
 import Videos from '../../pages/Videos/Videos';
+import Error from '../../pages/Error/Error';
 import AuthenticatedRoute from '../AuthenticatedRoute/AuthenticatedRoute';
 import Avenue from '../Avenue/Avenue';
 import Pricing from '../../pages/Pricing/Pricing';
@@ -28,6 +29,17 @@ const mapStateToProps = state => ({
  */
 class Router extends Component {
     render() {
+        console.log(this.props);
+        if(this.props.error)
+            return (
+                <BrowserRouter>
+                    <Switch>
+                        <Avenue component={Error} />
+                    </Switch>
+                </BrowserRouter>
+            );
+
+
         return (
             <BrowserRouter>
                 <Switch>

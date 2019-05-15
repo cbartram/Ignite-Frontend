@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from 'react-router-dom';
-import withContainer from "../withContainer";
+import withContainer from "../../components/withContainer";
 import './NotFound.css';
 
 /**

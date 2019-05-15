@@ -9,10 +9,12 @@ import Amplify, { Auth } from 'aws-amplify';
 import rootReducer from './reducers/rootReducer';
 import * as constants from './constants'
 import Router from './components/Router/Router'
+import Error from './pages/Error/Error';
 import Log from './Log';
 import { loginSuccess, fetchVideos } from './actions/actions';
 import { AMPLIFY_CONFIG } from './constants';
 import {IS_PROD} from "./constants";
+import { Loader } from "semantic-ui-react";
 
 // Object holding action types as keys and promises as values which need resolutions
 const typeResolvers = {};
@@ -99,7 +101,6 @@ const load = async () => {
     catch (e) {
         Log.warn('Could not find authenticated user.');
         console.log('No User found error caught.');
-        // TODO handle a case where the fetchVideos() does not work and log an error on the videos page to the user.
         if (e !== 'No current user') {
             Log.error(e);
         }
@@ -115,14 +116,20 @@ const render = async () => {
     // Render a loading page immediately while we wait for our content to load
     ReactDOM.render(
         <Provider store={store}>
-            <div className="d-flex flex-column align-items-center" style={{height: '100%', width: '100%'}}>
-                <span className="fa fa-2x fa-circle-notch mt-4" style={{ color: '#6772e5' }} />
-                <h1 className="common-UppercaseTitle mt-3">Loading...</h1>
-            </div>
-        </Provider>
-        ,document.getElementById('root'));
+            <Loader active />
+        </Provider>,document.getElementById('root'));
 
+    try {
     await load();
+    } catch(err) {
+        Log.error(err.message);
+        console.log(err);
+
+        ReactDOM.render(
+        <Provider store={store}>
+            <Router error />
+        </Provider>, document.getElementById('root'));
+    }
 
     // Now render the full page
     ReactDOM.render(

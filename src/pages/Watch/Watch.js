@@ -60,6 +60,10 @@ class Watch extends Component {
         }
     }
 
+    componentDidMount() {
+        if(this.props.activeVideo.name === 'null') this.props.history.push('/videos?new=true')
+    }
+
     /**
      * Registers a setInterval() where we send the users
      * video data to the server every 30 seconds.
@@ -197,7 +201,7 @@ class Watch extends Component {
             case 0:
                 const video_id = `${this.props.videos.activeVideo.chapter}.${this.props.videos.activeVideo.sortKey}`;
 
-                if (!_.isUndefined(this.props.posts.questions)) {
+                if (!_.isUndefined(this.props.posts.questions) && !_.isUndefined(this.props.posts.questions[video_id])) {
                     return <ForumContainer
                         questions={this.props.posts.questions[video_id]}
                         onQuestionAsk={() => this.handleShow()}

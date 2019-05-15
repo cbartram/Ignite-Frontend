@@ -12,7 +12,7 @@ import Login from '../pages/Login/Login'
 import App from '../App';
 import Navbar from '../components/Navbar/Navbar';
 import Router from '../components/Router/Router';
-import NotFound from '../components/NotFound/NotFound';
+import NotFound from '../pages/NotFound/NotFound';
 import Container from '../components/Container/Container';
 import Watch from '../pages/Watch/Watch';
 import ResetPassword from '../components/ResetPassword/ResetPassword';
