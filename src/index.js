@@ -95,7 +95,8 @@ const load = async () => {
 
         // Using our custom middleware we can now wait for a async dispatch to complete
         // Fetch videos is misleading because it does not just fetch videos but also billing info and quiz data.
-        await dispatchProcess(fetchVideos(user.idToken.payload.email), constants.VIDEOS_SUCCESS, constants.VIDEOS_FAILURE);
+        // It basically loads up all the data for the user when the App loads.
+        await dispatchProcess(fetchVideos(`user-${user.idToken.payload['cognito:username']}`), constants.VIDEOS_SUCCESS, constants.VIDEOS_FAILURE);
         store.dispatch(loginSuccess(user));
     }
     catch (e) {

@@ -146,7 +146,6 @@ class Signup extends Component {
                     <small>Please check your email for the confirmation code.</small>
                 </FormGroup>
                 <LoaderButton
-                    block
                     disabled={!this.validateConfirmationForm()}
                     type="submit"
                     isLoading={this.props.auth.isFetching}
@@ -207,7 +206,6 @@ class Signup extends Component {
                         />
                     </FormGroup>
                     <LoaderButton
-                        block
                         disabled={!this.validateForm()}
                         type="submit"
                         isLoading={this.props.auth.isFetching}

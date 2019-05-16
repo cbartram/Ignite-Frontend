@@ -89,10 +89,10 @@ export const loginFailure = payload => dispatch => {
  * It will dispatch a success or failure event depending on the status of the API call.
  * Note: that this action updates the videos, quiz data and billing information for a user. If you want to just update the billing
  * information it would be better to use fetchBilling()
- * @param email String the email of the user to retrieve videos, billing and quiz data for
+ * @param username String the username of the user to retrieve videos, billing, general info and quiz data for
  * @returns {Function}
  */
-export const fetchVideos = email => async dispatch => {
+export const fetchVideos = username => async dispatch => {
     dispatch({
         type: constants.REQUEST_VIDEOS,
         payload: true // Sets isFetching to true (useful for unit testing redux)
@@ -101,7 +101,7 @@ export const fetchVideos = email => async dispatch => {
     let response = null;
 
     try {
-        response = await getVideos(email);
+        response = await getVideos(username);
     } catch(err) {
         Log.error('Failed to load user data from actions.js API call.', err);
         // An error occurred

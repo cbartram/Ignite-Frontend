@@ -105,8 +105,9 @@ class Videos extends Component {
                 await this.props.findQuestions(`${video.chapter}.${video.sortKey}`);
                 this.props.history.push('/watch');
             } catch(err) {
-                Log.error(err.message);
+                Log.error(err);
                 this.props.pushAlert('danger', 'Oh No!', 'There was an issue retrieving the url for your video refresh the page and try again!');
+                this.setState({ isLoading: false, loadingVideo: null });
             }
         });
     }
@@ -177,7 +178,7 @@ class Videos extends Component {
             return (
                 <div>
                     <div className="row">
-                        <div className="col-md-4 offset-md-4">
+                        <div className="col-md-6 offset-md-4">
                             <h3 className="common-SectionTitle">No Subscription Found</h3>
                             <p className="common-BodyText">
                                 It looks like you aren't subscribed to ignite. If you would like to subscribe and

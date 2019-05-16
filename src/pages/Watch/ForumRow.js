@@ -71,7 +71,7 @@ export default class ForumRow extends Component {
                         <small className="form-text text-muted">Hint: You can use <a href="https://guides.github.com/features/mastering-markdown/" target="_blank" rel="noopener noreferrer">markdown</a> here!</small>
                         <div className="d-flex justify-content-end">
                             <button className="common-Button common-Button--default" onClick={() => {
-                                this.props.onReply({ question_id: this.props.post.sort_id, content: this.state.answerText,  type: 'ANSWER'});
+                                this.props.onReply({ question_id: this.props.post.sid, content: this.state.answerText,  type: 'ANSWER'});
                                 this.setState({ answerText: '' }); // Reset the form fields
                             }}>
                                 Reply <i className="fas fa-reply" />
@@ -86,7 +86,7 @@ export default class ForumRow extends Component {
     render() {
         return (
             <div>
-                <div className="d-flex" style={{ cursor: 'pointer' }} role="button" onClick={() => this.props.onClick(this.props.post.sort_id)}>
+                <div className="d-flex" style={{ cursor: 'pointer' }} role="button" onClick={() => this.props.onClick(this.props.post.sid)}>
                     <div className="avatar-container sm-avatar-container m-2">
                         <img
                             alt="profile_picture"

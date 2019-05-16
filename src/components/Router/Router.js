@@ -29,7 +29,6 @@ const mapStateToProps = state => ({
  */
 class Router extends Component {
     render() {
-        console.log(this.props);
         if(this.props.error)
             return (
                 <BrowserRouter>
@@ -38,7 +37,6 @@ class Router extends Component {
                     </Switch>
                 </BrowserRouter>
             );
-
 
         return (
             <BrowserRouter>

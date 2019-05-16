@@ -185,7 +185,7 @@ class Watch extends Component {
             .then(() => {
                 this.props.pushAlert('success', 'Answer Posted', 'Your answer has been posted successfully!');
             }).catch((err) => {
-            Log.error('[ERROR] Error creating answer', err);
+            Log.error(err);
             // It failed show an error
             this.props.pushAlert('danger', 'Failed to Post', 'There was an issue answering this question. Check your internet connection and try again!');
         });

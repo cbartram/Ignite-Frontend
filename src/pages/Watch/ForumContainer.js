@@ -66,7 +66,7 @@ export default class ForumContainer extends Component {
                             answers = post.answers;
 
                         return <ForumRow
-                            open={this.isOpen(post.sort_id)}
+                            open={this.isOpen(post.sid)}
                             onClick={(id) => this.expandRow(id)}
                             post={post}
                             key={idx}

@@ -288,10 +288,10 @@ export const findQuestions = async (video_id) => {
 
 /**
  * Gets data about the user's videos including: scrub duration, the next video in the queue,
- * @param email String the user's email to retrieve videos from
+ * @param username String the user's username to retrieve the user profile for
  * @returns {Promise<void>}
  */
-export const getVideos = async (email) => {
+export const getVideos = async (username) => {
     const params = {
         method: 'POST',
         headers: {
@@ -305,7 +305,7 @@ export const getVideos = async (email) => {
             method: 'POST',
             path: API_FIND_ALL_USERS,
             parameters: {}, // Query params
-            body: { email }
+            body: { username }
         }),
     };
 
