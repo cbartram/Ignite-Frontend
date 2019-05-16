@@ -12,6 +12,10 @@ const mapStateToProps = state => ({
 });
 
 class App extends Component {
+    componentDidMount() {
+
+    }
+
     render() {
     return (
       <Container noFooterMargin>

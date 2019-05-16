@@ -235,35 +235,6 @@ export const getSignedUrl = (payload) => async dispatch => {
 };
 
 /**
- * Retrieves billing information from the API and stores it in redux.
- * @param email String the users email to retrieve billing details
- * @returns {Function}
- */
-export const fetchBilling = email => async dispatch => {
-    dispatch({
-        type: constants.REQUEST_BILLING,
-        payload: true // Sets isFetching to true (useful for unit testing redux)
-    });
-
-    const response = await getVideos(email);
-
-    if(response.status === 200) {
-        // Dispatch information about billing
-        dispatch({
-            type: constants.BILLING_SUCCESS,
-            payload: response.body.user,
-        });
-    } else if(response.status > 200 || typeof response.status === 'undefined') {
-        // An error occurred
-        dispatch({
-            type: constants.BILLING_FAILURE,
-            payload: { message: `Failed to retrieve billing data from API: ${JSON.stringify(response)}`}
-        });
-    }
-};
-
-
-/**
  * Updates billing details for a user synchronously (without making an additional API call)
  * @param payload Object user billing attributes.
  * @returns {Function}
@@ -331,24 +302,6 @@ export const submitQuiz = (email, quiz) => async dispatch => {
             payload: { message: `Failed to grade the quiz: ${JSON.stringify(response)}`}
         });
     }
-};
-
-
-/**
- * Dispatches an action updating redux store that
- * something has gone wrong retrieving the billing data from DynamoDB/API
- * @param code String error code
- * @param message String the error message to be displayed
- * @returns {Function}
- */
-export const billingFailure = (code, message) => dispatch => {
-  dispatch({
-      type: constants.BILLING_FAILURE,
-      payload: {
-          code,
-          message
-      }
-  });
 };
 
 /**

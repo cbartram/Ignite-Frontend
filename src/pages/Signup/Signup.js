@@ -134,6 +134,7 @@ class Signup extends Component {
     renderConfirmationForm() {
         return (
             <form onSubmit={this.handleConfirmationSubmit}>
+                <p className="mb-3">Note that it may take up to 15 minutes for the email to arrive in your inbox.</p>
                 <FormGroup controlId="confirmationCode">
                     <label>Confirmation Code</label>
                     <FormControl

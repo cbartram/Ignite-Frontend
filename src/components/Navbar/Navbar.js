@@ -70,12 +70,14 @@ class Navbar extends Component {
                 <a className="navbar-brand" href="/">
                     <img src={Logo} width="30" height="30" alt="Ignite Logo" />
                 </a>
-                <h5 className="my-0 mr-2 font-weight-normal">Ignite</h5>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                     <i className="fas fa-bars" style={{ color: '#6772e5'}} />
                 </button>
                 <div className="collapse navbar-collapse" id="navbar-collapse">
                     <div className="navbar-nav">
+                     <Link className="nav-item nav-link p-3 text-dark" to="/">
+                         <h4 className="my-0 mr-2 font-weight-normal">Ignite</h4>
+                     </Link>
                     { this.props.auth.user ? authLinks.map(link => link) : standardLinks.map(link => link) }
                     <Link className="nav-item nav-link p-3 text-dark" to="/support" onClick={() => this.handleLinkClick()}>Support</Link>
                         <ul className="dropdown-list">

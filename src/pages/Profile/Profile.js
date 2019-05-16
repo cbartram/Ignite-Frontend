@@ -155,7 +155,6 @@ class Profile extends Component {
                 path: API_DELETE_SUBSCRIPTION,
                 parameters: {}, // Query params
                 body: {
-                    email: this.props.auth.user.email,
                     deviceKey: this.props.auth.user.deviceKey,
                     username: this.props.auth.user['cognito:username'],
                     refreshToken: this.props.auth.user.refreshToken,
