@@ -235,6 +235,16 @@ export const getSignedUrl = (payload) => async dispatch => {
 };
 
 /**
+ * Handles processing a users payment given a valid Stripe
+ * token representing the users credit card details
+ * @param payload Object payload
+ * @returns {Function}
+ */
+export const processPayment = (payload) => async dispatch => {
+  await post(payload, constants.API_CREATE_SUBSCRIPTION, constants.CREATE_SUBSCRIPTION_REQUEST, constants.CREATE_SUBSCRIPTION_SUCCESS, constants.CREATE_SUBSCRIPTION_FAILURE, dispatch);
+};
+
+/**
  * Updates billing details for a user synchronously (without making an additional API call)
  * @param payload Object user billing attributes.
  * @returns {Function}

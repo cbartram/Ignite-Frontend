@@ -51,6 +51,28 @@ export default (state = {}, action) => {
                     ...action.payload
                 }
             };
+        case constants.CREATE_SUBSCRIPTION_REQUEST:
+            return {
+                ...state,
+                isFetching: true,
+                error: null,
+            };
+        case constants.CREATE_SUBSCRIPTION_FAILURE:
+            return {
+                ...state,
+                isFetching: false,
+                error: action.payload,
+            };
+        case constants.CREATE_SUBSCRIPTION_SUCCESS:
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    ...action.payload.user,
+                    'custom:at_period_end': 'false',
+                    'custom:unsub_timestamp': 'null'
+                }
+            };
         case constants.LOGIN_FAILURE:
             return {
                 ...state,

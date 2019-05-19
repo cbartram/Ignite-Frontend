@@ -7,14 +7,6 @@ import './Modal.css';
  * with custom content.
  */
 export default class Modal extends Component {
-  // constructor(props) {
-  //   super(props);
-  //
-  //   this.state = {
-  //     open: false,
-  //   }
-  // }
-
   render() {
       return (
           <div

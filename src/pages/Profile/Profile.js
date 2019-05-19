@@ -140,9 +140,6 @@ class Profile extends Component {
     async unsubscribe() {
         // Dispatch an isFetching for videos so that the loading screen appears
         this.props.requestVideos();
-
-        console.log(this.props.auth.user);
-
         const params = {
             method: 'POST',
             headers: {
@@ -166,10 +163,7 @@ class Profile extends Component {
 
         // Attempt to make the API call
        let response = await (await fetch(getRequestUrl(API_DELETE_SUBSCRIPTION), params)).json();
-       console.log(response);
-
        // To test the subscription end feature set trial_end field in DynamoDB to 1551164545
-
        if(response.status <= 200) {
            // At this point the user may have been unsubscribed at_period_end in which case we will want
            // to hide the unsubscribe button and update the user in redux from dynamodb with the new at_period_end: true property

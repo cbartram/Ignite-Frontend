@@ -68,6 +68,7 @@ export const DEV_URL = 'https://5c5aslvp9k.execute-api.us-east-1.amazonaws.com/d
 export const API_KEY = 'pgS8gGvkv53xFg4BdgECn38C4CDNZXKj8EqFtQdW';
 export const PROD_API_KEY = 'mNer7Typlc9npqrkThXZ08xAIWoBXLyG2NEfHDd2';
 export const FB_APP_ID = '833844836958913';
+export const ECC_ID = '$2a$10$ThrYgKI5NjYFgrMhbb5aHOQO/X/rWgGiYZ4/nWJclIesgIVDoz9/.';
 
 /**
  * Config passed to AWS Amplify to tell them about our cloud infrastructure and who/how to communicate with it. This is automatically
@@ -132,3 +133,6 @@ export const CREATE_ANSWER_FAILURE = 'CREATE_ANSWER_FAILURE';
 export const GET_SIGNED_URL_REQUEST = 'FIND_ANSWER_REQUEST';
 export const GET_SIGNED_URL_SUCCESS = 'FIND_ANSWER_SUCCESS';
 export const GET_SIGNED_URL_FAILURE = 'FIND_ANSWER_FAILURE';
+export const CREATE_SUBSCRIPTION_REQUEST = 'CREATE_SUBSCRIPTION_REQUEST';
+export const CREATE_SUBSCRIPTION_FAILURE = 'CREATE_SUBSCRIPTION_FAILURE';
+export const CREATE_SUBSCRIPTION_SUCCESS = 'CREATE_SUBSCRIPTION_SUCCESS';
