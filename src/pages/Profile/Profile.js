@@ -141,6 +141,8 @@ class Profile extends Component {
         // Dispatch an isFetching for videos so that the loading screen appears
         this.props.requestVideos();
 
+        console.log(this.props.auth.user);
+
         const params = {
             method: 'POST',
             headers: {

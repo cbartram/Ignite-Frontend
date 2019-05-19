@@ -23,7 +23,7 @@ const mapDispatchToProps = dispatch => ({
     loginSuccess: (data) => dispatch(loginSuccess(data)),
     loginFailure: (data) => dispatch(loginFailure(data)),
     hideErrors: () => dispatch(hideErrors()),
-    fetchVideos: (email) => dispatch(fetchVideos(email))
+    fetchVideos: (username) => dispatch(fetchVideos(username))
 });
 
 /**
@@ -117,7 +117,7 @@ class Signup extends Component {
 
             this.props.loginSuccess(user);
             Log.info('Sign-in successful!');
-            this.props.fetchVideos(this.state.email);
+            this.props.fetchVideos(`user-${user.username}`);
             this.props.history.push('/videos');
         } catch (err) {
             Log.error('Error confirming user code or logging user in...', err);

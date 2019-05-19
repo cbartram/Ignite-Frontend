@@ -3,6 +3,7 @@
  * This file houses a collection of helper functions used in multiple places throughout the application
  * @author cbartram
  */
+import _ from 'lodash';
 import Log from './Log';
 import {
     IS_PROD,
@@ -168,7 +169,7 @@ export const updateCache = (values) => {
        let keyId = key.substring(key.lastIndexOf('.') + 1, key.length);
 
        // Only update what was provided in the values object nothing more nothing less
-       if(typeof values[keyId] !== 'undefined') {
+       if(!_.isUndefined(values[keyId])) {
            switch (keyId) {
                case 'accessToken':
                    localStorage.setItem(key, values['accessToken']);

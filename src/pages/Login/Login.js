@@ -25,7 +25,7 @@ const mapDispatchToProps = dispatch => ({
     loginSuccess: (data) => dispatch(loginSuccess(data)),
     loginFailure: (data) => dispatch(loginFailure(data)),
     loginRequest: () => dispatch(loginRequest()),
-    fetchVideos: (email) => dispatch(fetchVideos(email)),
+    fetchVideos: (username) => dispatch(fetchVideos(username)),
     updateVideosSync: (videos) => dispatch(updateVideosSync(videos)),
 });
 
@@ -87,7 +87,7 @@ class Login extends Component {
             Log.info('Login Success!', res);
             // Fetches both user videos and user billing information
             // using the same API route
-            this.props.fetchVideos(this.state.email);
+            this.props.fetchVideos(`user-${res.username}`);
             this.props.loginSuccess(res);
         } catch (err) {
             if(err.code === 'NotAuthorizedException')
@@ -100,7 +100,7 @@ class Login extends Component {
                 localStorage.clear();
                 const res = await Auth.signIn(this.state.email, this.state.password);
                 Log.info('Login Success!', res);
-                this.props.fetchVideos(this.state.email);
+                this.props.fetchVideos(`user-${res.username}`);
                 this.props.loginSuccess(res);
             } else {
                 this.props.loginFailure(err);

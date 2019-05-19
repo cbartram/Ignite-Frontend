@@ -15,6 +15,8 @@ import { loginSuccess, fetchVideos } from './actions/actions';
 import { AMPLIFY_CONFIG } from './constants';
 import {IS_PROD} from "./constants";
 import { Loader } from "semantic-ui-react";
+import { StripeProvider, Elements } from 'react-stripe-elements';
+
 
 // Object holding action types as keys and promises as values which need resolutions
 const typeResolvers = {};
@@ -90,7 +92,8 @@ const load = async () => {
     Log.info('Checking User Authentication status...');
     try {
         const user = await Auth.currentSession();
-        Log.info(user.idToken.payload.email, 'Found Authenticated user within a Cookie!');
+
+        Log.info(user.idToken.payload['cognito:username'], 'Found Authenticated user within a Cookie!');
         Log.info('Attempting to retrieve user videos...');
 
         // Using our custom middleware we can now wait for a async dispatch to complete
@@ -101,7 +104,9 @@ const load = async () => {
     }
     catch (e) {
         Log.warn('Could not find authenticated user.');
-        console.log('No User found error caught.');
+        // Check Cognito for an active session on the server
+        const tryAgain = await Auth.currentAuthenticatedUser({ bypassCache: true });
+        console.log(tryAgain);
         if (e !== 'No current user') {
             Log.error(e);
         }
@@ -117,7 +122,11 @@ const render = async () => {
     // Render a loading page immediately while we wait for our content to load
     ReactDOM.render(
         <Provider store={store}>
-            <Loader active />
+            <StripeProvider apiKey="pk_test_AIs6RYV3qrxG6baDpohxn1L7">
+                <Elements>
+                    <Loader active />
+                </Elements>
+            </StripeProvider>
         </Provider>,document.getElementById('root'));
 
     try {
@@ -128,14 +137,22 @@ const render = async () => {
 
         ReactDOM.render(
         <Provider store={store}>
-            <Router error />
+            <StripeProvider apiKey="pk_test_AIs6RYV3qrxG6baDpohxn1L7">
+                <Elements>
+                    <Router error />
+                </Elements>
+            </StripeProvider>
         </Provider>, document.getElementById('root'));
     }
 
     // Now render the full page
     ReactDOM.render(
         <Provider store={store}>
-            <Router />
+            <StripeProvider apiKey="pk_test_AIs6RYV3qrxG6baDpohxn1L7">
+                <Elements>
+                    <Router />
+                </Elements>
+            </StripeProvider>
         </Provider>
         , document.getElementById('root'));
 
