@@ -42,7 +42,7 @@ class Pricing extends Component {
                 <PaymentModal
                     onFailedPayment={(errorMessage) => {
                         Log.error(errorMessage);
-                        this.props.pushAlert('danger', 'Subscription Failed', 'Unfortunately something went wrong processing your payment')
+                        this.props.pushAlert('danger', 'Subscription Failed', `Unfortunately something went wrong processing your payment. ${errorMessage}`)
                     }}
                     onSuccessfulPayment={() => this.props.history.push('/videos')}
                 />

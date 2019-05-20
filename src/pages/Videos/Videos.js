@@ -100,7 +100,7 @@ class Videos extends Component {
                 await this.props.getSignedUrl({
                     video,
                     resourceUrl: `${IS_PROD ? 'https://d2hhpuhxg00qg.cloudfront.net' : 'https://dpvchyatyxxeg.cloudfront.net'}/chapter${video.chapter}/${video.s3Name}.mov`,
-                    jwtToken: this.props.user.jwtToken
+                    jwtToken: this.props.user.jwtToken // TODO After a user subscribes this somehow contains an old token
                 });
                 await this.props.findQuestions(`${video.chapter}.${video.sortKey}`);
                 this.props.history.push('/watch');

@@ -8,16 +8,10 @@ import {
     updateUserAttributes,
     fetchVideos,
     processPayment,
+    loginSuccess,
 } from '../../actions/actions';
 import Modal from '../Modal/Modal';
-import {
-    API_CREATE_SUBSCRIPTION,
-    API_KEY,
-    PROD_API_KEY,
-    IS_PROD,
-    ECC_ID,
-    getRequestUrl,
-} from '../../constants';
+import { ECC_ID } from '../../constants';
 import Log from '../../Log';
 import './PaymentModal.css';
 
@@ -30,6 +24,7 @@ const mapDispatchToProps = dispatch => ({
     updateUserAttributes: (payload) => dispatch(updateUserAttributes(payload)),
     fetchVideos: (username) => dispatch(fetchVideos(username)),
     processPayment: (payload) => dispatch(processPayment(payload)),
+    loginSuccess: (data) => dispatch(loginSuccess(data)),
 });
 
 /**
@@ -81,6 +76,7 @@ class PaymentModal extends Component {
      * @param complete Boolean true if the form is complete and flase otherwise
      */
     handleCardFieldChange = ({complete}) => {
+        console.log(complete);
         this.setState({
             isCardComplete: complete
         });
@@ -95,12 +91,12 @@ class PaymentModal extends Component {
     async handleSubmitClick(event) {
         event.preventDefault();
 
-        const {fields} = this.state;
+        const {fields, isCardComplete } = this.state;
         const {firstName, lastName} = fields;
 
         // If any of the fields are blank do not submit the request
-        if (firstName.length === 0 || lastName.length === 0) {
-            this.setState({error: 'Some of the fields were left blank!', success: false, loading: false});
+        if (firstName.length === 0 || lastName.length === 0 || !isCardComplete) {
+            this.props.onFailedPayment('Some of the fields were left blank or there were errors in the form');
             return;
         }
 
@@ -118,8 +114,7 @@ class PaymentModal extends Component {
                 deviceKey: this.props.user.deviceKey,
                 refreshToken: this.props.user.refreshToken,
                 customerId: this.props.user['custom:customer_id']
-            })
-                .then(() => this.props.fetchVideos(`user-${this.props.user['cognito:username']}`)
+            }).then(() => this.props.fetchVideos(`user-${this.props.user['cognito:username']}`)
                     .then(async () => {
                         // Decrypt localStorage info
                         const bytes  = Crypto.AES.decrypt(localStorage.getItem('ECC_ID'), ECC_ID);
@@ -128,7 +123,10 @@ class PaymentModal extends Component {
                         // Completely revoke all previous (stale) user tokens
                         // and re-authenticate the user with new info (now cache/session is up to date)
                         await Auth.signOut({ global: true });
-                        await Auth.signIn(this.props.user.email, original);
+                        const user = await Auth.signIn(this.props.user.email, original);
+
+                        // Update user attributes in redux
+                        this.props.loginSuccess(user);
 
                         // Finally stop loading, close the modal and redirect to the /videos page
                         this.setState({ loading: false });
