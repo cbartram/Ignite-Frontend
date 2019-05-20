@@ -122,6 +122,41 @@ class Videos extends Component {
         return index === arr.length - 1;
     }
 
+    renderJumbotron() {
+        return (
+            <Jumbotron>
+                <h3 className="common-SectionTitle">
+                    Welcome to Videos
+                </h3>
+                <div className="row">
+                    <div className="col-md-8">
+                        <p className="common-BodyText">
+                            These videos are a customized list of chapters, quizzes and workshops that provide a guided learning path for a particular subject.
+                            Each course or quiz in a chapter builds on the previous one, so that as you progress through the videos you gain a solid
+                            understanding of the broader topic and how it fits into full stack development.
+                        </p>
+                    </div>
+                    <div className="col-md-3 offset-md-1">
+                        <svg width="150" height="150" viewBox="0 0 40 40">
+                            <g stroke="#0CB" strokeWidth="2" fill="none">
+                                <path d="M4 35c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2h32c1.1 0 2 .9 2 2v26c0 1.1-.9 2-2 2H4z" />
+                                <path d="M14 20h8" />
+                                <path d="M8 12l4 3.5L8 19" />
+                            </g>
+                        </svg>
+                    </div>
+                    {/*<svg width="40" height="40">*/}
+                    {/*<g stroke="#0CB" strokeWidth="2" fill="none">*/}
+                    {/*<path d="M4 35c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2h32c1.1 0 2 .9 2 2v26c0 1.1-.9 2-2 2H4z" strokeDasharray="128.56021118164062" strokeDashoffset="128.56021118164062" style={{opacity: 1}} />*/}
+                    {/*<path d="M14 20h8" strokeDasharray="8" strokeDashoffset="8" style={{opacity: 1 }} />*/}
+                    {/*<path d="M8 12l4 3.5L8 19" strokeDasharray="10.630146026611328" strokeDashoffset="10.630146026611328" style={{ opacity: 1 }} />*/}
+                    {/*</g>*/}
+                    {/*</svg>*/}
+                </div>
+            </Jumbotron>
+        )
+    }
+
     /**
      * Renders a quiz card to the DOM
      * @param quizArr Array passed in from quiz.filter() could be []
@@ -172,7 +207,34 @@ class Videos extends Component {
 
     render() {
         // Only returned when history.push('/videos') happens
-        if(this.props.videos.isFetching) return <Loader active />;
+        if(this.props.videos.isFetching)
+            return (
+                <div>
+                    { this.renderJumbotron() }
+                    <div className="row">
+                    {
+                        Array.from(new Array(8)).map(i => {
+                            return (
+                                <div className="col-md-3 col-lg-3 col-sm-12 d-flex align-items-stretch pb-2 px-4 my-4" key={_.uniqueId()}>
+                                    <section className="card card-skeleton">
+                                        <div className="d-flex justify-content-center align-items-center cover card-skeleton skeleton-loading" />
+                                        <div className="card-detail-skeleton">
+                                            <h3 className="card-title-skeleton skeleton-loading" />
+                                        </div>
+                                        <div className="card-detail-skeleton">
+                                            <h3 className="card-title-skeleton skeleton-loading" />
+                                        </div>
+                                        <div className="card-detail-skeleton">
+                                            <h3 className="card-title-skeleton skeleton-loading" />
+                                        </div>
+                                    </section>
+                                </div>
+                            )
+                        })
+                    }
+                    </div>
+                </div>
+            );
 
         if(((!_.isUndefined(this.props.videos.videoList) && _.size(this.props.videos.videoList) === 0) || this.props.auth.user['custom:premium'] === 'false'))
             return (
@@ -196,36 +258,7 @@ class Videos extends Component {
 
         return (
             <div>
-                <Jumbotron>
-                    <h3 className="common-SectionTitle">
-                        Welcome to Videos
-                    </h3>
-                    <div className="row">
-                        <div className="col-md-8">
-                            <p className="common-BodyText">
-                                These videos are a customized list of chapters, quizzes and workshops that provide a guided learning path for a particular subject.
-                                Each course or quiz in a chapter builds on the previous one, so that as you progress through the videos you gain a solid
-                                understanding of the broader topic and how it fits into full stack development.
-                            </p>
-                        </div>
-                        <div className="col-md-3 offset-md-1">
-                            <svg width="150" height="150" viewBox="0 0 40 40">
-                                <g stroke="#0CB" strokeWidth="2" fill="none">
-                                    <path d="M4 35c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2h32c1.1 0 2 .9 2 2v26c0 1.1-.9 2-2 2H4z" />
-                                    <path d="M14 20h8" />
-                                    <path d="M8 12l4 3.5L8 19" />
-                                </g>
-                            </svg>
-                        </div>
-                        {/*<svg width="40" height="40">*/}
-                        {/*<g stroke="#0CB" strokeWidth="2" fill="none">*/}
-                        {/*<path d="M4 35c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2h32c1.1 0 2 .9 2 2v26c0 1.1-.9 2-2 2H4z" strokeDasharray="128.56021118164062" strokeDashoffset="128.56021118164062" style={{opacity: 1}} />*/}
-                        {/*<path d="M14 20h8" strokeDasharray="8" strokeDashoffset="8" style={{opacity: 1 }} />*/}
-                        {/*<path d="M8 12l4 3.5L8 19" strokeDasharray="10.630146026611328" strokeDashoffset="10.630146026611328" style={{ opacity: 1 }} />*/}
-                        {/*</g>*/}
-                        {/*</svg>*/}
-                    </div>
-                </Jumbotron>
+                { this.renderJumbotron() }
                 {
                     this.props.videos.videoList.map((chapter, i) => {
                         return (

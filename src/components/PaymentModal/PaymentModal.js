@@ -157,20 +157,6 @@ class PaymentModal extends Component {
     render() {
         return (
             <div className="modal" id="payment-modal" tabIndex="-1" role="dialog">
-                {
-                    this.state.nestedModal && (
-                        <Modal
-                            open={this.state.nestedModal}
-                            id="payment-confirm"
-                            title="Confirm Payment"
-                            subtitle="Please authenticate to confirm your subscription"
-                        >
-
-                        </Modal>
-                    )
-                }
-
-
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
