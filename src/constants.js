@@ -56,7 +56,6 @@ export const API_SUBMIT_QUIZ = '/quiz/grade';
 export const API_POST_QUESTION = '/posts/create';
 export const API_POST_FIND_QUESTIONS = '/posts/find';
 export const API_ANSWER_CREATE = '/posts/answer/create';
-export const API_ANSWER_FIND = '/posts/answer/find';
 
 // Prod Params
 export const PROD_URL = 'https://2147bwmah5.execute-api.us-east-1.amazonaws.com/prod';

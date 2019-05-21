@@ -18,6 +18,7 @@ import {
     videosFetched,
     unsubscribe,
     loginSuccess,
+    fetchVideos,
 } from '../../actions/actions';
 import Log from '../../Log';
 
@@ -37,6 +38,7 @@ const mapDispatchToProps = dispatch => ({
    loadingComplete: () => dispatch(videosFetched()),
    unsubscribe: (payload) => dispatch(unsubscribe(payload)),
    loginSuccess: (payload) => dispatch(loginSuccess(payload)),
+   fetchVideos: (payload) => dispatch(fetchVideos(payload)),
 });
 
 /**
@@ -136,12 +138,13 @@ class Profile extends Component {
      */
     async unsubscribe() {
         this.props.unsubscribe({
-            username: this.props.auth.user.userName,
-            subscriptionId: this.props.auth.user.subscription_id,
-            trialEnd: this.props.auth.user.trial_end,
+            username: this.props.user.userName,
+            subscriptionId: this.props.user.subscription_id,
+            trialEnd: this.props.user.trial_end,
         }).then(async () => {
             //Update user attributes in redux
-            console.log('Unsubscribe successful!');
+            this.props.fetchVideos(`user-${this.props.user.userName}`);
+            this.props.pushAlert('success', 'Unsubscribe Successful', 'You Ignite subscription has been cancelled successfully. If you are outside of your trial period you will still retain access to video content until the end of the billing cycle.');
         }).catch(err => {
             Log.error(err);
             this.props.pushAlert('danger', 'Unsubscribe Failed', 'Something went wrong trying to un-subscribe you from your plan. Please try again shortly!')
@@ -164,7 +167,7 @@ class Profile extends Component {
      * Renders the date when the bill will renew for the user
      */
     renderRenewalDate() {
-        if(this.props.auth.user['custom:at_period_end'] === 'true') {
+        if(this.props.user.at_period_end === true) {
             return <span className="badge badge-pill badge-secondary py-1 px-2">Subscription Cancelled</span>
         }
 
@@ -296,7 +299,7 @@ class Profile extends Component {
                                 {
                                     // Only show the button to user's who are actively subscribed
                                     // (dont show to users whos subscription will end at the close of the next period)
-                                    (this.props.billing.premium && this.props.billing.premium !== 'false' && this.props.auth.user['custom:at_period_end'] !== 'true' ) &&
+                                    (this.props.billing.premium && this.props.billing.premium !== 'false' && this.props.user.at_period_end !== true ) &&
                                     <button className="btn btn-danger"
                                             onClick={() => this.unsubscribe()}>
                                         Cancel Subscription
@@ -320,7 +323,7 @@ class Profile extends Component {
                                         </td>
                                         <td>
                                             <span className="value">
-                                                { `${this.props.auth.user['custom:first_name']} ${this.props.auth.user['custom:last_name']}`}
+                                                { this.props.user.name }
                                             </span>
                                         </td>
                                     </tr>
@@ -330,7 +333,7 @@ class Profile extends Component {
                                         </td>
                                         <td>
                                             <span className="value">
-                                                { this.props.auth.user.email }
+                                                { this.props.user.email }
                                             </span>
                                         </td>
                                     </tr>
@@ -356,7 +359,7 @@ class Profile extends Component {
                                         </td>
                                         <td>
                                             {
-                                                this.props.auth.user['custom:plan'] === 'Basic Plan' ?
+                                                this.props.user.plan === 'Basic Plan' ?
                                                     <span className="value">Basic Plan</span> :
                                                     <span className="value missing">No Plan</span>
                                             }
@@ -383,14 +386,14 @@ class Profile extends Component {
                                         </td>
                                     </tr>
                                     {
-                                        this.props.auth.user['custom:at_period_end'] === 'true' &&
+                                        this.props.user.at_period_end === true &&
                                         <tr>
                                             <td className="key">
                                                 Subscription Ends
                                             </td>
                                             <td>
                                                 <span className="value">
-                                                    <span className="badge badge-pill badge-secondary px-2 py-1">{ moment.unix(this.props.auth.user['custom:unsub_timestamp']).fromNow() }</span>
+                                                    <span className="badge badge-pill badge-secondary px-2 py-1">{ moment.unix(this.props.user.unsub_timestamp).fromNow() }</span>
                                                 </span>
                                             </td>
                                         </tr>

@@ -86,7 +86,6 @@ export default (state = {}, action) => {
                 error: action.payload,
             };
         case constants.UNSUBSCRIBE_SUCCESS:
-                console.log('[Payload]: ', action.payload);
                 if(action.payload.atPeriodEnd || action.payload.cancelConfirmation.cancel_at_period_end) {
                     return {
                         ...state,
