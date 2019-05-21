@@ -79,9 +79,9 @@ export const AMPLIFY_CONFIG = {
     Auth: {
         mandatorySignIn: true,
         region: 'us-east-1',
-        userPoolId: IS_PROD ? 'us-east-1_G2KMemCwv' : 'us-east-1_XYjhXhc4h',
+        userPoolId: IS_PROD ? 'us-east-1_G2KMemCwv' : 'us-east-1_ku7yOxe6k',
         identityPoolId:  IS_PROD ? 'us-east-1:ffa56150-299b-4046-8e68-9a35939fa6eb' : 'us-east-1:18d3e90b-3f5d-43ba-b7cb-6baae3072215',
-        userPoolWebClientId: IS_PROD ? '6htmdguetd3vroie25jvt69oot' : '4nlb23tujafrmojl2hibe9u6sk'
+        userPoolWebClientId: IS_PROD ? '6htmdguetd3vroie25jvt69oot' : '29mat74dp2pep5bmh532gjepm2'
     },
     Storage: {
         region: 'us-east-1',
@@ -136,3 +136,6 @@ export const GET_SIGNED_URL_FAILURE = 'FIND_ANSWER_FAILURE';
 export const CREATE_SUBSCRIPTION_REQUEST = 'CREATE_SUBSCRIPTION_REQUEST';
 export const CREATE_SUBSCRIPTION_FAILURE = 'CREATE_SUBSCRIPTION_FAILURE';
 export const CREATE_SUBSCRIPTION_SUCCESS = 'CREATE_SUBSCRIPTION_SUCCESS';
+export const UNSUBSCRIBE_REQUEST = 'UNSUBSCRIBE_REQUEST';
+export const UNSUBSCRIBE_FAILURE = 'UNSUBSCRIBE_FAILURE';
+export const UNSUBSCRIBE_SUCCESS = 'UNSUBSCRIBE_SUCCESS';

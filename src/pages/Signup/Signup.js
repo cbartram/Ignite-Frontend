@@ -78,16 +78,7 @@ class Signup extends Component {
                 username: this.state.email,
                 password: this.state.password,
                 attributes: {
-                    'custom:first_name': this.state.first_name,
-                    'custom:last_name': this.state.last_name,
-                    'custom:profile_picture': 'https://t4.ftcdn.net/jpg/02/15/84/43/240_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg', // Give them a default profile picture
-                    'custom:customer_id': 'null',
-                    'custom:plan_id': 'null',
-                    'custom:subscription_id': 'null',
-                    'custom:premium': 'false',
-                    'custom:plan': 'none',
-                    'custom:at_period_end': 'false',
-                    'custom:unsub_timestamp': 'null'
+                    name: `${this.state.first_name} ${this.state.last_name}`,
                 }
             });
 

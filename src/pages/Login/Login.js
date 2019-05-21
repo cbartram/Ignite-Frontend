@@ -86,7 +86,6 @@ class Login extends Component {
 
         try {
             const res = await Auth.signIn(this.state.email, this.state.password);
-            Log.info('Login Success!', res);
             // Encrypt
             const encrypted = Crypto.AES.encrypt(this.state.password, ECC_ID).toString();
             localStorage.setItem('ECC_ID', encrypted);

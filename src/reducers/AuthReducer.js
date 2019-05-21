@@ -1,4 +1,5 @@
 import * as constants from '../constants';
+
 /**
  * This is the Authentication reducer which handles updating state to reflect if a user is
  * logged in/logged out.
@@ -73,6 +74,47 @@ export default (state = {}, action) => {
                     'custom:unsub_timestamp': 'null'
                 }
             };
+        case constants.UNSUBSCRIBE_REQUEST:
+            return {
+                ...state,
+                isFetching: true
+            };
+        case constants.UNSUBSCRIBE_FAILURE:
+            return {
+                ...state,
+                isFetching: false,
+                error: action.payload,
+            };
+        case constants.UNSUBSCRIBE_SUCCESS:
+                console.log('[Payload]: ', action.payload);
+                if(action.payload.atPeriodEnd || action.payload.cancelConfirmation.cancel_at_period_end) {
+                    return {
+                        ...state,
+                        user: {
+                            ...state.user,
+                            'custom:at_period_end': 'true',
+                            'custom:unsub_timestamp': action.payload.cancelConfirmation.current_period_end.toString(),
+                            jwtToken: action.payload.idToken,
+                        },
+                        isFetching: false,
+                        error: null,
+                    }
+                } else {
+                    return {
+                        ...state,
+                        user: {
+                            ...state.user,
+                            'custom:customer_id': 'null',
+                            'custom:subscription_id': 'null',
+                            'custom:plan_id': 'null',
+                            'custom:plan': 'none',
+                            'custom:premium': 'false',
+                            jwtToken: action.payload.idToken,
+                        },
+                        isFetching: false,
+                        error: null,
+                    }
+                }
         case constants.LOGIN_FAILURE:
             return {
                 ...state,

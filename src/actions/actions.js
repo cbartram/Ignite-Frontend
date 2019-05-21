@@ -9,6 +9,10 @@ import {
     storeQuiz,
     post,
 } from '../util';
+import {IS_PROD} from "../constants";
+import {PROD_API_KEY} from "../constants";
+import {API_KEY} from "../constants";
+import {API_DELETE_SUBSCRIPTION} from "../constants";
 
 /**
  * Updates a users attributes within redux
@@ -242,6 +246,15 @@ export const getSignedUrl = (payload) => async dispatch => {
  */
 export const processPayment = (payload) => async dispatch => {
   await post(payload, constants.API_CREATE_SUBSCRIPTION, constants.CREATE_SUBSCRIPTION_REQUEST, constants.CREATE_SUBSCRIPTION_SUCCESS, constants.CREATE_SUBSCRIPTION_FAILURE, dispatch);
+};
+
+/**
+ * Handles un subscribing a user from their current plan.
+ * @param payload Object payload containing the cognito username, refreshToken and accessKey
+ * @returns {Function}
+ */
+export const unsubscribe = (payload) => async dispatch => {
+    await post(payload, constants.API_DELETE_SUBSCRIPTION, constants.UNSUBSCRIBE_REQUEST, constants.UNSUBSCRIBE_SUCCESS, constants.UNSUBSCRIBE_FAILURE, dispatch);
 };
 
 /**

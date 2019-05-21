@@ -76,7 +76,6 @@ class PaymentModal extends Component {
      * @param complete Boolean true if the form is complete and flase otherwise
      */
     handleCardFieldChange = ({complete}) => {
-        console.log(complete);
         this.setState({
             isCardComplete: complete
         });
@@ -103,14 +102,14 @@ class PaymentModal extends Component {
         this.setState({ loading: true});
 
         try {
-            const { token } = await this.props.stripe.createToken({name: `${firstName} ${lastName}`});
+            const { token } = await this.props.stripe.createToken({ name: `${firstName} ${lastName}`});
             Log.info('Stripe Token: ', token);
 
             this.props.processPayment({
                 name: `${firstName} ${lastName}`,
                 email: this.props.user.email,
                 token,
-                'cognito:username': this.props.auth.user['cognito:username'],
+                'cognito:username': this.props.user['cognito:username'],
                 deviceKey: this.props.user.deviceKey,
                 refreshToken: this.props.user.refreshToken,
                 customerId: this.props.user['custom:customer_id']

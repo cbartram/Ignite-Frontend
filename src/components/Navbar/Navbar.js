@@ -86,14 +86,14 @@ class Navbar extends Component {
                                     <li className="nav-item dropdown user-avatar">
                                         <button className="btn btn-link dropdown-toggle" id="navbarDropdown" data-toggle="dropdown">
                                             <div className="avatar-container">
-                                                <img src={this.props.auth.user['custom:profile_picture']} alt="Profile" className="avatar-image" height="30" width="30" />
+                                                <img src="https://t4.ftcdn.net/jpg/02/15/84/43/240_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg" alt="Profile" className="avatar-image" height="30" width="30" />
                                             </div>
                                         </button>
                                         <div className="dropdown-menu dropdown-menu-right header-nav-item-profile-dropdown mt-2 py-0">
                                             <h4 className="dropdown-title">
                                                 <Link to="/profile" className="header-nav-item-profile-dropdown-title-link dropdown-link">
                                                     <strong className="header-nav-item-profile-dropdown-title-name">
-                                                        {`${this.props.auth.user['custom:first_name']} ${this.props.auth.user['custom:last_name']}`}
+                                                        {this.props.auth.user.name}
                                                     </strong>
                                                     <span className="header-nav-item-profile-dropdown-title-label">View Profile</span>
                                                 </Link>

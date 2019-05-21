@@ -3,19 +3,14 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { FormGroup, FormControl } from 'react-bootstrap';
 import { withRouter } from "react-router-dom";
-import LoaderButton from "../../components/LoaderButton/LoaderButton";
 import { Auth } from 'aws-amplify/lib/index';
 import moment from 'moment/moment';
+import Crypto from 'crypto-js';
+import { ECC_ID } from "../../constants";
 import withContainer from '../../components/withContainer';
 import Card from '../../components/Card/Card';
+import LoaderButton from "../../components/LoaderButton/LoaderButton";
 import './Profile.css';
-import {
-    API_DELETE_SUBSCRIPTION,
-    API_KEY,
-    IS_PROD,
-    PROD_API_KEY,
-    getRequestUrl,
-} from '../../constants';
 import {
     updateBillingSync,
     updateVideosSync,
@@ -23,12 +18,14 @@ import {
     updateActiveVideo,
     updateUserAttributes,
     videosFetched,
+    unsubscribe,
+    loginSuccess,
 } from '../../actions/actions';
 import Log from '../../Log';
-import { updateCache } from '../../util';
 
 const mapStateToProps = state => ({
     auth: state.auth,
+    user: state.auth.user,
     videos: state.videos,
     billing: state.billing,
 });
@@ -39,7 +36,9 @@ const mapDispatchToProps = dispatch => ({
    updateActiveVideo: (video) => dispatch(updateActiveVideo(video)),
    updateVideosSync: (videos) => dispatch(updateVideosSync(videos)),
    requestVideos: () => dispatch(requestVideos()),
-   loadingComplete: () => dispatch(videosFetched())
+   loadingComplete: () => dispatch(videosFetched()),
+   unsubscribe: (payload) => dispatch(unsubscribe(payload)),
+   loginSuccess: (payload) => dispatch(loginSuccess(payload)),
 });
 
 /**
@@ -138,70 +137,59 @@ class Profile extends Component {
      * are in their trial period.
      */
     async unsubscribe() {
-        // Dispatch an isFetching for videos so that the loading screen appears
-        this.props.requestVideos();
-        const params = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'x-api-key': IS_PROD ? PROD_API_KEY : API_KEY,
-            },
-            // Since this is calling an API these details are crucial for the lambda function to know which route to execute.
-            body: JSON.stringify({
-                headers: {},
-                method: 'POST',
-                path: API_DELETE_SUBSCRIPTION,
-                parameters: {}, // Query params
-                body: {
-                    deviceKey: this.props.auth.user.deviceKey,
-                    username: this.props.auth.user['cognito:username'],
-                    refreshToken: this.props.auth.user.refreshToken,
-                }
-            }),
-        };
+        this.props.unsubscribe({
+            deviceKey: this.props.auth.user.deviceKey,
+            username: this.props.auth.user['cognito:username'],
+            refreshToken: this.props.auth.user.refreshToken,
+        }).then(async () => {
+            // Decrypt localStorage info
+            const bytes  = Crypto.AES.decrypt(localStorage.getItem('ECC_ID'), ECC_ID);
+            const original = bytes.toString(Crypto.enc.Utf8);
 
-        // Attempt to make the API call
-       let response = await (await fetch(getRequestUrl(API_DELETE_SUBSCRIPTION), params)).json();
-       // To test the subscription end feature set trial_end field in DynamoDB to 1551164545
-       if(response.status <= 200) {
-           // At this point the user may have been unsubscribed at_period_end in which case we will want
-           // to hide the unsubscribe button and update the user in redux from dynamodb with the new at_period_end: true property
-           // but avoid actually updating any of the users properties/billing info since they are still technically subscribers
-           if(response.body.atPeriodEnd || response.body.cancelConfirmation.cancel_at_period_end) {
-               Log.info(`The users subscription will end in: ${moment.unix(response.body.cancelConfirmation.current_period_end).fromNow()}`);
-               this.props.unsubscribeUser({
-                   'custom:at_period_end': 'true',
-                   'custom:unsub_timestamp': response.body.cancelConfirmation.current_period_end.toString(),
-                   jwtToken: response.body.idToken,
-               });
-               this.props.loadingComplete(); // Turns off the loading spinners
-               this.props.pushAlert('success', 'Subscription Cancelled', 'Your subscription has been cancelled. You will not be billed at the end of the period but can still view our videos' +
-                   'until the end of your period.');
-               updateCache({ idToken: response.body.idToken });
+            // Completely revoke all previous (stale) user tokens
+            // and re-authenticate the user with new info (now cache/session is up to date)
+            await Auth.signOut({ global: true });
+            const user = await Auth.signIn(this.props.user.email, original);
 
-           } else {
-                // Their subscription was cancelled immediately
-               // Update user attributes in redux sychronously (without doing another /users/find call)
-               this.props.updateBillingSync(response.body.user.Attributes);
-               this.props.unsubscribeUser({
-                   'custom:customer_id': 'null',
-                   'custom:subscription_id': 'null',
-                   'custom:plan_id': 'null',
-                   'custom:plan': 'none',
-                   'custom:premium': 'false',
-                   jwtToken: response.body.idToken,
-               });
-               this.props.updateVideosSync([]);
-               this.props.pushAlert('success', 'Subscription Cancelled', 'Your subscription has been cancelled. You no longer have access to view video content');
+            // Update user attributes in redux
+            this.props.loginSuccess(user);
+        }).catch(err => {
+            Log.error(err);
+            this.props.pushAlert('danger', 'Unsubscribe Failed', 'Something went wrong trying to un-subscribe you from your plan. Please try again shortly!')
+        });
 
-               updateCache({ idToken: response.body.idToken });
-           }
-       } else {
-            // There was an error un-subscribing
-           this.props.updateVideosSync([]);
-           this.props.pushAlert('danger', 'Unsubscribe Failed', 'Something went wrong trying to un-subscribe you from your plan. Please try again shortly!')
-       }
+
+
+        //  // Attempt to make the API call
+       // // To test the subscription end feature set trial_end field in DynamoDB to 1551164545
+       // if(response.status <= 200) {
+       //         this.props.loadingComplete(); // Turns off the loading spinners
+       //         this.props.pushAlert('success', 'Subscription Cancelled', 'Your subscription has been cancelled. You will not be billed at the end of the period but can still view our videos' +
+       //             'until the end of your period.');
+       //         updateCache({ idToken: response.body.idToken });
+       //
+       //     } else {
+       //          // Their subscription was cancelled immediately
+       //         // Update user attributes in redux sychronously (without doing another /users/find call)
+       //         this.props.updateBillingSync(response.body.user.Attributes);
+       //         this.props.unsubscribeUser({
+       //             'custom:customer_id': 'null',
+       //             'custom:subscription_id': 'null',
+       //             'custom:plan_id': 'null',
+       //             'custom:plan': 'none',
+       //             'custom:premium': 'false',
+       //             jwtToken: response.body.idToken,
+       //         });
+       //         this.props.updateVideosSync([]);
+       //         this.props.pushAlert('success', 'Subscription Cancelled', 'Your subscription has been cancelled. You no longer have access to view video content');
+       //
+       //         updateCache({ idToken: response.body.idToken });
+       //     }
+       // } else {
+       //      // There was an error un-subscribing
+       //     this.props.updateVideosSync([]);
+       //     this.props.pushAlert('danger', 'Unsubscribe Failed', 'Something went wrong trying to un-subscribe you from your plan. Please try again shortly!')
+       // }
     }
 
     /**
@@ -237,7 +225,7 @@ class Profile extends Component {
                 <div className="row">
                     <div className="col-md-10 offset-md-1">
                         {/* Billing Card */}
-                        <Card loading={this.props.videos.isFetching} cardTitle="Billing Information" classNames={['pb-0']}>
+                        <Card loading={this.props.user.isFetching} cardTitle="Billing Information" classNames={['pb-0']}>
                             <div className="d-flex flex-row justify-content-between">
                                 <div className="table-responsive">
                                     <table className="table table-borderless table-sm">

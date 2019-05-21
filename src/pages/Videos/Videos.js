@@ -122,19 +122,35 @@ class Videos extends Component {
         return index === arr.length - 1;
     }
 
-    renderJumbotron() {
+    /**
+     * Shows a large message on the UI and displays skeleton
+     * videos for either loading or unauthorized users.
+     */
+    renderJumbotron(authorized = false) {
         return (
+            <div>
             <Jumbotron>
                 <h3 className="common-SectionTitle">
-                    Welcome to Videos
+                    { authorized ? 'Welcome to Videos': 'No subscription found'}
                 </h3>
                 <div className="row">
                     <div className="col-md-8">
                         <p className="common-BodyText">
-                            These videos are a customized list of chapters, quizzes and workshops that provide a guided learning path for a particular subject.
-                            Each course or quiz in a chapter builds on the previous one, so that as you progress through the videos you gain a solid
-                            understanding of the broader topic and how it fits into full stack development.
+                            { authorized ?
+                                'These videos are a customized list of chapters, quizzes and workshops that provide a guided learning path for a particular subject. ' +
+                                'Each course or quiz in a chapter builds on the previous one, so that as you progress through the videos you gain a solid' +
+                                'understanding of the broader topic and how it fits into full stack development.' :
+                                ' It looks like you aren\'t subscribed to ignite. If you would like to subscribe and' +
+                                'watch all the high quality HD full stack development videos you can click the button below! If you have already subscribed and are seeing' +
+                                'this message something may have gone wrong. Refresh the page or try logging out and logging back in.'
+                            }
                         </p>
+                        {
+                            !authorized &&
+                            <Link to="/pricing" className="common-Button common-Button--default">
+                                Subscribe
+                            </Link>
+                        }
                     </div>
                     <div className="col-md-3 offset-md-1">
                         <svg width="150" height="150" viewBox="0 0 40 40">
@@ -154,6 +170,29 @@ class Videos extends Component {
                     {/*</svg>*/}
                 </div>
             </Jumbotron>
+            <div className="row">
+                {
+                    !authorized && Array.from(new Array(8)).map(i => {
+                        return (
+                            <div className="col-md-3 col-lg-3 col-sm-12 d-flex align-items-stretch pb-2 px-4 my-4" key={_.uniqueId()}>
+                                <section className="card card-skeleton">
+                                    <div className="d-flex justify-content-center align-items-center cover card-skeleton skeleton-loading" />
+                                    <div className="card-detail-skeleton">
+                                        <h3 className="card-title-skeleton skeleton-loading" />
+                                    </div>
+                                    <div className="card-detail-skeleton">
+                                        <h3 className="card-title-skeleton skeleton-loading" />
+                                    </div>
+                                    <div className="card-detail-skeleton">
+                                        <h3 className="card-title-skeleton skeleton-loading" />
+                                    </div>
+                                </section>
+                            </div>
+                        )
+                    })
+                }
+            </div>
+            </div>
         )
     }
 
@@ -208,57 +247,14 @@ class Videos extends Component {
     render() {
         // Only returned when history.push('/videos') happens
         if(this.props.videos.isFetching)
-            return (
-                <div>
-                    { this.renderJumbotron() }
-                    <div className="row">
-                    {
-                        Array.from(new Array(8)).map(i => {
-                            return (
-                                <div className="col-md-3 col-lg-3 col-sm-12 d-flex align-items-stretch pb-2 px-4 my-4" key={_.uniqueId()}>
-                                    <section className="card card-skeleton">
-                                        <div className="d-flex justify-content-center align-items-center cover card-skeleton skeleton-loading" />
-                                        <div className="card-detail-skeleton">
-                                            <h3 className="card-title-skeleton skeleton-loading" />
-                                        </div>
-                                        <div className="card-detail-skeleton">
-                                            <h3 className="card-title-skeleton skeleton-loading" />
-                                        </div>
-                                        <div className="card-detail-skeleton">
-                                            <h3 className="card-title-skeleton skeleton-loading" />
-                                        </div>
-                                    </section>
-                                </div>
-                            )
-                        })
-                    }
-                    </div>
-                </div>
-            );
+            return this.renderJumbotron();
 
         if(((!_.isUndefined(this.props.videos.videoList) && _.size(this.props.videos.videoList) === 0) || this.props.auth.user['custom:premium'] === 'false'))
-            return (
-                <div>
-                    <div className="row">
-                        <div className="col-md-6 offset-md-4">
-                            <h3 className="common-SectionTitle">No Subscription Found</h3>
-                            <p className="common-BodyText">
-                                It looks like you aren't subscribed to ignite. If you would like to subscribe and
-                                watch all the high quality HD full stack development videos you can click the button below!
-                            </p>
-                        </div>
-                    </div>
-                    <div className="d-flex mt-3 justify-content-center">
-                        <Link to="/pricing" className="common-Button common-Button--default">
-                            Subscribe to Watch Videos
-                        </Link>
-                    </div>
-                </div>
-            );
+            return this.renderJumbotron();
 
         return (
             <div>
-                { this.renderJumbotron() }
+                { this.renderJumbotron(true) }
                 {
                     this.props.videos.videoList.map((chapter, i) => {
                         return (
