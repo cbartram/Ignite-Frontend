@@ -2,15 +2,12 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import {CardElement, injectStripe} from "react-stripe-elements";
-import Crypto from 'crypto-js';
-import { Auth } from 'aws-amplify';
 import {
     updateUserAttributes,
     fetchVideos,
     processPayment,
     loginSuccess,
 } from '../../actions/actions';
-import { ECC_ID } from '../../constants';
 import './PaymentModal.css';
 
 const mapStateToProps = state => ({
@@ -106,30 +103,18 @@ class PaymentModal extends Component {
                 name: `${firstName} ${lastName}`,
                 email: this.props.user.email,
                 token,
-                'cognito:username': this.props.user['cognito:username'],
+                username: this.props.user.userName,
                 deviceKey: this.props.user.deviceKey,
                 refreshToken: this.props.user.refreshToken,
                 customerId: this.props.user.customer_id,
-            }).then((response) => {
-                this.props.fetchVideos(`user-${this.props.user['cognito:username']}`)
-            }).then(async () => {
-                        // Decrypt localStorage info
-                        // const bytes  = Crypto.AES.decrypt(localStorage.getItem('ECC_ID'), ECC_ID);
-                        // const original = bytes.toString(Crypto.enc.Utf8);
-                        //
-                        // // Completely revoke all previous (stale) user tokens
-                        // // and re-authenticate the user with new info (now cache/session is up to date)
-                        // await Auth.signOut({ global: true });
-                        // const user = await Auth.signIn(this.props.user.email, original);
+            }).then(() => {
+                this.props.fetchVideos(`user-${this.props.user.userName}`);
 
-                        // Update user attributes in redux
-                        // this.props.loginSuccess(user);
-
-                        // Finally stop loading, close the modal and redirect to the /videos page
-                        this.setState({ loading: false });
-                        this.closeButton.current.click();
-                        this.props.onSuccessfulPayment();
-                });
+                // Finally stop loading, close the modal and redirect to the /videos page
+                this.setState({ loading: false });
+                this.closeButton.current.click();
+                this.props.onSuccessfulPayment();
+            })
         } catch(err) {
             this.props.onFailedPayment(err.message);
         }

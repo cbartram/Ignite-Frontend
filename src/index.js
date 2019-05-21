@@ -132,8 +132,7 @@ const render = async () => {
     try {
     await load();
     } catch(err) {
-        Log.error(err.message);
-        console.log(err);
+        Log.error(err);
 
         ReactDOM.render(
         <Provider store={store}>

@@ -3,10 +3,8 @@ import { FormGroup, FormControl } from "react-bootstrap";
 import { Auth } from 'aws-amplify/lib/index';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
-import Crypto from 'crypto-js';
 import './Login.css';
 import Log from '../../Log';
-import { ECC_ID } from "../../constants";
 import LoaderButton from '../../components/LoaderButton/LoaderButton';
 import {
     loginFailure,
@@ -86,9 +84,6 @@ class Login extends Component {
 
         try {
             const res = await Auth.signIn(this.state.email, this.state.password);
-            // Encrypt
-            const encrypted = Crypto.AES.encrypt(this.state.password, ECC_ID).toString();
-            localStorage.setItem('ECC_ID', encrypted);
             // Fetches both user videos and user billing information
             // using the same API route
             this.props.fetchVideos(`user-${res.username}`);

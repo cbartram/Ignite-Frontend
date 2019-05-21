@@ -89,7 +89,7 @@ class Watch extends Component {
 
                     // There was an error from the ping and the user doesnt know their video data isnt being saved
                     if (this.props.videos.error !== null && !this.state.didNotify) {
-                        Log.warn('Ping failed. Check internet connection');
+                        Log.warn('Ping failed. Check internet connection', this.props.videos.error);
                         clearInterval(this.pingInterval); // Stop pinging
                         this.props.pushAlert('warning', 'Issue Saving', 'There was an issue saving your video progress. Make sure your wifi is active!');
                         this.setState({didNotify: true});
@@ -155,10 +155,10 @@ class Watch extends Component {
             this.props.askQuestion({
                 video_id: `${this.props.videos.activeVideo.chapter}.${this.props.videos.activeVideo.sortKey}`, // Chapter.video (9.6) ch 9 vid 6,
                 user: {
-                    first_name: this.props.user['custom:first_name'],
-                    last_name: this.props.user['custom:last_name'],
+                    first_name: this.props.user.name.split(' ')[0],
+                    last_name: this.props.user.name.split(' ')[1],
                     email: this.props.user.email,
-                    avatar: this.props.user['custom:profile_picture']
+                    avatar: 'https://t4.ftcdn.net/jpg/02/15/84/43/240_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg'
                 },
                 title: this.state.question.title,
                 content: this.state.question.content

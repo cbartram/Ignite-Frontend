@@ -8,7 +8,7 @@ import { sendEmail } from '../../util';
 import './Support.css';
 
 const mapStateToProps = state => ({
-  auth: state.auth,
+  user: state.auth.user,
 });
 
 /**
@@ -41,7 +41,7 @@ class Support extends Component {
   submit() {
     this.setState({ isSending: true }, async () => {
       try {
-        const response = await sendEmail(this.props.auth.user.email, this.state.subject, this.state.message);
+        const response = await sendEmail(this.props.user.email, this.state.subject, this.state.message);
         console.log(response);
         if(response.status === 200)
           this.props.pushAlert('success', 'Message Sent Successfully', 'Your message has been delivered successfully. We will do our best to respond as soon as possible!');

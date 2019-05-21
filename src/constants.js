@@ -68,7 +68,6 @@ export const DEV_URL = 'https://5c5aslvp9k.execute-api.us-east-1.amazonaws.com/d
 export const API_KEY = 'pgS8gGvkv53xFg4BdgECn38C4CDNZXKj8EqFtQdW';
 export const PROD_API_KEY = 'mNer7Typlc9npqrkThXZ08xAIWoBXLyG2NEfHDd2';
 export const FB_APP_ID = '833844836958913';
-export const ECC_ID = '$2a$10$ThrYgKI5NjYFgrMhbb5aHOQO/X/rWgGiYZ4/nWJclIesgIVDoz9/.';
 
 /**
  * Config passed to AWS Amplify to tell them about our cloud infrastructure and who/how to communicate with it. This is automatically

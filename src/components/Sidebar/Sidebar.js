@@ -11,7 +11,7 @@ import Log from "../../Log";
 
 const mapStateToProps = (state) => ({
     videos: state.videos,
-    token: state.auth.user.jwtToken,
+    user: state.auth.user,
     activeVideo: state.videos.activeVideo,
 });
 
@@ -46,7 +46,7 @@ class Sidebar extends Component {
                 await this.props.getSignedUrl({
                     video,
                     resourceUrl: `${IS_PROD ? 'https://d2hhpuhxg00qg.cloudfront.net' : 'https://dpvchyatyxxeg.cloudfront.net'}/chapter${video.chapter}/${video.s3Name}.mov`,
-                    jwtToken: this.props.token
+                    subscriptionId: this.props.user.subscription_id,
                 });
                 await this.props.findQuestions(`${video.chapter}.${video.sortKey}`);
                 this.setState({ isLoading: false });
