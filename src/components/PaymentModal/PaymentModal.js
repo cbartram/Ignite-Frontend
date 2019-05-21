@@ -10,9 +10,7 @@ import {
     processPayment,
     loginSuccess,
 } from '../../actions/actions';
-import Modal from '../Modal/Modal';
 import { ECC_ID } from '../../constants';
-import Log from '../../Log';
 import './PaymentModal.css';
 
 const mapStateToProps = state => ({
@@ -103,7 +101,6 @@ class PaymentModal extends Component {
 
         try {
             const { token } = await this.props.stripe.createToken({ name: `${firstName} ${lastName}`});
-            Log.info('Stripe Token: ', token);
 
             this.props.processPayment({
                 name: `${firstName} ${lastName}`,
@@ -112,26 +109,27 @@ class PaymentModal extends Component {
                 'cognito:username': this.props.user['cognito:username'],
                 deviceKey: this.props.user.deviceKey,
                 refreshToken: this.props.user.refreshToken,
-                customerId: this.props.user['custom:customer_id']
-            }).then(() => this.props.fetchVideos(`user-${this.props.user['cognito:username']}`)
-                    .then(async () => {
+                customerId: this.props.user.customer_id,
+            }).then((response) => {
+                this.props.fetchVideos(`user-${this.props.user['cognito:username']}`)
+            }).then(async () => {
                         // Decrypt localStorage info
-                        const bytes  = Crypto.AES.decrypt(localStorage.getItem('ECC_ID'), ECC_ID);
-                        const original = bytes.toString(Crypto.enc.Utf8);
-
-                        // Completely revoke all previous (stale) user tokens
-                        // and re-authenticate the user with new info (now cache/session is up to date)
-                        await Auth.signOut({ global: true });
-                        const user = await Auth.signIn(this.props.user.email, original);
+                        // const bytes  = Crypto.AES.decrypt(localStorage.getItem('ECC_ID'), ECC_ID);
+                        // const original = bytes.toString(Crypto.enc.Utf8);
+                        //
+                        // // Completely revoke all previous (stale) user tokens
+                        // // and re-authenticate the user with new info (now cache/session is up to date)
+                        // await Auth.signOut({ global: true });
+                        // const user = await Auth.signIn(this.props.user.email, original);
 
                         // Update user attributes in redux
-                        this.props.loginSuccess(user);
+                        // this.props.loginSuccess(user);
 
                         // Finally stop loading, close the modal and redirect to the /videos page
                         this.setState({ loading: false });
                         this.closeButton.current.click();
                         this.props.onSuccessfulPayment();
-                }));
+                });
         } catch(err) {
             this.props.onFailedPayment(err.message);
         }

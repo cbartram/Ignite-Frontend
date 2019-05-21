@@ -100,7 +100,7 @@ class Videos extends Component {
                 await this.props.getSignedUrl({
                     video,
                     resourceUrl: `${IS_PROD ? 'https://d2hhpuhxg00qg.cloudfront.net' : 'https://dpvchyatyxxeg.cloudfront.net'}/chapter${video.chapter}/${video.s3Name}.mov`,
-                    jwtToken: this.props.user.jwtToken // TODO After a user subscribes this somehow contains an old token
+                    subscriptionId: this.props.user.subscription_id,
                 });
                 await this.props.findQuestions(`${video.chapter}.${video.sortKey}`);
                 this.props.history.push('/watch');
@@ -249,7 +249,7 @@ class Videos extends Component {
         if(this.props.videos.isFetching)
             return this.renderJumbotron();
 
-        if(((!_.isUndefined(this.props.videos.videoList) && _.size(this.props.videos.videoList) === 0) || this.props.auth.user['custom:premium'] === 'false'))
+        if(((!_.isUndefined(this.props.videos.videoList) && _.size(this.props.videos.videoList) === 0) || !this.props.user.premium))
             return this.renderJumbotron();
 
         return (

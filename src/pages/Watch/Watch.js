@@ -241,6 +241,7 @@ class Watch extends Component {
                 return (
                     <div className="p-2">
                         <iframe
+                            title="code-sandbox"
                             src="https://codesandbox.io/embed/new?codemirror=1"
                             style={{width: '100%', height: 500, border: 0, borderRadius: 4, overflow: 'hidden'}}
                             sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"

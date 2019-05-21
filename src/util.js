@@ -13,7 +13,9 @@ import {
     API_PING_VIDEO,
     API_SEND_EMAIL,
     API_POST_QUESTION,
-    getRequestUrl, API_SUBMIT_QUIZ, API_POST_FIND_QUESTIONS, default as constants,
+    API_SUBMIT_QUIZ,
+    API_POST_FIND_QUESTIONS,
+    getRequestUrl,
 } from './constants';
 
 /**
@@ -91,6 +93,8 @@ export const post = async (body, path, requestType, successType, failureType, di
         };
 
         const response = await (await fetch(getRequestUrl(path), params)).json();
+
+        Log.info('HTTP Response', response);
 
         return new Promise((resolve, reject) => {
             if (response.status === 200) {

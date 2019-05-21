@@ -9,10 +9,6 @@ import {
     storeQuiz,
     post,
 } from '../util';
-import {IS_PROD} from "../constants";
-import {PROD_API_KEY} from "../constants";
-import {API_KEY} from "../constants";
-import {API_DELETE_SUBSCRIPTION} from "../constants";
 
 /**
  * Updates a users attributes within redux
@@ -132,6 +128,19 @@ export const fetchVideos = username => async dispatch => {
             type: constants.VIDEOS_SUCCESS,
             payload: response.body.user.videos,
         });
+
+        // Remove Quizzes and videos from user (these are stored elsewhere in redux)
+        const userMinusVideos = { ...response.body.user };
+        delete userMinusVideos.videos;
+        delete userMinusVideos.quizzes;
+
+        dispatch({
+            type: constants.UPDATE_USER_ATTRIBUTES,
+            payload: userMinusVideos
+        });
+
+
+
     } else if(response.status > 200 || typeof response.status === 'undefined' || response === null) {
         // An error occurred
         dispatch({
