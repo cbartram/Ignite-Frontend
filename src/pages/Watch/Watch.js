@@ -60,45 +60,42 @@ class Watch extends Component {
         }
     }
 
-    componentDidMount() {
-        if(this.props.activeVideo.name === 'null') this.props.history.push('/videos?new=true')
-    }
+    async componentDidMount() {
+        if(this.props.activeVideo.name === 'null' && _.isUndefined(this.props.user.active_video)) this.props.history.push('/videos?new=true');
 
-    /**
-     * Registers a setInterval() where we send the users
-     * video data to the server every 30 seconds.
-     */
-    componentDidUpdate() {
-        if (this.player !== null && typeof this.player !== 'undefined') {
-            // Ensure we don't set the interval twice
-            if (!this.state.intervalSet) {
+        const videoId = `${this.props.videos.activeVideo.chapter}.${this.props.videos.activeVideo.sortKey}`;
 
-                // Seek to the proper place in the video
-                this.player.seekTo(this.props.videos.activeVideo.scrubDuration.toFixed(0));
+        if (_.isUndefined(this.props.posts.questions) || _.isUndefined(this.props.posts.questions[videoId])) {
+            await this.props.findQuestions(videoId);
+        }
 
-                // Ping the server every 30 seconds to tell them about the user's current progress
-                this.pingInterval = setInterval(() => {
-                    this.props.ping({
-                        email: this.props.user.email,
-                        chapters: this.props.videos.videoList,
-                        activeVideo: this.props.videos.activeVideo,
-                        scrubDuration: this.player.getCurrentTime(),
-                        started: true,
-                        completed: (this.player.getCurrentTime() + 10) >= this.player.getDuration()
-                    });
+        if (!this.state.intervalSet) {
 
-                    // There was an error from the ping and the user doesnt know their video data isnt being saved
-                    if (this.props.videos.error !== null && !this.state.didNotify) {
-                        Log.warn('Ping failed. Check internet connection', this.props.videos.error);
-                        clearInterval(this.pingInterval); // Stop pinging
-                        this.props.pushAlert('warning', 'Issue Saving', 'There was an issue saving your video progress. Make sure your wifi is active!');
-                        this.setState({didNotify: true});
-                    }
+            // Seek to the proper place in the video
+            this.player.seekTo(this.props.videos.activeVideo.scrubDuration.toFixed(0));
 
-                }, 30 * 1000);
+            // Ping the server every 30 seconds to tell them about the user's current progress
+            this.pingInterval = setInterval(() => {
+                this.props.ping({
+                    username: this.props.user.pid,
+                    chapters: this.props.videos.videoList,
+                    activeVideo: this.props.videos.activeVideo,
+                    scrubDuration: this.player.getCurrentTime(),
+                    started: true,
+                    completed: (this.player.getCurrentTime() + 10) >= this.player.getDuration()
+                });
 
-                this.setState({intervalSet: true});
-            }
+                // There was an error from the ping and the user doesnt know their video data isnt being saved
+                if (this.props.videos.error !== null && !this.state.didNotify) {
+                    Log.warn('Ping failed. Check internet connection', this.props.videos.error);
+                    clearInterval(this.pingInterval); // Stop pinging
+                    this.props.pushAlert('warning', 'Issue Saving', 'There was an issue saving your video progress. Make sure your wifi is active!');
+                    this.setState({didNotify: true});
+                }
+
+            }, 30 * 1000);
+
+            this.setState({intervalSet: true});
         }
     }
 

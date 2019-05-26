@@ -46,7 +46,8 @@ export default (state = {}, action) => {
             return {
                 ...state,
                 isFetching: false,
-                videoList: action.payload,
+                videoList: action.payload.videos,
+                activeVideo: action.payload.active_video,
                 error: null,
             };
         case constants.PING_RESPONSE_FAILURE:

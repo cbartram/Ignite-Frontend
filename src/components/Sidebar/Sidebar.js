@@ -27,34 +27,23 @@ const mapDispatchToProps = (dispatch) => ({
  * of videos they can select
  */
 class Sidebar extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            isLoading: false,
-        }
-    }
-
     /**
      * Updates the active video in redux and redirects the user to
      * the correct video link
      * @param video
      */
-    handleVideoClick(video) {
-        this.setState({isLoading: true}, async () => {
-            try {
-                await this.props.getSignedUrl({
-                    video,
-                    resourceUrl: `${IS_PROD ? 'https://d2hhpuhxg00qg.cloudfront.net' : 'https://dpvchyatyxxeg.cloudfront.net'}/chapter${video.chapter}/${video.s3Name}.mov`,
-                    subscriptionId: this.props.user.subscription_id,
-                });
-                await this.props.findQuestions(`${video.chapter}.${video.sortKey}`);
-                this.setState({ isLoading: false });
-                this.props.onDismiss();
-            } catch (err) {
-                Log.error(err.message);
-            }
-        });
+    async handleVideoClick(video) {
+        try {
+            await this.props.getSignedUrl({
+                video,
+                resourceUrl: `${IS_PROD ? 'https://d2hhpuhxg00qg.cloudfront.net' : 'https://dpvchyatyxxeg.cloudfront.net'}/chapter${video.chapter}/${video.s3Name}.mov`,
+                subscriptionId: this.props.user.subscription_id,
+            });
+            await this.props.findQuestions(`${video.chapter}.${video.sortKey}`);
+            this.props.onDismiss();
+        } catch (err) {
+            Log.error(err.message);
+        }
     }
 
     /**
@@ -86,12 +75,8 @@ class Sidebar extends Component {
 
         return (
             <div>
+
                 <nav id="sidebar" className={`${this.props.active ? 'sidebar-active' : ''}`}>
-                    <Dimmer
-                        style={{ borderRadius: 0, height: '100%', background: 'rgba(82,95,127,.4)' }}
-                        active={this.state.isLoading}>
-                        <Loader />
-                    </Dimmer>
                     <button id="dismiss" onClick={() => this.props.onDismiss()}>
                         <span className="fas fa-arrow-right"/>
                     </button>

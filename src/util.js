@@ -3,17 +3,13 @@
  * This file houses a collection of helper functions used in multiple places throughout the application
  * @author cbartram
  */
-import _ from 'lodash';
 import Log from './Log';
 import {
     IS_PROD,
     API_KEY,
     PROD_API_KEY,
     API_FIND_ALL_USERS,
-    API_PING_VIDEO,
     API_SEND_EMAIL,
-    API_POST_QUESTION,
-    API_SUBMIT_QUIZ,
     API_POST_FIND_QUESTIONS,
     getRequestUrl,
 } from './constants';
@@ -94,8 +90,6 @@ export const post = async (body, path, requestType, successType, failureType, di
 
         const response = await (await fetch(getRequestUrl(path), params)).json();
 
-        Log.info('HTTP Response', response);
-
         return new Promise((resolve, reject) => {
             if (response.status === 200) {
                 dispatch({
@@ -159,109 +153,6 @@ export const sendEmail = async (from, subject = '', message = '') => {
     }
 };
 
-
-/**
- * Updates the keys in the local storage cache so that
- * they match the updated values in AWS Cognito.
- * @param values Object the key of each property in this object must be one of the following values
- * [idToken, accessToken, refreshToken, deviceKey, deviceGroupKey, userData]
- * This object provides the new values that should replace each of the respective items in local storage.
- */
-export const updateCache = (values) => {
-    const keys = Object.keys(localStorage);
-    keys.map(key => {
-       let keyId = key.substring(key.lastIndexOf('.') + 1, key.length);
-
-       // Only update what was provided in the values object nothing more nothing less
-       if(!_.isUndefined(values[keyId])) {
-           switch (keyId) {
-               case 'accessToken':
-                   localStorage.setItem(key, values['accessToken']);
-                   break;
-               case 'userData':
-                   localStorage.setItem(key, values['userData']);
-                   break;
-               case 'deviceGroupKey':
-                   localStorage.setItem(key, values['deviceGroupKey']);
-                   break;
-               case 'idToken':
-                   localStorage.setItem(key, values['idToken']);
-                   break;
-               case 'deviceKey':
-                   localStorage.setItem(key, values['deviceKey']);
-                   break;
-               case 'refreshToken':
-                   localStorage.setItem(key, values['refreshToken']);
-                   break;
-               default:
-                   break;
-           }
-       }
-    });
-};
-
-/**
- * Handles submitting the quiz results to the server for grading and storage.
- * @param email String Users email address
- * @param quiz Object quiz object for processing
- * @returns {Promise<any>}
- */
-export const storeQuiz = async (email, quiz) => {
-    const params = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'x-api-key': IS_PROD ? PROD_API_KEY : API_KEY
-        },
-        // Since this is calling an API these details are crucial for the lambda function to know which route to execute.
-        body: JSON.stringify({
-            headers: {},
-            method: 'POST',
-            path: API_SUBMIT_QUIZ,
-            parameters: {}, // Query params
-            body: { email, quiz }
-        }),
-    };
-
-    try {
-        return await (await fetch(getRequestUrl(API_SUBMIT_QUIZ), params)).json();
-    } catch(err) {
-        Log.error('Failed to store quiz results...', err);
-    }
-};
-
-/**
- * Creates the fetch() call used to create a new forum question about a video
- * @param body Object the body of the request. This should include the user id, video id, title of
- * the post, and body of the post (not to be confused with the body of the request).
- * @returns {Promise<any>}
- */
-export const postQuestion = async (body) => {
-    const params = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'x-api-key': IS_PROD ? PROD_API_KEY : API_KEY
-        },
-        // Since this is calling an API these details are crucial for the lambda function to know which route to execute.
-        body: JSON.stringify({
-            headers: {},
-            method: 'POST',
-            path: API_POST_QUESTION,
-            parameters: {}, // Query params
-            body
-        }),
-    };
-
-    try {
-        return await (await fetch(getRequestUrl(API_POST_QUESTION), params)).json();
-    } catch(err) {
-        Log.error('Failed to post question...', err);
-    }
-};
-
 /**
  * Retrieves all questions for a video given the video_id
  * @param video_id String video id: should be videoChapter.videoNumber ex 9.6
@@ -318,36 +209,5 @@ export const getVideos = async (username) => {
         return await (await fetch(getRequestUrl(API_FIND_ALL_USERS), params)).json();
     } catch(err) {
         Log.error('Failed to retrieve videos from API...', err);
-    }
-};
-
-/**
- * Sends a user's current video information (such as duration completed, started watching etc.) to
- * the backend for storage. This also updates redux with the latest values.
- * @param data Object video data to send
- * @returns {Function}
- */
-export const sendVideoData = async (data) => {
-    const params = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'x-api-key': IS_PROD ? PROD_API_KEY : API_KEY
-        },
-        // Since this is calling an API these details are crucial for the lambda function to know which route to execute.
-        body: JSON.stringify({
-            headers: {},
-            method: 'POST',
-            path: API_PING_VIDEO,
-            parameters: {}, // Query params
-            body: data,
-        }),
-    };
-
-    try {
-        return await (await fetch(getRequestUrl(API_PING_VIDEO), params)).json();
-    } catch(err) {
-        Log.error('Failed to ping video data from API...', err);
     }
 };

@@ -21,14 +21,14 @@ export default class ForumRow extends Component {
     renderWell() {
         return (
             <div className="well">
-                <div className="card my-3 pt-3" style={{ paddingLeft: 55 }}>
+                <div className="card no-card-hover my-3 pt-3" style={{ paddingLeft: 55 }}>
                     <Markdown source={ this.props.post.content } />
                 </div>
                 {
                     this.props.answers.length === 0 ? null :
                     this.props.answers.map((answer, idx) => {
                         return (
-                            <div className={`d-flex card flex-row my-3 ${answer.answered ? 'answered': ''}`} key={idx}>
+                            <div className={`d-flex card no-card-hover flex-row my-3 ${answer.answered ? 'answered': ''}`} key={idx}>
                                 <div className="avatar-container sm-avatar-container m-2">
                                     <img
                                         alt="profile_picture"

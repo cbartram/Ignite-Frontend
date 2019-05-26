@@ -1,12 +1,11 @@
 /**
  * This file defines actions which trigger switch statements in the reducer
  */
+import _ from 'lodash';
 import * as constants from '../constants';
 import Log from '../Log';
 import {
     getVideos,
-    sendVideoData,
-    storeQuiz,
     post,
 } from '../util';
 
@@ -98,51 +97,56 @@ export const fetchVideos = username => async dispatch => {
         payload: true // Sets isFetching to true (useful for unit testing redux)
     });
 
-    let response = null;
-
     try {
-        response = await getVideos(username);
+        const response = await getVideos(username);
+
+        if(response.status === 200) {
+            console.log(response);
+            // Dispatch information about billing
+            dispatch({
+                type: constants.BILLING_SUCCESS,
+                payload: response.body.user,
+            });
+
+            dispatch({
+                type: constants.QUIZZES_SUCCESS,
+                payload: response.body.user.quizzes
+            });
+
+            // Dispatch information about videos
+            dispatch({
+                type: constants.VIDEOS_SUCCESS,
+                payload: response.body.user.videos,
+            });
+
+            if(!_.isUndefined(response.body.user.active_video))
+                dispatch({
+                    type: constants.UPDATE_ACTIVE_VIDEO,
+                    payload: response.body.user.active_video,
+                });
+
+            // Remove Quizzes and videos from user (these are stored elsewhere in redux)
+            const userMinusVideos = { ...response.body.user };
+            delete userMinusVideos.videos;
+            delete userMinusVideos.quizzes;
+
+            dispatch({
+                type: constants.UPDATE_USER_ATTRIBUTES,
+                payload: userMinusVideos
+            });
+        } else if(response.status > 200 || typeof response.status === 'undefined' || response === null) {
+            // An error occurred
+            dispatch({
+                type: constants.VIDEOS_FAILURE,
+                payload: { message: `Failed to retrieve billing/video data from API: ${JSON.stringify(response)}`}
+            });
+        }
     } catch(err) {
         Log.error('Failed to load user data from actions.js API call.', err);
         // An error occurred
         dispatch({
             type: constants.VIDEOS_FAILURE,
-            payload: { message: `Failed to retrieve billing/video data from API: ${JSON.stringify(response)}`}
-        });
-    }
-
-    if(response.status === 200) {
-        // Dispatch information about billing
-        dispatch({
-            type: constants.BILLING_SUCCESS,
-            payload: response.body.user,
-        });
-
-        dispatch({
-            type: constants.QUIZZES_SUCCESS,
-            payload: response.body.user.quizzes
-        });
-
-        // Dispatch information about videos
-        dispatch({
-            type: constants.VIDEOS_SUCCESS,
-            payload: response.body.user.videos,
-        });
-
-        // Remove Quizzes and videos from user (these are stored elsewhere in redux)
-        const userMinusVideos = { ...response.body.user };
-        delete userMinusVideos.videos;
-        delete userMinusVideos.quizzes;
-
-        dispatch({
-            type: constants.UPDATE_USER_ATTRIBUTES,
-            payload: userMinusVideos
-        });
-    } else if(response.status > 200 || typeof response.status === 'undefined' || response === null) {
-        // An error occurred
-        dispatch({
-            type: constants.VIDEOS_FAILURE,
-            payload: { message: `Failed to retrieve billing/video data from API: ${JSON.stringify(response)}`}
+            payload: { message: `Failed to retrieve initial user data from API`, error: err }
         });
     }
 };
@@ -178,34 +182,7 @@ export const updateActiveVideo = (videoName) => dispatch => {
  * @returns {Function}
  */
 export const ping = (payload) => async dispatch => {
-    dispatch({
-        type: constants.PING_REQUEST,
-        payload: true // Sets isFetching to true (useful for unit testing redux)
-    });
-
-    try {
-        const response = await sendVideoData(payload);
-
-        if (response.status === 200) {
-            // Dispatch information about the users video progress
-            dispatch({
-                type: constants.PING_RESPONSE_SUCCESS,
-                payload: response.body.videos, // Must be an array of chapter objects
-            });
-        } else if (response.status > 200 || typeof response.status === 'undefined') {
-            // An error occurred
-            dispatch({
-                type: constants.PING_RESPONSE_FAILURE,
-                payload: {message: `Failed to ping data to server: ${JSON.stringify(response)}`}
-            });
-        }
-    } catch(err) {
-        Log.error('[ERROR] Error receiving response from ping()', err);
-        dispatch({
-            type: constants.PING_RESPONSE_FAILURE,
-            payload: {message: err.message}
-        });
-    }
+    await post(payload, constants.API_PING_VIDEO, constants.PING_REQUEST, constants.PING_RESPONSE_SUCCESS, constants.PING_RESPONSE_FAILURE, dispatch);
 };
 
 /**
