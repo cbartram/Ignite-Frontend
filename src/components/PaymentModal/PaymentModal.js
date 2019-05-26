@@ -77,6 +77,13 @@ class PaymentModal extends Component {
     };
 
     /**
+     * Closes a modal if a user clicks chrome's "back" button
+     */
+    componentWillUnmount() {
+        this.closeButton.current.click();
+    }
+
+    /**
      * Handles submitting the form to convert
      * card details into a Stripe Token for use with stripe API's
      * @param event Object event object.
@@ -104,8 +111,6 @@ class PaymentModal extends Component {
                 email: this.props.user.email,
                 token,
                 username: this.props.user.userName,
-                deviceKey: this.props.user.deviceKey,
-                refreshToken: this.props.user.refreshToken,
                 customerId: this.props.user.customer_id,
             }).then(() => {
                 this.props.fetchVideos(`user-${this.props.user.userName}`);

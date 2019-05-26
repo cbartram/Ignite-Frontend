@@ -45,6 +45,10 @@ class Navbar extends Component {
         }
     }
 
+    componentWillUnmount() {
+        this.props.restoreScroll();
+    }
+
 
     /**
      * Hides any errors when each of the links are clicked.
