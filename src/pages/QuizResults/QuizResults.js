@@ -98,6 +98,8 @@ class QuizResults extends Component {
    * @param type String
    */
   handleQuestionChange(type) {
+    // TODO ensure that if a user gets to the last question and clicks next it moves the pointer
+    // TODO back to the first question
     if(type === 'next') {
       if(this.state.activeQuestionIndex !== this.state.quiz.questions.length - 1)
         this.setState((prev) => ({activeQuestionIndex: prev.activeQuestionIndex + 1}));

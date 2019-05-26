@@ -138,9 +138,6 @@ export const fetchVideos = username => async dispatch => {
             type: constants.UPDATE_USER_ATTRIBUTES,
             payload: userMinusVideos
         });
-
-
-
     } else if(response.status > 200 || typeof response.status === 'undefined' || response === null) {
         // An error occurred
         dispatch({
@@ -307,33 +304,12 @@ export const updateQuiz = (quiz) => dispatch => {
 
 /**
  * Sends the quiz to the server for processing and storage before being returned to the client.
- * @param email String the users email address
+ * @param username String the users username given by cognito and prefixed with "user-<COGNITO_ID>"
  * @param quiz Object the quiz object to grade.
  * @returns {Function}
  */
-export const submitQuiz = (email, quiz) => async dispatch => {
-    dispatch({
-        type: constants.SUBMIT_QUIZ_REQUEST,
-        payload: true,
-    });
-
-    const response = await storeQuiz(email, quiz);
-
-    console.log(response);
-
-    if(response.status === 200) {
-        // Dispatch information about billing
-        dispatch({
-            type: constants.UPDATE_QUIZ,
-            payload: response.body.quiz,
-        });
-    } else if(response.status > 200 || typeof response.status === 'undefined') {
-        // An error occurred
-        dispatch({
-            type: constants.SUBMIT_QUIZ_FAILURE,
-            payload: { message: `Failed to grade the quiz: ${JSON.stringify(response)}`}
-        });
-    }
+export const submitQuiz = (username, quiz) => async dispatch => {
+    await post({ username, quiz }, constants.API_SUBMIT_QUIZ, constants.SUBMIT_QUIZ_REQUEST, constants.UPDATE_QUIZ, constants.SUBMIT_QUIZ_FAILURE, dispatch);
 };
 
 /**

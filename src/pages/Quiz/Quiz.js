@@ -150,7 +150,7 @@ class Quiz extends Component {
         if(activeQuestionIndex === quiz.questions.length - 1) {
           Log.info('Submitting Quiz results...');
           this.props.updateQuiz(quiz);
-          this.props.submitQuiz(this.props.user.email, quiz);
+          this.props.submitQuiz(this.props.user.pid, quiz);
           // Show the user their quiz results!
           this.props.history.push(`/quiz/results?q=${encodeURI(btoa(this.state.quiz.id))}`);
         }
