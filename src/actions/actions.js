@@ -101,7 +101,6 @@ export const fetchVideos = username => async dispatch => {
         const response = await getVideos(username);
 
         if(response.status === 200) {
-            console.log(response);
             // Dispatch information about billing
             dispatch({
                 type: constants.BILLING_SUCCESS,

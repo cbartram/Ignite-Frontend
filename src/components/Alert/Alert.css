@@ -1,5 +1,9 @@
+.alert-container {
+    position: absolute;
+    height: 100vh;
+}
 .notification {
-    position: fixed;
+    position: relative;
     max-width: 500px;
     z-index:9999;
     background-color: #fff;
