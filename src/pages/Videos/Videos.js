@@ -10,6 +10,7 @@ import {
     updateActiveVideo,
     getSignedUrl,
     findQuestions,
+    ping,
 } from '../../actions/actions';
 import { IS_PROD } from "../../constants";
 import Jumbotron from "../../components/Card/Card";
@@ -28,6 +29,7 @@ const mapDispatchToProps = dispatch => ({
     updateActiveVideo: (name) => dispatch(updateActiveVideo(name)),
     getSignedUrl: (payload) => dispatch(getSignedUrl(payload)),
     findQuestions: (payload) => dispatch(findQuestions(payload)),
+    ping: (payload) => dispatch(ping(payload)),
 });
 
 /**
@@ -93,6 +95,7 @@ class Videos extends Component {
      * video in redux as well as redirecting the user to the /watch page
      * @param video Object The video object representing the video the user
      * wishes to watch (the one that was clicked)
+     * Note: the video the user selects won't become their "active" video until 30 seconds have passed with them watching it
      */
     handleWatch(video) {
         this.setState({ isLoading: true, loadingVideo: `${video.chapter}.${video.sortKey}` }, async () => {

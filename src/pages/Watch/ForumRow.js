@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import moment from "moment";
 import Markdown from "react-markdown";
+import {Pagination} from "semantic-ui-react";
+
+const ITEMS_PER_PAGE = 5;
 
 export default class ForumRow extends Component {
     constructor(props) {
@@ -9,6 +12,7 @@ export default class ForumRow extends Component {
         this.state = {
             answerText: '',
             preview: false,
+            activePage: 1,
         }
     }
 
@@ -19,6 +23,11 @@ export default class ForumRow extends Component {
      * @returns {*}
      */
     renderWell() {
+        let firstIndex = ((this.state.activePage - 1) * ITEMS_PER_PAGE);
+        let lastIndex = firstIndex + ITEMS_PER_PAGE;
+        let data = this.props.answers.slice(firstIndex, lastIndex);
+        let totalPages =  Math.ceil(this.props.answers.length / ITEMS_PER_PAGE);
+
         return (
             <div className="well">
                 <div className="card no-card-hover my-3 pt-3" style={{ paddingLeft: 55 }}>
@@ -26,7 +35,7 @@ export default class ForumRow extends Component {
                 </div>
                 {
                     this.props.answers.length === 0 ? null :
-                    this.props.answers.map((answer, idx) => {
+                    data.map((answer, idx) => {
                         return (
                             <div className={`d-flex card no-card-hover flex-row my-3 ${answer.answered ? 'answered': ''}`} key={idx}>
                                 <div className="avatar-container sm-avatar-container m-2">
@@ -50,6 +59,14 @@ export default class ForumRow extends Component {
                         )
                     })
                 }
+                <Pagination
+                    defaultActivePage={1}
+                    onPageChange={(e, { activePage }) => this.setState({ activePage })}
+                    firstItem={null}
+                    lastItem={null}
+                    siblingRange={2}
+                    totalPages={totalPages}
+                />
                 <div className="d-flex justify-content-center mb-3">
                     <div className="btn-group btn-group-toggle" data-toggle="buttons">
                         <label className="btn btn-secondary active" onClick={() => this.setState({ preview: false })}>

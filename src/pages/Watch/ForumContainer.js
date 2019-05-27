@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import _ from "lodash";
+import { Pagination } from "semantic-ui-react";
 import ForumRow from "./ForumRow";
+
+const ITEMS_PER_PAGE = 5;
 
 /**
  * Handles the state and logic for opening and closing
@@ -12,9 +15,14 @@ export default class ForumContainer extends Component {
 
         this.state = {
             expandedQuestion: {},
+            activePage: 1,
         }
     }
 
+    /**
+     * Handles expanding a questions dropdown to show the answers for the question.
+     * @param id String id of the row to expand
+     */
     expandRow(id) {
             const { expandedQuestion } = this.state;
             let tablesExpanded = expandedQuestion;
@@ -37,6 +45,11 @@ export default class ForumContainer extends Component {
             });
     }
 
+    /**
+     * Returns true if the expanded row is open and false otherwise
+     * @param question_id String the id of the row in question.
+     * @returns {boolean|*}
+     */
     isOpen(question_id) {
         if(_.isUndefined(this.state.expandedQuestion[question_id]))
             return false;
@@ -54,10 +67,15 @@ export default class ForumContainer extends Component {
                 </div>
             );
 
+        let firstIndex = ((this.state.activePage - 1) * ITEMS_PER_PAGE);
+        let lastIndex = firstIndex + ITEMS_PER_PAGE;
+        let data = this.props.questions.slice(firstIndex, lastIndex);
+        let totalPages =  Math.ceil(this.props.questions.length / ITEMS_PER_PAGE);
+
         return (
             <div className="p-2">
                 {
-                    this.props.questions.map((post, idx) => {
+                    data.map((post, idx) => {
                         let answers = null;
                         if(_.isUndefined(post.answers))
                             answers = [];
@@ -75,7 +93,15 @@ export default class ForumContainer extends Component {
                         />
                     })
                 }
-                <div className="d-flex justify-content-center">
+                <Pagination
+                    defaultActivePage={1}
+                    onPageChange={(e, { activePage }) => this.setState({ activePage })}
+                    firstItem={null}
+                    lastItem={null}
+                    siblingRange={2}
+                    totalPages={totalPages}
+                />
+                <div className="d-flex justify-content-center mt-3">
                     <button className="common-Button common-Button--default" onClick={() => this.props.onQuestionAsk()}>
                         Ask a Question
                     </button>
