@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { Dimmer, Loader } from "semantic-ui-react";
 import _ from 'lodash';
 import SidebarOverlay from './SidebarOverlay';
 import './Sidebar.css';

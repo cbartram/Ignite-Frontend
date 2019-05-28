@@ -12,12 +12,13 @@ import {
     ping,
     askQuestion,
     findQuestions,
-    answerQuestion,
+    answerQuestion, getSignedUrl,
 } from '../../actions/actions';
 import './Watch.css';
 import withContainer from "../../components/withContainer";
 import Modal from "../../components/Modal/Modal";
 import ForumContainer from "./ForumContainer";
+import {IS_PROD} from "../../constants";
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -35,6 +36,7 @@ const mapDispatchToProps = dispatch => ({
     askQuestion: (payload) => dispatch(askQuestion(payload)),
     findQuestions: (payload) => dispatch(findQuestions(payload)),
     answerQuestion: (payload) => dispatch(answerQuestion(payload)),
+    getSignedUrl: (payload) => dispatch(getSignedUrl(payload)),
 });
 
 class Watch extends Component {
@@ -186,6 +188,55 @@ class Watch extends Component {
             // It failed show an error
             this.props.pushAlert('danger', 'Failed to Post', 'There was an issue answering this question. Check your internet connection and try again!');
         });
+    }
+
+    /**
+     * Computes the next video in the series and updates redux to progress
+     * to the next videos
+     */
+    async nextVideo() {
+        const currentChapter = this.props.videos.activeVideo.chapter;
+        const currentVideo = this.props.videos.activeVideo.sortKey;
+
+        let nextVideoChapter = null;
+        let nextVideoSortKey = null;
+        let nextVideoName = null;
+        // Try to get the next video if it exits
+        const { videos } = this.props.videos.videoList.find(({ chapter }) => chapter === currentChapter);
+
+        // If its the last video in the last chapter just do nothing there is no next video
+        if(_.isUndefined(videos))
+            return null;
+
+        // Find the next video where the sort key is incremented by 1
+        const nextVideo = videos.find(({ sortKey }) => sortKey === currentVideo + 1);
+
+        // Proceed to the next chapter
+        if(_.isUndefined(nextVideo)) {
+
+            // If its the last video in the last chapter just do nothing there is no next video
+            if(_.isUndefined(this.props.videos.videoList.find(({ chapter }) => chapter === currentChapter + 1)))
+                return null;
+
+            nextVideoChapter = currentChapter + 1;
+            nextVideoSortKey = 0;
+            nextVideoName = this.props.videos.videoList.find(({ chapter }) => chapter === currentChapter + 1).videos[0].s3Name;
+        } else {
+            nextVideoChapter = currentChapter;
+            nextVideoSortKey = currentVideo + 1;
+            nextVideoName = nextVideo.s3Name;
+        }
+
+        try {
+            await this.props.getSignedUrl({
+                video: nextVideo,
+                resourceUrl: `${IS_PROD ? 'https://d2hhpuhxg00qg.cloudfront.net' : 'https://dpvchyatyxxeg.cloudfront.net'}/chapter${nextVideoChapter}/${nextVideoName}.mov`,
+                subscriptionId: this.props.user.subscription_id,
+            });
+            await this.props.findQuestions(`${nextVideoChapter}.${nextVideoSortKey}`);
+        } catch (err) {
+            Log.error(err.message);
+        }
     }
 
     /**
@@ -354,6 +405,7 @@ class Watch extends Component {
                     url={this.props.activeVideo.signedUrl}
                     width="100%"
                     height="100%"
+                    onEnded={() => this.nextVideo()}
                     style={{
                         position: 'relative',
                         width: '100%',
