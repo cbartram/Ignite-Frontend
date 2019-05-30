@@ -246,5 +246,5 @@ ul {
 }
 
 .ui.loader:after {
-  border-color: #6772e5 transparent transparent;
+  border-color: #6772e5 transparent transparent !important;
 }

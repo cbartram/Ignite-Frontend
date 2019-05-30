@@ -63,7 +63,7 @@ class Profile extends Component {
      */
     componentDidMount() {
         try {
-            if (this.props.videos.activeVideo.name === 'null') {
+            if (this.props.videos.activeVideo && this.props.videos.activeVideo.name === 'null') {
                 let activeVideo = null;
                 const chapters = this.props.videos.videoList;
                 // Find our best guess at the active video. (started: true, completed: false, scrubDuration > 0)
@@ -82,6 +82,7 @@ class Profile extends Component {
                 this.props.updateActiveVideo(activeVideo);
             }
         } catch(err) {
+            console.log(err);
             Log.error('Something went wrong loading this page!');
             this.props.pushAlert('warning', 'Issue Loading Videos', 'We had an issue loading your most recently watched videos.');
         }
@@ -405,7 +406,7 @@ class Profile extends Component {
                     </div>
                     <div className="col-md-4">
                     {/* Video Card*/}
-                    <Card loading={this.props.videos.isFetching} cardTitle="Your Videos">
+                    <Card loading cardTitle="Your Videos">
                         <div className="table-responsive">
                             <table className="table table-borderless table-sm">
                                 <tbody>
@@ -415,7 +416,7 @@ class Profile extends Component {
                                         </td>
                                         <td>
                                             {
-                                                this.props.videos.activeVideo.name !== 'null' ?
+                                                !_.isNil(this.props.videos.activeVideo) ?
                                                     <span className="value">{ this.props.videos.activeVideo.name }</span> :
                                                     <span className="value missing">None</span>
                                             }
@@ -427,7 +428,7 @@ class Profile extends Component {
                                         </td>
                                         <td>
                                             {
-                                                this.props.videos.activeVideo.name !== 'null' ?
+                                                !_.isNil(this.props.videos.activeVideo) ?
                                                     <span className="value-code">{ this.props.videos.activeVideo.length }</span> :
                                                     <span className="value-code missing">0:00</span>
                                             }
@@ -439,7 +440,7 @@ class Profile extends Component {
                                         </td>
                                         <td>
                                             {
-                                                this.props.videos.activeVideo.name !== 'null' ?
+                                                !_.isNil(this.props.videos.activeVideo) ?
                                                     <span className="value-code">{ moment.utc(this.props.videos.activeVideo.scrubDuration.toFixed(0) * 1000).format('mm:ss') }</span> :
                                                     <span className="value-code missing">0:00</span>
                                             }
@@ -451,7 +452,7 @@ class Profile extends Component {
                                         </td>
                                         <td>
                                             {
-                                                this.props.videos.activeVideo.name !== 'null' ?
+                                                !_.isNil(this.props.videos.activeVideo) ?
                                                     <span className="value">{Profile.percentComplete(this.props.videos.activeVideo)}%</span> :
                                                     <span className="value missing">0%</span>
                                             }
