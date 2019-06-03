@@ -121,3 +121,7 @@ small {
     transform: scaleX(1) scaleY(1);
     box-shadow: 0 13px 27px -5px rgba(50,50,93,.25), 0 8px 16px -8px rgba(0,0,0,.3);
 }
+
+.ui.secondary.pointing.menu .active.item {
+    border-color: #6772e5;
+}
