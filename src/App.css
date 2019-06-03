@@ -447,7 +447,11 @@ h1.common-PageTitle {
 }
 
 #course-overview {
-    background: rgb(246, 249, 252);
+    background: #424770;
+}
+
+.common-BodyText-dark {
+    color: white;
 }
 
 .course-overview-list li {

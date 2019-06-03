@@ -5,6 +5,7 @@ import {Link, withRouter} from 'react-router-dom';
 import {Auth} from 'aws-amplify/lib/index';
 import Markdown from 'react-markdown';
 import _ from 'lodash';
+import { Menu, Segment } from 'semantic-ui-react'
 import Log from '../../Log';
 import {
     logout,
@@ -19,6 +20,7 @@ import withContainer from "../../components/withContainer";
 import Modal from "../../components/Modal/Modal";
 import ForumContainer from "./ForumContainer";
 import {IS_PROD} from "../../constants";
+
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -311,6 +313,10 @@ class Watch extends Component {
         this.setState({open: false});
     }
 
+    updateTab(tab) {
+        this.setState({ activeTab: tab });
+    }
+
     /**
      * Handles showing the modal when the trigger button is clicked.
      */
@@ -435,28 +441,28 @@ class Watch extends Component {
                     </p>
                 </div>
                 <div className="tab-container px-3">
-                    <ul className="nav nav-tabs">
-                        <li>
-                            <button className={`tab ${this.state.activeTab === 0 ? 'active-tab' : ''}`}
-                                    onClick={() => this.setState({activeTab: 0})}>Questions
-                            </button>
-                        </li>
-                        <li>
-                            <button className={`tab ${this.state.activeTab === 1 ? 'active-tab' : ''}`}
-                                    onClick={() => this.setState({activeTab: 1})}>Downloads
-                            </button>
-                        </li>
-                        <li>
-                            <button className={`tab ${this.state.activeTab === 2 ? 'active-tab' : ''}`}
-                                    onClick={() => this.setState({activeTab: 2})}>Github
-                            </button>
-                        </li>
-                        <li>
-                            <button className={`tab ${this.state.activeTab === 3 ? 'active-tab' : ''}`}
-                                    onClick={() => this.setState({activeTab: 3})}>Practice
-                            </button>
-                        </li>
-                    </ul>
+                    <Menu pointing secondary>
+                        <Menu.Item
+                            name='Questions'
+                            active={this.state.activeTab === 0}
+                            onClick={() => this.updateTab(0)}
+                        />
+                        <Menu.Item
+                            name='Downloads'
+                            active={this.state.activeTab === 1}
+                            onClick={() => this.updateTab(1)}
+                        />
+                        <Menu.Item
+                            name='Source Code'
+                            active={this.state.activeTab === 2}
+                            onClick={() => this.updateTab(2)}
+                        />
+                        <Menu.Item
+                            name='Practice'
+                            active={this.state.activeTab === 3}
+                            onClick={() => this.updateTab(3)}
+                        />
+                    </Menu>
                     <div>
                         {this.renderTabContent()}
                     </div>

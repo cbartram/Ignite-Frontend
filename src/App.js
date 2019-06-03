@@ -130,7 +130,7 @@ class App extends Component {
                 <section id="course-overview">
                     <div className="row">
                         <div className="col-md-4 offset-md-2">
-                            <Card badgeText="Full Stack" style={{minWidth: 100, paddingLeft: 0, transform: 'none'}}>
+                            <Card cardTitle="Full Stack" style={{minWidth: 100, paddingLeft: 0, transform: 'none'}}>
                                 <ul className="course-overview-list">
                                     <li>
                                         <span className="fa fa-check success-icon mr-2"/>
@@ -191,7 +191,7 @@ class App extends Component {
                             <h1 className="common-UppercaseTitle">
                                 Course Overview
                             </h1>
-                            <p className="common-BodyText">
+                            <p className="common-BodyText common-BodyText-dark">
                                 With ignite you will learn end to end full stack development using popular open source
                                 technologies and libraries like Git, React, NodeJS, Postgres, Express, and JQuery among
                                 others!

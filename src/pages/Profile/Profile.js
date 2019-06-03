@@ -4,6 +4,7 @@ import _ from 'lodash';
 import { FormGroup, FormControl } from 'react-bootstrap';
 import { withRouter } from "react-router-dom";
 import { Auth } from 'aws-amplify/lib/index';
+import ReactTooltip from 'react-tooltip';
 import moment from 'moment/moment';
 import withContainer from '../../components/withContainer';
 import Card from '../../components/Card/Card';
@@ -21,6 +22,13 @@ import {
     fetchVideos,
 } from '../../actions/actions';
 import Log from '../../Log';
+import {
+    API_FIND_EVENTS,
+    API_KEY,
+    getRequestUrl,
+    IS_PROD,
+    PROD_API_KEY
+} from "../../constants";
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -54,6 +62,33 @@ class Profile extends Component {
             oldPassword: "",
             isChanging: false,
             confirmPassword: "",
+            events: [],
+
+            // Tooltip state
+            stages: [{
+                text: 'You will be billed $7.00',
+                highlightedText: 'on June 7th',
+                width: 30,
+                color: '#3ecf8e',
+            },
+            {
+                text: 'You will be billed $7.00',
+                highlightedText: 'on July 7th',
+                width: 14,
+                color: '#55d9c2',
+            },
+            {
+                text: 'You unsubscribed',
+                highlightedText: 'on July 14th',
+                width: 14,
+                color: '#3ecf8e',
+            },
+            {
+                text: 'Your subscription ends',
+                highlightedText: 'on August 7th',
+                width: 2,
+                color: 'grey',
+            }]
         };
     }
 
@@ -61,7 +96,36 @@ class Profile extends Component {
      * Sets the active video to the last video in the series
      * that the user was last watching (started: true, completed: false, scrubDuration > 0)
      */
-    componentDidMount() {
+    async componentDidMount() {
+        this.determineWidths();
+
+        const params = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'x-api-key': IS_PROD ? PROD_API_KEY : API_KEY
+            },
+            // Since this is calling an API these details are crucial for the lambda function to know which route to execute.
+            body: JSON.stringify({
+                headers: {},
+                method: 'POST',
+                path: API_FIND_EVENTS,
+                parameters: {}, // Query params
+                body: {
+                    customerId: this.props.auth.user.customer_id,
+                }
+            }),
+        };
+
+        try {
+            const res = await (await fetch(getRequestUrl(API_FIND_EVENTS), params)).json();
+            console.log(res);
+            this.setState({ events: res.body.events });
+        } catch(err) {
+            Log.error('Failed to retrieve videos from API...', err);
+        }
+
         try {
             if (this.props.videos.activeVideo && this.props.videos.activeVideo.name === 'null') {
                 let activeVideo = null;
@@ -179,11 +243,129 @@ class Profile extends Component {
         return <span className="badge badge-pill badge-primary py-1 px-2">{moment.unix(this.props.billing.next_invoice_date).format('MMMM Do')}</span>
     }
 
+    determineWidths() {
+        const stages = [];
+        const trialEnd = moment(moment.unix(this.props.user.trial_end).format('YYYY-MM-DD'));
+        const nextInvoiceDate = moment(moment.unix(this.props.user.next_invoice_date).format('YYYY-MM-DD'));
+        const hasTrial = trialEnd.isAfter(moment()) && this.props.user.next_invoice_date !== null;
+        const daysLeftInTrial = trialEnd.diff(moment(), 'days');
+        const monthTillNow = moment().diff(moment().startOf('month'), 'days');
+
+        let totalWidth = 0;
+
+        // If the user has a trial show the trial
+        if(hasTrial) {
+            // Determine how many days left (1 day = 2% width)
+            stages.push({
+                text: 'Your free trial will end',
+                highlightedText: trialEnd.fromNow(),
+                width: daysLeftInTrial * 2,
+                color: '#24b47e',
+            });
+
+            totalWidth += daysLeftInTrial * 2;
+        }
+
+        if(this.props.user.next_invoice_date) {
+            stages.push({
+                text: 'You will be billed $7.00',
+                highlightedText: nextInvoiceDate.fromNow(),
+                width: (daysLeftInTrial * 2) + nextInvoiceDate.daysInMonth(),
+                color: '#3ecf8e',
+            });
+
+            totalWidth += (daysLeftInTrial * 2) + nextInvoiceDate.daysInMonth()
+        }
+
+        if(this.props.user.unsub_timestamp) {
+           const unsubTimestamp = moment(moment.unix(this.props.user.unsub_timestamp).format('YYYY-MM-DD'));
+           stages.push({
+               text: 'You unsubscribed',
+               highlightedText: unsubTimestamp.fromNow(),
+               width: 14,
+               color: '#55d9c2',
+           });
+
+           totalWidth += 14;
+        }
+
+        // Push to the front of the array
+        stages.unshift({
+            text: 'You were not subscribed yet!',
+            highlightedText: '',
+            width: 100 - totalWidth,
+            color: 'grey',
+        });
+
+        this.setState({ stages });
+    }
+
+    /**
+     * Determines the proper icon to show
+     * given the event type.
+     * @param event String the events type (customer.subscription.created etc...)
+     */
+    static getIcon(event) {
+        switch(event) {
+            case 'customer.created':
+                return 'fas fa-user success-icon';
+            case 'subscription.created':
+                return 'far fa-calendar info-icon';
+            case 'charge.succeeded':
+                return 'far fa-credit-card success-icon';
+            case 'invoice.upcoming':
+                return 'far fa-hourglass info-icon';
+            case 'invoice.created':
+                return 'fas fa-receipt success-icon';
+            case 'customer.subscription.trial_will_end':
+                return 'far fa-hourglass warning-icon';
+            case 'customer.subscription.deleted':
+                return 'fas fa-times danger-icon';
+            default:
+                return 'fa fa-plus success-icon'
+        }
+    }
+
     render() {
         return (
             <div>
+                <div className="row mt-3">
+                    <div className="col-md-12">
+                        <Card badgeText="Billing Status" className="pt-4">
+                            <div className="slider">
+                                <div className="d-flex rail">
+                                    { moment().format('MMM') }
+                                    {
+                                        this.state.stages.map((stage, i) => {
+                                            return (
+                                                <div key={i} style={{ width: `${stage.width}%`, background: stage.color }} className="tooltip-container" data-tip="tooltip" data-for={`tooltip-${i}`}>
+                                                    <ReactTooltip className="schema-tooltip" place="bottom" id={`tooltip-${i}`}>
+                                                        <div>
+                                                            {stage.text} <span className="common-Link">{ stage.highlightedText }</span>
+                                                        </div>
+                                                    </ReactTooltip>
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                    { moment().add(2, 'months').format('MMM') }
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-md-8 offset-md-2">
+                                <p className="common-BodyText mt-4" align="center">
+                                    Visualize your billing cycle and quickly understand when your free trial ends,
+                                    how you will be charged and your subscriptions remaining duration after cancellation.
+                                </p>
+                                </div>
+                            </div>
+                        </Card>
+                    </div>
+                </div>
+
+
                 <div className="row">
-                    <div className="col-md-10 offset-md-1">
+                    <div className="col-md-7">
                         {/* Billing Card */}
                         <Card loading={this.props.user.isFetching} cardTitle="Billing Information" classNames={['pb-0']}>
                             <div className="d-flex flex-row justify-content-between">
@@ -309,6 +491,30 @@ class Profile extends Component {
                             </div>
                         </Card>
                     </div>
+                    <div className="col-md-4">
+                        <Card cardTitle="Recent Events" style={{ midWidth: 0, padding: 0 }} classNames={['p-0', 'mt-0', 'pb-2']}>
+                            <div style={{ maxHeight: 240, overflowY: 'scroll' }}>
+                                <ul className="list-group">
+                                    {
+                                        this.state.events.map((event, i) => {
+                                            return (
+                                                <li className="list-group-item" style={{ border: '1px solid white' }} key={i}>
+
+                                                    <div className="d-flex flex-row">
+                                                        <span className={`${Profile.getIcon(event.type)} mr-2`}/>
+                                                        <div className="d-flex flex-column">
+                                                            <h5 className="mb-1 mt-0">{ event.type.split('.').join(' ') }</h5>
+                                                            <p className="text-muted">{ moment(moment.unix(event.created)).format('MMM d, YYYY h:mm A') }</p>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            )
+                                        })
+                                    }
+                                </ul>
+                            </div>
+                        </Card>
+                    </div>
                 </div>
                 <div className="row">
                     <div className="col-md-4">
@@ -344,7 +550,7 @@ class Profile extends Component {
                                         </td>
                                         <td>
                                             {
-                                                this.props.billing.premium === 'true' ?
+                                                this.props.billing.premium ?
                                                     <span className="badge badge-pill badge-success py-1 px-2">
                                                         True
                                                     </span> :
@@ -402,70 +608,6 @@ class Profile extends Component {
                                 </tbody>
                             </table>
                         </div>
-                    </Card>
-                    </div>
-                    <div className="col-md-4">
-                    {/* Video Card*/}
-                    <Card loading cardTitle="Your Videos">
-                        <div className="table-responsive">
-                            <table className="table table-borderless table-sm">
-                                <tbody>
-                                    <tr>
-                                        <td className="key">
-                                            Current Video
-                                        </td>
-                                        <td>
-                                            {
-                                                !_.isNil(this.props.videos.activeVideo) ?
-                                                    <span className="value">{ this.props.videos.activeVideo.name }</span> :
-                                                    <span className="value missing">None</span>
-                                            }
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className="key">
-                                            Length
-                                        </td>
-                                        <td>
-                                            {
-                                                !_.isNil(this.props.videos.activeVideo) ?
-                                                    <span className="value-code">{ this.props.videos.activeVideo.length }</span> :
-                                                    <span className="value-code missing">0:00</span>
-                                            }
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className="key">
-                                            Duration Completed
-                                        </td>
-                                        <td>
-                                            {
-                                                !_.isNil(this.props.videos.activeVideo) ?
-                                                    <span className="value-code">{ moment.utc(this.props.videos.activeVideo.scrubDuration.toFixed(0) * 1000).format('mm:ss') }</span> :
-                                                    <span className="value-code missing">0:00</span>
-                                            }
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className="key">
-                                            Percent Completed
-                                        </td>
-                                        <td>
-                                            {
-                                                !_.isNil(this.props.videos.activeVideo) ?
-                                                    <span className="value">{Profile.percentComplete(this.props.videos.activeVideo)}%</span> :
-                                                    <span className="value missing">0%</span>
-                                            }
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </Card>
-                    </div>
-                    <div className="col-md-4">
-                    {/* Update Card */}
-                    <Card loading={this.props.videos.isFetching} classNames={['mb-4']} cardTitle="Update Password">
                         <div className="ChangePassword">
                             <form onSubmit={this.handleChangeClick}>
                                 <FormGroup>
