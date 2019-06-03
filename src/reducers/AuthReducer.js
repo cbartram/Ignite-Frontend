@@ -27,6 +27,7 @@ export default (state = {}, action) => {
                         jwtToken: action.payload.idToken.jwtToken,
                         refreshToken: action.payload.refreshToken.token,
                         deviceKey: action.payload.accessToken.payload.device_key,
+                        events: [],
                     },
                     error: null
                 };
@@ -40,6 +41,7 @@ export default (state = {}, action) => {
                         jwtToken: action.payload.signInUserSession.idToken.jwtToken,
                         refreshToken: action.payload.signInUserSession.refreshToken.token,
                         deviceKey: action.payload.deviceKey,
+                        events: [],
                     },
                     error: null
                 }
@@ -126,6 +128,28 @@ export default (state = {}, action) => {
             return {
                 ...state,
                 error: null,
+            }
+        }
+        case constants.GET_EVENTS_REQUEST:
+            return {
+                ...state,
+                isFetching: true,
+            };
+        case constants.GET_EVENTS_FAILURE: {
+            return {
+                ...state,
+                error: action.payload,
+                isFetching: false,
+            }
+        }
+        case constants.GET_EVENTS_SUCCESS: {
+            return {
+                ...state,
+                isFetching: false,
+                user: {
+                  ...state.user,
+                  events: action.payload.events,
+                }, // TODO make the redux API call in Profile.js and bind to mapDispatchToProps you have src copied to clipboard
             }
         }
         case constants.LOGOUT:

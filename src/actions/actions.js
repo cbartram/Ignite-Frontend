@@ -240,6 +240,15 @@ export const unsubscribe = (payload) => async dispatch => {
 };
 
 /**
+ * Retrieves stripe events for a customer
+ * @param payload Object payload containing the users stripe customer id
+ * @returns {Function}
+ */
+export const getEvents = (payload) => async dispatch => {
+    await post(payload, constants.API_FIND_EVENTS, constants.GET_EVENTS_REQUEST, constants.GET_EVENTS_SUCCESS, constants.GET_EVENTS_FAILURE, dispatch);
+};
+
+/**
  * Updates billing details for a user synchronously (without making an additional API call)
  * @param payload Object user billing attributes.
  * @returns {Function}

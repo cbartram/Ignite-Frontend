@@ -20,15 +20,9 @@ import {
     unsubscribe,
     loginSuccess,
     fetchVideos,
+    getEvents,
 } from '../../actions/actions';
 import Log from '../../Log';
-import {
-    API_FIND_EVENTS,
-    API_KEY,
-    getRequestUrl,
-    IS_PROD,
-    PROD_API_KEY
-} from "../../constants";
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -47,6 +41,7 @@ const mapDispatchToProps = dispatch => ({
    unsubscribe: (payload) => dispatch(unsubscribe(payload)),
    loginSuccess: (payload) => dispatch(loginSuccess(payload)),
    fetchVideos: (payload) => dispatch(fetchVideos(payload)),
+   getEvents: (payload) => dispatch(getEvents(payload)),
 });
 
 /**
@@ -98,33 +93,7 @@ class Profile extends Component {
      */
     async componentDidMount() {
         this.determineWidths();
-
-        const params = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'x-api-key': IS_PROD ? PROD_API_KEY : API_KEY
-            },
-            // Since this is calling an API these details are crucial for the lambda function to know which route to execute.
-            body: JSON.stringify({
-                headers: {},
-                method: 'POST',
-                path: API_FIND_EVENTS,
-                parameters: {}, // Query params
-                body: {
-                    customerId: this.props.auth.user.customer_id,
-                }
-            }),
-        };
-
-        try {
-            const res = await (await fetch(getRequestUrl(API_FIND_EVENTS), params)).json();
-            console.log(res);
-            this.setState({ events: res.body.events });
-        } catch(err) {
-            Log.error('Failed to retrieve videos from API...', err);
-        }
+        this.props.getEvents({ customerId: this.props.user.customer_id });
 
         try {
             if (this.props.videos.activeVideo && this.props.videos.activeVideo.name === 'null') {
@@ -309,7 +278,7 @@ class Profile extends Component {
         switch(event) {
             case 'customer.created':
                 return 'fas fa-user success-icon';
-            case 'subscription.created':
+            case 'customer.subscription.created':
                 return 'far fa-calendar info-icon';
             case 'charge.succeeded':
                 return 'far fa-credit-card success-icon';
@@ -491,12 +460,18 @@ class Profile extends Component {
                             </div>
                         </Card>
                     </div>
-                    <div className="col-md-4">
-                        <Card cardTitle="Recent Events" style={{ midWidth: 0, padding: 0 }} classNames={['p-0', 'mt-0', 'pb-2']}>
+                    <div className="col-md-5">
+                        <Card
+                            cardTitle="Recent Events"
+                            style={{ midWidth: 0, padding: 0 }}
+                            classNames={['p-0', 'mt-0', 'pb-2']}
+                            loading={this.props.auth.isFetching}
+                        >
                             <div style={{ maxHeight: 240, overflowY: 'scroll' }}>
                                 <ul className="list-group">
                                     {
-                                        this.state.events.map((event, i) => {
+                                        this.props.user.events.length === 0 ? <li className="list-group-item" style={{ border: '1px solid white' }}><h3>No Events</h3></li> :
+                                        this.props.user.events.map((event, i) => {
                                             return (
                                                 <li className="list-group-item" style={{ border: '1px solid white' }} key={i}>
 
