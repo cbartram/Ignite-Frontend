@@ -264,7 +264,18 @@ class Watch extends Component {
                         <h4 className="common-UppercaseTitle mt-3">Loading...</h4>
                     </div>
                 }
-            case 1:
+            case 1: return (
+                <div className="p-2">
+                    <div className="d-flex ml-3">
+                        <i className="far fa-file-archive fa-3x"/>
+                        <div className="flex-column project-files">
+                            <p className="ml-2 mb-0">Links</p>
+                            <p className="text-muted ml-2">Link One</p>
+                        </div>
+                    </div>
+                </div>
+            );
+            case 2:
                 return (
                     <div className="p-2">
                         <div className="d-flex ml-3">
@@ -276,7 +287,7 @@ class Watch extends Component {
                         </div>
                     </div>
                 );
-            case 2:
+            case 3:
                 return (
                     <div className="p-2">
                         <div className="d-flex ml-3">
@@ -287,7 +298,7 @@ class Watch extends Component {
                         </div>
                     </div>
                 );
-            case 3:
+            case 4:
                 return (
                     <div className="p-2">
                         <iframe
@@ -448,19 +459,24 @@ class Watch extends Component {
                             onClick={() => this.updateTab(0)}
                         />
                         <Menu.Item
-                            name='Downloads'
+                            name='Links'
                             active={this.state.activeTab === 1}
                             onClick={() => this.updateTab(1)}
                         />
                         <Menu.Item
-                            name='Source Code'
+                            name='Downloads'
                             active={this.state.activeTab === 2}
                             onClick={() => this.updateTab(2)}
                         />
                         <Menu.Item
-                            name='Practice'
+                            name='Source Code'
                             active={this.state.activeTab === 3}
                             onClick={() => this.updateTab(3)}
+                        />
+                        <Menu.Item
+                            name='Practice'
+                            active={this.state.activeTab === 4}
+                            onClick={() => this.updateTab(4)}
                         />
                     </Menu>
                     <div>
