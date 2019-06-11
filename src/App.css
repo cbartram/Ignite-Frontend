@@ -52,8 +52,22 @@ h1.common-PageTitle {
     padding-left: 5px;
 }
 
+#programming-languages {
+    position: relative;
+    height: 66px;
+    margin-bottom: -66px;
+}
+
+.heading-icon {
+    display: block;
+    width: 66px;
+    height: 66px;
+    margin-bottom: 30px;
+}
+
 /* Header & Stripes Styles */
 .header-hero {
+    overflow: hidden;
     position: relative;
     width: 100%;
     height: 60vh;
@@ -120,8 +134,8 @@ h1.common-PageTitle {
 }
 
 /* Visual CSS */
-.icon-container {
-    width: 3000px;
+.IconsContainer {
+    /*width: 3000px;*/
     height: 460px;
     position: relative;
     margin-bottom: 100px;
@@ -172,6 +186,7 @@ h1.common-PageTitle {
     transform: translate(-50%, 0);
 }
 
+
 .Icon-imgAffirm {
     background-position: 0 0;
     width: 152px;
@@ -196,43 +211,43 @@ h1.common-PageTitle {
     height: 152px
 }
 
-.Icon-imgCatawiki {
+.Icon-imgBookingCom {
     background-position: -308px 0;
     width: 152px;
     height: 152px
 }
 
-.Icon-imgCityofBoston {
+.Icon-imgCatawiki {
     background-position: -308px -154px;
     width: 152px;
     height: 152px
 }
 
-.Icon-imgDeliveroo {
+.Icon-imgCityofBoston {
     background-position: 0 -308px;
     width: 152px;
     height: 152px
 }
 
-.Icon-imgDiDi {
+.Icon-imgDeliveroo {
     background-position: -154px -308px;
     width: 152px;
     height: 152px
 }
 
-.Icon-imgDoordash {
+.Icon-imgDiDi {
     background-position: -308px -308px;
     width: 152px;
     height: 152px
 }
 
-.Icon-imgExpedia {
+.Icon-imgDoordash {
     background-position: -462px 0;
     width: 152px;
     height: 152px
 }
 
-.Icon-imgFacebook {
+.Icon-imgExpedia {
     background-position: -462px -154px;
     width: 152px;
     height: 152px
@@ -304,128 +319,122 @@ h1.common-PageTitle {
     height: 152px
 }
 
-.Icon-imgPinterest {
+.Icon-imgPostmates {
     background-position: -308px -616px;
     width: 152px;
     height: 152px
 }
 
-.Icon-imgPostmates {
+.Icon-imgRackspace {
     background-position: -462px -616px;
     width: 152px;
     height: 152px
 }
 
-.Icon-imgRackspace {
+.Icon-imgReddit {
     background-position: -616px -616px;
     width: 152px;
     height: 152px
 }
 
-.Icon-imgReddit {
+.Icon-imgSalesforce {
     background-position: -770px 0;
     width: 152px;
     height: 152px
 }
 
-.Icon-imgSalesforce {
+.Icon-imgShopify {
     background-position: -770px -154px;
     width: 152px;
     height: 152px
 }
 
-.Icon-imgShopify {
+.Icon-imgSlack {
     background-position: -770px -308px;
     width: 152px;
     height: 152px
 }
 
-.Icon-imgSlack {
+.Icon-imgSpotify {
     background-position: -770px -462px;
     width: 152px;
     height: 152px
 }
 
-.Icon-imgSpotify {
+.Icon-imgSquarespace {
     background-position: -770px -616px;
     width: 152px;
     height: 152px
 }
 
-.Icon-imgSquarespace {
+.Icon-imgTarget {
     background-position: 0 -770px;
     width: 152px;
     height: 152px
 }
 
-.Icon-imgTarget {
+.Icon-imgTaskRabbit {
     background-position: -154px -770px;
     width: 152px;
     height: 152px
 }
 
-.Icon-imgTaskRabbit {
+.Icon-imgTed {
     background-position: -308px -770px;
     width: 152px;
     height: 152px
 }
 
-.Icon-imgTed {
+.Icon-imgTheGuardian {
     background-position: -462px -770px;
     width: 152px;
     height: 152px
 }
 
-.Icon-imgTheGuardian {
+.Icon-imgTicketSwap {
     background-position: -616px -770px;
     width: 152px;
     height: 152px
 }
 
-.Icon-imgTicketSwap {
+.Icon-imgTwitch {
     background-position: -770px -770px;
     width: 152px;
     height: 152px
 }
 
-.Icon-imgTwitch {
+.Icon-imgUber {
     background-position: -924px 0;
     width: 152px;
     height: 152px
 }
 
-.Icon-imgUber {
+.Icon-imgWeTransfer {
     background-position: -924px -154px;
     width: 152px;
     height: 152px
 }
 
-.Icon-imgWeTransfer {
+.Icon-imgWish {
     background-position: -924px -308px;
     width: 152px;
     height: 152px
 }
 
-.Icon-imgWish {
+.Icon-imgXero {
     background-position: -924px -462px;
     width: 152px;
     height: 152px
 }
 
-.Icon-imgXero {
+.Icon-imgYelp {
     background-position: -924px -616px;
     width: 152px;
     height: 152px
 }
 
-.Icon-imgYelp {
-    background-position: -924px -770px;
-    width: 152px;
-    height: 152px
-}
-
 .Icon-imgZillow {
-    background-position: 0 -924px;
+    background-position: -924px -770px;
     width: 152px;
     height: 152px
 }
