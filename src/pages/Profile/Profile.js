@@ -382,14 +382,14 @@ class Profile extends Component {
                                                     Current Period
                                                 </td>
                                                 <td>
-                                                    { _.isNil(this.props.billing.invoice_date) ?
+                                                    { _.isNil(this.props.user.invoice_date) ?
                                                         <span className="value">None</span> :
                                                         <span className="value">
-                                                        { moment.unix(this.props.billing.invoice_date).format('MMM Do YYYY') }
+                                                        { moment.unix(this.props.user.invoice_date).format('MMM Do YYYY') }
                                                             &nbsp;
                                                             to
                                                             &nbsp;
-                                                            { moment.unix(this.props.billing.next_invoice_date).format('MMM Do YYYY')}
+                                                            { moment.unix(this.props.user.next_invoice_date).format('MMM Do YYYY')}
                                                         </span>
                                                     }
                                                 </td>

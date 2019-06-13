@@ -129,7 +129,20 @@ class Videos extends Component {
      * Shows a large message on the UI and displays skeleton
      * videos for either loading or unauthorized users.
      */
-    renderJumbotron(authorized = false) {
+    renderJumbotron(authorized = false, isLoading = false) {
+        let text = '';
+        if(isLoading) {
+            text = 'Checking your subscription status....It\'ll just be a moment'
+        } else if(!authorized) {
+            text = ' It looks like you aren\'t subscribed to ignite. If you would like to subscribe and' +
+                'watch all the high quality HD full stack development videos you can click the button below! If you have already subscribed and are seeing' +
+                'this message something may have gone wrong. Refresh the page or try logging out and logging back in.'
+        } else {
+            text = 'These videos are a customized list of chapters, quizzes and workshops that provide a guided learning path for a particular subject. ' +
+                'Each course or quiz in a chapter builds on the previous one, so that as you progress through the videos you gain a solid' +
+                'understanding of the broader topic and how it fits into full stack development.';
+        }
+
         return (
             <div>
             <Jumbotron>
@@ -139,14 +152,7 @@ class Videos extends Component {
                 <div className="row">
                     <div className="col-md-8">
                         <p className="common-BodyText">
-                            { authorized ?
-                                'These videos are a customized list of chapters, quizzes and workshops that provide a guided learning path for a particular subject. ' +
-                                'Each course or quiz in a chapter builds on the previous one, so that as you progress through the videos you gain a solid' +
-                                'understanding of the broader topic and how it fits into full stack development.' :
-                                ' It looks like you aren\'t subscribed to ignite. If you would like to subscribe and' +
-                                'watch all the high quality HD full stack development videos you can click the button below! If you have already subscribed and are seeing' +
-                                'this message something may have gone wrong. Refresh the page or try logging out and logging back in.'
-                            }
+                            { text }
                         </p>
                         {
                             !authorized &&
@@ -175,7 +181,7 @@ class Videos extends Component {
             </Jumbotron>
             <div className="row">
                 {
-                    !authorized && Array.from(new Array(8)).map(i => {
+                    !authorized && Array.from(new Array(8)).map(() => {
                         return (
                             <div className="col-md-3 col-lg-3 col-sm-12 d-flex align-items-stretch pb-2 px-4 my-4" key={_.uniqueId()}>
                                 <section className="card card-skeleton">
@@ -250,7 +256,7 @@ class Videos extends Component {
     render() {
         // Only returned when history.push('/videos') happens
         if(this.props.videos.isFetching)
-            return this.renderJumbotron();
+            return this.renderJumbotron(false, true);
 
         if(((!_.isUndefined(this.props.videos.videoList) && _.size(this.props.videos.videoList) === 0) || !this.props.user.premium))
             return this.renderJumbotron();
