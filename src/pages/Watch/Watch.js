@@ -266,30 +266,49 @@ class Watch extends Component {
                     </div>
                 }
             case 1: return (
-                <div className="p-2">
-                    <div className="d-flex align-items-stretch ml-3 ">
-                        {
-                            this.props.activeVideo.links.map((link, i) => {
-                                return (
-                                    <div className="m-3" key={i}>
-                                        <LinkPreview link={link} id={i} />
-                                    </div>
-                                )
-                            })
-                        }
-                    </div>
+                <div className="row">
+                    {
+                        this.props.activeVideo.links.length > 0 ?
+                        this.props.activeVideo.links.map((link, i) => {
+                            return (
+                                <div className="col-md-6 d-flex my-3 align-items-stretch" key={i}>
+                                    <LinkPreview link={link} id={i} />
+                                </div>
+                            )
+                        })  :
+                        <div className="col-md-5 offset-md-4 d-flex justify-content-center p-4">
+                            <h3>No Links for this Video</h3>
+                        </div>
+                    }
                 </div>
             );
             case 2:
                 return (
-                    <div className="p-2">
-                        <div className="d-flex ml-3">
-                            <i className="far fa-file-archive fa-3x"/>
-                            <div className="flex-column project-files">
-                                <p className="ml-2 mb-0">Project Files</p>
-                                <p className="text-muted ml-2">Zip File</p>
+                    <div className="row">
+                        {
+                            this.props.activeVideo.downloads.length > 0 ?
+                            this.props.activeVideo.downloads.map((file, i) => {
+                                return (
+                                    <div className="col-md-6 d-flex my-3 align-items-stretch">
+                                        <div className="list-group-item" key={i}>
+                                            <div className="d-flex flex-column p-3 justify-content-start">
+                                                <h3>{file.name}</h3>
+                                                <p className="common-BodyText text-wrap">
+                                                    { file.description }
+                                                </p>
+                                                <a href={file.link} target="_blank" className="common-Button common-Button--default">
+                                                    Download &nbsp;
+                                                    <i className="far fa-file-archive"/>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            }) :
+                            <div className="col-md-5 offset-md-4 d-flex justify-content-center p-4">
+                                <h3>No Downloads for this Video</h3>
                             </div>
-                        </div>
+                        }
                     </div>
                 );
             case 3:
@@ -313,13 +332,17 @@ class Watch extends Component {
                 return (
                     <div className="p-2">
                         {
-                           ! _.isNil(this.props.activeVideo) &&
+                           ! _.isNil(this.props.activeVideo) ?
                            <iframe
                                title="code-sandbox"
                                src={this.props.activeVideo.practice}
                                style={{width: '100%', height: 500, border: 0, borderRadius: 4, overflow: 'hidden'}}
                                sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"
-                           />
+                           /> :
+                               <p className="common-BodyText">
+                                   There is no applicable practice for this lesson. Feel free to read the articles linked
+                                   or follow along in the video lesson!
+                               </p>
                         }
                     </div>
                 );

@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4ec36ac8-77e5-4985-93b1-57c48712b128" name="Default Changelist" comment="">
+    <list default="true" id="4ec36ac8-77e5-4985-93b1-57c48712b128" name="Default Changelist" comment="Added Dow">
+      <change beforePath="$PROJECT_DIR$/.idea/ignite-frontend.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ignite-frontend.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Login/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Login/Login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Signup/Signup.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Signup/Signup.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Videos/Videos.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Videos/Videos.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/LinkPreview/LinkPreview.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/LinkPreview/LinkPreview.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Watch/Watch.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Watch/Watch.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/Watch/Watch.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Watch/Watch.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -41,8 +39,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/pages/Videos/Videos.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="351">
-              <caret line="188" column="52" lean-forward="true" selection-start-line="188" selection-start-column="52" selection-end-line="188" selection-end-column="72" />
+            <state relative-caret-position="173">
+              <caret line="218" column="56" selection-start-line="218" selection-start-column="56" selection-end-line="218" selection-end-column="82" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
               </folding>
@@ -54,16 +52,16 @@
         <entry file="file://$PROJECT_DIR$/src/pages/Videos/Videos.css">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="585">
-              <caret line="228" column="11" lean-forward="true" selection-start-line="228" selection-start-column="11" selection-end-line="228" selection-end-column="11" />
+              <caret line="228" column="11" selection-start-line="228" selection-start-column="11" selection-end-line="228" selection-end-column="11" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/pages/Watch/Watch.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="266">
-              <caret line="271" column="55" selection-start-line="271" selection-start-column="55" selection-end-line="271" selection-end-column="55" />
+            <state relative-caret-position="447">
+              <caret line="279" column="28" selection-start-line="279" selection-start-column="28" selection-end-line="279" selection-end-column="28" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -71,14 +69,23 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/LinkPreview/LinkPreview.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="95">
-              <caret line="5" column="22" selection-start-line="5" selection-start-column="22" selection-end-line="5" selection-end-column="22" />
+            <state relative-caret-position="385">
+              <caret line="60" column="69" lean-forward="true" selection-start-line="60" selection-start-column="69" selection-end-line="60" selection-end-column="69" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/pages/Watch/Watch.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-288">
+              <caret line="79" selection-start-line="79" selection-end-line="79" />
             </state>
           </provider>
         </entry>
@@ -104,7 +111,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>&lt;Card</find>
       <find>bsSize</find>
       <find>post</find>
       <find>this.state.can</find>
@@ -134,6 +140,7 @@
       <find>$(</find>
       <find>to</find>
       <find>Current Period</find>
+      <find>file-archive</find>
     </findStrings>
     <replaceStrings>
       <replace>&lt;/BrowserRouter</replace>
@@ -164,7 +171,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/components/ResetPassword/ResetPassword.js" />
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/src/components/withContainer.js" />
         <option value="$PROJECT_DIR$/src/components/withAlerts.js" />
@@ -199,13 +205,11 @@
         <option value="$PROJECT_DIR$/src/actions/actions.js" />
         <option value="$PROJECT_DIR$/src/reducers/AuthReducer.js" />
         <option value="$PROJECT_DIR$/src/pages/Profile/Profile.css" />
-        <option value="$PROJECT_DIR$/src/pages/Watch/Watch.css" />
         <option value="$PROJECT_DIR$/src/components/Router/Router.js" />
         <option value="$PROJECT_DIR$/src/components/Router/Upload.js" />
         <option value="$PROJECT_DIR$/src/App.css" />
         <option value="$PROJECT_DIR$/src/components/QuoteCard/QuoteCard.js" />
         <option value="$PROJECT_DIR$/src/App.js" />
-        <option value="$PROJECT_DIR$/public/index.html" />
         <option value="$PROJECT_DIR$/src/pages/Videos/Videos.js" />
         <option value="$PROJECT_DIR$/src/pages/Signup/Signup.js" />
         <option value="$PROJECT_DIR$/src/pages/Login/Login.js" />
@@ -213,8 +217,11 @@
         <option value="$PROJECT_DIR$/src/pages/Profile/Profile.js" />
         <option value="$PROJECT_DIR$/node_modules/@microlink/react/dist/microlink.m.js" />
         <option value="$PROJECT_DIR$/src/components/LinkPreview/LinkPreview.css" />
-        <option value="$PROJECT_DIR$/src/pages/Watch/Watch.js" />
+        <option value="$PROJECT_DIR$/public/stripe.js" />
+        <option value="$PROJECT_DIR$/public/index.html" />
+        <option value="$PROJECT_DIR$/src/pages/Watch/Watch.css" />
         <option value="$PROJECT_DIR$/src/components/LinkPreview/LinkPreview.js" />
+        <option value="$PROJECT_DIR$/src/pages/Watch/Watch.js" />
       </list>
     </option>
   </component>
@@ -523,21 +530,7 @@
       <workItem from="1558397408779" duration="20020000" />
       <workItem from="1558921753863" duration="12000000" />
       <workItem from="1559077090708" duration="242000" />
-      <workItem from="1559080674181" duration="56893000" />
-    </task>
-    <task id="LOCAL-00129" summary="Fixed CSS on watch page">
-      <created>1554160155323</created>
-      <option name="number" value="00129" />
-      <option name="presentableId" value="LOCAL-00129" />
-      <option name="project" value="LOCAL" />
-      <updated>1554160155323</updated>
-    </task>
-    <task id="LOCAL-00130" summary="Added ping error notifications for users">
-      <created>1554234700511</created>
-      <option name="number" value="00130" />
-      <option name="presentableId" value="LOCAL-00130" />
-      <option name="project" value="LOCAL" />
-      <updated>1554234700511</updated>
+      <workItem from="1559080674181" duration="60197000" />
     </task>
     <task id="LOCAL-00131" summary="Fixed backgroundSize for most logos">
       <created>1554497686586</created>
@@ -868,11 +861,25 @@
       <option name="project" value="LOCAL" />
       <updated>1560431714670</updated>
     </task>
-    <option name="localTasksCounter" value="178" />
+    <task id="LOCAL-00178" summary="Added rich link preview feature">
+      <created>1560517421252</created>
+      <option name="number" value="00178" />
+      <option name="presentableId" value="LOCAL-00178" />
+      <option name="project" value="LOCAL" />
+      <updated>1560517421253</updated>
+    </task>
+    <task id="LOCAL-00179" summary="Using unsplash API for link previews">
+      <created>1560518813022</created>
+      <option name="number" value="00179" />
+      <option name="presentableId" value="LOCAL-00179" />
+      <option name="project" value="LOCAL" />
+      <updated>1560518813022</updated>
+    </task>
+    <option name="localTasksCounter" value="180" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="662508000" />
+    <option name="totallyTimeSpent" value="665812000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -955,8 +962,6 @@
     <option name="version" value="1" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Migrated Questions/Answer to new DB schema" />
-    <MESSAGE value="Migrated to use new user DynamoDB schema" />
     <MESSAGE value="Added much simpler payment form" />
     <MESSAGE value="Fixed authentication flow for users" />
     <MESSAGE value="Fixed authentication and delivery of content after subscription" />
@@ -980,19 +985,11 @@
     <MESSAGE value="Finally fixed the logo bubbles!!!" />
     <MESSAGE value="Improvements to the home page" />
     <MESSAGE value="Minor enhancements" />
-    <option name="LAST_COMMIT_MESSAGE" value="Minor enhancements" />
+    <MESSAGE value="Added rich link preview feature" />
+    <MESSAGE value="Using unsplash API for link previews" />
+    <option name="LAST_COMMIT_MESSAGE" value="Using unsplash API for link previews" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/components/Modal/Modal.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="42">
-          <caret line="8" column="46" selection-start-line="8" selection-start-column="46" selection-end-line="8" selection-end-column="46" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/Login/Login.css">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -1223,13 +1220,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/Watch/Watch.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="101" column="16" selection-start-line="101" selection-start-column="16" selection-end-line="101" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/Legal/Legal.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="301">
@@ -1301,13 +1291,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="419">
-          <caret line="54" selection-start-line="54" selection-end-line="54" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/App.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4408">
@@ -1373,20 +1356,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/Videos/Videos.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="351">
-          <caret line="188" column="52" lean-forward="true" selection-start-line="188" selection-start-column="52" selection-end-line="188" selection-end-column="72" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/Videos/Videos.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="585">
-          <caret line="228" column="11" lean-forward="true" selection-start-line="228" selection-start-column="11" selection-end-line="228" selection-end-column="11" />
+          <caret line="228" column="11" selection-start-line="228" selection-start-column="11" selection-end-line="228" selection-end-column="11" />
         </state>
       </provider>
     </entry>
@@ -1397,22 +1370,53 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/Watch/Watch.js">
+    <entry file="file://$PROJECT_DIR$/public/stripe.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="271" column="55" selection-start-line="271" selection-start-column="55" selection-end-line="271" selection-end-column="55" />
+        <state>
+          <caret column="141116" selection-start-column="141116" selection-end-column="141116" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="267">
+          <caret line="46" lean-forward="true" selection-start-line="46" selection-end-line="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/Watch/Watch.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-288">
+          <caret line="79" selection-start-line="79" selection-end-line="79" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/Videos/Videos.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="173">
+          <caret line="218" column="56" selection-start-line="218" selection-start-column="56" selection-end-line="218" selection-end-column="82" />
           <folding>
-            <element signature="e#0#39#0" expanded="true" />
+            <element signature="e#0#41#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/LinkPreview/LinkPreview.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="5" column="22" selection-start-line="5" selection-start-column="22" selection-end-line="5" selection-end-column="22" />
+        <state relative-caret-position="385">
+          <caret line="60" column="69" lean-forward="true" selection-start-line="60" selection-start-column="69" selection-end-line="60" selection-end-column="69" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/Watch/Watch.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="447">
+          <caret line="279" column="28" selection-start-line="279" selection-start-column="28" selection-end-line="279" selection-end-column="28" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
           </folding>
         </state>
       </provider>

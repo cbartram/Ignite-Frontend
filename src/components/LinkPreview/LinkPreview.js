@@ -60,9 +60,9 @@ export default class LinkPreview extends Component {
             <Card.Body className="mt-0 p-0" ref={this.containerRef}>
               <div className="d-flex flex-row justify-content-start">
                 <img alt="placeholder" className="img-fluid" style={{ borderTopLeftRadius: 8, borderBottomLeftRadius: 8, height: this.state.imageHeight }} width="150" src={this.state.imageUrl} />
-                <div className="flex-column py-3 pl-2">
+                <div className="flex-column py-3 px-2">
                     <h3>{this.props.link.name}</h3>
-                    <p className="common-BodyText">{this.props.link.description}</p>
+                    <p className="common-BodyText text-wrap">{this.props.link.description}</p>
                 </div>
               </div>
             </Card.Body>
