@@ -276,9 +276,11 @@ class Watch extends Component {
                                 </div>
                             )
                         })  :
-                        <div className="col-md-5 offset-md-4 d-flex justify-content-center p-4">
-                            <h3>No Links for this Video</h3>
-                        </div>
+                            <div className="col-md-5 offset-md-4 d-flex justify-content-center p-4">
+                                <p className="common-BodyText">
+                                    There are no links associated with this video.
+                                </p>
+                            </div>
                     }
                 </div>
             );
@@ -306,7 +308,9 @@ class Watch extends Component {
                                 )
                             }) :
                             <div className="col-md-5 offset-md-4 d-flex justify-content-center p-4">
-                                <h3>No Downloads for this Video</h3>
+                                <p className="common-BodyText">
+                                    There are no downloads associated with this lesson!
+                                </p>
                             </div>
                         }
                     </div>
@@ -321,9 +325,11 @@ class Watch extends Component {
                                     View Source Code
                                     <i className="fab fa-github pl-2" style={{color: '#FFFFFF'}}/>
                                 </a> :
-                                <p className="common-BodyText">
-                                    There is no source code associated with this lesson!
-                                </p>
+                                    <div className="col-md-5 offset-md-4 d-flex justify-content-center p-4">
+                                        <p className="common-BodyText">
+                                            There is no source code associated with this lesson!
+                                        </p>
+                                    </div>
                             }
                         </div>
                     </div>
@@ -332,17 +338,19 @@ class Watch extends Component {
                 return (
                     <div className="p-2">
                         {
-                           ! _.isNil(this.props.activeVideo) ?
+                            !_.isNil(this.props.activeVideo.practice) ?
                            <iframe
                                title="code-sandbox"
                                src={this.props.activeVideo.practice}
                                style={{width: '100%', height: 500, border: 0, borderRadius: 4, overflow: 'hidden'}}
                                sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"
                            /> :
-                               <p className="common-BodyText">
-                                   There is no applicable practice for this lesson. Feel free to read the articles linked
-                                   or follow along in the video lesson!
-                               </p>
+                               <div className="col-md-5 offset-md-4 d-flex justify-content-center p-4">
+                                   <p className="common-BodyText">
+                                       There is no applicable practice for this lesson. Feel free to read the articles linked
+                                       or follow along in the video lesson!
+                                   </p>
+                               </div>
                         }
                     </div>
                 );
