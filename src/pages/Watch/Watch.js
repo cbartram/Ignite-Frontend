@@ -272,7 +272,7 @@ class Watch extends Component {
                             this.props.activeVideo.links.map((link, i) => {
                                 return (
                                     <div className="m-3" key={i}>
-                                        <LinkPreview link={link} />
+                                        <LinkPreview link={link} id={i} />
                                     </div>
                                 )
                             })

@@ -11,7 +11,7 @@ export default class LinkPreview extends Component {
 
       this.state = {
           imageHeight: 100, // Default to 100 for now
-          imageUrl: '',
+          imageUrl: 'https://source.unsplash.com/random',
           loading: false,
       };
 
@@ -21,10 +21,10 @@ export default class LinkPreview extends Component {
   /**
    * Retrieves data from the API and computes the rendered height of an image.
    */
-  componentDidMount() {
+  async componentDidMount() {
       this.setState({ imageHeight: this.containerRef.current.clientHeight + 1, loading: true }, async () => {
-         const data = await ( await fetch(`https://api.linkpreview.net?key=5d038e4200dc84c1458c7790c67dc2fa524443a81e2a4&q=${this.props.link.link}`)).json();
-         this.setState({ imageUrl: data.image, loading: false });
+         const { results } = await ( await fetch(`https://api.unsplash.com/search/photos?page=1&query=code,programming,software,computer&client_id=51d4e3876e7e846aefdc9c0db737f7ab3dc5034b59fda2cbd5d07e2deeac1e3b`)).json();
+         this.setState({ imageUrl: results[this.props.id].urls.regular, loading: false });
       });
   }
 
