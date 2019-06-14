@@ -1,0 +1,24 @@
+.link-preview:hover {
+    cursor: pointer;
+}
+
+.skeleton-box {
+    width: 150px;
+    height: 120px;
+    position: relative;
+    background-color: #E2E2E2;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.skeleton-title {
+    height: 1.8rem;
+    width: 250px;
+    background-color: #E2E2E2;
+}
+
+.skeleton-text {
+    height: 0.8rem;
+    width: 250px;
+    background-color: #E2E2E2;
+}

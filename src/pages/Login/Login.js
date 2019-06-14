@@ -164,6 +164,7 @@ class Login extends Component {
                                     text="Login"
                                     style={{marginBottom: 20}}
                                     loadingText="Logging in…"
+                                    className="btn-block"
                                 />
                                 {/*<hr/>*/}
                                 {/*<FacebookButton*/}

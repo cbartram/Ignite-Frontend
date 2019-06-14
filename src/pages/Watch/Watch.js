@@ -5,7 +5,7 @@ import {Link, withRouter} from 'react-router-dom';
 import {Auth} from 'aws-amplify/lib/index';
 import Markdown from 'react-markdown';
 import _ from 'lodash';
-import { Menu, Segment } from 'semantic-ui-react'
+import { Menu } from 'semantic-ui-react'
 import Log from '../../Log';
 import {
     logout,
@@ -20,6 +20,7 @@ import withContainer from "../../components/withContainer";
 import Modal from "../../components/Modal/Modal";
 import ForumContainer from "./ForumContainer";
 import {IS_PROD} from "../../constants";
+import LinkPreview from "../../components/LinkPreview/LinkPreview";
 
 
 const mapStateToProps = state => ({
@@ -266,12 +267,16 @@ class Watch extends Component {
                 }
             case 1: return (
                 <div className="p-2">
-                    <div className="d-flex ml-3">
-                        <i className="far fa-file-archive fa-3x"/>
-                        <div className="flex-column project-files">
-                            <p className="ml-2 mb-0">Links</p>
-                            <p className="text-muted ml-2">Link One</p>
-                        </div>
+                    <div className="d-flex align-items-stretch ml-3 ">
+                        {
+                            this.props.activeVideo.links.map((link, i) => {
+                                return (
+                                    <div className="m-3" key={i}>
+                                        <LinkPreview link={link} />
+                                    </div>
+                                )
+                            })
+                        }
                     </div>
                 </div>
             );
@@ -291,22 +296,31 @@ class Watch extends Component {
                 return (
                     <div className="p-2">
                         <div className="d-flex ml-3">
-                            <button className="common-Button common-Button--default">
-                                View Source Code
-                                <i className="fab fa-github pl-2" style={{color: '#FFFFFF'}}/>
-                            </button>
+                            {
+                                !_.isNil(this.props.activeVideo.sourceCode) ?
+                                <a target="_blank" href={this.props.activeVideo.sourceCode} className="common-Button common-Button--default">
+                                    View Source Code
+                                    <i className="fab fa-github pl-2" style={{color: '#FFFFFF'}}/>
+                                </a> :
+                                <p className="common-BodyText">
+                                    There is no source code associated with this lesson!
+                                </p>
+                            }
                         </div>
                     </div>
                 );
             case 4:
                 return (
                     <div className="p-2">
-                        <iframe
-                            title="code-sandbox"
-                            src="https://codesandbox.io/embed/new?codemirror=1"
-                            style={{width: '100%', height: 500, border: 0, borderRadius: 4, overflow: 'hidden'}}
-                            sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"
-                        />
+                        {
+                           ! _.isNil(this.props.activeVideo) &&
+                           <iframe
+                               title="code-sandbox"
+                               src={this.props.activeVideo.practice}
+                               style={{width: '100%', height: 500, border: 0, borderRadius: 4, overflow: 'hidden'}}
+                               sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"
+                           />
+                        }
                     </div>
                 );
         }
@@ -324,6 +338,10 @@ class Watch extends Component {
         this.setState({open: false});
     }
 
+    /**
+     * Updates the active tab selected from the menu
+     * @param tab Integer tab number (1-4)
+     */
     updateTab(tab) {
         this.setState({ activeTab: tab });
     }

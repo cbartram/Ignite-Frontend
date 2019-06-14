@@ -200,6 +200,7 @@ class Signup extends Component {
                     <LoaderButton
                         disabled={!this.validateForm()}
                         type="submit"
+                        className="btn-block"
                         isLoading={this.props.auth.isFetching}
                         text="Signup"
                         loadingText="Signing up…"
