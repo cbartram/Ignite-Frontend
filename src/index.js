@@ -16,6 +16,7 @@ import { AMPLIFY_CONFIG } from './constants';
 import {IS_PROD} from "./constants";
 import { Loader } from "semantic-ui-react";
 import { StripeProvider, Elements } from 'react-stripe-elements';
+import { FB_APP_ID } from "./constants";
 
 
 // Object holding action types as keys and promises as values which need resolutions
@@ -90,6 +91,25 @@ if (!IS_PROD || localStorage.getItem('FORCE_LOGS') === true) localStorage.setIte
  */
 const load = async () => {
     Log.info('Checking User Authentication status...');
+
+    // Load the Facebook SDK
+    window.fbAsyncInit = function() {
+        window.FB.init({
+            appId: FB_APP_ID,
+            autoLogAppEvents: true,
+            xfbml: true,
+            version: 'v3.1'
+        });
+    };
+
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
     try {
         const user = await Auth.currentSession();
 
@@ -105,8 +125,7 @@ const load = async () => {
     catch (e) {
         Log.warn('Could not find authenticated user.');
         // Check Cognito for an active session on the server
-        const tryAgain = await Auth.currentAuthenticatedUser({ bypassCache: true });
-        console.log(tryAgain);
+        await Auth.currentAuthenticatedUser({ bypassCache: true });
         if (e !== 'No current user') {
             Log.error(e);
         }

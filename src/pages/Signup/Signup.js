@@ -11,7 +11,7 @@ import { loginRequest, loginSuccess, loginFailure, hideErrors, fetchVideos } fro
 import Log from '../../Log';
 import './Signup.css';
 import withContainer from "../../components/withContainer";
-// import FacebookButton from "../FacebookButton/FacebookButton";
+import FacebookButton from "../../components/FacebookButton/FacebookButton";
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -148,6 +148,15 @@ class Signup extends Component {
         );
     }
 
+    /**
+     *
+     */
+    signIn() {
+        const url_to_google = 'https://ignite-app.auth.us-east-1.amazoncognito.com/login?response_type=code&client_id=29mat74dp2pep5bmh532gjepm2&redirect_uri=http://localhost:3000/';
+        // const url_to_google = 'https:/ignite-app.auth.us-east-1.amazoncognito.com/oauth2/authorize?redirect_uri=http://localhost:3000/&response_type=code&client_id=29mat74dp2pep5bmh532gjepm2&identity_provider=Google';
+        window.location.assign(url_to_google);
+    }
+
     renderForm() {
         return (
             <div>
@@ -206,19 +215,15 @@ class Signup extends Component {
                         loadingText="Signing up…"
                     />
                 </form>
-                {/*<hr />*/}
-                {/*<FacebookButton*/}
-                    {/*onError={() => this.pushAlert('danger', 'Login Issue', 'Failed to login with facebook')}*/}
-                    {/*onLogin={data => {*/}
-                        {/*try {*/}
-                            {/*this.props.fetchVideos(this.state.email);*/}
-                            {/*this.props.loginSuccess(data);*/}
-                        {/*} catch(err) {*/}
-                            {/*Log.error(err);*/}
-                            {/*this.pushAlert('danger', 'Login Issue', 'Failed to login with facebook')*/}
-                        {/*}*/}
-                    {/*}}*/}
-                {/*/>*/}
+                <hr />
+                <FacebookButton
+                    onLogin={(res) => {
+                        console.log('Logged in!', res);
+                    }}
+                    onError={() => {
+                        console.log('Error!');
+                    }}
+                />
                 <div className="d-flex flex-column align-items-center justify-content-center">
                     <button className="btn btn-link" onClick={() => this.resendConfirmationCode()}>Re-send confirmation code.</button>
                     <span className="text-muted">

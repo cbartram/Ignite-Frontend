@@ -1,14 +1,21 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import Container from "./components/Container/Container";
-import {Link} from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
+import _ from 'lodash';
 import Card from "./components/Card/Card";
 import QuoteCard from "./components/QuoteCard/QuoteCard";
 import InstructorImage from './resources/images/instructor_picture.jpg';
 import './App.css';
+import {USER_POOL_URL} from "./constants";
+import {fetchVideos} from "./actions/actions";
 
 const mapStateToProps = state => ({
     auth: state.auth,
+});
+
+const mapDispatchToProps = dispatch => ({
+    fetchVideos: (username) => dispatch(fetchVideos(username)),
 });
 
 
@@ -49,6 +56,48 @@ class App extends Component {
                 }
             })
         }, 50);
+
+
+        function getQueryVariable(variable) {
+            var query = window.location.href.substring(window.location.href.indexOf("#") + 1);
+            var vars = query.split('&');
+            for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split('=');
+                if (decodeURIComponent(pair[0]) == variable) {
+                    return decodeURIComponent(pair[1]);
+                }
+            }
+            console.log('Query variable %s not found', variable);
+        }
+
+        console.log(getQueryVariable('access_token'));
+        console.log(getQueryVariable('id_token'));
+
+        const userPool = 'https://ignite-app.auth.us-east-1.amazoncognito.com/oauth2/userInfo';
+
+        fetch(userPool, {
+            headers: {
+                Authorization: `Bearer ${getQueryVariable('access_token')}`
+            }
+        }).then(res => res.json())
+            .then(res2 => {
+                console.log(res2);
+
+                this.props.fetchVideos(`user-${res2.username}`);
+            })
+
+        // Parse code query param if it exists
+        // If the code exists
+        // if(!_.isNil(code)) {
+        //     fetch(USER_POOL_URL)
+        // }
+
+        // make a call to cognito TOKEN endpoint
+        // get access token
+        // make a call to my backend to swap access token for user pool creds
+        // now you have user pool creds dispatch actions to log the user in
+
+
     }
 
     render() {
@@ -291,4 +340,4 @@ class App extends Component {
     }
 }
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(App));
