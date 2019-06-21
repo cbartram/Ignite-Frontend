@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Auth } from 'aws-amplify';
+import './FacebookButton.css';
 import LoaderButton from "../LoaderButton/LoaderButton";
 
 /**
@@ -81,11 +82,11 @@ export default class FacebookButton extends Component {
   render() {
     return (
         <LoaderButton
-            className="FacebookButton"
+            noCommon
+            className="btn btn-primary btn-block FacebookButton"
             text={<span><i className="fab fa-facebook" /> Login with Facebook</span>}
             onClick={this.handleClick}
             disabled={this.state.isLoading}
-            style={{ backgroundColor: 'rgb(72, 103, 173)', color: '#fff', marginBottom: '15px'}}
         />
     );
   }
