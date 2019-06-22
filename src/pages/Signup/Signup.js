@@ -3,11 +3,13 @@ import {
     FormGroup,
     FormControl,
 } from "react-bootstrap";
+import _ from 'lodash';
 import LoaderButton from "../../components/LoaderButton/LoaderButton";
 import { connect } from 'react-redux';
 import { Auth } from 'aws-amplify/lib/index';
 import { Link, withRouter } from 'react-router-dom';
 import { loginRequest, loginSuccess, loginFailure, hideErrors, fetchVideos } from "../../actions/actions";
+import { USER_POOL_URL } from "../../constants";
 import Log from '../../Log';
 import './Signup.css';
 import withContainer from "../../components/withContainer";
@@ -42,6 +44,44 @@ class Signup extends Component {
             confirmationCode: '',
             newUser: null,
         };
+    }
+
+    /**
+     * Parses query values like id/access token
+     */
+    async componentDidMount() {
+        const getQueryVariable = (variable) => {
+            const query = window.location.href.substring(window.location.href.indexOf("#") + 1);
+            const vars = query.split('&');
+            for (let i = 0; i < vars.length; i++) {
+                const pair = vars[i].split('=');
+                if (decodeURIComponent(pair[0]) == variable) {
+                    return decodeURIComponent(pair[1]);
+                }
+            }
+            console.log('Query variable %s not found', variable);
+        };
+
+        if(!_.isUndefined(getQueryVariable('access_token'))) {
+            try {
+                const facebookUser = await (await fetch(`${USER_POOL_URL}/oauth2/userInfo`, {
+                    headers: {
+                        Authorization: `Bearer ${getQueryVariable('access_token')}`
+                    }
+                })).json();
+
+                // Update state to pre-populate fields from facebook.
+                this.setState({
+                    first_name: facebookUser.name,
+                    last_name: facebookUser.family_name,
+                    email: facebookUser.email
+                });
+                this.props.pushAlert('success', 'Finish Signing Up', 'Complete your Ignite account by creating a password!');
+            } catch (err) {
+                Log.error(err.message);
+                this.props.pushAlert('danger', 'There was an issue signing up', 'We ran into a snag singing up with Facebook. You can always sign up directly with an Ignite account.');
+            }
+        }
     }
 
     /**
@@ -148,18 +188,9 @@ class Signup extends Component {
         );
     }
 
-    /**
-     *
-     */
-    signIn() {
-        const url_to_google = 'https://ignite-app.auth.us-east-1.amazoncognito.com/login?response_type=code&client_id=29mat74dp2pep5bmh532gjepm2&redirect_uri=http://localhost:3000/';
-        // const url_to_google = 'https:/ignite-app.auth.us-east-1.amazoncognito.com/oauth2/authorize?redirect_uri=http://localhost:3000/&response_type=code&client_id=29mat74dp2pep5bmh532gjepm2&identity_provider=Google';
-        window.location.assign(url_to_google);
-    }
-
     renderForm() {
         return (
-            <div>
+            <div className="mt-3">
                 <form onSubmit={this.handleSubmit}>
                     <FormGroup controlId="first_name">
                         <label>First Name</label>

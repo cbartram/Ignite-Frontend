@@ -49,7 +49,7 @@ export default class FacebookButton extends Component {
   };
 
   handleClick = async () => {
-    const url_to_google = 'https://ignite-app.auth.us-east-1.amazoncognito.com/login?response_type=token&client_id=29mat74dp2pep5bmh532gjepm2&redirect_uri=http://localhost:3000/';
+    const url_to_google = 'https://ignite-app.auth.us-east-1.amazoncognito.com/login?response_type=token&client_id=29mat74dp2pep5bmh532gjepm2&redirect_uri=http://localhost:3000/signup';
     window.location.assign(url_to_google);
     // window.FB.login(this.checkLoginState, {scope: "public_profile,email"});
   };
@@ -84,7 +84,7 @@ export default class FacebookButton extends Component {
         <LoaderButton
             noCommon
             className="btn btn-primary btn-block FacebookButton"
-            text={<span><i className="fab fa-facebook" /> Login with Facebook</span>}
+            text={<span><i className="fab fa-facebook" /> Continue with Facebook</span>}
             onClick={this.handleClick}
             disabled={this.state.isLoading}
         />

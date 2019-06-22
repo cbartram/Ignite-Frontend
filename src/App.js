@@ -57,35 +57,6 @@ class App extends Component {
             })
         }, 50);
 
-
-        function getQueryVariable(variable) {
-            var query = window.location.href.substring(window.location.href.indexOf("#") + 1);
-            var vars = query.split('&');
-            for (var i = 0; i < vars.length; i++) {
-                var pair = vars[i].split('=');
-                if (decodeURIComponent(pair[0]) == variable) {
-                    return decodeURIComponent(pair[1]);
-                }
-            }
-            console.log('Query variable %s not found', variable);
-        }
-
-        console.log(getQueryVariable('access_token'));
-        console.log(getQueryVariable('id_token'));
-
-        const userPool = 'https://ignite-app.auth.us-east-1.amazoncognito.com/oauth2/userInfo';
-
-        fetch(userPool, {
-            headers: {
-                Authorization: `Bearer ${getQueryVariable('access_token')}`
-            }
-        }).then(res => res.json())
-            .then(res2 => {
-                console.log(res2);
-
-                this.props.fetchVideos(`user-${res2.username}`);
-            })
-
         // Parse code query param if it exists
         // If the code exists
         // if(!_.isNil(code)) {
