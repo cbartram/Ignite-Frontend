@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Auth } from 'aws-amplify';
 import './FacebookButton.css';
 import LoaderButton from "../LoaderButton/LoaderButton";
+import {IS_PROD} from "../../constants";
 
 /**
  * Waits for the Facebook SDK to load and disables the
@@ -49,7 +50,7 @@ export default class FacebookButton extends Component {
   };
 
   handleClick = async () => {
-    const url_to_google = 'https://ignite-app.auth.us-east-1.amazoncognito.com/login?response_type=token&client_id=29mat74dp2pep5bmh532gjepm2&redirect_uri=http://localhost:3000/signup';
+    const url_to_google = `https://ignite-app${IS_PROD ? '-prod' : ''}.auth.us-east-1.amazoncognito.com/login?response_type=token&client_id=${IS_PROD ? '57ga887esg3j7t2r89hr9nkn4c' : '29mat74dp2pep5bmh532gjepm2'}&redirect_uri=${IS_PROD ? 'https://ignitecode.net/signup' : 'http://localhost:3000/signup'}`;
     window.location.assign(url_to_google);
     // window.FB.login(this.checkLoginState, {scope: "public_profile,email"});
   };
