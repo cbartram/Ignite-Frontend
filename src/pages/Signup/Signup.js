@@ -50,6 +50,8 @@ class Signup extends Component {
      * Parses query values like id/access token
      */
     async componentDidMount() {
+
+        // Parses query values from the URL (specific when there is no ? and only a # to denote the start)
         const getQueryVariable = (variable) => {
             const query = window.location.href.substring(window.location.href.indexOf("#") + 1);
             const vars = query.split('&');
@@ -76,7 +78,7 @@ class Signup extends Component {
                     last_name: facebookUser.family_name,
                     email: facebookUser.email
                 });
-                this.props.pushAlert('success', 'Finish Signing Up', 'Complete your Ignite account by creating a password!');
+                this.props.pushAlert('success', 'Finish Signing Up', 'Complete your Ignite account\'s setup by creating a new password!');
             } catch (err) {
                 Log.error(err.message);
                 this.props.pushAlert('danger', 'There was an issue signing up', 'We ran into a snag singing up with Facebook. You can always sign up directly with an Ignite account.');
@@ -146,8 +148,8 @@ class Signup extends Component {
             await Auth.confirmSignUp(this.state.email, this.state.confirmationCode);
             const user = await Auth.signIn(this.state.email, this.state.password);
 
-            this.props.loginSuccess(user);
             Log.info('Sign-in successful!');
+            this.props.loginSuccess(user);
             this.props.fetchVideos(`user-${user.username}`);
             this.props.history.push('/videos');
         } catch (err) {
@@ -248,12 +250,8 @@ class Signup extends Component {
                 </form>
                 <hr />
                 <FacebookButton
-                    onLogin={(res) => {
-                        console.log('Logged in!', res);
-                    }}
-                    onError={() => {
-                        console.log('Error!');
-                    }}
+                    onLogin={() => {}}
+                    onError={() => Log.error('Error with Facebook SSO')}
                 />
                 <div className="d-flex flex-column align-items-center justify-content-center">
                     <button className="btn btn-link" onClick={() => this.resendConfirmationCode()}>Re-send confirmation code.</button>
