@@ -335,7 +335,7 @@ class App extends Component {
                 <section id="run-your-business-on-stripe" className="features section bg-slate-9">
                     <div className="container-lg section-intro">
                         <h2 className="common-SectionTitle">
-                            Learn Full Stack from Beginning to End
+                            Full Stack Development Course Overview
                         </h2>
                         <p className="common-IntroText">
                             Learn the full stack development toolkit and build any Mobile, Web, or Desktop App you and your customers can dream
@@ -403,6 +403,10 @@ class App extends Component {
                                 UI Design & Web Mockups
                                 <div className="popover">Learn the basics of web design, color palettes, and common web components.</div>
                             </li>
+                            <li>
+                                And More
+                                <div className="popover">Join Ignite today for even more lessons and labs!</div>
+                            </li>
                         </ul>
 
 
@@ -438,6 +442,10 @@ class App extends Component {
                                     Ensure your app is ready to handle any number of users in production.
                                 </div>
                             </li>
+                            <li>
+                                And More
+                                <div className="popover">Join Ignite today for even more lessons and labs!</div>
+                            </li>
                         </ul>
 
 
@@ -471,10 +479,12 @@ class App extends Component {
                                 Cloud Labs
                                 <div className="popover">Take part in cloud labs building out real full stack applications.</div>
                             </li>
+                            <li>
+                                And More
+                                <div className="popover">Join Ignite today for even more lessons and labs!</div>
+                            </li>
                         </ul>
-
                     </div>
-
                     <div className="common-StripeGrid">
                         <div className="backgroundContainer">
                             <div className="grid">
