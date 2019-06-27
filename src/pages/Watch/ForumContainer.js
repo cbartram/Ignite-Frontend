@@ -84,13 +84,14 @@ export default class ForumContainer extends Component {
                             answers = post.answers;
 
                         return <ForumRow
-                            open={this.isOpen(post.sid)}
-                            onClick={(id) => this.expandRow(id)}
-                            post={post}
-                            key={idx}
-                            onReply={(answer) => this.props.onAnswerPosted({ ...post, ...answer})}
-                            answers={answers}
-                        />
+                                open={this.isOpen(post.sid)}
+                                onClick={(id) => this.expandRow(id)}
+                                post={post}
+                                key={idx}
+                                user={this.props.user}
+                                onReply={(answer) => this.props.onAnswerPosted({ ...post, ...answer})}
+                                answers={answers}
+                               />
                     })
                 }
                 <Pagination

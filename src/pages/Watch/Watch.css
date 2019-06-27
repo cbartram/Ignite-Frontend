@@ -74,10 +74,9 @@ small {
 }
 
 .question-title {
-    color: #4b5658;
+    color: #008cdd;
+    text-decoration: none;
 }
-
-
 
 .project-files {
     cursor: pointer;

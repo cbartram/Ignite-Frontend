@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import moment from "moment";
 import Markdown from "react-markdown";
-import {Pagination} from "semantic-ui-react";
+import {
+    Pagination,
+    Image,
+    Segment
+} from "semantic-ui-react";
+import Voter from '../../../src/components/Voter/Voter';
 
 const ITEMS_PER_PAGE = 5;
 
@@ -30,35 +35,40 @@ export default class ForumRow extends Component {
 
         return (
             <div className="well">
-                <div className="card no-card-hover my-3 pt-3" style={{ paddingLeft: 55 }}>
-                    <Markdown source={ this.props.post.content } />
-                </div>
-                {
-                    this.props.answers.length === 0 ? null :
-                    data.map((answer, idx) => {
-                        return (
-                            <div className={`d-flex card no-card-hover flex-row my-3 ${answer.answered ? 'answered': ''}`} key={idx}>
-                                <div className="avatar-container sm-avatar-container m-2">
-                                    <img
-                                        alt="profile_picture"
-                                        className="avatar-image avatar-image-sm"
-                                        src="https://secure.gravatar.com/avatar/7762d0145e4f9da9b9957fbca1b76865?s=96&amp;d=https%3A%2F%2Fstatic.teamtreehouse.com%2Fassets%2Fcontent%2Fdefault_avatar-ea7cf6abde4eec089a4e03cc925d0e893e428b2b6971b12405a9b118c837eaa2.png&amp;r=pg"
-                                    />
-                                </div>
-                                <div className="flex-column ml-2 mt-1">
-                                    <p className="text-muted">
-                                        <strong>{answer.content_creator.first_name} {answer.content_creator.last_name}</strong> on <strong>{moment(answer.createdAt).format('MMM DD, YYYY')}</strong>
-                                    </p>
-                                    <Markdown source={answer.content} />
-                                </div>
-                                <div className="flex-column ml-auto mt-1 mr-2">
-                                    <p className="answer-count">{answer.up_votes}</p>
-                                    <p className="text-muted">Votes</p>
-                                </div>
+                <Segment.Group>
+                    <Segment>
+                        <div className="d-flex flex-row justify-content-start">
+                            <div>
+                                <h3>{this.props.post.title}</h3>
+                                <Markdown source={ this.props.post.content } />
                             </div>
-                        )
-                    })
-                }
+                        </div>
+                    </Segment>
+                    {
+                        this.props.answers.length === 0 ? null :
+                        data.map((answer, idx) => {
+                            return (
+                                <Segment className={`d-flex flex-row ${answer.answered ? 'answered': ''}`} key={idx}>
+                                    <Voter
+                                        // Show the accept button if you are the one who asked the question
+                                        showAcceptButton={this.props.user.pid === this.props.post.content_creator.id}
+                                    />
+                                    <div className="flex-column ml-2 mt-1">
+                                        <Markdown source={answer.content} />
+                                        <p className="text-muted">
+                                            Posted By <strong>{answer.content_creator.first_name} {answer.content_creator.last_name}</strong> on <strong>{moment(answer.createdAt).format('MMM DD, YYYY')}</strong>
+                                        </p>
+                                    </div>
+                                    <div className="flex-column ml-auto mt-1 mr-2">
+                                        <p className="answer-count">{answer.up_votes}</p>
+                                        <p className="text-muted">Votes</p>
+                                    </div>
+                                </Segment>
+                            )
+                        })
+                    }
+                </Segment.Group>
+
                 <Pagination
                     defaultActivePage={1}
                     onPageChange={(e, { activePage }) => this.setState({ activePage })}
@@ -105,11 +115,7 @@ export default class ForumRow extends Component {
             <div>
                 <div className="d-flex" style={{ cursor: 'pointer' }} role="button" onClick={() => this.props.onClick(this.props.post.sid)}>
                     <div className="avatar-container sm-avatar-container m-2">
-                        <img
-                            alt="profile_picture"
-                            className="avatar-image avatar-image-sm"
-                            src="https://secure.gravatar.com/avatar/7762d0145e4f9da9b9957fbca1b76865?s=96&amp;d=https%3A%2F%2Fstatic.teamtreehouse.com%2Fassets%2Fcontent%2Fdefault_avatar-ea7cf6abde4eec089a4e03cc925d0e893e428b2b6971b12405a9b118c837eaa2.png&amp;r=pg"
-                        />
+                        <Image src="https://secure.gravatar.com/avatar/7762d0145e4f9da9b9957fbca1b76865?s=96&amp;d=https%3A%2F%2Fstatic.teamtreehouse.com%2Fassets%2Fcontent%2Fdefault_avatar-ea7cf6abde4eec089a4e03cc925d0e893e428b2b6971b12405a9b118c837eaa2.png&amp;r=pg" />
                     </div>
                     <div className="flex-column ml-2 mt-1">
                         <h5 className="question-title">

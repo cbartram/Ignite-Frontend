@@ -160,7 +160,8 @@ class Watch extends Component {
                     first_name: this.props.user.name.split(' ')[0],
                     last_name: this.props.user.name.split(' ')[1],
                     email: this.props.user.email,
-                    avatar: 'https://t4.ftcdn.net/jpg/02/15/84/43/240_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg'
+                    avatar: 'https://t4.ftcdn.net/jpg/02/15/84/43/240_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg',
+                    id: this.props.user.pid,
                 },
                 title: this.state.question.title,
                 content: this.state.question.content
@@ -183,6 +184,7 @@ class Watch extends Component {
      * @param answer
      */
     createAnswer(answer) {
+        console.log(answer);
         this.props.answerQuestion(answer)
             .then(() => {
                 this.props.pushAlert('success', 'Answer Posted', 'Your answer has been posted successfully!');
@@ -254,6 +256,7 @@ class Watch extends Component {
 
                 if (!_.isUndefined(this.props.posts.questions) && !_.isUndefined(this.props.posts.questions[video_id])) {
                     return <ForumContainer
+                        user={this.props.user}
                         questions={this.props.posts.questions[video_id]}
                         onQuestionAsk={() => this.handleShow()}
                         onAnswerPosted={(answer) => this.createAnswer(answer)}

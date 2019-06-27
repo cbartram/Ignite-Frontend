@@ -1,0 +1,19 @@
+.fa-chevron-up, .fa-chevron-down {
+    color: #008cdd;
+}
+
+.btn > .fa-chevron-up:hover {
+    color: #006cdd;
+}
+
+.btn > .fa-chevron-down:hover {
+    color: #006cdd;
+}
+
+.btn > .fa-check {
+    color: #3ecf8e;
+}
+
+.btn > .fa-check:hover {
+    color: #18b25b;
+}
