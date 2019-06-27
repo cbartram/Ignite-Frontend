@@ -291,14 +291,15 @@ class Watch extends Component {
                             this.props.activeVideo.downloads.length > 0 ?
                             this.props.activeVideo.downloads.map((file, i) => {
                                 return (
-                                    <div className="col-md-6 d-flex my-3 align-items-stretch">
+                                    <div className="col-md-6 d-flex my-3 align-items-stretch" style={{ width: '100%'}}>
                                         <div className="list-group-item" key={i}>
                                             <div className="d-flex flex-column p-3 justify-content-start">
                                                 <h3>{file.name}</h3>
+                                                <hr />
                                                 <p className="common-BodyText text-wrap">
                                                     { file.description }
                                                 </p>
-                                                <a href={file.link} target="_blank" className="common-Button common-Button--default">
+                                                <a href={file.link} target="_blank" className="common-Button common-Button--default" style={{ maxWidth: 200 }}>
                                                     Download &nbsp;
                                                     <i className="far fa-file-archive"/>
                                                 </a>
@@ -307,11 +308,13 @@ class Watch extends Component {
                                     </div>
                                 )
                             }) :
-                            <div className="col-md-5 offset-md-4 d-flex justify-content-center p-4">
-                                <p className="common-BodyText">
-                                    There are no downloads associated with this lesson!
-                                </p>
-                            </div>
+                                <div className="col-md-5 offset-md-4 d-flex flex-column align-items-center justify-content-center p-4">
+                                    <i className="fas fa-5x fa-download d-none d-md-block mb-3" />
+                                    <p className="common-BodyText" align="center">
+                                        There are no downloads associated with this lesson. Feel free to read the articles linked
+                                        or follow along in the video lesson!
+                                    </p>
+                                </div>
                         }
                     </div>
                 );
@@ -325,9 +328,11 @@ class Watch extends Component {
                                     View Source Code
                                     <i className="fab fa-github pl-2" style={{color: '#FFFFFF'}}/>
                                 </a> :
-                                    <div className="col-md-5 offset-md-4 d-flex justify-content-center p-4">
-                                        <p className="common-BodyText">
-                                            There is no source code associated with this lesson!
+                                    <div className="col-md-5 offset-md-4 d-flex flex-column align-items-center justify-content-center p-4">
+                                        <i className="fas fa-5x fa-code d-none d-md-block mb-3" />
+                                        <p className="common-BodyText" align="center">
+                                            There is no source code associated with this lesson. Feel free to read the articles linked
+                                            or follow along in the video lesson!
                                         </p>
                                     </div>
                             }
@@ -345,8 +350,9 @@ class Watch extends Component {
                                style={{width: '100%', height: 500, border: 0, borderRadius: 4, overflow: 'hidden'}}
                                sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"
                            /> :
-                               <div className="col-md-5 offset-md-4 d-flex justify-content-center p-4">
-                                   <p className="common-BodyText">
+                               <div className="col-md-5 offset-md-4 d-flex flex-column align-items-center justify-content-center p-4">
+                                   <i className="fas fa-5x fa-exclamation-triangle d-none d-md-block mb-3" />
+                                   <p className="common-BodyText" align="center">
                                        There is no applicable practice for this lesson. Feel free to read the articles linked
                                        or follow along in the video lesson!
                                    </p>

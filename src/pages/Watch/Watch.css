@@ -123,3 +123,8 @@ small {
 .ui.secondary.pointing.menu .active.item {
     border-color: #6772e5;
 }
+
+.ui.secondary.pointing.menu .active.item:hover {
+    border-color: #9094e5;
+    color: rgba(0,0,0,.95);
+}

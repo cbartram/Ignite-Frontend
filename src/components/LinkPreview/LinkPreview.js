@@ -23,8 +23,8 @@ export default class LinkPreview extends Component {
    */
   async componentDidMount() {
       this.setState({ imageHeight: this.containerRef.current.clientHeight + 1, loading: true }, async () => {
-         const { results } = await ( await fetch(`https://api.unsplash.com/search/photos?page=1&query=code,programming,software,computer&client_id=51d4e3876e7e846aefdc9c0db737f7ab3dc5034b59fda2cbd5d07e2deeac1e3b`)).json();
-         this.setState({ imageUrl: results[this.props.id].urls.regular, loading: false });
+         const { urls } = await ( await fetch(`https://api.unsplash.com/photos/random?query=code,programming,software,computer&client_id=51d4e3876e7e846aefdc9c0db737f7ab3dc5034b59fda2cbd5d07e2deeac1e3b`)).json()
+         this.setState({ imageUrl: urls.regular, loading: false });
       });
   }
 
@@ -41,7 +41,7 @@ export default class LinkPreview extends Component {
 
       if(this.state.loading)
           return (
-              <Card className="p-0 link-preview" onClick={() => this.openLink()}>
+              <Card className="p-0 m-3 link-preview" onClick={() => this.openLink()}>
                   <Card.Body className="mt-0 p-0" ref={this.containerRef}>
                       <div className="d-flex flex-row justify-content-start">
                           <div className="skeleton-box skeleton-loading" />
@@ -60,8 +60,9 @@ export default class LinkPreview extends Component {
             <Card.Body className="mt-0 p-0" ref={this.containerRef}>
               <div className="d-flex flex-row justify-content-start">
                 <img alt="placeholder" className="img-fluid" style={{ borderTopLeftRadius: 8, borderBottomLeftRadius: 8, height: this.state.imageHeight }} width="150" src={this.state.imageUrl} />
-                <div className="flex-column py-3 px-2">
+                <div className="flex-column py-3 px-2 pl-4">
                     <h3>{this.props.link.name}</h3>
+                    <hr/>
                     <p className="common-BodyText text-wrap">{this.props.link.description}</p>
                 </div>
               </div>
