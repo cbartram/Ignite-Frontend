@@ -56,6 +56,7 @@ export const API_PING_VIDEO = '/video/ping';
 export const API_SUBMIT_QUIZ = '/quiz/grade';
 export const API_POST_QUESTION = '/posts/create';
 export const API_POST_FIND_QUESTIONS = '/posts/find';
+export const API_POST_UPDATE = '/posts/update';
 export const API_ANSWER_CREATE = '/posts/answer/create';
 
 // Prod Params
@@ -130,6 +131,9 @@ export const QUESTION_FIND_POSTS_ERROR = 'QUESTION_FIND_POSTS_ERROR';
 export const CREATE_ANSWER_REQUEST = 'CREATE_ANSWER_REQUEST';
 export const CREATE_ANSWER_SUCCESS = 'CREATE_ANSWER_SUCCESS';
 export const CREATE_ANSWER_FAILURE = 'CREATE_ANSWER_FAILURE';
+export const UPDATE_POST_REQUEST = 'UPDATE_POST_REQUEST';
+export const UPDATE_POST_SUCCESS = 'UPDATE_POST_SUCCESS';
+export const UPDATE_POST_FAILURE = 'UPDATE_POST_FAILURE';
 export const GET_SIGNED_URL_REQUEST = 'FIND_ANSWER_REQUEST';
 export const GET_SIGNED_URL_SUCCESS = 'FIND_ANSWER_SUCCESS';
 export const GET_SIGNED_URL_FAILURE = 'FIND_ANSWER_FAILURE';

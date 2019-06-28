@@ -249,6 +249,17 @@ export const getEvents = (payload) => async dispatch => {
 };
 
 /**
+ * Handles updating a question or answer with
+ * additional information such as up-votes, down-votes or
+ * if it is being accepted
+ * @param payload
+ * @returns {Function}
+ */
+export const updatePost = (payload) => async dispatch => {
+    await post(payload, constants.API_POST_UPDATE, constants.UPDATE_POST_REQUEST, constants.UPDATE_POST_SUCCESS, constants.UPDATE_POST_FAILURE, dispatch);
+};
+
+/**
  * Updates billing details for a user synchronously (without making an additional API call)
  * @param payload Object user billing attributes.
  * @returns {Function}

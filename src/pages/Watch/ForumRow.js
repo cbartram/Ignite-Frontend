@@ -41,6 +41,7 @@ export default class ForumRow extends Component {
                             <div>
                                 <h3>{this.props.post.title}</h3>
                                 <Markdown source={ this.props.post.content } />
+                                Posted By <strong>{this.props.post.content_creator.first_name} {this.props.post.content_creator.last_name}</strong> on <strong>{moment(this.props.post.createdAt).format('MMM DD, YYYY')}</strong>
                             </div>
                         </div>
                     </Segment>
@@ -48,19 +49,23 @@ export default class ForumRow extends Component {
                         this.props.answers.length === 0 ? null :
                         data.map((answer, idx) => {
                             return (
-                                <Segment className={`d-flex flex-row ${answer.answered ? 'answered': ''}`} key={idx}>
+                                <Segment className={`d-flex flex-row ${answer.accepted ? 'answered': ''}`} key={idx}>
                                     <Voter
-                                        // Show the accept button if you are the one who asked the question
-                                        showAcceptButton={this.props.user.pid === this.props.post.content_creator.id}
+                                        // Show the accept button if logged in user is the one who asked the question
+                                        // and if no other answers have been accepted yet
+                                        showAcceptButton={this.props.user.pid === this.props.post.content_creator.id && data.every(d => !d.accepted)}
+                                        up={() => this.props.onUpVote(answer)}
+                                        down={() => this.props.onDownVote(answer)}
+                                        onAccept={() => this.props.onAccept(answer)}
                                     />
                                     <div className="flex-column ml-2 mt-1">
-                                        <Markdown source={answer.content} />
                                         <p className="text-muted">
                                             Posted By <strong>{answer.content_creator.first_name} {answer.content_creator.last_name}</strong> on <strong>{moment(answer.createdAt).format('MMM DD, YYYY')}</strong>
                                         </p>
+                                        <Markdown source={answer.content} />
                                     </div>
                                     <div className="flex-column ml-auto mt-1 mr-2">
-                                        <p className="answer-count">{answer.up_votes}</p>
+                                        <p className="answer-count">{answer.up_votes - answer.down_votes}</p>
                                         <p className="text-muted">Votes</p>
                                     </div>
                                 </Segment>
@@ -126,8 +131,8 @@ export default class ForumRow extends Component {
                         </p>
                     </div>
                     <div className="flex-column ml-auto mt-1 mr-2">
-                        <p className="answer-count">{this.props.post.up_votes}</p>
-                        <p className="text-muted">Votes</p>
+                        <p className="answer-count">{this.props.post.answers.length}</p>
+                        <p className="text-muted">{this.props.post.answers.length > 1 ? 'Answers' : 'Answer'}</p>
                     </div>
                 </div>
                 <hr style={this.props.open ? { marginBottom: 0} : {} }/>

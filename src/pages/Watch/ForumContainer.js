@@ -85,12 +85,15 @@ export default class ForumContainer extends Component {
 
                         return <ForumRow
                                 open={this.isOpen(post.sid)}
+                                answers={answers}
                                 onClick={(id) => this.expandRow(id)}
                                 post={post}
                                 key={idx}
                                 user={this.props.user}
+                                onAccept={(answer) => this.props.onAccept(answer)}
+                                onUpVote={(answer) => this.props.onUpVote(answer)}
+                                onDownVote={(answer) => this.props.onDownVote(answer)}
                                 onReply={(answer) => this.props.onAnswerPosted({ ...post, ...answer})}
-                                answers={answers}
                                />
                     })
                 }

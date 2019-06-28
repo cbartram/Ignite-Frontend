@@ -13,7 +13,9 @@ import {
     ping,
     askQuestion,
     findQuestions,
-    answerQuestion, getSignedUrl,
+    answerQuestion,
+    getSignedUrl,
+    updatePost,
 } from '../../actions/actions';
 import './Watch.css';
 import withContainer from "../../components/withContainer";
@@ -40,6 +42,7 @@ const mapDispatchToProps = dispatch => ({
     findQuestions: (payload) => dispatch(findQuestions(payload)),
     answerQuestion: (payload) => dispatch(answerQuestion(payload)),
     getSignedUrl: (payload) => dispatch(getSignedUrl(payload)),
+    updatePost: (payload) => dispatch(updatePost(payload)),
 });
 
 class Watch extends Component {
@@ -66,10 +69,16 @@ class Watch extends Component {
     }
 
     async componentDidMount() {
+
+        // TODO We should try the signed url here if its a 403
+        //  we need to refresh the signed url in redux...otherwise the video won't load
+
         if(this.props.activeVideo.name === 'null' && _.isUndefined(this.props.user.active_video)) this.props.history.push('/videos?new=true');
 
         const videoId = `${this.props.videos.activeVideo.chapter}.${this.props.videos.activeVideo.sortKey}`;
 
+        // Only attempt to find posts for this video if its not currently stored in redux
+        // the user won't see posts updated in real time unless they refresh the page but thats okay
         if (_.isUndefined(this.props.posts.questions) || _.isUndefined(this.props.posts.questions[videoId])) {
             await this.props.findQuestions(videoId);
         }
@@ -244,6 +253,19 @@ class Watch extends Component {
         }
     }
 
+    async updatePost(post, attributes) {
+        try {
+            await this.props.updatePost({
+                pid: post.pid,
+                sid: post.sid,
+                attributes,
+            });
+        } catch(err) {
+            Log.error(err);
+            this.props.pushAlert('danger', 'Update Failed', 'There was an issue performing an update to the post. Check your internet connection and try again!');
+        }
+    }
+
     /**
      * Renders different content in each of the bootstrap
      * tabs depending on which tab is currently active. Active tab is tracked
@@ -260,6 +282,9 @@ class Watch extends Component {
                         questions={this.props.posts.questions[video_id]}
                         onQuestionAsk={() => this.handleShow()}
                         onAnswerPosted={(answer) => this.createAnswer(answer)}
+                        onAccept={(post) => this.updatePost(post, ['accepted'])}
+                        onUpVote={(post) => this.updatePost(post, ['up_votes'])}
+                        onDownVote={(post) => this.updatePost(post, ['down_votes'])}
                     />;
                 } else {
                     return <div className="d-flex flex-column align-items-center"
