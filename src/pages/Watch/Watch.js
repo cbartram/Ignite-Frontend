@@ -270,13 +270,15 @@ class Watch extends Component {
                 attributes,
             });
 
-            // For now just update local state to show the user has voted
-            this.setState({
-                votes: {
-                    ...this.state.votes,
-                    [post.question_id]: true,
-                }
-            })
+            if(attributes[0] !== 'accepted') {
+                // For now just update local state to show the user has voted
+                this.setState({
+                    votes: {
+                        ...this.state.votes,
+                        [post.question_id]: true,
+                    }
+                });
+            }
         } catch(err) {
             Log.error(err);
             this.props.pushAlert('danger', 'Update Failed', 'There was an issue performing an update to the post. Check your internet connection and try again!');
