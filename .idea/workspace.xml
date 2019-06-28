@@ -2,12 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4ec36ac8-77e5-4985-93b1-57c48712b128" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/Voter/Voter.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Modal/Modal.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Modal/Modal.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Voter/Voter.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Voter/Voter.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Voter/Voter.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Voter/Voter.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/Watch/ForumContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Watch/ForumContainer.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/Watch/ForumRow.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Watch/ForumRow.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Watch/Watch.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Watch/Watch.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/Watch/Watch.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Watch/Watch.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -41,8 +40,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/pages/Watch/ForumContainer.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="377">
-              <caret line="90" column="53" selection-start-line="90" selection-start-column="53" selection-end-line="90" selection-end-column="53" />
+            <state relative-caret-position="288">
+              <caret line="84" lean-forward="true" selection-start-line="84" selection-end-line="84" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
               </folding>
@@ -53,8 +52,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/pages/Watch/ForumRow.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="280">
-              <caret line="51" column="42" lean-forward="true" selection-start-line="51" selection-start-column="42" selection-end-line="51" selection-end-column="42" />
+            <state relative-caret-position="214">
+              <caret line="57" column="54" selection-start-line="57" selection-start-column="54" selection-end-line="57" selection-end-column="54" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
               </folding>
@@ -65,8 +64,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/Voter/Voter.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="304">
-              <caret line="16" column="38" selection-start-line="16" selection-start-column="38" selection-end-line="16" selection-end-column="38" />
+            <state relative-caret-position="285">
+              <caret line="15" column="36" lean-forward="true" selection-start-line="15" selection-start-column="36" selection-end-line="15" selection-end-column="36" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
@@ -74,41 +73,23 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/Voter/Voter.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="361">
-              <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+            <state>
+              <caret column="39" selection-start-column="39" selection-end-column="39" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/pages/Watch/Watch.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="303">
-              <caret line="258" column="45" selection-start-line="258" selection-start-column="45" selection-end-line="258" selection-end-column="45" />
+            <state relative-caret-position="349">
+              <caret line="276" column="45" selection-start-line="276" selection-start-column="45" selection-end-line="276" selection-end-column="45" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/Modal/Modal.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="38">
-              <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/actions/actions.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="201">
-              <caret line="246" column="38" selection-start-line="246" selection-start-column="38" selection-end-line="246" selection-end-column="38" />
             </state>
           </provider>
         </entry>
@@ -187,7 +168,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/Log.js" />
         <option value="$PROJECT_DIR$/src/components/Modal/Modal.js" />
         <option value="$PROJECT_DIR$/src/reducers/BillingReducer.js" />
         <option value="$PROJECT_DIR$/src/components/PaymentModal/PaymentModal.css" />
@@ -205,7 +185,6 @@
         <option value="$PROJECT_DIR$/src/reducers/VideoReducer.js" />
         <option value="$PROJECT_DIR$/src/index.css" />
         <option value="$PROJECT_DIR$/src/pages/Videos/Videos.css" />
-        <option value="$PROJECT_DIR$/src/actions/actions.js" />
         <option value="$PROJECT_DIR$/src/reducers/AuthReducer.js" />
         <option value="$PROJECT_DIR$/src/pages/Profile/Profile.css" />
         <option value="$PROJECT_DIR$/src/components/Router/Router.js" />
@@ -217,7 +196,6 @@
         <option value="$PROJECT_DIR$/public/stripe.js" />
         <option value="$PROJECT_DIR$/src/pages/Login/Login.js" />
         <option value="$PROJECT_DIR$/src/index.js" />
-        <option value="$PROJECT_DIR$/src/constants.js" />
         <option value="$PROJECT_DIR$/src/components/LoaderButton/LoaderButton.js" />
         <option value="$PROJECT_DIR$/src/pages/Signup/Signup.css" />
         <option value="$PROJECT_DIR$/src/components/FacebookButton/FacebookButton.css" />
@@ -231,13 +209,16 @@
         <option value="$PROJECT_DIR$/src/components/LinkPreview/LinkPreview.js" />
         <option value="$PROJECT_DIR$/src/components/LinkPreview/LinkPreview.css" />
         <option value="$PROJECT_DIR$/src/pages/Watch/PostList.js" />
-        <option value="$PROJECT_DIR$/src/pages/Watch/Watch.css" />
         <option value="$PROJECT_DIR$/src/components/Modal/Modal.css" />
-        <option value="$PROJECT_DIR$/src/pages/Watch/ForumRow.js" />
-        <option value="$PROJECT_DIR$/src/pages/Watch/ForumContainer.js" />
-        <option value="$PROJECT_DIR$/src/pages/Watch/Watch.js" />
-        <option value="$PROJECT_DIR$/src/components/Voter/Voter.js" />
+        <option value="$PROJECT_DIR$/src/pages/Watch/Watch.css" />
+        <option value="$PROJECT_DIR$/src/constants.js" />
+        <option value="$PROJECT_DIR$/src/actions/actions.js" />
+        <option value="$PROJECT_DIR$/src/reducers/PostReducer.js" />
         <option value="$PROJECT_DIR$/src/components/Voter/Voter.css" />
+        <option value="$PROJECT_DIR$/src/components/Voter/Voter.js" />
+        <option value="$PROJECT_DIR$/src/pages/Watch/ForumContainer.js" />
+        <option value="$PROJECT_DIR$/src/pages/Watch/ForumRow.js" />
+        <option value="$PROJECT_DIR$/src/pages/Watch/Watch.js" />
       </list>
     </option>
   </component>
@@ -549,28 +530,7 @@
       <workItem from="1558397408779" duration="20020000" />
       <workItem from="1558921753863" duration="12000000" />
       <workItem from="1559077090708" duration="242000" />
-      <workItem from="1559080674181" duration="102837000" />
-    </task>
-    <task id="LOCAL-00140" summary="Added well opening and closing">
-      <created>1556902792709</created>
-      <option name="number" value="00140" />
-      <option name="presentableId" value="LOCAL-00140" />
-      <option name="project" value="LOCAL" />
-      <updated>1556902792709</updated>
-    </task>
-    <task id="LOCAL-00141" summary="Added answer creating">
-      <created>1556913206805</created>
-      <option name="number" value="00141" />
-      <option name="presentableId" value="LOCAL-00141" />
-      <option name="project" value="LOCAL" />
-      <updated>1556913206805</updated>
-    </task>
-    <task id="LOCAL-00142" summary="Added basic answers">
-      <created>1556915430750</created>
-      <option name="number" value="00142" />
-      <option name="presentableId" value="LOCAL-00142" />
-      <option name="project" value="LOCAL" />
-      <updated>1556915430750</updated>
+      <workItem from="1559080674181" duration="111614000" />
     </task>
     <task id="LOCAL-00143" summary="Added fix for reducing API calls and reconciling redux data">
       <created>1557018935344</created>
@@ -894,11 +854,32 @@
       <option name="project" value="LOCAL" />
       <updated>1561644243797</updated>
     </task>
-    <option name="localTasksCounter" value="189" />
+    <task id="LOCAL-00189" summary="Added voter buttons">
+      <created>1561662663189</created>
+      <option name="number" value="00189" />
+      <option name="presentableId" value="LOCAL-00189" />
+      <option name="project" value="LOCAL" />
+      <updated>1561662663190</updated>
+    </task>
+    <task id="LOCAL-00190" summary="Added voter component">
+      <created>1561662678684</created>
+      <option name="number" value="00190" />
+      <option name="presentableId" value="LOCAL-00190" />
+      <option name="project" value="LOCAL" />
+      <updated>1561662678684</updated>
+    </task>
+    <task id="LOCAL-00191" summary="Added dynamic updating of votes in redux">
+      <created>1561743562258</created>
+      <option name="number" value="00191" />
+      <option name="presentableId" value="LOCAL-00191" />
+      <option name="project" value="LOCAL" />
+      <updated>1561743562258</updated>
+    </task>
+    <option name="localTasksCounter" value="192" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="708452000" />
+    <option name="totallyTimeSpent" value="717229000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -981,9 +962,6 @@
     <option name="version" value="1" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fixed bugs related to chromes back button" />
-    <MESSAGE value="Fixed quiz grading" />
-    <MESSAGE value="Multiple bug fixes and active video setting" />
     <MESSAGE value="Added pagination to questions and answers" />
     <MESSAGE value="Fixed alerts being fixed" />
     <MESSAGE value="Adds auto-moving to next video in series" />
@@ -1006,16 +984,12 @@
     <MESSAGE value="Small tweaks to signup" />
     <MESSAGE value="Small bugfixes" />
     <MESSAGE value="Fixed link preview plus minor CSS enhancements" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed link preview plus minor CSS enhancements" />
+    <MESSAGE value="Added voter buttons" />
+    <MESSAGE value="Added voter component" />
+    <MESSAGE value="Added dynamic updating of votes in redux" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added dynamic updating of votes in redux" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/components/Sidebar/Sidebar.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="551">
-          <caret line="76" selection-start-line="76" selection-end-line="76" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/Alert/Alert.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="314">
@@ -1244,13 +1218,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/constants.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="11">
-          <caret line="62" selection-start-line="62" selection-end-line="62" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/withAlerts.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="509">
@@ -1367,20 +1334,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/Watch/Watch.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="574">
-          <caret line="128" column="1" selection-start-line="128" selection-start-column="1" selection-end-line="128" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/actions/actions.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="201">
-          <caret line="246" column="38" selection-start-line="246" selection-start-column="38" selection-end-line="246" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/Modal/Modal.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="479">
@@ -1395,10 +1348,58 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/Watch/Watch.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="218">
+          <caret line="106" column="21" lean-forward="true" selection-start-line="106" selection-start-column="21" selection-end-line="106" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/actions/actions.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="313">
+          <caret line="251" column="28" selection-start-line="251" selection-start-column="28" selection-end-line="251" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/constants.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1039">
+          <caret line="58" column="47" selection-start-line="58" selection-start-column="47" selection-end-line="58" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/reducers/PostReducer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-279">
+          <caret line="40" column="14" lean-forward="true" selection-start-line="40" selection-start-column="14" selection-end-line="40" selection-end-column="14" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Voter/Voter.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="39" selection-start-column="39" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Voter/Voter.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="15" column="36" lean-forward="true" selection-start-line="15" selection-start-column="36" selection-end-line="15" selection-end-column="36" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/Watch/ForumRow.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="51" column="42" lean-forward="true" selection-start-line="51" selection-start-column="42" selection-end-line="51" selection-end-column="42" />
+        <state relative-caret-position="214">
+          <caret line="57" column="54" selection-start-line="57" selection-start-column="54" selection-end-line="57" selection-end-column="54" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
           </folding>
@@ -1407,8 +1408,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/Watch/ForumContainer.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="377">
-          <caret line="90" column="53" selection-start-line="90" selection-start-column="53" selection-end-line="90" selection-end-column="53" />
+        <state relative-caret-position="288">
+          <caret line="84" lean-forward="true" selection-start-line="84" selection-end-line="84" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
           </folding>
@@ -1417,28 +1418,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/Watch/Watch.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="303">
-          <caret line="258" column="45" selection-start-line="258" selection-start-column="45" selection-end-line="258" selection-end-column="45" />
+        <state relative-caret-position="349">
+          <caret line="276" column="45" selection-start-line="276" selection-start-column="45" selection-end-line="276" selection-end-column="45" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Voter/Voter.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="16" column="38" selection-start-line="16" selection-start-column="38" selection-end-line="16" selection-end-column="38" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Voter/Voter.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="361">
-          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
         </state>
       </provider>
     </entry>

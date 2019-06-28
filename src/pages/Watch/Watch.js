@@ -59,6 +59,7 @@ class Watch extends Component {
                 title: '',
                 content: '',
             },
+            votes: {}, // TODO For now a simple way to track if the user has voted cannot persist
             open: false,
             isFetching: false,
             playing: true,
@@ -253,13 +254,29 @@ class Watch extends Component {
         }
     }
 
+    /**
+     * Handles updating accepted answers and
+     * up/down votes for specific questions
+     * @param post Object the post object containing the answer and question that was voted on/accepted
+     * @param attributes List String list of attributes to update (usually only 1 attribute up_votes, down_votes, or accepted)
+     * @returns {Promise<void>}
+     */
     async updatePost(post, attributes) {
         try {
             await this.props.updatePost({
+                ...post,
                 pid: post.pid,
                 sid: post.sid,
                 attributes,
             });
+
+            // For now just update local state to show the user has voted
+            this.setState({
+                votes: {
+                    ...this.state.votes,
+                    [post.question_id]: true,
+                }
+            })
         } catch(err) {
             Log.error(err);
             this.props.pushAlert('danger', 'Update Failed', 'There was an issue performing an update to the post. Check your internet connection and try again!');
@@ -280,6 +297,7 @@ class Watch extends Component {
                     return <ForumContainer
                         user={this.props.user}
                         questions={this.props.posts.questions[video_id]}
+                        votes={this.state.votes}
                         onQuestionAsk={() => this.handleShow()}
                         onAnswerPosted={(answer) => this.createAnswer(answer)}
                         onAccept={(post) => this.updatePost(post, ['accepted'])}

@@ -52,8 +52,12 @@ export default class ForumRow extends Component {
                                 <Segment className={`d-flex flex-row ${answer.accepted ? 'answered': ''}`} key={idx}>
                                     <Voter
                                         // Show the accept button if logged in user is the one who asked the question
-                                        // and if no other answers have been accepted yet
-                                        showAcceptButton={this.props.user.pid === this.props.post.content_creator.id && data.every(d => !d.accepted)}
+                                        // and if no other answers have been accepted yet OR if the logged in user is the question asker and the question is already accepted
+                                        // this way the question asker can switch their accepted answer.
+                                        showAcceptButton={(this.props.user.pid === this.props.post.content_creator.id && data.every(d => !d.accepted)) || (this.props.user.pid === this.props.post.content_creator.id && answer.accepted)}
+                                        allowVoting={!this.props.votes[answer.question_id]}
+                                        // votedUp={this.props.votes[answer.question_id] === 'up_votes'}
+                                        // votedDown={this.props.votes[answer.question_id] === 'down_votes'}
                                         up={() => this.props.onUpVote(answer)}
                                         down={() => this.props.onDownVote(answer)}
                                         onAccept={() => this.props.onAccept(answer)}
@@ -64,7 +68,7 @@ export default class ForumRow extends Component {
                                         </p>
                                         <Markdown source={answer.content} />
                                     </div>
-                                    <div className="flex-column ml-auto mt-1 mr-2">
+                                    <div className="flex-column ml-auto my-auto mr-2">
                                         <p className="answer-count">{answer.up_votes - answer.down_votes}</p>
                                         <p className="text-muted">Votes</p>
                                     </div>

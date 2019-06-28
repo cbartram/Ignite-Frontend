@@ -89,6 +89,7 @@ export default class ForumContainer extends Component {
                                 onClick={(id) => this.expandRow(id)}
                                 post={post}
                                 key={idx}
+                                votes={this.props.votes}
                                 user={this.props.user}
                                 onAccept={(answer) => this.props.onAccept(answer)}
                                 onUpVote={(answer) => this.props.onUpVote(answer)}
