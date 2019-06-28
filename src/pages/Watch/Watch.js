@@ -444,6 +444,26 @@ class Watch extends Component {
         this.setState({open: true});
     }
 
+    /**
+     *  Handles an error trying to play the video
+     *  Often a 403 from a video signed url being expired.
+     */
+    async handleError() {
+        Log.warn('Error loading the video refreshing signed url...');
+      // Attempt to refresh signed url
+        try {
+            await this.props.getSignedUrl({
+                video: this.props.activeVideo,
+                resourceUrl: `${IS_PROD ? 'https://d2hhpuhxg00qg.cloudfront.net' : 'https://dpvchyatyxxeg.cloudfront.net'}/chapter${this.props.activeVideo.chapter}/${this.props.activeVideo.s3Name}.mov`,
+                subscriptionId: this.props.user.subscription_id,
+            });
+            Log.info('Successfully refreshed video signed url');
+        } catch(err) {
+            Log.error(err);
+            this.props.pushAlert('danger', 'Oh No!', 'There was an issue retrieving the url for your video try going back to the videos page and selecting a new video!');
+        }
+    }
+
     render() {
         if (this.state.isFetching)
             return (
@@ -526,6 +546,7 @@ class Watch extends Component {
                     width="100%"
                     height="100%"
                     onEnded={() => this.nextVideo()}
+                    onError={() => this.handleError()}
                     style={{
                         position: 'relative',
                         width: '100%',
