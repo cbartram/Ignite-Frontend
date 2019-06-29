@@ -4,7 +4,13 @@ import { Link } from 'react-router-dom';
 import moment from 'moment/moment';
 import Card from 'react-bootstrap/Card';
 import _ from 'lodash';
-import { Loader, Dimmer, Menu, Sticky } from 'semantic-ui-react';
+import {
+    Loader,
+    Dimmer,
+    Menu,
+    Sticky,
+    Dropdown
+} from 'semantic-ui-react';
 import { scroller } from 'react-scroll';
 import { withRouter } from 'react-router-dom'
 import {
@@ -282,7 +288,17 @@ class Videos extends Component {
                         {
                             Array.from(new Array(7)).map((undef, i) => {
                                 if(i === 6) {
-                                    return <Menu.Item name="More" onClick={() => this.setState({ activeChapter: "more" })} active={this.state.activeChapter === "more"} />
+                                    return (
+                                        <Dropdown text="More" className="link item">
+                                            <Dropdown.Menu>
+                                                {
+                                                    Array.from(new Array(this.props.videos.videoList.length - 6)).map((undef, idx) => {
+                                                        return <Dropdown.Item onClick={() => this.chapterScroll(idx + 6)}>Chapter {idx + 7}</Dropdown.Item>
+                                                    })
+                                                }
+                                            </Dropdown.Menu>
+                                        </Dropdown>
+                                    )
                                 }
                                 return <Menu.Item key={i} name={`Chapter ${i + 1}`} onClick={() => this.chapterScroll(i)} active={this.state.activeChapter === i} />
                             })
