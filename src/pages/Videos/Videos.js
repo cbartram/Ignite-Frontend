@@ -48,6 +48,7 @@ class Videos extends Component {
         this.state = {
             isLoading: false,
             loadingVideo: null, // The id of the video that is loading
+            activeChapter: 0,
             gradients: [
                 'purple-gradient',
                 'blue-gradient',
@@ -251,6 +252,20 @@ class Videos extends Component {
         )
     }
 
+    /**
+     * Scrolls to the designated chapter on the page
+     * @param chapterIndex
+     */
+    chapterScroll(chapterIndex) {
+        this.setState({ activeChapter: chapterIndex });
+        scroller.scrollTo(chapterIndex, {
+            duration: 1500,
+            delay: 100,
+            smooth: true,
+            offset: -70
+        });
+    }
+
     render() {
         // Only returned when history.push('/videos') happens
         if(this.props.videos.isFetching)
@@ -267,14 +282,9 @@ class Videos extends Component {
                         {
                             Array.from(new Array(7)).map((undef, i) => {
                                 if(i === 6) {
-                                    return <Menu.Item name="More" active={i === 6} />
+                                    return <Menu.Item name="More" onClick={() => this.setState({ activeChapter: "more" })} active={this.state.activeChapter === "more"} />
                                 }
-                                return <Menu.Item name={`Chapter ${i + 1}`} onClick={() => scroller.scrollTo(i, {
-                                    duration: 1500,
-                                    delay: 100,
-                                    smooth: true,
-                                    offset: -70
-                                })} active={i === 0} />
+                                return <Menu.Item key={i} name={`Chapter ${i + 1}`} onClick={() => this.chapterScroll(i)} active={this.state.activeChapter === i} />
                             })
                         }
                     </Menu>
