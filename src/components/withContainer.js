@@ -14,7 +14,7 @@ const withContainer = (BaseComponent, props = {}) => {
     return class EnhancedComponent extends Component {
         constructor(props) {
             super(props);
-
+            this.navbarRef = React.createRef();
             this.state = { alerts: [] }
         }
 
@@ -64,7 +64,7 @@ const withContainer = (BaseComponent, props = {}) => {
                             }
                         </div>
                     }
-                    <BaseComponent pushAlert={(type, title, message, id) => this.pushAlert(type, title, message, id)}/>
+                    <BaseComponent scrollTo={(ref) => this.scrollToRef(ref)} pushAlert={(type, title, message, id) => this.pushAlert(type, title, message, id)}/>
                 </Container>
             );
         }

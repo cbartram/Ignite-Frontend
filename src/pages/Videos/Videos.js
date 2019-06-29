@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import moment from 'moment/moment';
 import Card from 'react-bootstrap/Card';
 import _ from 'lodash';
-import { Loader, Dimmer } from 'semantic-ui-react';
+import { Loader, Dimmer, Menu, Sticky } from 'semantic-ui-react';
+import { scroller } from 'react-scroll';
 import { withRouter } from 'react-router-dom'
 import {
     updateActiveVideo,
@@ -13,7 +14,6 @@ import {
     ping,
 } from '../../actions/actions';
 import { IS_PROD } from "../../constants";
-import Jumbotron from "../../components/Card/Card";
 import Log from '../../Log';
 import './Videos.css';
 import withContainer from "../../components/withContainer";
@@ -41,10 +41,10 @@ const mapDispatchToProps = dispatch => ({
 class Videos extends Component {
     constructor(props) {
         super(props);
-
         // Retains access to the iteration for each loop in
         // the videos map(). This tells us when we can render a quiz (at the end of a chapter)
         this.iter = 0;
+        this.stickyRef = React.createRef();
         this.state = {
             isLoading: false,
             loadingVideo: null, // The id of the video that is loading
@@ -144,10 +144,9 @@ class Videos extends Component {
         }
 
         return (
-            <div>
-            <Jumbotron>
+            <div className="p-3">
                 <h3 className="common-SectionTitle">
-                    { authorized ? 'Welcome to Videos': 'No subscription found'}
+                    { authorized ? 'Videos': 'No subscription found'}
                 </h3>
                 <div className="row">
                     <div className="col-md-8">
@@ -178,7 +177,6 @@ class Videos extends Component {
                     {/*</g>*/}
                     {/*</svg>*/}
                 </div>
-            </Jumbotron>
             <div className="row">
                 {
                     !authorized && Array.from(new Array(8)).map(() => {
@@ -262,19 +260,36 @@ class Videos extends Component {
             return this.renderJumbotron();
 
         return (
-            <div>
+            <div ref={this.stickyRef}>
                 { this.renderJumbotron(true) }
+                <Sticky context={this.stickyRef} pushing>
+                    <Menu fluid pointing secondary widths={7}>
+                        {
+                            Array.from(new Array(7)).map((undef, i) => {
+                                if(i === 6) {
+                                    return <Menu.Item name="More" active={i === 6} />
+                                }
+                                return <Menu.Item name={`Chapter ${i + 1}`} onClick={() => scroller.scrollTo(i, {
+                                    duration: 1500,
+                                    delay: 100,
+                                    smooth: true,
+                                    offset: -70
+                                })} active={i === 0} />
+                            })
+                        }
+                    </Menu>
+                </Sticky>
                 {
                     this.props.videos.videoList.map((chapter, i) => {
                         return (
-                            <div key={chapter.title}>
+                            <div key={chapter.title} name={i}>
                                 <div className="d-flex flex-row justify-content-start">
                                     <h2 className="common-UppercaseTitle big-font ml-4">
                                         { chapter.title } - {moment.utc(chapter.videos.map(video => (moment(video.length, 'mm:ss').minutes() * 60) + moment(video.length, 'mm:ss').seconds()).reduce((a, b) => a + b) * 1000).format('mm:ss') }
                                     </h2>
                                     <hr />
                                 </div>
-                                <div className="row">
+                                <div className="row px-4">
                                     {
                                         // TODO Move the API call to fetch video, and find questions etc... into this file bc we know about the video being clicked
                                         chapter.videos.map((video, index) => {
@@ -325,4 +340,4 @@ class Videos extends Component {
     }
 }
 
-export default withContainer(connect(mapStateToProps, mapDispatchToProps)(withRouter(Videos)));
+export default withContainer(connect(mapStateToProps, mapDispatchToProps)(withRouter(Videos)), { style: { background: 'white' }});

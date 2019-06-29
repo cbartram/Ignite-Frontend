@@ -242,3 +242,39 @@
 .card-description-skeleton.skeleton-loading {
     height: 80px;
 }
+
+.ui.secondary.pointing.menu .item {
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 22px;
+    letter-spacing: -0.04ch;
+    text-transform: none;
+    color: rgb(25, 25, 25);
+}
+
+.ui.secondary.pointing.menu:last-child {
+    padding-right: 30px !important;
+}
+
+.ui.secondary.pointing.menu .active.item {
+    border-bottom: 4px solid #6772e5;
+    color: #6772e5;
+}
+
+.ui.secondary.pointing.menu .active.item:hover {
+    border-color: #6772e5 !important;
+    color: #6772e5 !important;
+}
+
+.ui.secondary.pointing.menu {
+    background: white;
+    height: 64px;
+    border-bottom: 1px solid rgb(231, 231, 231);
+    border-top: 1px solid rgb(231, 231, 231);
+    margin-bottom: 20px;
+    padding-left: 30px !important;
+}
