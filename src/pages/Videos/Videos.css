@@ -204,13 +204,13 @@
 }
 
 .ui.secondary.pointing.menu .active.item {
-    border-bottom: 4px solid #6772e5;
-    color: #6772e5;
+    border-bottom: 4px solid #408AF8 !important;
+    color: #408AF8;
 }
 
 .ui.secondary.pointing.menu .active.item:hover {
-    border-color: #6772e5 !important;
-    color: #6772e5 !important;
+    border-color: #408AF8 !important;
+    color: #408AF8 !important;
 }
 
 .ui.secondary.pointing.menu {
@@ -220,7 +220,6 @@
     margin-bottom: 20px;
     padding-left: 30px !important;
 }
-
 .btn-flat {
     position: relative;
     max-width: 100%;
@@ -245,10 +244,14 @@
 .btn-flat:hover {
     /*box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);*/
     /*transform: translateY(-2px);*/
-    border: 1px solid #6772e5;
+    border: 1px solid #408AF8;
 }
 
-.btn-flat > h5 {
+.btn-quiz:hover {
+    border: 1px solid #3ecf8e;
+}
+
+.btn-flat-title {
     font-size: 16px;
     font-weight: 700;
     line-height: 22px;

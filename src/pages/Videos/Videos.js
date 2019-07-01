@@ -222,38 +222,25 @@ class Videos extends Component {
         let quiz = quizArr[0];
         return (
             <div className="col-md-3 col-lg-3 col-sm-12 d-flex align-items-stretch pb-2 px-4 my-4" key={quiz.name}>
-                <Card>
-                    <div className={`d-flex justify-content-center align-items-center cover ${this.state.gradients[index]}`}>
-                        <span className="gradient-text">{quiz.name}</span>
+                <button type="button" className="btn btn-flat btn-quiz" onClick={() => this.props.history.push(`/quiz?q=${btoa(quiz.id)}${quiz.complete ? '&retake=true' : '' }`)}>
+                    <div className="d-flex mb-2">
+                        <h5 className="btn-flat-title">{quiz.name}</h5>
+                        <span className="badge badge-pill badge-success px-3 ml-auto" style={{ paddingTop: 9 }}><strong>Quiz</strong></span>
                     </div>
-                    <Card.Body className="p-0">
-                        <div className="d-flex flex-row">
-                            <h2 className="common-IntroText mt-0">{quiz.name}</h2>
-                            <p className="common-BodyText pt-1 ml-3">
-                                {quiz.completed}
-                            </p>
-                        </div>
-                        <div className="d-flex flex-column">
-                            <p className="common-BodyText">
-                                { quiz.description }
-                            </p>
-                            {
-                                quiz.complete &&
-                                <div>
-                                    <div className="progress" style={{height: 5 }}>
-                                        <div className="progress-bar" role="progressbar" style={{width: `${quiz.score}%`, backgroundColor: '#7795f8' }} />
-                                    </div>
-                                    <span className="text-muted">
-                                    {quiz.score}%
-                                 </span>
-                                </div>
-                            }
-                            <Link to={`/quiz?q=${btoa(quiz.id)}${quiz.complete ? '&retake=true' : '' }`} className="common-Button common-Button--default">
-                                { quiz.complete ? 'Re-take Quiz' : 'Take Quiz'}
-                            </Link>
-                        </div>
-                    </Card.Body>
-                </Card>
+                    <span>
+                       { quiz.description }
+                    </span>
+                    <h5 className="mt-2">{ quiz.questions.length } Questions</h5>
+                    <Popup
+                        trigger={
+                            <div className="progress" style={{height: 7 }}>
+                                <div className="progress-bar" role="progressbar" style={{width: `${quiz.score}%`, backgroundColor: '#3ecf8e' }} />
+                            </div>
+                        }
+                        content={quiz.completed ? `You scored a ${quiz.score}% on this quiz.` : 'You haven\'t taken this quiz yet!'}
+                        position="bottom center"
+                    />
+                </button>
             </div>
         )
     }
@@ -325,50 +312,24 @@ class Videos extends Component {
                                                         <Dimmer active={this.state.isLoading && this.state.loadingVideo === `${video.chapter}.${video.sortKey}`}>
                                                             <Loader>Loading</Loader>
                                                         </Dimmer>
-                                                        <h5>{video.name}</h5>
+                                                        <div className="d-flex mb-2">
+                                                            <h5 className="btn-flat-title">{video.name}</h5>
+                                                            <span className="badge badge-pill badge-primary px-3 ml-auto" style={{ paddingTop: 9 }}><strong>Video</strong></span>
+                                                        </div>
                                                         <span>
-                                                        { video.description }
-                                                    </span>
+                                                            { video.description }
+                                                        </span>
+                                                        <h5 className="mt-2">{ video.length }</h5>
                                                         <Popup
                                                             trigger={
                                                                 <div className="progress mt-3" style={{height: 7 }}>
-                                                                    <div className="progress-bar" role="progressbar" style={{width: `${Videos.percentComplete(video)}%`, backgroundColor: '#6772e5' }} />
+                                                                    <div className="progress-bar" role="progressbar" style={{width: `${Videos.percentComplete(video)}%`, backgroundColor: '#408AF8' }} />
                                                                 </div>
                                                             }
                                                             content={`You have completed ${Videos.percentComplete(video)}% of this video.`}
                                                             position="bottom center"
                                                         />
                                                     </button>
-                                                    {/*<Card>*/}
-                                                    {/*    <Dimmer active={this.state.isLoading && this.state.loadingVideo === `${video.chapter}.${video.sortKey}`}>*/}
-                                                    {/*        <Loader>Loading</Loader>*/}
-                                                    {/*    </Dimmer>*/}
-                                                    {/*    <div className={`d-flex justify-content-center align-items-center cover ${this.state.gradients[i]}`}>*/}
-                                                    {/*        <span className="gradient-text">{video.name}</span>*/}
-                                                    {/*    </div>*/}
-                                                    {/*    <Card.Body className="p-0">*/}
-                                                    {/*        <div className="d-flex flex-row">*/}
-                                                    {/*            <h2 className="common-IntroText mt-0">{video.name}</h2>*/}
-                                                    {/*            <p className="common-BodyText pt-1 ml-3">*/}
-                                                    {/*                {video.length}*/}
-                                                    {/*            </p>*/}
-                                                    {/*        </div>*/}
-                                                    {/*        <div className="d-flex flex-column">*/}
-                                                    {/*            <p className="common-BodyText">*/}
-                                                    {/*                { video.description }*/}
-                                                    {/*            </p>*/}
-                                                    {/*            <div className="progress" style={{height: 5 }}>*/}
-                                                    {/*                <div className="progress-bar" role="progressbar" style={{width: `${Videos.percentComplete(video)}%`, backgroundColor: '#7795f8' }} />*/}
-                                                    {/*            </div>*/}
-                                                    {/*            <span className="text-muted">*/}
-                                                    {/*                     { Videos.percentComplete(video) <= 1 ? 'Not Started' : `${Videos.percentComplete(video) > 100 ? 100 : Videos.percentComplete(video)}% complete!`}*/}
-                                                    {/*                </span>*/}
-                                                    {/*            <button onClick={() => this.handleWatch(video)} className="common-Button common-Button--default mt-2">*/}
-                                                    {/*                { Videos.percentComplete(video) <= 1 ?  'Start Now' : 'Continue'}*/}
-                                                    {/*            </button>*/}
-                                                    {/*        </div>*/}
-                                                    {/*    </Card.Body>*/}
-                                                    {/*</Card>*/}
                                                 </div>
                                             )
                                         })

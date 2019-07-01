@@ -575,7 +575,7 @@ class Watch extends Component {
                         {this.props.activeVideo.description}
                     </p>
                 </div>
-                <div className="tab-container px-3">
+                <div className="tab-container">
                     <Menu pointing secondary>
                         <Menu.Item
                             name='Questions'
