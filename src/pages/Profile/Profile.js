@@ -5,7 +5,7 @@ import { FormGroup, FormControl } from 'react-bootstrap';
 import { withRouter } from "react-router-dom";
 import { Auth } from 'aws-amplify/lib/index';
 import ReactTooltip from 'react-tooltip';
-import { Confirm, Button } from 'semantic-ui-react';
+import { Confirm, Placeholder } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import moment from 'moment/moment';
 import withContainer from '../../components/withContainer';
@@ -496,29 +496,49 @@ class Profile extends Component {
                             cardTitle="Recent Events"
                             style={{ midWidth: 0, padding: 0 }}
                             classNames={['p-0', 'mt-0', 'pb-2']}
-                            loading={this.props.auth.isFetching}
                         >
-                            <div style={{ maxHeight: 240, overflowY: 'scroll' }}>
-                                <ul className="list-group">
-                                    {
-                                        this.props.user.events.length === 0 ? <li className="list-group-item" style={{ border: '1px solid white' }}><h3>No Events</h3></li> :
-                                        this.props.user.events.map((event, i) => {
-                                            return (
-                                                <li className="list-group-item" style={{ border: '1px solid white' }} key={i}>
+                            {
+                                this.props.auth.isFetching ?
+                                    Array.from(new Array(3)).map(() => {
+                                        return (
+                                            <div className="p-4">
+                                                <Placeholder fluid>
+                                                    <Placeholder.Paragraph>
+                                                        <Placeholder.Line />
+                                                        <Placeholder.Line />
+                                                        <Placeholder.Line />
+                                                        <Placeholder.Line />
+                                                    </Placeholder.Paragraph>
+                                                </Placeholder>
+                                            </div>
+                                        )
+                                    }) :
+                                    <div style={{maxHeight: 240, overflowY: 'scroll'}}>
+                                        <ul className="list-group">
+                                            {
+                                                this.props.user.events.length === 0 ?
+                                                    <li className="list-group-item" style={{border: '1px solid white'}}>
+                                                        <h3>No Events</h3></li> :
+                                                    this.props.user.events.map((event, i) => {
+                                                        return (
+                                                            <li className="list-group-item"
+                                                                style={{border: '1px solid white'}} key={i}>
 
-                                                    <div className="d-flex flex-row">
-                                                        <span className={`${Profile.getIcon(event.type)} mr-2`}/>
-                                                        <div className="d-flex flex-column">
-                                                            <h5 className="mb-1 mt-0">{ event.type.split('.').join(' ') }</h5>
-                                                            <p className="text-muted">{ moment(moment.unix(event.created)).format('MMM d, YYYY h:mm A') }</p>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            )
-                                        })
-                                    }
-                                </ul>
-                            </div>
+                                                                <div className="d-flex flex-row">
+                                                                    <span
+                                                                        className={`${Profile.getIcon(event.type)} mr-2`}/>
+                                                                    <div className="d-flex flex-column">
+                                                                        <h5 className="mb-1 mt-0">{event.type.split('.').join(' ')}</h5>
+                                                                        <p className="text-muted">{moment(moment.unix(event.created)).format('MMM d, YYYY h:mm A')}</p>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                        )
+                                                    })
+                                            }
+                                        </ul>
+                                    </div>
+                            }
                         </Card>
                     </div>
                 </div>

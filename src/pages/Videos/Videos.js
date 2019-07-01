@@ -193,10 +193,8 @@ class Videos extends Component {
                             <div className="col-md-3 col-lg-3 col-sm-12 d-flex align-items-stretch pb-2 px-4 my-4" key={_.uniqueId()}>
                                 <section className="btn btn-flat btn-flat-no-hover">
                                     <Placeholder style={{ minWidth: '200px' }}>
-                                        {/*<Placeholder.Header>*/}
                                             <Placeholder.Line />
                                             <Placeholder.Line />
-                                        {/*</Placeholder.Header>*/}
                                         <Placeholder.Paragraph>
                                             <Placeholder.Line length='medium' />
                                             <Placeholder.Line length='short' />
