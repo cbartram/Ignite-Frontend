@@ -5,6 +5,8 @@ import { FormGroup, FormControl } from 'react-bootstrap';
 import { withRouter } from "react-router-dom";
 import { Auth } from 'aws-amplify/lib/index';
 import ReactTooltip from 'react-tooltip';
+import { Confirm, Button } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 import moment from 'moment/moment';
 import withContainer from '../../components/withContainer';
 import Card from '../../components/Card/Card';
@@ -58,6 +60,7 @@ class Profile extends Component {
             isChanging: false,
             confirmPassword: "",
             events: [],
+            confirmOpen: false,
 
             // Tooltip state
             stages: [{
@@ -298,6 +301,30 @@ class Profile extends Component {
     render() {
         return (
             <div>
+                <Confirm
+                    open={this.state.confirmOpen}
+                    className="confirm-delete"
+                    header="Danger Zone"
+                    cancelButton="Back"
+                    confirmButton="Cancel Subscription"
+                    content={() => {
+                        return (
+                            <p className="common-BodyText">
+                                <strong>Warning:</strong>&nbsp;
+                                This will permanently cancel your Ignite Subscription. If you are still in your trial period you will not be charged.
+                                If you trial has ended your subscription will be active until the start of the next billing cycle at which time you will no
+                                longer be able to access Ignite video content.
+                                <br />
+                                You can resubscribe at any time by <Link to="/pricing">following this link.</Link>
+                            </p>
+                        )
+                    }}
+                    onCancel={() => this.setState({ confirmOpen: false })}
+                    onConfirm={async () => {
+                        this.setState({ confirmOpen: false });
+                        await this.unsubscribe();
+                    }}
+                />
                 <div className="row mt-3">
                     <div className="col-md-12">
                         <Card badgeText="Billing Status" className="pt-4">
@@ -452,10 +479,14 @@ class Profile extends Component {
                                     // Only show the button to user's who are actively subscribed
                                     // (dont show to users whos subscription will end at the close of the next period)
                                     (this.props.billing.premium && this.props.billing.premium !== 'false' && this.props.user.at_period_end !== true ) &&
-                                    <button className="btn btn-danger"
-                                            onClick={() => this.unsubscribe()}>
-                                        Cancel Subscription
-                                    </button>
+                                    <LoaderButton
+                                        isLoading={this.props.auth.isFetching}
+                                        className="btn btn-danger"
+                                        text="Cancel Subscription"
+                                        noCommon
+                                        onClick={() => this.setState({ confirmOpen: true })}>
+                                    </LoaderButton>
+
                                 }
                             </div>
                         </Card>

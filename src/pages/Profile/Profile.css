@@ -199,6 +199,34 @@
     font-weight: 500;
 }
 
+/* Ensures the confirm modal does not conflict with other bs modals */
+.confirm-delete {
+    height: auto !important;
+    top: auto !important;
+    left: auto !important;
+}
+
+.confirm-delete .header {
+    color: #db2828 !important;
+}
+
+.ui.modal > p {
+    background: #f6f9fc;
+    margin: 0;
+    padding: 20px;
+}
+
+.ui.modal > .actions {
+    background: #fff;
+    padding: 1rem 1rem;
+    border-top: 1px solid rgba(34,36,38,.15);
+    text-align: right;
+}
+
+.ui.modal > .actions > .ui.primary.button {
+    background-color: #db2828;
+}
+
 .circle {
     position: absolute;
     border: 2px solid #3d9aff;

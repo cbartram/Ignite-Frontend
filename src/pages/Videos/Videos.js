@@ -9,7 +9,9 @@ import {
     Dimmer,
     Menu,
     Sticky,
-    Dropdown
+    Dropdown,
+    Popup,
+    Placeholder,
 } from 'semantic-ui-react';
 import { scroller } from 'react-scroll';
 import { withRouter } from 'react-router-dom'
@@ -189,17 +191,17 @@ class Videos extends Component {
                     !authorized && Array.from(new Array(8)).map(() => {
                         return (
                             <div className="col-md-3 col-lg-3 col-sm-12 d-flex align-items-stretch pb-2 px-4 my-4" key={_.uniqueId()}>
-                                <section className="card card-skeleton">
-                                    <div className="d-flex justify-content-center align-items-center cover card-skeleton skeleton-loading" />
-                                    <div className="card-detail-skeleton">
-                                        <h3 className="card-title-skeleton skeleton-loading" />
-                                    </div>
-                                    <div className="card-detail-skeleton">
-                                        <h3 className="card-title-skeleton skeleton-loading" />
-                                    </div>
-                                    <div className="card-detail-skeleton">
-                                        <h3 className="card-title-skeleton skeleton-loading" />
-                                    </div>
+                                <section className="btn btn-flat btn-flat-no-hover">
+                                    <Placeholder style={{ minWidth: '200px' }}>
+                                        {/*<Placeholder.Header>*/}
+                                            <Placeholder.Line />
+                                            <Placeholder.Line />
+                                        {/*</Placeholder.Header>*/}
+                                        <Placeholder.Paragraph>
+                                            <Placeholder.Line length='medium' />
+                                            <Placeholder.Line length='short' />
+                                        </Placeholder.Paragraph>
+                                    </Placeholder>
                                 </section>
                             </div>
                         )
@@ -317,41 +319,58 @@ class Videos extends Component {
                                 </div>
                                 <div className="row px-4">
                                     {
-                                        // TODO Move the API call to fetch video, and find questions etc... into this file bc we know about the video being clicked
                                         chapter.videos.map((video, index) => {
                                             this.iter = index;
                                             return (
                                                 <div className="col-md-3 col-lg-3 col-sm-12 d-flex align-items-stretch pb-2 px-4 my-4" key={video.name}>
-                                                    <Card>
+                                                    <button type="button" className="btn btn-flat" onClick={() => this.handleWatch(video)}>
                                                         <Dimmer active={this.state.isLoading && this.state.loadingVideo === `${video.chapter}.${video.sortKey}`}>
                                                             <Loader>Loading</Loader>
                                                         </Dimmer>
-                                                        <div className={`d-flex justify-content-center align-items-center cover ${this.state.gradients[i]}`}>
-                                                            <span className="gradient-text">{video.name}</span>
-                                                        </div>
-                                                        <Card.Body className="p-0">
-                                                            <div className="d-flex flex-row">
-                                                                <h2 className="common-IntroText mt-0">{video.name}</h2>
-                                                                <p className="common-BodyText pt-1 ml-3">
-                                                                    {video.length}
-                                                                </p>
-                                                            </div>
-                                                            <div className="d-flex flex-column">
-                                                                <p className="common-BodyText">
-                                                                    { video.description }
-                                                                </p>
-                                                                <div className="progress" style={{height: 5 }}>
-                                                                    <div className="progress-bar" role="progressbar" style={{width: `${Videos.percentComplete(video)}%`, backgroundColor: '#7795f8' }} />
+                                                        <h5>{video.name}</h5>
+                                                        <span>
+                                                        { video.description }
+                                                    </span>
+                                                        <Popup
+                                                            trigger={
+                                                                <div className="progress mt-3" style={{height: 7 }}>
+                                                                    <div className="progress-bar" role="progressbar" style={{width: `${Videos.percentComplete(video)}%`, backgroundColor: '#6772e5' }} />
                                                                 </div>
-                                                                <span className="text-muted">
-                                                                         { Videos.percentComplete(video) <= 1 ? 'Not Started' : `${Videos.percentComplete(video) > 100 ? 100 : Videos.percentComplete(video)}% complete!`}
-                                                                    </span>
-                                                                <button onClick={() => this.handleWatch(video)} className="common-Button common-Button--default mt-2">
-                                                                    { Videos.percentComplete(video) <= 1 ?  'Start Now' : 'Continue'}
-                                                                </button>
-                                                            </div>
-                                                        </Card.Body>
-                                                    </Card>
+                                                            }
+                                                            content={`You have completed ${Videos.percentComplete(video)}% of this video.`}
+                                                            position="bottom center"
+                                                        />
+                                                    </button>
+                                                    {/*<Card>*/}
+                                                    {/*    <Dimmer active={this.state.isLoading && this.state.loadingVideo === `${video.chapter}.${video.sortKey}`}>*/}
+                                                    {/*        <Loader>Loading</Loader>*/}
+                                                    {/*    </Dimmer>*/}
+                                                    {/*    <div className={`d-flex justify-content-center align-items-center cover ${this.state.gradients[i]}`}>*/}
+                                                    {/*        <span className="gradient-text">{video.name}</span>*/}
+                                                    {/*    </div>*/}
+                                                    {/*    <Card.Body className="p-0">*/}
+                                                    {/*        <div className="d-flex flex-row">*/}
+                                                    {/*            <h2 className="common-IntroText mt-0">{video.name}</h2>*/}
+                                                    {/*            <p className="common-BodyText pt-1 ml-3">*/}
+                                                    {/*                {video.length}*/}
+                                                    {/*            </p>*/}
+                                                    {/*        </div>*/}
+                                                    {/*        <div className="d-flex flex-column">*/}
+                                                    {/*            <p className="common-BodyText">*/}
+                                                    {/*                { video.description }*/}
+                                                    {/*            </p>*/}
+                                                    {/*            <div className="progress" style={{height: 5 }}>*/}
+                                                    {/*                <div className="progress-bar" role="progressbar" style={{width: `${Videos.percentComplete(video)}%`, backgroundColor: '#7795f8' }} />*/}
+                                                    {/*            </div>*/}
+                                                    {/*            <span className="text-muted">*/}
+                                                    {/*                     { Videos.percentComplete(video) <= 1 ? 'Not Started' : `${Videos.percentComplete(video) > 100 ? 100 : Videos.percentComplete(video)}% complete!`}*/}
+                                                    {/*                </span>*/}
+                                                    {/*            <button onClick={() => this.handleWatch(video)} className="common-Button common-Button--default mt-2">*/}
+                                                    {/*                { Videos.percentComplete(video) <= 1 ?  'Start Now' : 'Continue'}*/}
+                                                    {/*            </button>*/}
+                                                    {/*        </div>*/}
+                                                    {/*    </Card.Body>*/}
+                                                    {/*</Card>*/}
                                                 </div>
                                             )
                                         })

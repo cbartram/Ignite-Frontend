@@ -10,7 +10,7 @@
     will-change: opacity;
 }
 
-.modal {
+.modal.show {
     background: rgba(82,95,127,.7);
     will-change: opacity;
 }
