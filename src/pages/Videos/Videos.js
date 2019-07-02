@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import moment from 'moment/moment';
-import Card from 'react-bootstrap/Card';
 import _ from 'lodash';
 import {
     Loader,
@@ -12,6 +11,11 @@ import {
     Dropdown,
     Popup,
     Placeholder,
+    Sidebar,
+    Icon,
+    Header,
+    Segment,
+    Image, Responsive
 } from 'semantic-ui-react';
 import { scroller } from 'react-scroll';
 import { withRouter } from 'react-router-dom'
@@ -57,30 +61,6 @@ class Videos extends Component {
             isLoading: false,
             loadingVideo: null, // The id of the video that is loading
             activeChapter: 0,
-            gradients: [
-                'purple-gradient',
-                'blue-gradient',
-                'aqua-gradient',
-                'peach-gradient',
-                'warm-flame-gradient',
-                'night-fade-gradient',
-                'spring-warmth-gradient',
-                'juicy-peach-gradient',
-                'rainy-ashville-gradient',
-                'sunny-morning-gradient',
-                'lady-lips-gradient',
-                'winter-neva-gradient',
-                'frozen-dreams-gradient',
-                'dusty-grass-gradient',
-                'tempting-azure-gradient',
-                'amy-crisp-gradient',
-                'mean-fruit-gradient',
-                'deep-blue-gradient',
-                'ripe-malinka-gradient',
-                'morpheus-den-gradient',
-                'rare-wind-gradient',
-                'near-moon-gradient',
-            ]
         }
     }
 
@@ -237,7 +217,7 @@ class Videos extends Component {
                                 <div className="progress-bar" role="progressbar" style={{width: `${quiz.score}%`, backgroundColor: '#3ecf8e' }} />
                             </div>
                         }
-                        content={quiz.completed ? `You scored a ${quiz.score}% on this quiz.` : 'You haven\'t taken this quiz yet!'}
+                        content={quiz.complete ? `You scored a ${quiz.score}% on this quiz.` : 'You haven\'t taken this quiz yet!'}
                         position="bottom center"
                     />
                 </button>
@@ -270,37 +250,46 @@ class Videos extends Component {
         return (
             <div ref={this.stickyRef}>
                 { this.renderJumbotron(true) }
+                <h3 className="common-SectionTitle">
+                    Recently Watched
+                </h3>
+
+                <h3 className="common-SectionTitle">
+                    Up Next
+                </h3>
                 <Sticky context={this.stickyRef} pushing>
-                    <Menu fluid pointing secondary widths={7}>
-                        {
-                            Array.from(new Array(7)).map((undef, i) => {
-                                if(i === 6) {
-                                    return (
-                                        <Dropdown text="More" className="link item">
-                                            <Dropdown.Menu>
-                                                {
-                                                    Array.from(new Array(this.props.videos.videoList.length - 6)).map((undef, idx) => {
-                                                        return <Dropdown.Item onClick={() => this.chapterScroll(idx + 6)}>Chapter {idx + 7}</Dropdown.Item>
-                                                    })
-                                                }
-                                            </Dropdown.Menu>
-                                        </Dropdown>
-                                    )
-                                }
-                                return <Menu.Item key={i} name={`Chapter ${i + 1}`} onClick={() => this.chapterScroll(i)} active={this.state.activeChapter === i} />
-                            })
-                        }
-                    </Menu>
+                    <Responsive minWidth={768}>
+                        <Menu fluid pointing secondary widths={7}>
+                            {
+                                _.times(7, i => {
+                                    if(i === 6) {
+                                        return (
+                                            <Dropdown text="More" className="link item">
+                                                <Dropdown.Menu>
+                                                    {
+                                                        _.times(this.props.videos.videoList.length - 6, idx => {
+                                                            return <Dropdown.Item onClick={() => this.chapterScroll(idx + 6)}>Chapter {idx + 7}</Dropdown.Item>
+                                                        })
+                                                    }
+                                                </Dropdown.Menu>
+                                            </Dropdown>
+                                        )
+                                    }
+                                    return <Menu.Item key={i} name={`Chapter ${i + 1}`} onClick={() => this.chapterScroll(i)} active={this.state.activeChapter === i} />
+                                })
+                            }
+                        </Menu>
+                    </Responsive>
                 </Sticky>
                 {
                     this.props.videos.videoList.map((chapter, i) => {
                         return (
                             <div key={chapter.title} name={i}>
                                 <div className="d-flex flex-row justify-content-start">
-                                    <h2 className="common-UppercaseTitle big-font ml-4">
+                                    <h2 className="common-UppercaseTitle big-font ml-4 mt-2">
                                         { chapter.title } - {moment.utc(chapter.videos.map(video => (moment(video.length, 'mm:ss').minutes() * 60) + moment(video.length, 'mm:ss').seconds()).reduce((a, b) => a + b) * 1000).format('mm:ss') }
+                                        <hr />
                                     </h2>
-                                    <hr />
                                 </div>
                                 <div className="row px-4">
                                     {
@@ -317,8 +306,8 @@ class Videos extends Component {
                                                             <span className="badge badge-pill badge-primary px-3 ml-auto" style={{ paddingTop: 9 }}><strong>Video</strong></span>
                                                         </div>
                                                         <span>
-                                                            { video.description }
-                                                        </span>
+                                                    { video.description }
+                                                </span>
                                                         <h5 className="mt-2">{ video.length }</h5>
                                                         <Popup
                                                             trigger={

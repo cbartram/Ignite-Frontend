@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4ec36ac8-77e5-4985-93b1-57c48712b128" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/Videos/Videos.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Videos/Videos.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/Videos/Videos.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Videos/Videos.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Watch/Watch.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Watch/Watch.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -38,8 +36,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/pages/Videos/Videos.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="575">
-              <caret line="325" column="194" selection-start-line="325" selection-start-column="194" selection-end-line="325" selection-end-column="194" />
+            <state relative-caret-position="5444">
+              <caret line="305" column="107" selection-start-line="305" selection-start-column="107" selection-end-line="305" selection-end-column="107" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
               </folding>
@@ -50,32 +48,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/pages/Videos/Videos.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="546">
-              <caret line="246" column="29" lean-forward="true" selection-start-line="246" selection-start-column="22" selection-end-line="246" selection-end-column="29" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/pages/Watch/Watch.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="205">
-              <caret line="577" column="45" selection-start-line="577" selection-start-column="45" selection-end-line="577" selection-end-column="45" />
-              <folding>
-                <element signature="e#0#39#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/pages/Profile/Profile.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="49">
-              <caret line="517" column="12" lean-forward="true" selection-start-line="517" selection-start-column="12" selection-end-line="517" selection-end-column="12" />
-              <folding>
-                <element signature="e#0#41#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="654">
+              <caret line="263" column="25" lean-forward="true" selection-start-line="263" selection-start-column="25" selection-end-line="263" selection-end-column="25" />
             </state>
           </provider>
         </entry>
@@ -92,7 +66,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>axios</find>
       <find>loginSuccess</find>
       <find>access</find>
       <find>common</find>
@@ -121,6 +94,7 @@
       <find>Placehol</find>
       <find>Recent</find>
       <find>px-3</find>
+      <find>quiz.com</find>
       <find>border-color</find>
     </findStrings>
     <replaceStrings>
@@ -202,8 +176,8 @@
         <option value="$PROJECT_DIR$/src/components/Modal/Modal.css" />
         <option value="$PROJECT_DIR$/src/pages/Profile/Profile.css" />
         <option value="$PROJECT_DIR$/src/pages/Profile/Profile.js" />
-        <option value="$PROJECT_DIR$/src/pages/Videos/Videos.css" />
         <option value="$PROJECT_DIR$/src/pages/Watch/Watch.js" />
+        <option value="$PROJECT_DIR$/src/pages/Videos/Videos.css" />
         <option value="$PROJECT_DIR$/src/pages/Videos/Videos.js" />
       </list>
     </option>
@@ -362,7 +336,7 @@
     <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553460051370" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/pages/Error" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/resources/images/thumbnails" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs.mocha.mocha_node_package_dir" value="$PROJECT_DIR$/node_modules/mocha" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="/usr/local/bin/node" />
@@ -510,14 +484,7 @@
       <workItem from="1558397408779" duration="20020000" />
       <workItem from="1558921753863" duration="12000000" />
       <workItem from="1559077090708" duration="242000" />
-      <workItem from="1559080674181" duration="132266000" />
-    </task>
-    <task id="LOCAL-00151" summary="Added additional error checking and bug fixes">
-      <created>1557953499386</created>
-      <option name="number" value="00151" />
-      <option name="presentableId" value="LOCAL-00151" />
-      <option name="project" value="LOCAL" />
-      <updated>1557953499386</updated>
+      <workItem from="1559080674181" duration="136523000" />
     </task>
     <task id="LOCAL-00152" summary="Added error.js file">
       <created>1557953527844</created>
@@ -855,11 +822,18 @@
       <option name="project" value="LOCAL" />
       <updated>1562004815850</updated>
     </task>
-    <option name="localTasksCounter" value="200" />
+    <task id="LOCAL-00200" summary="Added cohesive styles for quizzes vs videos">
+      <created>1562008556843</created>
+      <option name="number" value="00200" />
+      <option name="presentableId" value="LOCAL-00200" />
+      <option name="project" value="LOCAL" />
+      <updated>1562008556843</updated>
+    </task>
+    <option name="localTasksCounter" value="201" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="737881000" />
+    <option name="totallyTimeSpent" value="742138000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -872,7 +846,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4992224" visible="true" weight="0.13858365" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -942,7 +915,6 @@
     <option name="version" value="1" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Finally fixed the logo bubbles!!!" />
     <MESSAGE value="Improvements to the home page" />
     <MESSAGE value="Minor enhancements" />
     <MESSAGE value="Added rich link preview feature" />
@@ -967,7 +939,8 @@
     <MESSAGE value="Added more dropdown" />
     <MESSAGE value="Added confirmation dialogue for cancelling subscription" />
     <MESSAGE value="Added new loading to profile page" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added new loading to profile page" />
+    <MESSAGE value="Added cohesive styles for quizzes vs videos" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added cohesive styles for quizzes vs videos" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/components/Sidebar/Sidebar.js">
@@ -1394,15 +1367,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/Videos/Videos.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="546">
-          <caret line="246" column="29" lean-forward="true" selection-start-line="246" selection-start-column="22" selection-end-line="246" selection-end-column="29" />
+        <state relative-caret-position="654">
+          <caret line="263" column="25" lean-forward="true" selection-start-line="263" selection-start-column="25" selection-end-line="263" selection-end-column="25" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/Videos/Videos.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="575">
-          <caret line="325" column="194" selection-start-line="325" selection-start-column="194" selection-end-line="325" selection-end-column="194" />
+        <state relative-caret-position="5444">
+          <caret line="305" column="107" selection-start-line="305" selection-start-column="107" selection-end-line="305" selection-end-column="107" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
           </folding>

@@ -1,24 +1,3 @@
-.card {
-    position: relative;
-    background-color: #fff;
-    border-radius: 8px;
-    padding: 30px;
-    transform: scaleX(1) scaleY(1);
-    transition: transform .3s;
-    -webkit-box-shadow: 0 13px 27px -5px rgba(50,50,93,.25), 0 8px 16px -8px rgba(0,0,0,.3);
-    box-shadow: 0 13px 27px -5px rgba(50,50,93,.25), 0 8px 16px -8px rgba(0,0,0,.3);
-}
-
-.common-Card:hover {
-    box-shadow: 0 30px 60px -12px rgba(50,50,93,.25), 0 18px 36px -18px rgba(0,0,0,.3);
-    transform: translateY(-2px);
-}
-
-.card:hover {
-    transform: scaleX(1.041) scaleY(1.047);
-    box-shadow: 0 30px 60px -12px rgba(50,50,93,.25), 0 18px 36px -18px rgba(0,0,0,.3);
-}
-
 .big-font {
     font-size: 27px;
 }
@@ -217,7 +196,6 @@
     background: white;
     border-bottom: 1px solid rgb(231, 231, 231);
     border-top: 1px solid rgb(231, 231, 231);
-    margin-bottom: 20px;
     padding-left: 30px !important;
 }
 .btn-flat {
@@ -283,3 +261,25 @@
     border: 1px solid rgb(231, 231, 231);
 }
 
+/*.pushable:not(body) {*/
+/*    transform: none;*/
+/*}*/
+
+.fixed-pos {
+    position: sticky;
+}
+
+.filter-title {
+    color: #408AF8;
+    font-size: 15px;
+    font-weight: bold;
+}
+.fa-sliders-h {
+    color: #408AF8;
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+.ui.wide.left.sidebar {
+    width: 320px;
+}
