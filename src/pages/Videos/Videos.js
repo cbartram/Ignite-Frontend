@@ -12,7 +12,6 @@ import {
     Popup,
     Placeholder,
     Responsive,
-    Image
 } from 'semantic-ui-react';
 import { Card } from 'react-bootstrap';
 import { withCookies } from 'react-cookie';
@@ -71,6 +70,7 @@ class Videos extends Component {
         // Retrieve the video given the VID from a cookie and dynamically load its respective thumbnail image
         const promises = [];
         let videos = [];
+        !_.isUndefined(this.props.cookies.get('_recent')) &&
         this.props.cookies.get('_recent').forEach(vid => {
             // Get the video given the vid
             const chapter = +vid.split('.')[0];
@@ -132,8 +132,11 @@ class Videos extends Component {
                     this.props.cookies.set('_recent', [vid]);
                     // If there are already 4 videos in the cookie put this video first and slice off the end
                 } else if(this.props.cookies.get('_recent').length >= MAX_RECENTLY_WATCHED_VIDEOS) {
-                    const recentlyWatched = this.props.cookies.get('_recent');
-                    recentlyWatched[0] = vid;
+                    let recentlyWatched = this.props.cookies.get('_recent');
+
+                    // Remove Uniques & Shift
+                    recentlyWatched.unshift(vid);
+                    recentlyWatched = _.uniq(recentlyWatched);
                     recentlyWatched.length = MAX_RECENTLY_WATCHED_VIDEOS;
                     this.props.cookies.set('_recent', recentlyWatched)
                 } else {
@@ -305,6 +308,14 @@ class Videos extends Component {
                     </h3>
                     <div className="row">
                         {
+                            this.state.recentlyWatched.length === 0 ?
+                                <div className="col-md-5 offset-md-4 d-flex flex-column align-items-center justify-content-center p-4">
+                                    <i className="fas fa-5x fa-video d-none d-md-block mb-3" />
+                                    <p className="common-BodyText" align="center">
+                                        You haven't watched any videos yet!
+                                    </p>
+                                </div>
+                            :
                             this.state.recentlyWatched.map(video => {
                                 return (
                                     <div className="col-md-3 col-lg-3 col-sm-12 d-flex align-items-stretch pb-2 px-4 my-4">
@@ -336,10 +347,6 @@ class Videos extends Component {
                         }
                     </div>
                 </div>
-
-                <h3 className="common-SectionTitle">
-                    Up Next
-                </h3>
                 <Sticky context={this.stickyRef} pushing>
                     <Responsive minWidth={768}>
                         <Menu fluid pointing secondary widths={7}>
@@ -369,7 +376,7 @@ class Videos extends Component {
                         return (
                             <div key={chapter.title} name={i}>
                                 <div className="d-flex flex-row justify-content-start">
-                                    <h2 className="common-UppercaseTitle big-font ml-4 mt-2">
+                                    <h2 className={`common-UppercaseTitle big-font ml-4 mt-${i === 0 ? '4' : '2'}`}>
                                         { chapter.title } - {moment.utc(chapter.videos.map(video => (moment(video.length, 'mm:ss').minutes() * 60) + moment(video.length, 'mm:ss').seconds()).reduce((a, b) => a + b) * 1000).format('mm:ss') }
                                         <hr />
                                     </h2>

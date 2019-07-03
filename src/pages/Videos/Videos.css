@@ -278,15 +278,8 @@
     position: sticky;
 }
 
-.filter-title {
+.fa-video {
     color: #408AF8;
-    font-size: 15px;
-    font-weight: bold;
-}
-.fa-sliders-h {
-    color: #408AF8;
-    font-size: 20px;
-    margin-left: 10px;
 }
 
 .ui.wide.left.sidebar {
