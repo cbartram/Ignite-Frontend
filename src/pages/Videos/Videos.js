@@ -11,12 +11,11 @@ import {
     Dropdown,
     Popup,
     Placeholder,
-    Sidebar,
-    Icon,
-    Header,
-    Segment,
-    Image, Responsive
+    Responsive,
+    Image
 } from 'semantic-ui-react';
+import { Card } from 'react-bootstrap';
+import { withCookies } from 'react-cookie';
 import { scroller } from 'react-scroll';
 import { withRouter } from 'react-router-dom'
 import {
@@ -25,7 +24,7 @@ import {
     findQuestions,
     ping,
 } from '../../actions/actions';
-import { IS_PROD } from "../../constants";
+import { IS_PROD, MAX_RECENTLY_WATCHED_VIDEOS } from "../../constants";
 import Log from '../../Log';
 import './Videos.css';
 import withContainer from "../../components/withContainer";
@@ -61,11 +60,42 @@ class Videos extends Component {
             isLoading: false,
             loadingVideo: null, // The id of the video that is loading
             activeChapter: 0,
+            recentlyWatched: [],
         }
     }
 
-    componentDidMount() {
-        if(this.props.location.search) this.props.pushAlert('info', 'Select a Video', 'You need to select a new video to watch!');
+    async componentDidMount() {
+        if (this.props.location.search) this.props.pushAlert('info', 'Select a Video', 'You need to select a new video to watch!');
+
+
+        // Retrieve the video given the VID from a cookie and dynamically load its respective thumbnail image
+        const promises = [];
+        let videos = [];
+        this.props.cookies.get('_recent').forEach(vid => {
+            // Get the video given the vid
+            const chapter = +vid.split('.')[0];
+            const key = +vid.split('.')[1];
+
+            const video = this.props.videos.videoList
+                .find(c => c.chapter === chapter).videos
+                .find(({sortKey}) => sortKey === key);
+            // Load the thumbnail for this image
+            promises.push(import(`../../resources/images/thumbnails/${video.s3Name}.jpg`));
+            videos.push(video);
+        });
+
+        const images = await Promise.all(promises);
+        videos = videos.map((v, i) => {
+           return {
+               ...v,
+               percentComplete: Videos.percentComplete(v),
+               image: images[i].default,
+           }
+        });
+
+        this.setState({
+            recentlyWatched: videos
+        });
     }
 
     /**
@@ -87,14 +117,32 @@ class Videos extends Component {
      * Note: the video the user selects won't become their "active" video until 30 seconds have passed with them watching it
      */
     handleWatch(video) {
-        this.setState({ isLoading: true, loadingVideo: `${video.chapter}.${video.sortKey}` }, async () => {
+        const vid = `${video.chapter}.${video.sortKey}`;
+        this.setState({ isLoading: true, loadingVideo: vid }, async () => {
             try {
                 await this.props.getSignedUrl({
                     video,
                     resourceUrl: `${IS_PROD ? 'https://d2hhpuhxg00qg.cloudfront.net' : 'https://dpvchyatyxxeg.cloudfront.net'}/chapter${video.chapter}/${video.s3Name}.mov`,
                     subscriptionId: this.props.user.subscription_id,
                 });
-                await this.props.findQuestions(`${video.chapter}.${video.sortKey}`);
+                await this.props.findQuestions(vid);
+
+                // Update recently watched cookie with this videos name
+                if(_.isUndefined(this.props.cookies.get('_recent'))) {
+                    this.props.cookies.set('_recent', [vid]);
+                    // If there are already 4 videos in the cookie put this video first and slice off the end
+                } else if(this.props.cookies.get('_recent').length >= MAX_RECENTLY_WATCHED_VIDEOS) {
+                    const recentlyWatched = this.props.cookies.get('_recent');
+                    recentlyWatched[0] = vid;
+                    recentlyWatched.length = MAX_RECENTLY_WATCHED_VIDEOS;
+                    this.props.cookies.set('_recent', recentlyWatched)
+                } else {
+                    // User has watched between 1 and 3 videos
+                    const recentlyWatched = this.props.cookies.get('_recent');
+                    recentlyWatched.unshift(vid);
+                    this.props.cookies.set('_recent', recentlyWatched)
+                }
+
                 this.props.history.push('/watch');
             } catch(err) {
                 Log.error(err);
@@ -250,9 +298,44 @@ class Videos extends Component {
         return (
             <div ref={this.stickyRef}>
                 { this.renderJumbotron(true) }
-                <h3 className="common-SectionTitle">
-                    Recently Watched
-                </h3>
+
+                <div className="p-4">
+                    <h3 className="common-SectionTitle">
+                        Recently Watched
+                    </h3>
+                    <div className="row">
+                        {
+                            this.state.recentlyWatched.map(video => {
+                                return (
+                                    <div className="col-md-3 col-lg-3 col-sm-12 d-flex align-items-stretch pb-2 px-4 my-4">
+                                        <Card>
+                                            <Dimmer active={this.state.isLoading && this.state.loadingVideo === `${video.chapter}.${video.sortKey}`}>
+                                                <Loader>Loading</Loader>
+                                            </Dimmer>
+                                            <Card.Img variant="top" src={video.image} />
+                                            <Card.Body className="d-flex flex-column">
+                                                <Card.Title>{ video.name }</Card.Title>
+                                                <Card.Subtitle className="mb-2 text-muted">{ video.length }</Card.Subtitle>
+                                                <Card.Text>
+                                                    { video.description }
+                                                </Card.Text>
+                                                <div className="progress" style={{height: 5 }}>
+                                                    <div className="progress-bar" role="progressbar" style={{width: `${video.percentComplete}%`, backgroundColor: '#7795f8' }} />
+                                                </div>
+                                                <span className="text-muted">
+                                                   { video.percentComplete <= 1 ? 'Not Started' : `${video.percentComplete}% complete!`}
+                                                 </span>
+                                                <button onClick={() => this.handleWatch(video)} className="common-Button btn-block common-Button--default mt-auto">
+                                                    { video.percentComplete <= 1 ?  'Start Now' : 'Continue'}
+                                                </button>
+                                            </Card.Body>
+                                        </Card>
+                                    </div>
+                                );
+                            })
+                        }
+                    </div>
+                </div>
 
                 <h3 className="common-SectionTitle">
                     Up Next
@@ -264,11 +347,11 @@ class Videos extends Component {
                                 _.times(7, i => {
                                     if(i === 6) {
                                         return (
-                                            <Dropdown text="More" className="link item">
+                                            <Dropdown key={i} text="More" className="link item">
                                                 <Dropdown.Menu>
                                                     {
                                                         _.times(this.props.videos.videoList.length - 6, idx => {
-                                                            return <Dropdown.Item onClick={() => this.chapterScroll(idx + 6)}>Chapter {idx + 7}</Dropdown.Item>
+                                                            return <Dropdown.Item key={idx} onClick={() => this.chapterScroll(idx + 6)}>Chapter {idx + 7}</Dropdown.Item>
                                                         })
                                                     }
                                                 </Dropdown.Menu>
@@ -333,4 +416,8 @@ class Videos extends Component {
     }
 }
 
-export default withContainer(connect(mapStateToProps, mapDispatchToProps)(withRouter(Videos)), { style: { background: 'white' }});
+// TODO there has to be a better way....
+export default
+    withContainer(
+        connect(mapStateToProps, mapDispatchToProps)(withCookies(withRouter(Videos))),
+        { style: { background: 'white' }});

@@ -6,6 +6,7 @@ import * as serviceWorker from './serviceWorker';
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import Amplify, { Auth } from 'aws-amplify';
+import { CookiesProvider } from 'react-cookie';
 import rootReducer from './reducers/rootReducer';
 import * as constants from './constants'
 import Router from './components/Router/Router'
@@ -165,13 +166,15 @@ const render = async () => {
 
     // Now render the full page
     ReactDOM.render(
-        <Provider store={store}>
-            <StripeProvider apiKey="pk_test_AIs6RYV3qrxG6baDpohxn1L7">
-                <Elements>
-                    <Router />
-                </Elements>
-            </StripeProvider>
-        </Provider>
+        <CookiesProvider>
+            <Provider store={store}>
+                <StripeProvider apiKey="pk_test_AIs6RYV3qrxG6baDpohxn1L7">
+                    <Elements>
+                        <Router />
+                    </Elements>
+                </StripeProvider>
+            </Provider>
+        </CookiesProvider>
         , document.getElementById('root'));
 
     // If you want your app to work offline and load faster, you can change
