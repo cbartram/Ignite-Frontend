@@ -1,21 +1,36 @@
 import React, { Component } from 'react';
-import Logo from '../../resources/images/logo.png';
-import { Link } from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import { connect } from 'react-redux';
-import {hideErrors, logout} from '../../actions/actions';
+import debounce from 'lodash/debounce';
+import {
+    Image,
+    Search,
+} from 'semantic-ui-react';
+import {
+    hideErrors,
+    logout,
+    findQuestions,
+    getSignedUrl,
+} from '../../actions/actions';
 import { Auth } from 'aws-amplify';
 import Log from '../../Log';
 import './Navbar.css';
 import Sidebar from "../Sidebar/Sidebar";
+import Logo from '../../resources/images/logo.png';
+import {IS_PROD,} from "../../constants";
 
 const mapStateToProps = state => ({
     auth: state.auth,
+    user: state.auth.user,
     videos: state.videos,
+    quizzes: state.quizzes.quizList
 });
 
 const mapDispatchToProps = dispatch => ({
    logout: () => dispatch(logout()),
    hideErrors: () => dispatch(hideErrors()),
+   findQuestions: (payload) => dispatch(findQuestions(payload)),
+   getSignedUrl: (payload) => dispatch(getSignedUrl(payload)),
 });
 
 /**
@@ -27,8 +42,106 @@ class Navbar extends Component {
 
         this.state = {
             active: false, // True if the sidebar is active
-            query: '',
+            results: [], // Holds the results of the search
+            data: [], // Holds the full list of data being searched
+            value: '',
+            query: '', // Used in the sidebar
+            isLoading: false,
+        };
+
+        this.handleSearchChange = this.handleSearchChange.bind(this);
+        this.handleResultSelect = this.handleResultSelect.bind(this);
+    }
+
+    /**
+     * Formats data appropriately for the dropdown by
+     * combining all videos into 1 big list
+     */
+    componentDidMount() {
+        const quizList = this.props.quizzes.map(quiz => ({
+            id: quiz.id,
+            complete: quiz.complete,
+            title: quiz.name,
+            chapter: quiz.chapter,
+            type: 'QUIZ'
+        }));
+        const masterList = this.props.videos.videoList
+            .reduce((acc, curr) => [...acc, ...curr.videos], [])
+            .map(video => ({
+                ...video,
+                title: video.name,
+                type: 'VIDEO',
+            }))
+            .concat(quizList);
+
+        this.setState({ data: masterList });
+    }
+
+    /**
+     * Renders a single row in the search dropdown
+     */
+    static renderSearchRow(item) {
+        return (
+
+            <div className="d-flex align-items-center">
+                <div className={`modal-sq-pill ${item.type === 'VIDEO' ? 'teal-label' : 'green-label' }`}>
+                    { item.type === 'VIDEO' ? <strong>V</strong> : <strong>Q</strong>}
+                </div>
+                <div className="d-flex flex-column">
+                    <span>{ item.title }</span>
+                    <small className="text-muted">Chapter {item.chapter}</small>
+                </div>
+            </div>
+        )
+    }
+
+    /**
+     * Handles re-directing a user to the appropriately selected
+     * content
+     * @param item Object item being selected { name, chapter, type }
+     */
+    handleResultSelect(e, { result }) {
+        if(result.type === 'QUIZ') {
+            this.props.history.push(`/quiz?q=${btoa(result.id)}${result.complete ? '&retake=true' : '' }`);
+        } else {
+            this.setState({ isLoading: true }, async () => {
+
+                const vid = `${result.chapter}.${result.sortKey}`;
+                try {
+                    await this.props.getSignedUrl({
+                        video: result,
+                        resourceUrl: `${IS_PROD ? 'https://d2hhpuhxg00qg.cloudfront.net' : 'https://dpvchyatyxxeg.cloudfront.net'}/chapter${result.chapter}/${result.s3Name}.mov`,
+                        subscriptionId: this.props.user.subscription_id,
+                    });
+                    await this.props.findQuestions(vid);
+                    this.setState({ isLoading: false });
+                    this.props.history.push('/watch');
+                } catch(err) {
+                    Log.error(err);
+                    this.setState({ isLoading: false });
+                }
+            });
         }
+    }
+
+    /**
+     * Handles performing a simple search for videos or quizzes
+     * @param e Event object
+     * @param value String search query
+     */
+    handleSearchChange(e, { value }) {
+        this.setState({ value });
+        let { data } = this.state;
+
+        if(value.length < 1)  {
+            this.setState({ results: [], value: '' });
+            return;
+        }
+
+        // A simple filter should work for this use case
+        data = data.filter(videoOrQuiz => videoOrQuiz.title.toUpperCase().includes(value.toUpperCase()));
+
+        this.setState({ results: data })
     }
 
     /**
@@ -45,6 +158,10 @@ class Navbar extends Component {
         }
     }
 
+    /**
+     * Unlocks the ability to scroll once this component
+     * un mounts
+     */
     componentWillUnmount() {
         this.props.restoreScroll();
     }
@@ -56,6 +173,8 @@ class Navbar extends Component {
     handleLinkClick() {
         this.props.hideErrors();
     }
+
+
 
     render() {
         const authLinks = [
@@ -70,18 +189,22 @@ class Navbar extends Component {
 
         return (
             <div>
-            <div className="navbar navbar-expand-md px-md-4 bg-white border-bottom shadow-sm">
+            <div className="navbar navbar-expand-md bg-white border-bottom shadow-sm">
                 <a className="navbar-brand" href="/">
                     <img src={Logo} width="30" height="30" alt="Ignite Logo" />
                 </a>
-                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                    <i className="fas fa-bars" style={{ color: '#6772e5'}} />
-                </button>
-                <div className="collapse navbar-collapse" id="navbar-collapse">
+                <Search
+                    className="global-search"
+                    placeholder="Search"
+                    loading={this.state.isLoading}
+                    onResultSelect={this.handleResultSelect}
+                    onSearchChange={debounce(this.handleSearchChange, 300, { leading: true })}
+                    results={this.state.results}
+                    value={this.state.value}
+                    resultRenderer={(item) => Navbar.renderSearchRow(item)}
+                />
+                <div className="ml-auto">
                     <div className="navbar-nav">
-                     <Link className="nav-item nav-link p-3 text-dark" to="/">
-                         <h4 className="my-0 mr-2 font-weight-normal">Ignite</h4>
-                     </Link>
                     { this.props.auth.user ? authLinks.map(link => link) : standardLinks.map(link => link) }
                     <Link className="nav-item nav-link p-3 text-dark" to="/support" onClick={() => this.handleLinkClick()}>Support</Link>
                         <ul className="dropdown-list">
@@ -89,9 +212,7 @@ class Navbar extends Component {
                                 this.props.auth.user && (
                                     <li className="nav-item dropdown user-avatar">
                                         <button className="btn btn-link dropdown-toggle" id="navbarDropdown" data-toggle="dropdown">
-                                            <div className="avatar-container">
-                                                <img src="https://t4.ftcdn.net/jpg/02/15/84/43/240_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg" alt="Profile" className="avatar-image" height="30" width="30" />
-                                            </div>
+                                            <Image src="https://a0.muscache.com/im/users/27691369/profile_pic/1423840072/original.jpg?aki_policy=profile_small" avatar />
                                         </button>
                                         <div className="dropdown-menu dropdown-menu-right header-nav-item-profile-dropdown mt-2 py-0">
                                             <h4 className="dropdown-title">
@@ -118,21 +239,21 @@ class Navbar extends Component {
                             </button>
                         }
                       </div>
-                    </div>
+                </div>
             </div>
-                {
-                    this.props.sidebar && !this.props.videos.isFetching &&
-                    <Sidebar
-                        currentVideoName={this.props.videos.activeVideo.name}
-                        active={this.state.active}
-                        onDismiss={() => this.setState({ active: false }, () => this.props.restoreScroll())}
-                        onSearch={value => this.setState({ query: value })}
-                        filter={this.state.query}
-                    />
-                }
+            {
+                this.props.sidebar && !this.props.videos.isFetching &&
+                <Sidebar
+                    currentVideoName={this.props.videos.activeVideo.name}
+                    active={this.state.active}
+                    onDismiss={() => this.setState({ active: false }, () => this.props.restoreScroll())}
+                    onSearch={value => this.setState({ query: value })}
+                    filter={this.state.query}
+                />
+            }
            </div>
         )
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Navbar));

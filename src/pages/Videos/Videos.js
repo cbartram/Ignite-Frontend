@@ -316,9 +316,9 @@ class Videos extends Component {
                                     </p>
                                 </div>
                             :
-                            this.state.recentlyWatched.map(video => {
+                            this.state.recentlyWatched.map((video, i) => {
                                 return (
-                                    <div className="col-md-3 col-lg-3 col-sm-12 d-flex align-items-stretch pb-2 px-4 my-4">
+                                    <div key={i} className="col-md-3 col-lg-3 col-sm-12 d-flex align-items-stretch pb-2 px-4 my-4">
                                         <Card>
                                             <Dimmer active={this.state.isLoading && this.state.loadingVideo === `${video.chapter}.${video.sortKey}`}>
                                                 <Loader>Loading</Loader>
