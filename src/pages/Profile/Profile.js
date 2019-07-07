@@ -68,7 +68,6 @@ class Profile extends Component {
      * that the user was last watching (started: true, completed: false, scrubDuration > 0)
      */
     async componentDidMount() {
-        this.determineWidths();
         this.props.getEvents({ customerId: this.props.user.customer_id });
 
         try {
@@ -380,9 +379,9 @@ class Profile extends Component {
                         >
                             {
                                 this.props.auth.isFetching ?
-                                    Array.from(new Array(3)).map(() => {
+                                    _.times(3, i => {
                                         return (
-                                            <div className="p-4">
+                                            <div className="p-4" key={i}>
                                                 <Placeholder fluid>
                                                     <Placeholder.Paragraph>
                                                         <Placeholder.Line />

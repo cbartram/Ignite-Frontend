@@ -42,6 +42,7 @@ class Signup extends Component {
             last_name: '',
             confirmPassword: '',
             confirmationCode: '',
+            hasAuthenticated: false, // Flag to disable facebook button when users have already clicked it so they dont get confused
             newUser: null,
         };
     }
@@ -50,14 +51,13 @@ class Signup extends Component {
      * Parses query values like id/access token
      */
     async componentDidMount() {
-
         // Parses query values from the URL (specific when there is no ? and only a # to denote the start)
         const getQueryVariable = (variable) => {
             const query = window.location.href.substring(window.location.href.indexOf("#") + 1);
             const vars = query.split('&');
             for (let i = 0; i < vars.length; i++) {
                 const pair = vars[i].split('=');
-                if (decodeURIComponent(pair[0]) == variable) {
+                if (decodeURIComponent(pair[0]) === variable) {
                     return decodeURIComponent(pair[1]);
                 }
             }
@@ -76,7 +76,8 @@ class Signup extends Component {
                 this.setState({
                     first_name: facebookUser.name,
                     last_name: facebookUser.family_name,
-                    email: facebookUser.email
+                    email: facebookUser.email,
+                    hasAuthenticated: true,
                 });
                 this.props.pushAlert('success', 'Finish Signing Up', 'Complete your Ignite account\'s setup by creating a new password!');
             } catch (err) {
@@ -250,6 +251,7 @@ class Signup extends Component {
                 </form>
                 <hr />
                 <FacebookButton
+                    hasAuthenticated={this.state.hasAuthenticated}
                     onLogin={() => {}}
                     onError={() => Log.error('Error with Facebook SSO')}
                 />
