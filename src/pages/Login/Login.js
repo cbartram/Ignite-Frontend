@@ -14,7 +14,6 @@ import {
     updateVideosSync,
 } from '../../actions/actions';
 import withContainer from "../../components/withContainer";
-// import FacebookButton from "../FacebookButton/FacebookButton";
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -44,7 +43,6 @@ class Login extends Component {
     }
 
     componentDidMount() {
-        // this.loadFacebookSDK();
         // Show alert if there is a ?redirect= query param
         if(this.props.location.search) {
             const pageName = this.props.location.search.substring(this.props.location.search.indexOf('=') + 2, this.props.location.search.length);
@@ -77,6 +75,10 @@ class Login extends Component {
      * @returns {Promise<void>}
      */
     handleSubmit = async event => {
+
+        // TODO there is a deeper issue here with async and data loading. Many things on the navbar/dashboard do
+        // not load and are undefined when users login... this is not okay and needs to be fixed in a future version
+
         Log.info('Logging in...');
         event.preventDefault();
         // Dispatch the isFetching redux
@@ -107,28 +109,6 @@ class Login extends Component {
             }
         }
     };
-
-    /**
-     * Loads the Facebook SDK into the page
-     */
-    // loadFacebookSDK() {
-    //     window.fbAsyncInit = function() {
-    //         window.FB.init({
-    //             appId: constants.FB_APP_ID,
-    //             autoLogAppEvents: true,
-    //             xfbml: true,
-    //             version: 'v3.1'
-    //         });
-    //     };
-    //
-    //     (function(d, s, id){
-    //         let js, fjs = d.getElementsByTagName(s)[0];
-    //         if (d.getElementById(id)) {return;}
-    //         js = d.createElement(s); js.id = id;
-    //         js.src = "https://connect.facebook.net/en_US/sdk.js";
-    //         fjs.parentNode.insertBefore(js, fjs);
-    //     }(document, 'script', 'facebook-jssdk'));
-    // }
 
     render() {
         return (
@@ -166,19 +146,6 @@ class Login extends Component {
                                     loadingText="Logging in…"
                                     className="btn-block"
                                 />
-                                {/*<hr/>*/}
-                                {/*<FacebookButton*/}
-                                    {/*onError={() => this.pushAlert('danger', 'Login Issue', 'Failed to login with facebook')}*/}
-                                    {/*onLogin={data => {*/}
-                                        {/*try {*/}
-                                            {/*this.props.fetchVideos(this.state.email);*/}
-                                            {/*this.props.loginSuccess(data);*/}
-                                        {/*} catch(err) {*/}
-                                            {/*Log.error(err);*/}
-                                            {/*this.pushAlert('danger', 'Login Issue', 'Failed to login with facebook')*/}
-                                        {/*}*/}
-                                    {/*}}*/}
-                                {/*/>*/}
                                 <div className="d-flex flex-row justify-content-between">
                                     <Link to="/login/reset" className="text-muted">Forgot your password?</Link>
                                     <Link to="/signup" className="text-muted">Resend Confirmation</Link>

@@ -66,7 +66,6 @@ class Videos extends Component {
     async componentDidMount() {
         if (this.props.location.search) this.props.pushAlert('info', 'Select a Video', 'You need to select a new video to watch!');
 
-
         // Retrieve the video given the VID from a cookie and dynamically load its respective thumbnail image
         const promises = [];
         let videos = [];
@@ -76,12 +75,17 @@ class Videos extends Component {
             const chapter = +vid.split('.')[0];
             const key = +vid.split('.')[1];
 
-            const video = this.props.videos.videoList
-                .find(c => c.chapter === chapter).videos
-                .find(({sortKey}) => sortKey === key);
-            // Load the thumbnail for this image
-            promises.push(import(`../../resources/images/thumbnails/${video.s3Name}.jpg`));
-            videos.push(video);
+            const { videos } = this.props.videos.videoList.find(c => c.chapter === chapter);
+
+            if(!_.isUndefined(videos)) {
+                const video = videos
+                    .find(({sortKey}) => sortKey === key);
+                // Load the thumbnail for this image
+                promises.push(import(`../../resources/images/thumbnails/${video.s3Name}.jpg`));
+                videos.push(video);
+            } else {
+                Log.warn('Chapter was undefined for videos: ', this.props.videos, chapter, key)
+            }
         });
 
         const images = await Promise.all(promises);

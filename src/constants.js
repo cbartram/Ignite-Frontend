@@ -86,6 +86,9 @@ export const AMPLIFY_CONFIG = {
         identityPoolId:  IS_PROD ? 'us-east-1:ffa56150-299b-4046-8e68-9a35939fa6eb' : 'us-east-1:18d3e90b-3f5d-43ba-b7cb-6baae3072215',
         userPoolWebClientId: IS_PROD ? '57ga887esg3j7t2r89hr9nkn4c' : '29mat74dp2pep5bmh532gjepm2',
     },
+    Analytics: {
+        disabled: true
+    },
     Storage: {
         region: 'us-east-1',
         bucket: IS_PROD ? 'ignite-prod-us-east-1' : 'ignite-dev-us-east-1',

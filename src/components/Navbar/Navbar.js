@@ -62,7 +62,7 @@ class Navbar extends Component {
     componentDidMount() {
         // Navbar is also used on pages where the users are logged out
         // ensure quizzes and videos are defined before mapping over them
-        if(!isNil(this.props.user) || (isUndefined(this.props.quizzes) || isUndefined(this.props.videos))) {
+        if(!isUndefined(this.props.quizzes) && !isUndefined(this.props.videos)) {
             const quizList = this.props.quizzes.map(quiz => ({
                 id: quiz.id,
                 complete: quiz.complete,
