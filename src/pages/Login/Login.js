@@ -75,10 +75,6 @@ class Login extends Component {
      * @returns {Promise<void>}
      */
     handleSubmit = async event => {
-
-        // TODO there is a deeper issue here with async and data loading. Many things on the navbar/dashboard do
-        // not load and are undefined when users login... this is not okay and needs to be fixed in a future version
-
         Log.info('Logging in...');
         event.preventDefault();
         // Dispatch the isFetching redux

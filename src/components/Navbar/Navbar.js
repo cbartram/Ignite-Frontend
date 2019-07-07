@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {Link, withRouter} from 'react-router-dom';
 import { connect } from 'react-redux';
 import debounce from 'lodash/debounce';
-import isUndefined from 'lodash/isUndefined';
 import {
     Image,
     Search,
@@ -61,7 +60,6 @@ class Navbar extends Component {
     componentDidMount() {
         // Navbar is also used on pages where the users are logged out
         // ensure quizzes and videos are defined before mapping over them
-        if(!isUndefined(this.props.quizzes) && !isUndefined(this.props.videos)) {
             const quizList = this.props.quizzes.map(quiz => ({
                 id: quiz.id,
                 complete: quiz.complete,
@@ -85,7 +83,6 @@ class Navbar extends Component {
                 .concat(quizList);
 
             this.setState({data: masterList});
-        }
     }
 
     /**

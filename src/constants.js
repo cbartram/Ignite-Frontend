@@ -13,9 +13,16 @@ export const INITIAL_STATE = {
     },
     videos: {
         videoList: [],
+        isFetching: false,
+        error: false,
         activeVideo: {
             name: 'null'
         }
+    },
+    quizzes: {
+        isFetching: false,
+        error: false,
+        quizList: [],
     },
     billing: {}
 };
