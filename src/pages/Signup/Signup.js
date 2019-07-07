@@ -61,7 +61,7 @@ class Signup extends Component {
                     return decodeURIComponent(pair[1]);
                 }
             }
-            console.log('Query variable %s not found', variable);
+            Log.info('Query variable %s not found', variable);
         };
 
         if(!_.isUndefined(getQueryVariable('access_token'))) {

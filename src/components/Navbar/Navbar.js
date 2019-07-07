@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import {Link, withRouter} from 'react-router-dom';
 import { connect } from 'react-redux';
 import debounce from 'lodash/debounce';
+import isNil from 'lodash/isNil';
+import isUndefined from 'lodash/isUndefined';
 import {
     Image,
     Search,
@@ -58,23 +60,33 @@ class Navbar extends Component {
      * combining all videos into 1 big list
      */
     componentDidMount() {
-        const quizList = this.props.quizzes.map(quiz => ({
-            id: quiz.id,
-            complete: quiz.complete,
-            title: quiz.name,
-            chapter: quiz.chapter,
-            type: 'QUIZ'
-        }));
-        const masterList = this.props.videos.videoList
-            .reduce((acc, curr) => [...acc, ...curr.videos], [])
-            .map(video => ({
-                ...video,
-                title: video.name,
-                type: 'VIDEO',
-            }))
-            .concat(quizList);
+        // Navbar is also used on pages where the users are logged out
+        // ensure quizzes and videos are defined before mapping over them
+        if(!isNil(this.props.user) || (isUndefined(this.props.quizzes) || isUndefined(this.props.videos))) {
+            const quizList = this.props.quizzes.map(quiz => ({
+                id: quiz.id,
+                complete: quiz.complete,
+                title: quiz.name,
+                chapter: quiz.chapter,
+                type: 'QUIZ',
+                name: quiz.name,
+                childKey: quiz.id,
+                as: Navbar.renderSearchRow,
+            }));
+            const masterList = this.props.videos.videoList
+                .reduce((acc, curr) => [...acc, ...curr.videos], [])
+                .map(video => ({
+                    ...video,
+                    title: video.name,
+                    name: video.name,
+                    type: 'VIDEO',
+                    childKey: `${video.chapter}.${video.sortKey}`,
+                    as: Navbar.renderSearchRow,
+                }))
+                .concat(quizList);
 
-        this.setState({ data: masterList });
+            this.setState({data: masterList});
+        }
     }
 
     /**
@@ -82,13 +94,12 @@ class Navbar extends Component {
      */
     static renderSearchRow(item) {
         return (
-
-            <div className="d-flex align-items-center">
+            <div className="d-flex align-items-center px-3 py-2 search-row-item">
                 <div className={`modal-sq-pill ${item.type === 'VIDEO' ? 'teal-label' : 'green-label' }`}>
                     { item.type === 'VIDEO' ? <strong>V</strong> : <strong>Q</strong>}
                 </div>
                 <div className="d-flex flex-column">
-                    <span>{ item.title }</span>
+                    <span>{ item.name }</span>
                     <small className="text-muted">Chapter {item.chapter}</small>
                 </div>
             </div>
@@ -193,16 +204,19 @@ class Navbar extends Component {
                 <a className="navbar-brand" href="/">
                     <img src={Logo} width="30" height="30" alt="Ignite Logo" />
                 </a>
-                <Search
-                    className="global-search"
-                    placeholder="Search"
-                    loading={this.state.isLoading}
-                    onResultSelect={this.handleResultSelect}
-                    onSearchChange={debounce(this.handleSearchChange, 300, { leading: true })}
-                    results={this.state.results}
-                    value={this.state.value}
-                    resultRenderer={(item) => Navbar.renderSearchRow(item)}
-                />
+                {
+                    this.props.auth.isAuthenticated &&
+                    <Search
+                        className="global-search"
+                        placeholder="Search"
+                        loading={this.state.isLoading}
+                        onResultSelect={this.handleResultSelect}
+                        onSearchChange={debounce(this.handleSearchChange, 300, { leading: true })}
+                        results={this.state.results}
+                        value={this.state.value}
+                        resultRenderer={(item) => Navbar.renderSearchRow(item)}
+                    />
+                }
                 <div className="ml-auto">
                     <div className="navbar-nav">
                     { this.props.auth.user ? authLinks.map(link => link) : standardLinks.map(link => link) }

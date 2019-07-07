@@ -2,12 +2,9 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import Container from "./components/Container/Container";
 import { Link, withRouter } from 'react-router-dom'
-import _ from 'lodash';
-import Card from "./components/Card/Card";
 import QuoteCard from "./components/QuoteCard/QuoteCard";
 import InstructorImage from './resources/images/instructor_picture.jpg';
 import './App.css';
-import {USER_POOL_URL} from "./constants";
 import {fetchVideos} from "./actions/actions";
 
 const mapStateToProps = state => ({
@@ -57,18 +54,9 @@ class App extends Component {
             })
         }, 50);
 
-        // Parse code query param if it exists
-        // If the code exists
-        // if(!_.isNil(code)) {
-        //     fetch(USER_POOL_URL)
-        // }
-
-        // make a call to cognito TOKEN endpoint
-        // get access token
-        // make a call to my backend to swap access token for user pool creds
-        // now you have user pool creds dispatch actions to log the user in
-
-
+        const addScript = document.createElement('script');
+        addScript.setAttribute('src', './Bubbles.js');
+        document.body.appendChild(addScript);
     }
 
     render() {

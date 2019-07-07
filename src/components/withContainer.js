@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
+import uniqueId from 'lodash/uniqueId';
 import Container from './Container/Container';
 import Alert from './Alert/Alert';
 
@@ -22,7 +22,7 @@ const withContainer = (BaseComponent, props = {}) => {
          * Pushes an alert onto the stack to be
          * visible by users
          */
-        pushAlert(type, title, message, id = _.uniqueId()) {
+        pushAlert(type, title, message, id = uniqueId()) {
             const { alerts } = this.state;
             // Push an object of props to be passed to the <Alert /> Component
             alerts.push({

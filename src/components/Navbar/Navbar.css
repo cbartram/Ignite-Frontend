@@ -28,6 +28,11 @@
     width: auto;
 }
 
+.search-row-item:hover {
+    background: #f9fafb;
+    cursor: pointer;
+}
+
 .teal-label {
     background-color: #d6ecff;
     border-color: #d6ecff;
