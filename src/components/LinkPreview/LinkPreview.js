@@ -46,7 +46,7 @@ export default class LinkPreview extends Component {
                       <div className="d-flex flex-row justify-content-start">
                           <div className="skeleton-box skeleton-loading" />
                           <div className="flex-column pt-3 px-3 card-detail-skeleton">
-                              <h3 className="skeleton-title skeleton-loading" />
+                              <h3 className="skeleton-title skeleton-loading">{null}</h3>
                               <p className="pl-3 skeleton-text skeleton-loading" />
                               <p className="pl-3 skeleton-text skeleton-loading" />
                           </div>

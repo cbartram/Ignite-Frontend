@@ -133,7 +133,7 @@ export const fetchVideos = username => async dispatch => {
                 type: constants.UPDATE_USER_ATTRIBUTES,
                 payload: userMinusVideos
             });
-        } else if(response.status > 200 || typeof response.status === 'undefined' || response === null) {
+        } else if(response.status > 200 || _.isUndefined(response.status)) {
             // An error occurred
             dispatch({
                 type: constants.VIDEOS_FAILURE,

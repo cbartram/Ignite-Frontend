@@ -22,7 +22,7 @@ class CookiePolicy extends Component {
                                 capitalized term used and not otherwise defined below has the meaning assigned to it in
                                 the Privacy Policy.</p>
 
-                            <h3 id="how-we-use-cookies">1. How We Use Cookies.<a className="anchor" href="#how-we-use-cookies" /></h3>
+                            <h3 id="how-we-use-cookies">1. How We Use Cookies.<a className="anchor" href="#how-we-use-cookies">{null}</a></h3>
 
                             <p>Cookies play an important role in helping us provide personal, effective and safe
                                 Services. We use cookies on our website. We change the cookies periodically as we
@@ -58,7 +58,7 @@ class CookiePolicy extends Component {
                                 seeing the same advertisement multiple times or to measure how many times an
                                 advertisement is viewed or clicked on.</p>
 
-                            <h3 id="how-we-use-other-technologies">2. How We Use Other Technologies<a className="anchor" href="#how-we-use-other-technologies" />
+                            <h3 id="how-we-use-other-technologies">2. How We Use Other Technologies<a className="anchor" href="#how-we-use-other-technologies">{null}</a>
                             </h3>
 
                             <p><strong>a. Pixel tags.</strong> Pixel tags (also known as web beacons and clear GIFs) may
@@ -78,7 +78,7 @@ class CookiePolicy extends Component {
                                 among other things, collect and store information about Your use of the Services. If You
                                 want to block or control flash cookies, You can adjust Your settings.</p>
 
-                            <h3 id="how-to-manage-cookies">3. How To Manage Cookies<a className="anchor" href="#how-to-manage-cookies" />
+                            <h3 id="how-to-manage-cookies">3. How To Manage Cookies<a className="anchor" href="#how-to-manage-cookies">{null}</a>
                             </h3>
 
                             <p>Your web browser may allow You to change Your cookie preferences, including to delete and
@@ -105,12 +105,12 @@ class CookiePolicy extends Component {
                                 </li>
                             </ul>
 
-                            <h3 id="cookie-table">4. Cookie Table<a className="anchor" href="#cookie-table" /></h3>
+                            <h3 id="cookie-table">4. Cookie Table<a className="anchor" href="#cookie-table">{null}</a></h3>
 
                             <p>Cookies that we commonly use are listed below. This list is not exhaustive, but describes
                                 the main reasons we typically set cookies.</p>
 
-                            <h4 id="stripe-cookies">Stripe cookies<a className="anchor" href="#stripe-cookies" /></h4>
+                            <h4 id="stripe-cookies">Stripe cookies<a className="anchor" href="#stripe-cookies">{null}</a></h4>
 
                             <table className="alternate">
                                 <thead>
@@ -164,7 +164,7 @@ class CookiePolicy extends Component {
                                 </tbody>
                             </table>
 
-                            <h4 id="third-party-cookies">Third party cookies<a className="anchor" href="#third-party-cookies" /></h4>
+                            <h4 id="third-party-cookies">Third party cookies<a className="anchor" href="#third-party-cookies">{null}</a></h4>
 
                             <table className="alternate">
                                 <thead>

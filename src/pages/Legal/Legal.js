@@ -44,7 +44,7 @@ class Legal extends Component {
                     <li><a href="#contact-us">Contact Us</a></li>
                   </ul>
 
-                  <h3 id="overview">1. Overview<a className="anchor" href="#overview" /></h3>
+                  <h3 id="overview">1. Overview<a className="anchor" href="#overview">{null}</a></h3>
 
                   <p>Ignite obtains Personal Data about you from various sources to provide our Services and to manage our
                     Sites. “You” may be a visitor to one of our websites, a user of one or more of our Services (“User” or
@@ -53,7 +53,7 @@ class Legal extends Component {
                     explain how the Ignite User shares your Personal Data with Ignite, and if you have questions about
                     this sharing, then you should direct those questions to the Ignite User.</p>
                   <div className="collapsable">
-                    <div><h4 id="overview-learn-more">Learn more<a className="anchor" href="#overview-learn-more" /></h4>
+                    <div><h4 id="overview-learn-more">Learn more<a className="anchor" href="#overview-learn-more">{null}</a></h4>
                     </div>
                     <div>
                       <br />
@@ -83,7 +83,7 @@ class Legal extends Component {
                     </div>
                   </div>
 
-                  <h3 id="personal-data-definition">2. Personal Data We Collect<a className="anchor" href="#personal-data-definition" />
+                  <h3 id="personal-data-definition">2. Personal Data We Collect<a className="anchor" href="#personal-data-definition">{null}</a>
                   </h3>
 
                   <p><strong>a. Personal Data that we collect about you.</strong></p>
@@ -159,7 +159,7 @@ class Legal extends Component {
 
                   <h3 id="how-we-use-personal-data">
                     3. How We Use Personal Data
-                    <a className="anchor" href="#how-we-use-personal-data" />
+                    <a className="anchor" href="#how-we-use-personal-data">{null}</a>
                   </h3>
 
                   <p><strong>a. Our products and services.</strong></p>
@@ -172,7 +172,7 @@ class Legal extends Component {
                   <div className="collapsable">
                     <div>
                       <h4 id="personal-data-learn-more">
-                        Learn more<a className="anchor" href="#personal-data-learn-more" />
+                        Learn more<a className="anchor" href="#personal-data-learn-more">{null}</a>
                       </h4>
                     </div>
                     <div>
@@ -284,7 +284,7 @@ class Legal extends Component {
 
                   <h3 id="how-we-disclose-personal-data">
                     4. How We Disclose Personal Data.
-                    <a className="anchor" href="#how-we-disclose-personal-data" />
+                    <a className="anchor" href="#how-we-disclose-personal-data">{null}</a>
                   </h3>
 
                   <p>Ignite does not sell or rent Personal Data to marketers or unaffiliated third parties. We share your
@@ -321,7 +321,7 @@ class Legal extends Component {
                     respond to requests from courts, law enforcement agencies, regulatory agencies, and other public and
                     government authorities, which may include authorities outside your country of residence.</p>
 
-                  <h3 id="your-rights-and-choices">5. Your Rights and Choices.<a className="anchor" href="#your-rights-and-choices" /></h3>
+                  <h3 id="your-rights-and-choices">5. Your Rights and Choices.<a className="anchor" href="#your-rights-and-choices">{null}</a></h3>
 
                   <p>You have choices regarding our use and disclosure of your Personal Data:</p>
 
@@ -379,7 +379,7 @@ class Legal extends Component {
                     processor, and you have a request that is related to the payment information that you provided as part
                     of the purchase transaction, then you should address your request directly to the merchant.</p>
 
-                  <h3 id="security-and-retention">6. Security and Retention.<a className="anchor" href="#security-and-retention" /></h3>
+                  <h3 id="security-and-retention">6. Security and Retention.<a className="anchor" href="#security-and-retention">{null}</a></h3>
 
                   <p>We make reasonable efforts to ensure a level of security appropriate to the risk associated with the
                     processing of Personal Data. We maintain organizational, technical and administrative measures
@@ -400,7 +400,7 @@ class Legal extends Component {
                     records retention obligations that are imposed by applicable law.</p>
 
                   <h3 id="international-data-transfers">
-                    7. International Data Transfers.<a className="anchor" href="#international-data-transfers" />
+                    7. International Data Transfers.<a className="anchor" href="#international-data-transfers">{null}</a>
                   </h3>
 
                   <p>We are a global business. Personal Data may be stored and processed in any country where we have
@@ -426,13 +426,13 @@ class Legal extends Component {
                     Corporate Rules, or verification that the recipient adheres to the EU-US and Swiss-US Privacy Shield
                     Framework.</p>
 
-                  <h3 id="use-by-minors">8. Use by Minors.<a className="anchor" href="#use-by-minors" /></h3>
+                  <h3 id="use-by-minors">8. Use by Minors.<a className="anchor" href="#use-by-minors">{null}</a></h3>
 
                   <p>The Services are not directed to individuals under the age of thirteen (13), and we request that they
                     not provide Personal Data through the Services.</p>
 
                   <h3 id="updates-to-this-privacy-policy-and-notifications">9. Updates To this Privacy Policy and
-                    Notifications.<a className="anchor" href="#updates-to-this-privacy-policy-and-notifications" /></h3>
+                    Notifications.<a className="anchor" href="#updates-to-this-privacy-policy-and-notifications">{null}</a></h3>
 
                   <p>We may change this Privacy Policy from time to time to reflect new services, changes in our Personal
                     Data practices or relevant laws. The “Last updated” legend at the top of this Privacy Policy indicates
@@ -443,7 +443,7 @@ class Legal extends Component {
                     account.</p>
 
                   <h3 id="links-to-other-websites">
-                    10. Links To Other Websites.<a className="anchor" href="#links-to-other-websites" />
+                    10. Links To Other Websites.<a className="anchor" href="#links-to-other-websites">{null}</a>
                   </h3>
 
                   <p>The Services may provide the ability to connect to other websites. These websites may operate
@@ -451,7 +451,7 @@ class Legal extends Component {
                     you review. If any linked website is not owned or controlled by us, we are not responsible for its
                     content, any use of the website or the privacy practices of the operator of the website.</p>
 
-                  <h3 id="contact-us">12. Contact Us<a className="anchor" href="#contact-us" /></h3>
+                  <h3 id="contact-us">12. Contact Us<a className="anchor" href="#contact-us">{null}</a></h3>
 
                   <p>If You have any questions or complaints about this Privacy Policy, please <a
                       href="https://ignitecode.net/contact">contact us</a> electronically or send physical mail to:</p>

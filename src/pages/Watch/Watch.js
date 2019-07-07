@@ -347,7 +347,7 @@ class Watch extends Component {
                                                 <p className="common-BodyText text-wrap">
                                                     { file.description }
                                                 </p>
-                                                <a href={file.link} target="_blank" className="common-Button common-Button--default" style={{ maxWidth: 200 }}>
+                                                <a href={file.link} target="_blank" rel="noopener noreferrer" className="common-Button common-Button--default" style={{ maxWidth: 200 }}>
                                                     Download &nbsp;
                                                     <i className="far fa-file-archive"/>
                                                 </a>
@@ -372,7 +372,7 @@ class Watch extends Component {
                         <div className="d-flex ml-3">
                             {
                                 !_.isNil(this.props.activeVideo.sourceCode) ?
-                                <a target="_blank" href={this.props.activeVideo.sourceCode} className="common-Button common-Button--default">
+                                <a target="_blank" rel="noopener noreferrer" href={this.props.activeVideo.sourceCode} className="common-Button common-Button--default">
                                     View Source Code
                                     <i className="fab fa-github pl-2" style={{color: '#FFFFFF'}}/>
                                 </a> :
@@ -408,6 +408,9 @@ class Watch extends Component {
                         }
                     </div>
                 );
+            default:
+                // Should never happen
+                return null;
         }
     }
 

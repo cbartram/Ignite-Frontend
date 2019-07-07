@@ -4,7 +4,6 @@ import _ from 'lodash';
 import { FormGroup, FormControl } from 'react-bootstrap';
 import { withRouter } from "react-router-dom";
 import { Auth } from 'aws-amplify/lib/index';
-import ReactTooltip from 'react-tooltip';
 import { Confirm, Placeholder } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import moment from 'moment/moment';
@@ -61,32 +60,6 @@ class Profile extends Component {
             confirmPassword: "",
             events: [],
             confirmOpen: false,
-
-            // Tooltip state
-            stages: [{
-                text: 'You will be billed $7.00',
-                highlightedText: 'on June 7th',
-                width: 30,
-                color: '#3ecf8e',
-            },
-            {
-                text: 'You will be billed $7.00',
-                highlightedText: 'on July 7th',
-                width: 14,
-                color: '#55d9c2',
-            },
-            {
-                text: 'You unsubscribed',
-                highlightedText: 'on July 14th',
-                width: 14,
-                color: '#3ecf8e',
-            },
-            {
-                text: 'Your subscription ends',
-                highlightedText: 'on August 7th',
-                width: 2,
-                color: 'grey',
-            }]
         };
     }
 
@@ -215,63 +188,6 @@ class Profile extends Component {
         return <span className="badge badge-pill badge-primary py-1 px-2">{moment.unix(this.props.billing.next_invoice_date).format('MMMM Do')}</span>
     }
 
-    determineWidths() {
-        const stages = [];
-        const trialEnd = moment(moment.unix(this.props.user.trial_end).format('YYYY-MM-DD'));
-        const nextInvoiceDate = moment(moment.unix(this.props.user.next_invoice_date).format('YYYY-MM-DD'));
-        const hasTrial = trialEnd.isAfter(moment()) && this.props.user.next_invoice_date !== null;
-        const daysLeftInTrial = trialEnd.diff(moment(), 'days');
-        const monthTillNow = moment().diff(moment().startOf('month'), 'days');
-
-        let totalWidth = 0;
-
-        // If the user has a trial show the trial
-        if(hasTrial) {
-            // Determine how many days left (1 day = 2% width)
-            stages.push({
-                text: 'Your free trial will end',
-                highlightedText: trialEnd.fromNow(),
-                width: daysLeftInTrial * 2,
-                color: '#24b47e',
-            });
-
-            totalWidth += daysLeftInTrial * 2;
-        }
-
-        if(this.props.user.next_invoice_date) {
-            stages.push({
-                text: 'You will be billed $7.00',
-                highlightedText: nextInvoiceDate.fromNow(),
-                width: (daysLeftInTrial * 2) + nextInvoiceDate.daysInMonth(),
-                color: '#3ecf8e',
-            });
-
-            totalWidth += (daysLeftInTrial * 2) + nextInvoiceDate.daysInMonth()
-        }
-
-        if(this.props.user.unsub_timestamp) {
-           const unsubTimestamp = moment(moment.unix(this.props.user.unsub_timestamp).format('YYYY-MM-DD'));
-           stages.push({
-               text: 'You unsubscribed',
-               highlightedText: unsubTimestamp.fromNow(),
-               width: 14,
-               color: '#55d9c2',
-           });
-
-           totalWidth += 14;
-        }
-
-        // Push to the front of the array
-        stages.unshift({
-            text: 'You were not subscribed yet!',
-            highlightedText: '',
-            width: 100 - totalWidth,
-            color: 'grey',
-        });
-
-        this.setState({ stages });
-    }
-
     /**
      * Determines the proper icon to show
      * given the event type.
@@ -325,41 +241,6 @@ class Profile extends Component {
                         await this.unsubscribe();
                     }}
                 />
-                <div className="row mt-3">
-                    <div className="col-md-12">
-                        <Card badgeText="Billing Status" className="pt-4">
-                            <div className="slider">
-                                <div className="d-flex rail">
-                                    { moment().format('MMM') }
-                                    {
-                                        this.state.stages.map((stage, i) => {
-                                            return (
-                                                <div key={i} style={{ width: `${stage.width}%`, background: stage.color }} className="tooltip-container" data-tip="tooltip" data-for={`tooltip-${i}`}>
-                                                    <ReactTooltip className="schema-tooltip" place="bottom" id={`tooltip-${i}`}>
-                                                        <div>
-                                                            {stage.text} <span className="common-Link">{ stage.highlightedText }</span>
-                                                        </div>
-                                                    </ReactTooltip>
-                                                </div>
-                                            )
-                                        })
-                                    }
-                                    { moment().add(2, 'months').format('MMM') }
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col-md-8 offset-md-2">
-                                <p className="common-BodyText mt-4" align="center">
-                                    Visualize your billing cycle and quickly understand when your free trial ends,
-                                    how you will be charged and your subscriptions remaining duration after cancellation.
-                                </p>
-                                </div>
-                            </div>
-                        </Card>
-                    </div>
-                </div>
-
-
                 <div className="row">
                     <div className="col-md-7">
                         {/* Billing Card */}

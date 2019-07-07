@@ -88,8 +88,8 @@ class Login extends Component {
             const res = await Auth.signIn(this.state.email, this.state.password);
             // Fetches both user videos and user billing information
             // using the same API route
-            this.props.fetchVideos(`user-${res.username}`);
             this.props.loginSuccess(res);
+            this.props.fetchVideos(`user-${res.username}`);
         } catch (err) {
             if(err.code === 'NotAuthorizedException')
                 Log.warn(err.message);
@@ -98,6 +98,7 @@ class Login extends Component {
 
             // Their device key is messed up
             if(err.message.includes('device') || err.message.includes('key')) {
+                Log.warn('Device Key not recognized re-authenticating');
                 localStorage.clear();
                 const res = await Auth.signIn(this.state.email, this.state.password);
                 Log.info('Login Success!', res);
