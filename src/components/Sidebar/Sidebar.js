@@ -93,7 +93,7 @@ class Sidebar extends Component {
                             .filter(v => v.title.toUpperCase().includes(this.props.filter.toUpperCase()))
                             .map(({duration, title, videos, chapter}) => {
                                 return (
-                                    <div key={title}>
+                                    <div key={_.uniqueId('chapter_')}>
                                         <div className="d-flex pl-4 pr-2">
                                             <small className="mr-auto">Chapter {chapter}</small>
                                             <span className="curriculum-chapterDuration">{duration}</span>

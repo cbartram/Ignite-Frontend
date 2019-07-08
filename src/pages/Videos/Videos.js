@@ -75,11 +75,11 @@ class Videos extends Component {
             const chapter = +vid.split('.')[0];
             const key = +vid.split('.')[1];
 
+            console.log(this.props);
             const { videos } = this.props.videos.videoList.find(c => c.chapter === chapter);
 
             if(!_.isUndefined(videos)) {
-                const video = videos
-                    .find(({sortKey}) => sortKey === key);
+                const video = videos.find(({sortKey}) => sortKey === key);
                 // Load the thumbnail for this image
                 promises.push(import(`../../resources/images/thumbnails/${video.s3Name}.jpg`));
                 videos.push(video);
@@ -223,9 +223,9 @@ class Videos extends Component {
                 </div>
             <div className="row">
                 {
-                    !authorized && Array.from(new Array(8)).map(() => {
+                    !authorized && _.times(8, () => {
                         return (
-                            <div className="col-md-3 col-lg-3 col-sm-12 d-flex align-items-stretch pb-2 px-4 my-4" key={_.uniqueId()}>
+                            <div className="col-md-3 col-lg-3 col-sm-12 d-flex align-items-stretch pb-2 px-4 my-4" key={_.uniqueId('placeholder_')}>
                                 <section className="btn btn-flat btn-flat-no-hover">
                                     <Placeholder style={{ minWidth: '200px' }}>
                                             <Placeholder.Line />
@@ -320,9 +320,9 @@ class Videos extends Component {
                                     </p>
                                 </div>
                             :
-                            this.state.recentlyWatched.map((video, i) => {
+                            this.state.recentlyWatched.map(video => {
                                 return (
-                                    <div key={i} className="col-md-3 col-lg-3 col-sm-12 d-flex align-items-stretch pb-2 px-4 my-4">
+                                    <div key={_.uniqueId('recent_video_')} className="col-md-3 col-lg-3 col-sm-12 d-flex align-items-stretch pb-2 px-4 my-4">
                                         <Card>
                                             <Dimmer active={this.state.isLoading && this.state.loadingVideo === `${video.chapter}.${video.sortKey}`}>
                                                 <Loader>Loading</Loader>
@@ -358,7 +358,7 @@ class Videos extends Component {
                                 _.times(7, i => {
                                     if(i === 6) {
                                         return (
-                                            <Dropdown key={i} text="More" className="link item">
+                                            <Dropdown key={_.uniqueId('chapter_link_item')} text="More" className="link item">
                                                 <Dropdown.Menu>
                                                     {
                                                         _.times(this.props.videos.videoList.length - 6, idx => {
@@ -369,7 +369,7 @@ class Videos extends Component {
                                             </Dropdown>
                                         )
                                     }
-                                    return <Menu.Item key={i} name={`Chapter ${i + 1}`} onClick={() => this.chapterScroll(i)} active={this.state.activeChapter === i} />
+                                    return <Menu.Item key={_.uniqueId('chapter_menu_item_')} name={`Chapter ${i + 1}`} onClick={() => this.chapterScroll(i)} active={this.state.activeChapter === i} />
                                 })
                             }
                         </Menu>
@@ -378,7 +378,7 @@ class Videos extends Component {
                 {
                     this.props.videos.videoList.map((chapter, i) => {
                         return (
-                            <div key={chapter.title} name={i}>
+                            <div key={_.uniqueId('chapter_')} name={i}>
                                 <div className="d-flex flex-row justify-content-start">
                                     <h2 className={`common-UppercaseTitle big-font ml-4 mt-${i === 0 ? '4' : '2'}`}>
                                         { chapter.title } - {moment.utc(chapter.videos.map(video => (moment(video.length, 'mm:ss').minutes() * 60) + moment(video.length, 'mm:ss').seconds()).reduce((a, b) => a + b) * 1000).format('mm:ss') }
@@ -390,7 +390,7 @@ class Videos extends Component {
                                         chapter.videos.map((video, index) => {
                                             this.iter = index;
                                             return (
-                                                <div className="col-md-3 col-lg-3 col-sm-12 d-flex align-items-stretch pb-2 px-4 my-4" key={video.name}>
+                                                <div className="col-md-3 col-lg-3 col-sm-12 d-flex align-items-stretch pb-2 px-4 my-4" key={_.uniqueId('video_')}>
                                                     <button type="button" className="btn btn-flat" onClick={() => this.handleWatch(video)}>
                                                         <Dimmer active={this.state.isLoading && this.state.loadingVideo === `${video.chapter}.${video.sortKey}`}>
                                                             <Loader>Loading</Loader>

@@ -10,7 +10,6 @@ import { CookiesProvider } from 'react-cookie';
 import rootReducer from './reducers/rootReducer';
 import * as constants from './constants'
 import Router from './components/Router/Router'
-import Error from './pages/Error/Error';
 import Log from './Log';
 import { loginSuccess, fetchVideos } from './actions/actions';
 import { AMPLIFY_CONFIG } from './constants';
@@ -18,60 +17,7 @@ import {IS_PROD} from "./constants";
 import { Loader } from "semantic-ui-react";
 import { StripeProvider, Elements } from 'react-stripe-elements';
 import { FB_APP_ID } from "./constants";
-
-
-// Object holding action types as keys and promises as values which need resolutions
-const typeResolvers = {};
-let currentStore;
-
-/**
- * Custom Redux middleware which wraps the action being dispatched
- * in a promise which can be resolved or rejected before continuing
- * @param store Object redux store
- * @returns {function(*): Function}
- */
-const dispatchProcessMiddleware = (store) => {
-    currentStore = store;
-    return next => (action) => {
-        const resolvers = typeResolvers[action.type];
-        if (resolvers && resolvers.length > 0) {
-            resolvers.forEach(resolve => resolve());
-        }
-        next(action);
-    };
-};
-
-/**
- * Unique Dispatch which can use promises to wait for async dispatch
- * actions to complete successfully or fail gracefully.
- * @param requestAction Function the action being dispatched (called as a function)
- * @param successActionType String the action type if the async action was successful
- * @param failureActionType String the action type if the async action was un-successful
- * @returns {Promise<any>}
- */
-const dispatchProcess = (requestAction, successActionType, failureActionType = undefined) => {
-    if (!currentStore) {
-        throw new Error('dispatchProcess middleware must be registered');
-    }
-
-    if (!successActionType) {
-        throw new Error('At least one action to resolve process is required');
-    }
-
-
-    const promise = new Promise((resolve, reject) => {
-        typeResolvers[successActionType] = typeResolvers[successActionType] || [];
-        typeResolvers[successActionType].push(resolve);
-        if (failureActionType) {
-            typeResolvers[failureActionType] = typeResolvers[failureActionType] || [];
-            typeResolvers[failureActionType].push(reject);
-        }
-    });
-
-    currentStore.dispatch(requestAction);
-
-    return promise;
-};
+import { dispatchProcess, dispatchProcessMiddleware } from './util';
 
 // Setup Redux middleware and store
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

@@ -99,7 +99,6 @@ export const fetchVideos = username => async dispatch => {
 
     try {
         const response = await getVideos(username);
-
         if(response.status === 200) {
             // Dispatch information about billing
             dispatch({
