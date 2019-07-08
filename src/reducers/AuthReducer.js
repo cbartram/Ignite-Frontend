@@ -23,6 +23,7 @@ export default (state = {}, action) => {
                     isAuthenticated: true,
                     isFetching: false,
                     user: {
+                        ...state.user,
                         ...action.payload.idToken.payload,
                         jwtToken: action.payload.idToken.jwtToken,
                         refreshToken: action.payload.refreshToken.token,
@@ -37,6 +38,7 @@ export default (state = {}, action) => {
                     isAuthenticated: true,
                     isFetching: false,
                     user: {
+                        ...state.user,
                         ...action.payload.signInUserSession.idToken.payload,
                         jwtToken: action.payload.signInUserSession.idToken.jwtToken,
                         refreshToken: action.payload.signInUserSession.refreshToken.token,

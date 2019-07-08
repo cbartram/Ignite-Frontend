@@ -181,16 +181,12 @@ class Videos extends Component {
             text = ' It looks like you aren\'t subscribed to ignite. If you would like to subscribe and' +
                 ' watch all the high quality HD full stack development videos you can click the button below! If you have already subscribed and are seeing' +
                 ' this message something may have gone wrong. Refresh the page or try logging out and logging back in.'
-        } else {
-            text = 'These videos are a customized list of chapters, quizzes and workshops that provide a guided learning path for a particular subject. ' +
-                'Each course or quiz in a chapter builds on the previous one, so that as you progress through the videos you gain a solid' +
-                ' understanding of the broader topic and how it fits into full stack development.';
         }
 
         return (
             <div className="p-3 d-flex flex-column align-items-center">
                 <h3 className="common-SectionTitle">
-                    { authorized ? 'Videos': 'No subscription found'}
+                    { !authorized && 'No subscription found'}
                 </h3>
                 <div className="row d-flex flex-column align-items-center">
                     <div className="col-md-8">
