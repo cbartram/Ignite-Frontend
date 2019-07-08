@@ -66,12 +66,12 @@ class Videos extends Component {
     async componentDidMount() {
         if (this.props.location.search) this.props.pushAlert('info', 'Select a Video', 'You need to select a new video to watch!');
 
-        // Retrieve the video given the VID from a cookie and dynamically load its respective thumbnail image
-        const promises = [];
-        let videos = [];
-
         // Only try cookies if the user is premium and there are cookies to try
         if(this.props.user.premium && !_.isUndefined(this.props.cookies.get('_recent'))) {
+            // Retrieve the video given the VID from a cookie and dynamically load its respective thumbnail image
+            const promises = [];
+            let recentlyWatched = [];
+
             this.props.cookies.get('_recent').forEach(vid => {
                 // Get the video given the vid
                 const chapter = +vid.split('.')[0];
@@ -83,14 +83,14 @@ class Videos extends Component {
                     const video = videos.find(({sortKey}) => sortKey === key);
                     // Load the thumbnail for this image
                     promises.push(import(`../../resources/images/thumbnails/${video.s3Name}.jpg`));
-                    videos.push(video);
+                    recentlyWatched.push(video);
                 } else {
                     Log.warn('Chapter was undefined for videos: ', this.props.videos, chapter, key)
                 }
             });
 
             const images = await Promise.all(promises);
-            videos = videos.map((v, i) => {
+            recentlyWatched = recentlyWatched.map((v, i) => {
                 return {
                     ...v,
                     percentComplete: Videos.percentComplete(v),
@@ -98,7 +98,8 @@ class Videos extends Component {
                 }
             });
 
-            this.setState({ recentlyWatched: videos });
+
+            this.setState({ recentlyWatched: recentlyWatched });
         }
     }
 
@@ -277,7 +278,6 @@ class Videos extends Component {
     }
 
     render() {
-        console.log(this.props);
         // Only returned when history.push('/videos') happens
         if(this.props.videos.isFetching)
             return this.renderJumbotron(false, true);

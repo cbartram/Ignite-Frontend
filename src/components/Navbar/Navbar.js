@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Link, withRouter} from 'react-router-dom';
 import { connect } from 'react-redux';
 import debounce from 'lodash/debounce';
+import isUndefined from 'lodash/isUndefined';
 import {
     Image,
     Search,
