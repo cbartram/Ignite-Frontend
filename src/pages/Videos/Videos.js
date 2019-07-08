@@ -69,37 +69,37 @@ class Videos extends Component {
         // Retrieve the video given the VID from a cookie and dynamically load its respective thumbnail image
         const promises = [];
         let videos = [];
-        !_.isUndefined(this.props.cookies.get('_recent')) &&
-        this.props.cookies.get('_recent').forEach(vid => {
-            // Get the video given the vid
-            const chapter = +vid.split('.')[0];
-            const key = +vid.split('.')[1];
 
-            console.log(this.props);
-            const { videos } = this.props.videos.videoList.find(c => c.chapter === chapter);
+        // Only try cookies if the user is premium and there are cookies to try
+        if(this.props.user.premium && !_.isUndefined(this.props.cookies.get('_recent'))) {
+            this.props.cookies.get('_recent').forEach(vid => {
+                // Get the video given the vid
+                const chapter = +vid.split('.')[0];
+                const key = +vid.split('.')[1];
 
-            if(!_.isUndefined(videos)) {
-                const video = videos.find(({sortKey}) => sortKey === key);
-                // Load the thumbnail for this image
-                promises.push(import(`../../resources/images/thumbnails/${video.s3Name}.jpg`));
-                videos.push(video);
-            } else {
-                Log.warn('Chapter was undefined for videos: ', this.props.videos, chapter, key)
-            }
-        });
+                const {videos} = this.props.videos.videoList.find(c => c.chapter === chapter);
 
-        const images = await Promise.all(promises);
-        videos = videos.map((v, i) => {
-           return {
-               ...v,
-               percentComplete: Videos.percentComplete(v),
-               image: images[i].default,
-           }
-        });
+                if (!_.isUndefined(videos)) {
+                    const video = videos.find(({sortKey}) => sortKey === key);
+                    // Load the thumbnail for this image
+                    promises.push(import(`../../resources/images/thumbnails/${video.s3Name}.jpg`));
+                    videos.push(video);
+                } else {
+                    Log.warn('Chapter was undefined for videos: ', this.props.videos, chapter, key)
+                }
+            });
 
-        this.setState({
-            recentlyWatched: videos
-        });
+            const images = await Promise.all(promises);
+            videos = videos.map((v, i) => {
+                return {
+                    ...v,
+                    percentComplete: Videos.percentComplete(v),
+                    image: images[i].default,
+                }
+            });
+
+            this.setState({ recentlyWatched: videos });
+        }
     }
 
     /**
@@ -188,38 +188,24 @@ class Videos extends Component {
         }
 
         return (
-            <div className="p-3">
+            <div className="p-3 d-flex flex-column align-items-center">
                 <h3 className="common-SectionTitle">
                     { authorized ? 'Videos': 'No subscription found'}
                 </h3>
-                <div className="row">
+                <div className="row d-flex flex-column align-items-center">
                     <div className="col-md-8">
                         <p className="common-BodyText">
                             { text }
                         </p>
                         {
                             !authorized &&
-                            <Link to="/pricing" className="common-Button common-Button--default">
-                                Subscribe
-                            </Link>
+                            <div className="d-flex flex-column align-items-center">
+                                <Link to="/pricing" className="common-Button common-Button--default">
+                                    Subscribe
+                                </Link>
+                            </div>
                         }
                     </div>
-                    <div className="col-md-3 offset-md-1">
-                        <svg width="150" height="150" viewBox="0 0 40 40">
-                            <g stroke="#0CB" strokeWidth="2" fill="none">
-                                <path d="M4 35c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2h32c1.1 0 2 .9 2 2v26c0 1.1-.9 2-2 2H4z" />
-                                <path d="M14 20h8" />
-                                <path d="M8 12l4 3.5L8 19" />
-                            </g>
-                        </svg>
-                    </div>
-                    {/*<svg width="40" height="40">*/}
-                    {/*<g stroke="#0CB" strokeWidth="2" fill="none">*/}
-                    {/*<path d="M4 35c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2h32c1.1 0 2 .9 2 2v26c0 1.1-.9 2-2 2H4z" strokeDasharray="128.56021118164062" strokeDashoffset="128.56021118164062" style={{opacity: 1}} />*/}
-                    {/*<path d="M14 20h8" strokeDasharray="8" strokeDashoffset="8" style={{opacity: 1 }} />*/}
-                    {/*<path d="M8 12l4 3.5L8 19" strokeDasharray="10.630146026611328" strokeDashoffset="10.630146026611328" style={{ opacity: 1 }} />*/}
-                    {/*</g>*/}
-                    {/*</svg>*/}
                 </div>
             <div className="row">
                 {
@@ -295,12 +281,14 @@ class Videos extends Component {
     }
 
     render() {
+        console.log(this.props);
         // Only returned when history.push('/videos') happens
         if(this.props.videos.isFetching)
             return this.renderJumbotron(false, true);
 
-        if(((!_.isUndefined(this.props.videos.videoList) && _.size(this.props.videos.videoList) === 0) || !this.props.user.premium))
-            return this.renderJumbotron();
+
+        if(!this.props.user.premium)
+            return this.renderJumbotron(); // Not authorized not loading
 
         return (
             <div ref={this.stickyRef}>
