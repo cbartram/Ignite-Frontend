@@ -62,7 +62,8 @@ class Watch extends Component {
             votes: {}, // TODO For now a simple way to track if the user has voted cannot persist
             open: false,
             isFetching: false,
-            playing: true,
+            playing: false,
+            muted: true,
             error: '',
             intervalSet: false, // True if the page is loaded and we are pinging the backend
             didNotify: false, // True if there was an error on the ping() and we have already notified the user. This prevents constant notifications
@@ -70,13 +71,9 @@ class Watch extends Component {
     }
 
     async componentDidMount() {
-
-        // TODO We should try the signed url here if its a 403
-        //  we need to refresh the signed url in redux...otherwise the video won't load
-
         if(this.props.activeVideo.name === 'null' && _.isUndefined(this.props.user.active_video)) this.props.history.push('/videos?new=true');
 
-        const videoId = `${this.props.videos.activeVideo.chapter}.${this.props.videos.activeVideo.sortKey}`;
+        const videoId = `${this.props.activeVideo.chapter}.${this.props.activeVideo.sortKey}`;
 
         // Only attempt to find posts for this video if its not currently stored in redux
         // the user won't see posts updated in real time unless they refresh the page but thats okay
@@ -451,7 +448,8 @@ class Watch extends Component {
      *  Handles an error trying to play the video
      *  Often a 403 from a video signed url being expired.
      */
-    async handleError() {
+    async handleError(e) {
+        Log.error(e);
         Log.warn('Error loading the video refreshing signed url...');
       // Attempt to refresh signed url
         try {
@@ -548,8 +546,9 @@ class Watch extends Component {
                     url={this.props.activeVideo.signedUrl}
                     width="100%"
                     height="100%"
+                    onPlay={() => this.setState({ muted: false })}
                     onEnded={() => this.nextVideo()}
-                    onError={() => this.handleError()}
+                    onError={(e) => this.handleError(e)}
                     style={{
                         position: 'relative',
                         width: '100%',
@@ -560,6 +559,7 @@ class Watch extends Component {
                         marginBottom: 20
                     }}
                     playing={this.state.playing}
+                    muted={this.state.muted}
                     controls
                 />
                 <div className="video-meta-container p-3">

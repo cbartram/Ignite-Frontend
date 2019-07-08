@@ -72,34 +72,37 @@ class Videos extends Component {
             const promises = [];
             let recentlyWatched = [];
 
-            this.props.cookies.get('_recent').forEach(vid => {
-                // Get the video given the vid
-                const chapter = +vid.split('.')[0];
-                const key = +vid.split('.')[1];
+            try {
+                this.props.cookies.get('_recent').forEach(vid => {
+                    // Get the video given the vid
+                    const chapter = +vid.split('.')[0];
+                    const key = +vid.split('.')[1];
 
-                const {videos} = this.props.videos.videoList.find(c => c.chapter === chapter);
+                    const {videos} = this.props.videos.videoList.find(c => c.chapter === chapter);
 
-                if (!_.isUndefined(videos)) {
-                    const video = videos.find(({sortKey}) => sortKey === key);
-                    // Load the thumbnail for this image
-                    promises.push(import(`../../resources/images/thumbnails/${video.s3Name}.jpg`));
-                    recentlyWatched.push(video);
-                } else {
-                    Log.warn('Chapter was undefined for videos: ', this.props.videos, chapter, key)
-                }
-            });
+                    if (!_.isUndefined(videos)) {
+                        const video = videos.find(({sortKey}) => sortKey === key);
+                        // Load the thumbnail for this image
+                        promises.push(import(`../../resources/images/thumbnails/${video.s3Name}.jpg`));
+                        recentlyWatched.push(video);
+                    } else {
+                        Log.warn('Chapter was undefined for videos: ', this.props.videos, chapter, key)
+                    }
+                });
 
-            const images = await Promise.all(promises);
-            recentlyWatched = recentlyWatched.map((v, i) => {
-                return {
-                    ...v,
-                    percentComplete: Videos.percentComplete(v),
-                    image: images[i].default,
-                }
-            });
-
-
-            this.setState({ recentlyWatched: recentlyWatched });
+                const images = await Promise.all(promises);
+                recentlyWatched = recentlyWatched.map((v, i) => {
+                    return {
+                        ...v,
+                        percentComplete: Videos.percentComplete(v),
+                        image: images[i].default,
+                    }
+                });
+                this.setState({ recentlyWatched: recentlyWatched });
+            } catch(err) {
+              Log.error(err);
+              this.props.cookies.remove('_recent');
+            }
         }
     }
 
@@ -143,6 +146,7 @@ class Videos extends Component {
                     recentlyWatched.unshift(vid);
                     recentlyWatched = _.uniq(recentlyWatched);
                     recentlyWatched.length = MAX_RECENTLY_WATCHED_VIDEOS;
+
                     this.props.cookies.set('_recent', recentlyWatched)
                 } else {
                     // User has watched between 1 and 3 videos

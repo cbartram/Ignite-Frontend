@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {Link, withRouter} from 'react-router-dom';
 import { connect } from 'react-redux';
 import debounce from 'lodash/debounce';
-import isUndefined from 'lodash/isUndefined';
 import {
     Image,
     Search,
@@ -182,8 +181,6 @@ class Navbar extends Component {
         this.props.hideErrors();
     }
 
-
-
     render() {
         const authLinks = [
             <Link className="nav-item nav-link p-3 text-dark" to="/videos" key="videos" onClick={() => this.handleLinkClick()}>Videos</Link>,
@@ -207,7 +204,7 @@ class Navbar extends Component {
                         className="global-search"
                         placeholder="Search"
                         loading={this.state.isLoading}
-                        onResultSelect={this.handleResultSelect}
+                        onResultSelect={(e, f) => this.handleResultSelect(e, f)}
                         onSearchChange={debounce(this.handleSearchChange, 300, { leading: true })}
                         results={this.state.results}
                         value={this.state.value}
