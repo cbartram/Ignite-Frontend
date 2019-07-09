@@ -53,6 +53,13 @@ h1.common-PageTitle {
     padding: 5px 2px;
 }
 
+.search-highlight-green {
+    background-color: #aff1b6;
+    color: #159570;
+    border-radius: 7px;
+    padding: 5px 2px;
+}
+
 .common-Link:hover {
     text-decoration: none;
     color: #32325d;

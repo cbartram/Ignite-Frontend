@@ -6,13 +6,13 @@
 import React from 'react';
 import Log from './Log';
 import {
-    IS_PROD,
-    API_KEY,
-    PROD_API_KEY,
     API_FIND_ALL_USERS,
-    API_SEND_EMAIL,
+    API_KEY,
     API_POST_FIND_QUESTIONS,
+    API_SEND_EMAIL,
     getRequestUrl,
+    IS_PROD,
+    PROD_API_KEY,
 } from './constants';
 
 /**
@@ -113,8 +113,9 @@ export const dispatchProcess = (requestAction, successActionType, failureActionT
  * @param query String the the query text the user has typed in
  * @param element String the full text to search for the query within. i.e. if the query is "ank" the full text might be "Banker"
  * and "ank" would be highlighted in the word "Banker"
+ * @param green Boolean true if the highlighted color should be green and false otherwise (it will default to blue)
  */
-export const matchSearchQuery = (query, element) => {
+export const matchSearchQuery = (query, element, green = false) => {
     if(query.length === 0) return <p className="mb-1 text-truncate muted">{ element }</p>;
     const idx = element.toUpperCase().search(query.toUpperCase());
 
@@ -123,7 +124,8 @@ export const matchSearchQuery = (query, element) => {
         const firstPart = element.substring(0, idx);
         const highlightedPart = element.substring(idx, idx + query.length);
         const endPart = element.substring(idx + query.length, element.length);
-        return <p className="mb-1 text-truncate muted">{firstPart}<span className="search-highlight">{highlightedPart}</span>{endPart}</p>
+        return <p className="mb-1 text-truncate muted">{firstPart}<span
+            className={green ? 'search-highlight-green' : 'search-highlight'}>{highlightedPart}</span>{endPart}</p>
     }
 
     // The query is not found simply return the full element

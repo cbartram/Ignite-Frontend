@@ -1,25 +1,16 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {Link, withRouter} from 'react-router-dom';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import debounce from 'lodash/debounce';
-import {
-    Image,
-    Search,
-} from 'semantic-ui-react';
-import {
-    hideErrors,
-    logout,
-    findQuestions,
-    getSignedUrl,
-    updateActiveVideo,
-} from '../../actions/actions';
-import { Auth } from 'aws-amplify';
+import {Image, Search,} from 'semantic-ui-react';
+import {findQuestions, getSignedUrl, hideErrors, logout, updateActiveVideo,} from '../../actions/actions';
+import {Auth} from 'aws-amplify';
 import Log from '../../Log';
 import './Navbar.css';
 import Sidebar from "../Sidebar/Sidebar";
 import Logo from '../../resources/images/logo.png';
 import {IS_PROD} from "../../constants";
-import { matchSearchQuery } from "../../util";
+import {matchSearchQuery} from "../../util";
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -91,14 +82,14 @@ class Navbar extends Component {
     /**
      * Renders a single row in the search dropdown
      */
-    static renderSearchRow(item) {
+    renderSearchRow(item) {
         return (
             <div className="d-flex align-items-center px-3 py-2 search-row-item">
                 <div className={`modal-sq-pill ${item.type === 'VIDEO' ? 'teal-label' : 'green-label' }`}>
                     { item.type === 'VIDEO' ? <strong>V</strong> : <strong>Q</strong>}
                 </div>
                 <div className="d-flex flex-column">
-                    <span>{ item.name }</span>
+                    {matchSearchQuery(this.state.value, item.name, item.type === 'QUIZ')}
                     <small className="text-muted">Chapter {item.chapter}</small>
                 </div>
             </div>
@@ -143,18 +134,12 @@ class Navbar extends Component {
      * @param value String search query
      */
     handleSearchChange(e, { value }) {
-        this.setState({ value });
         let { data } = this.state;
-
-        if(value.length < 1)  {
-            this.setState({ results: [], value: '' });
-            return;
-        }
 
         // A simple filter should work for this use case
         data = data.filter(videoOrQuiz => videoOrQuiz.title.toUpperCase().includes(value.toUpperCase()));
 
-        this.setState({ results: data })
+        this.setState({results: data, value})
     }
 
     /**
@@ -214,7 +199,7 @@ class Navbar extends Component {
                         onSearchChange={debounce(this.handleSearchChange, 300, { leading: true })}
                         results={this.state.results}
                         value={this.state.value}
-                        resultRenderer={(item) => Navbar.renderSearchRow(item)}
+                        resultRenderer={(item) => this.renderSearchRow(item)}
                     />
                 }
                 <div className="ml-auto">
