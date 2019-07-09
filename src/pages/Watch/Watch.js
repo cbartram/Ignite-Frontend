@@ -311,7 +311,7 @@ class Watch extends Component {
                     </div>
                 }
             case 1: return (
-                <div className="row">
+                <div className="row px-3">
                     {
                         this.props.activeVideo.links.length > 0 ?
                         this.props.activeVideo.links.map((link, i) => {

@@ -11,13 +11,15 @@ import {
     logout,
     findQuestions,
     getSignedUrl,
+    updateActiveVideo,
 } from '../../actions/actions';
 import { Auth } from 'aws-amplify';
 import Log from '../../Log';
 import './Navbar.css';
 import Sidebar from "../Sidebar/Sidebar";
 import Logo from '../../resources/images/logo.png';
-import {IS_PROD,} from "../../constants";
+import {IS_PROD} from "../../constants";
+import { matchSearchQuery } from "../../util";
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -31,6 +33,7 @@ const mapDispatchToProps = dispatch => ({
    hideErrors: () => dispatch(hideErrors()),
    findQuestions: (payload) => dispatch(findQuestions(payload)),
    getSignedUrl: (payload) => dispatch(getSignedUrl(payload)),
+   updateActiveVideo: (payload) => dispatch(updateActiveVideo(payload)),
 });
 
 /**
@@ -68,7 +71,7 @@ class Navbar extends Component {
                 type: 'QUIZ',
                 name: quiz.name,
                 childKey: quiz.id,
-                as: Navbar.renderSearchRow,
+                // as: Navbar.renderSearchRow,
             }));
             const masterList = this.props.videos.videoList
                 .reduce((acc, curr) => [...acc, ...curr.videos], [])
@@ -78,7 +81,7 @@ class Navbar extends Component {
                     name: video.name,
                     type: 'VIDEO',
                     childKey: `${video.chapter}.${video.sortKey}`,
-                    as: Navbar.renderSearchRow,
+                    // as: Navbar.renderSearchRow,
                 }))
                 .concat(quizList);
 
@@ -105,6 +108,7 @@ class Navbar extends Component {
     /**
      * Handles re-directing a user to the appropriately selected
      * content
+     * @param e Object React Synthetic event object from the click handler
      * @param item Object item being selected { name, chapter, type }
      */
     handleResultSelect(e, { result }) {
@@ -115,11 +119,13 @@ class Navbar extends Component {
 
                 const vid = `${result.chapter}.${result.sortKey}`;
                 try {
+                    // Fetch data for the video including its signed url, questions, and set it as active
                     await this.props.getSignedUrl({
                         video: result,
                         resourceUrl: `${IS_PROD ? 'https://d2hhpuhxg00qg.cloudfront.net' : 'https://dpvchyatyxxeg.cloudfront.net'}/chapter${result.chapter}/${result.s3Name}.mov`,
                         subscriptionId: this.props.user.subscription_id,
                     });
+
                     await this.props.findQuestions(vid);
                     this.setState({ isLoading: false });
                     this.props.history.push('/watch');

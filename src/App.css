@@ -41,6 +41,18 @@ h1.common-PageTitle {
     cursor: pointer;
 }
 
+.muted {
+    color: rgb(105, 100, 110);
+    font-weight: 600;
+}
+
+.search-highlight {
+    background-color: rgb(229, 236, 253);
+    color: #4680FF;
+    border-radius: 7px;
+    padding: 5px 2px;
+}
+
 .common-Link:hover {
     text-decoration: none;
     color: #32325d;

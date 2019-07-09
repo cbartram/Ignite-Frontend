@@ -3,6 +3,7 @@
  * This file houses a collection of helper functions used in multiple places throughout the application
  * @author cbartram
  */
+import React from 'react';
 import Log from './Log';
 import {
     IS_PROD,
@@ -104,6 +105,29 @@ export const dispatchProcess = (requestAction, successActionType, failureActionT
     currentStore.dispatch(requestAction);
 
     return promise;
+};
+
+/**
+ * Highlights the search query text that is found within an element to show users
+ * exactly how their search found the results
+ * @param query String the the query text the user has typed in
+ * @param element String the full text to search for the query within. i.e. if the query is "ank" the full text might be "Banker"
+ * and "ank" would be highlighted in the word "Banker"
+ */
+export const matchSearchQuery = (query, element) => {
+    if(query.length === 0) return <p className="mb-1 text-truncate muted">{ element }</p>;
+    const idx = element.toUpperCase().search(query.toUpperCase());
+
+    // The query appears within the element
+    if(idx > -1) {
+        const firstPart = element.substring(0, idx);
+        const highlightedPart = element.substring(idx, idx + query.length);
+        const endPart = element.substring(idx + query.length, element.length);
+        return <p className="mb-1 text-truncate muted">{firstPart}<span className="search-highlight">{highlightedPart}</span>{endPart}</p>
+    }
+
+    // The query is not found simply return the full element
+    return <p className="mb-1 text-truncate muted">{element}</p>
 };
 
 

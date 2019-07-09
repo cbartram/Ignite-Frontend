@@ -164,14 +164,14 @@ export const requestVideos = () => dispatch => {
 /**
  * Updates the name of the video the user is currently
  * watching
- * @param videoName String video's name
+ * @param video Object the video object to make active
  * @returns {Function}
  */
-export const updateActiveVideo = (videoName) => dispatch => {
+export const updateActiveVideo = (video) => dispatch => {
   dispatch({
       type: constants.UPDATE_ACTIVE_VIDEO,
-      payload: videoName
-  })
+      payload: video
+  });
 };
 
 /**

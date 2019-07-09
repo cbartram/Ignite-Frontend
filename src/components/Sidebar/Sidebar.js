@@ -7,6 +7,7 @@ import './Sidebar.css';
 import { getSignedUrl, findQuestions } from "../../actions/actions";
 import { IS_PROD } from "../../constants";
 import Log from "../../Log";
+import {matchSearchQuery} from "../../util";
 
 const mapStateToProps = (state) => ({
     videos: state.videos,
@@ -26,6 +27,24 @@ const mapDispatchToProps = (dispatch) => ({
  * of videos they can select
  */
 class Sidebar extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            query: '',
+        }
+    }
+
+    /**
+     * Passes the search text up through props and updates local state for
+     * matching the search query and highlighting the context
+     * @param query String query the user typed in
+     */
+    onSearchChange(query) {
+        this.setState({ query });
+        this.props.onSearch(query);
+    }
+
     /**
      * Updates the active video in redux and redirects the user to
      * the correct video link
@@ -82,7 +101,7 @@ class Sidebar extends Component {
                     <div className="d-flex flex-column justify-content-center align-items-center">
                         <div className="my-3">
                             <input className="form-field-default" placeholder="Search Chapters"
-                                   onChange={(e) => this.props.onSearch(e.target.value)}/>
+                                   onChange={({ target }) => this.onSearchChange(target.value)}/>
                         </div>
                         <h3 className="text-muted">{this.props.videos.activeVideo.name}</h3>
                     </div>
@@ -100,7 +119,7 @@ class Sidebar extends Component {
                                         </div>
                                         <div className="d-flex flex-column align-items-start pl-4 video-item">
                                             <h4 className="curriculum-heading">
-                                                {title}
+                                                { matchSearchQuery(this.state.query, title)}
                                             </h4>
                                         </div>
                                         {videos.map((video) => this.renderVideos(video))}

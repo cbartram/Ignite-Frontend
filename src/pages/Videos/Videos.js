@@ -155,6 +155,7 @@ class Videos extends Component {
                     this.props.cookies.set('_recent', recentlyWatched)
                 }
 
+                this.props.updateActiveVideo(video);
                 this.props.history.push('/watch');
             } catch(err) {
                 Log.error(err);
