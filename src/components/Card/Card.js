@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import './Card.css';
 import {Dimmer, Loader} from "semantic-ui-react";
 
@@ -19,7 +19,7 @@ export default class Card extends Component {
               {
                   this.props.cardTitle &&
                    <div className="modal-header">
-                       <h4 className="modal-title">{this.props.cardTitle}</h4>
+                       <h4 className={`modal-title ${this.props.inverted ? 'modal-title-inverted' : ''}`}>{this.props.cardTitle}</h4>
                    </div>
               }
               <div className={`card-body ${this.props.classNames ? this.props.classNames.join(' ') : ''}`}>

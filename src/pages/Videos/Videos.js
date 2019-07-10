@@ -1,29 +1,14 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {Link, withRouter} from 'react-router-dom';
 import moment from 'moment/moment';
 import _ from 'lodash';
-import {
-    Loader,
-    Dimmer,
-    Menu,
-    Sticky,
-    Dropdown,
-    Popup,
-    Placeholder,
-    Responsive,
-} from 'semantic-ui-react';
-import { Card } from 'react-bootstrap';
-import { withCookies } from 'react-cookie';
-import { scroller } from 'react-scroll';
-import { withRouter } from 'react-router-dom'
-import {
-    updateActiveVideo,
-    getSignedUrl,
-    findQuestions,
-    ping,
-} from '../../actions/actions';
-import { IS_PROD, MAX_RECENTLY_WATCHED_VIDEOS } from "../../constants";
+import {Dimmer, Dropdown, Loader, Menu, Placeholder, Popup, Responsive, Sticky,} from 'semantic-ui-react';
+import {Card} from 'react-bootstrap';
+import {withCookies} from 'react-cookie';
+import {scroller} from 'react-scroll';
+import {findQuestions, getSignedUrl, ping, updateActiveVideo,} from '../../actions/actions';
+import {IS_PROD, MAX_RECENTLY_WATCHED_VIDEOS} from "../../constants";
 import Log from '../../Log';
 import './Videos.css';
 import withContainer from "../../components/withContainer";
@@ -181,13 +166,8 @@ class Videos extends Component {
      */
     renderJumbotron(authorized = false, isLoading = false) {
         let text = '';
-        if(isLoading) {
-            text = 'Checking your subscription status....It\'ll just be a moment'
-        } else if(!authorized) {
-            text = ' It looks like you aren\'t subscribed to ignite. If you would like to subscribe and' +
-                ' watch all the high quality HD full stack development videos you can click the button below! If you have already subscribed and are seeing' +
-                ' this message something may have gone wrong. Refresh the page or try logging out and logging back in.'
-        }
+        if (isLoading) text = 'Checking your subscription status....It\'ll just be a moment';
+        else if (!authorized) text = ' It looks like you aren\'t subscribed to ignite. If you would like to subscribe and watch all the high quality HD full stack development videos you can click the button below!';
 
         return (
             <div className="p-3 d-flex flex-column align-items-center">
@@ -196,7 +176,7 @@ class Videos extends Component {
                 </h3>
                 <div className="row d-flex flex-column align-items-center">
                     <div className="col-md-8">
-                        <p className="common-BodyText">
+                        <p className="common-BodyText" style={{textAlign: 'center'}}>
                             { text }
                         </p>
                         {

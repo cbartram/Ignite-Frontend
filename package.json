@@ -23,6 +23,7 @@
     "react-scripts": "^3.0.1",
     "react-scroll": "^1.7.12",
     "react-stripe-elements": "^3.0.0",
+    "react-syntax-highlighter": "^11.0.1",
     "react-tooltip": "^3.10.0",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",

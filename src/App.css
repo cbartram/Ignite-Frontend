@@ -1,11 +1,17 @@
 .common-UppercaseTitle {
-    color: #32325d;
+    /*color: #32325d;*/
+    color: #408AF8;
     margin-bottom: 0;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: .025em;
     font-size: 21px;
     line-height: 32px;
+}
+
+
+.common-UppercaseTitle-Inverse {
+    color: #a78ce9;
 }
 
 h2.common-UppercaseText {
@@ -41,9 +47,30 @@ h1.common-PageTitle {
     cursor: pointer;
 }
 
+.common-Link-Inverse {
+    color: #a78ce9;
+}
+
+pre {
+    background: #fff !important;
+    position: relative;
+    border-radius: 10px 10px 0 0;
+    overflow: hidden;
+    font-size: 13px;
+    line-height: 23px;
+    color: #6f7c82;
+}
+
 .muted {
     color: rgb(105, 100, 110);
     font-weight: 600;
+}
+
+#developers-section:before {
+    content: "";
+    display: block;
+    height: 2px;
+    background: #f2f6fa;
 }
 
 .search-highlight {
@@ -86,6 +113,11 @@ h1.common-PageTitle {
 
 .fa-exclamation-triangle, .fa-code, .fa-download {
     color: rgb(255, 162, 123);
+}
+
+/* Syntax Highlighting CSS */
+.react-syntax-highlighter-line-number {
+    color: #aab7c5;
 }
 
 /* Header & Stripes Styles */
@@ -463,7 +495,7 @@ h1.common-PageTitle {
 }
 
 /* Developer Section Styles */
-#developers-section, #our-mission, #instructor {
+#instructor {
     /*background: white;*/
     margin-bottom: 150px;
 }

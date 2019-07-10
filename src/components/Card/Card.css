@@ -14,6 +14,10 @@
     transform: none !important; /* Forces the card not to bump when hovered */
 }
 
+.modal-title-inverted {
+    color: #a78ce9 !important;
+}
+
 .common-UppercaseText-Badge {
     font-size: 17px;
     line-height: 28px;
