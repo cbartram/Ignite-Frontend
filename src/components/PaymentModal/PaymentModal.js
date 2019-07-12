@@ -1,13 +1,7 @@
-import React, { Component } from 'react';
-import moment from 'moment';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import {CardElement, injectStripe} from "react-stripe-elements";
-import {
-    updateUserAttributes,
-    fetchVideos,
-    processPayment,
-    loginSuccess,
-} from '../../actions/actions';
+import {fetchVideos, loginSuccess, processPayment, updateUserAttributes,} from '../../actions/actions';
 import './PaymentModal.css';
 
 const mapStateToProps = state => ({
@@ -112,6 +106,7 @@ class PaymentModal extends Component {
                 token,
                 username: this.props.user.userName,
                 customerId: this.props.user.customer_id,
+                plan: this.props.plan
             }).then(() => {
                 this.props.fetchVideos(`user-${this.props.user.userName}`);
 
@@ -119,7 +114,7 @@ class PaymentModal extends Component {
                 this.setState({ loading: false });
                 this.closeButton.current.click();
                 this.props.onSuccessfulPayment();
-            })
+            }).catch(err => this.props.onFailedPayment(err.body.messages[0]));
         } catch(err) {
             this.props.onFailedPayment(err.message);
         }
@@ -180,7 +175,7 @@ class PaymentModal extends Component {
                                     />
                                 </div>
                                 <div className="form-row text cc">
-                                    <label className="cc" htmlFor="cc">Credit Card</label>
+                                    <label className="cc" htmlFor="cc">Bank Card</label>
                                     <CardElement
                                         className="card-field"
                                         onChange={this.handleCardFieldChange}
@@ -194,9 +189,8 @@ class PaymentModal extends Component {
                                     />
                                 </div>
                                 <p className="text-muted px-2 mt-3">
-                                    You will be billed $7.00 monthly starting at the end of
-                                    your free trial and recurring on
-                                    the {moment().format('Do')} of the month. You
+                                    You will be billed {this.props.plan.amount} starting at the end of
+                                    your free trial and recurring {this.props.plan.recurring}. You
                                     can unsubscribe at any time by visiting your profile page.
                                 </p>
                             </div>

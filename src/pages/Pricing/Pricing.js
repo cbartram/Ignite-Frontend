@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import moment from 'moment';
 import isNil from 'lodash/isNil';
 import {withRouter} from 'react-router-dom';
 import PaymentModal from '../../components/PaymentModal/PaymentModal';
@@ -18,16 +19,30 @@ class Pricing extends Component {
         super(props);
 
         this.state = {
-            selectedPlan: null,
+            // Default to 1 month plan
+            selectedPlan: {
+                ONE_MONTH: {
+                    name: 'ONE_MONTH',
+                    amount: '$7.00',
+                    recurring: `on the ${moment().format('Do')} of the month`
+                }
+            },
             plans: {
-                oneMonth: {
-                    amount: '$7.00'
+                ONE_MONTH: {
+                    name: 'ONE_MONTH',
+                    amount: '$7.00',
+                    recurring: `on the ${moment().format('Do')} of the month`
                 },
-                threeMonth: {
-                    amount: '$18.00'
+                THREE_MONTH: {
+                    name: 'THREE_MONTH',
+                    amount: '$18.00',
+                    recurring: `on ${moment().add(3, 'months').format('MMMM DD')}`
+
                 },
-                sixMonth: {
-                    amount: '$35.00'
+                SIX_MONTH: {
+                    name: 'SIX_MONTH',
+                    amount: '$35.00',
+                    recurring: `on ${moment().add(6, 'months').format('MMMM DD')}`
                 },
             }
         };
@@ -35,10 +50,20 @@ class Pricing extends Component {
     /**
      * Renders the correct button for the payment screen depending on what kind of user
      * is using the button (non registered, registered but not premium, registered and premium)
+     * @param planName string either oneMonth, threeMonth, or sixMonth. Designates what data is shown in the modal
      */
-    renderButton() {
+    renderButton(planName) {
         if (this.props.user) {
             // If the user is already premium let them know!
+
+            // TODO REMOVE THIS
+            return <button onClick={() => this.setState({selectedPlan: this.state.plans[planName]})} data-toggle="modal"
+                           data-target="#payment-modal"
+                           className="Plan-button common-Link--arrow">
+                Join free for 7 days
+            </button>
+
+
             if (!isNil(this.props.user.plan))
                 return <button
                     onClick={() => this.props.pushAlert('info', 'Already Subscribed', 'You are already subscribed to this plan!')}
@@ -47,11 +72,23 @@ class Pricing extends Component {
                 </button>;
              else
                 // Else show them the payment form
-                return <button data-toggle="modal" data-target="#payment-modal"
+                return <button onClick={() => this.setState({selectedPlan: this.state.plans[planName]})}
+                               data-toggle="modal" data-target="#payment-modal"
                                className="Plan-button common-Link--arrow">
                     Join free for 7 days
                 </button>
         }
+
+
+        // TODO REMOVE THIS
+        // Else show them the payment form
+        return <button onClick={() => this.setState({selectedPlan: this.state.plans[planName]})} data-toggle="modal"
+                       data-target="#payment-modal"
+                       className="Plan-button common-Link--arrow">
+            Join free for 7 days
+        </button>
+
+
         // User is not signed in prompt them to signup
         return <button onClick={() => this.props.history.push('/signup')}
                        className="Plan-button common-UppercaseText common-Link--arrow">
@@ -64,6 +101,7 @@ class Pricing extends Component {
             <div>
                 {/* Handles showing and processing user payments */}
                 <PaymentModal
+                    plan={this.state.selectedPlan}
                     onFailedPayment={(errorMessage) => {
                         Log.error(errorMessage);
                         this.props.pushAlert('danger', 'Subscription Failed', `Unfortunately something went wrong processing your payment. ${errorMessage}`)
@@ -105,7 +143,7 @@ class Pricing extends Component {
                                 </li>
                             </ul>
                             {/* If the user is logged in show the payment modal else redirect to the sign up page */}
-                            {this.renderButton('oneMonth')}
+                            {this.renderButton('ONE_MONTH')}
                         </PricingCard>
                     </div>
                     <div className="col-lg-4 col-md-4 col-sm-10 p-4">
@@ -141,7 +179,7 @@ class Pricing extends Component {
                                     Hand curated blogs for continued learning
                                 </li>
                             </ul>
-                            { this.renderButton() }
+                            {this.renderButton('THREE_MONTH')}
                         </PricingCard>
                     </div>
                     <div className="col-lg-4 col-md-4 col-sm-10 p-4">
@@ -178,7 +216,7 @@ class Pricing extends Component {
                                     Hand curated blogs for continued learning
                                 </li>
                             </ul>
-                            {this.renderButton()}
+                            {this.renderButton('SIX_MONTH')}
                         </PricingCard>
                     </div>
                 </div>

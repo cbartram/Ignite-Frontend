@@ -32,7 +32,7 @@
     background-image: url(https://stripe.com/img/v3/contact_sales/background/dots-left.svg);
     background-size: 100%;
     position: absolute;
-    bottom: 29px;
+    bottom: 21em;
     left: 0;
     width: 145px;
     height: 370px;
@@ -54,7 +54,7 @@
     background-image: url(https://stripe.com/img/v3/contact_sales/background/dots-right-light.svg);
     background-size: 100%;
     position: absolute;
-    bottom: -211px;
+    bottom: 15em;
     right: -22px;
     width: 220px;
     height: 352px;
@@ -66,7 +66,7 @@
     position: absolute;
     left: 0;
     right: 0;
-    top: 44%;
+    top: 80%;
     height: 100%;
     overflow: hidden;
 }
@@ -76,8 +76,8 @@
     background-image: url(https://stripe.com/img/v3/contact_sales/background/dots-right-dark.svg);
     background-size: 100%;
     position: absolute;
-    top: -141px;
-    right: -22px;
+    top: -131px;
+    right: 20px;
     width: 220px;
     height: 352px;
     -webkit-transform: skewY(12deg);
