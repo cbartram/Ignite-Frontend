@@ -99,7 +99,7 @@ class App extends Component {
 
                 return {activeIndex: prev.activeIndex + 1}
             });
-        }, 3000);
+        }, 6500);
 
         // setInterval(() => {
         //     this.setState((prev) => {
