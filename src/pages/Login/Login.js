@@ -1,20 +1,14 @@
-import React, { Component } from "react";
-import { FormGroup, FormControl } from "react-bootstrap";
-import { Auth } from 'aws-amplify/lib/index';
-import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
+import React, {Component} from "react";
+import {FormControl, FormGroup} from "react-bootstrap";
+import {Auth} from 'aws-amplify/lib/index';
+import {connect} from 'react-redux';
+import {Link, withRouter} from 'react-router-dom';
 import './Login.css';
 import Log from '../../Log';
 import LoaderButton from '../../components/LoaderButton/LoaderButton';
-import {
-    loginFailure,
-    loginSuccess,
-    loginRequest,
-    fetchVideos,
-    updateVideosSync,
-} from '../../actions/actions';
+import {fetchVideos, loginFailure, loginRequest, loginSuccess, updateVideosSync,} from '../../actions/actions';
 import withContainer from "../../components/withContainer";
-import { dispatchProcess } from "../../util";
+import {dispatchProcess} from "../../util";
 import * as constants from "../../constants";
 
 const mapStateToProps = state => ({
@@ -111,6 +105,28 @@ class Login extends Component {
 
     render() {
         return (
+            <div>
+                <div className="stripes-container-login initial">
+                    <div className="stripe s2"/>
+                    <div className="stripe s3"/>
+                    <div className="stripe s4"/>
+                    <div className="stripe s5"/>
+                    <div className="stripe s7"/>
+                    <div className="stripe gradient"/>
+                    <div className="stripe s1"/>
+                    <div className="stripe s6"/>
+                    <div className="left-dots-container-login"/>
+                    <div className="light-dots-container-login"/>
+                    <div className="dark-dots-container-login"/>
+                    <div className="medium-dots-container-login"/>
+                </div>
+                <div className="ml-auto mr-auto my-4" style={{textAlign: 'center', maxWidth: 680}}>
+                    <div className="container-lg">
+                        <h1 className="headline-text">Login to Ignite</h1>
+
+                        <h2 className="common-IntroText">Login to your Ignite Account</h2>
+                    </div>
+                </div>
                 <div className="row">
                     <div className="col-lg-5 offset-lg-4 col-md-5 offset-md-4 col-sm-3 offset-sm-4 col-xs-3">
                         <div className="Login">
@@ -153,6 +169,7 @@ class Login extends Component {
                         </div>
                     </div>
                 </div>
+            </div>
         );
     }
 }

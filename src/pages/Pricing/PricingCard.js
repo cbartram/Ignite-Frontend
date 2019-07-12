@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import './Pricing.css';
 
 export default class PricingCard extends Component {
@@ -8,9 +8,9 @@ export default class PricingCard extends Component {
                 <h2 className="common-UppercaseText Plan-title">
                     { this.props.title }
                 </h2>
-                <div className="Plan-description Plan-description-intergrated px-2">
-                    { this.props.description }
-                </div>
+                {/*<div className="Plan-description Plan-description-intergrated px-2">*/}
+                {/*    { this.props.description }*/}
+                {/*</div>*/}
 
                 <div className="Plan-cardPricing">
                     <div className="Plan-cardRate">

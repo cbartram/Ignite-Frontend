@@ -1,15 +1,12 @@
-import React, { Component } from "react";
-import {
-    FormGroup,
-    FormControl,
-} from "react-bootstrap";
+import React, {Component} from "react";
+import {FormControl, FormGroup,} from "react-bootstrap";
 import _ from 'lodash';
 import LoaderButton from "../../components/LoaderButton/LoaderButton";
-import { connect } from 'react-redux';
-import { Auth } from 'aws-amplify/lib/index';
-import { Link, withRouter } from 'react-router-dom';
-import { loginRequest, loginSuccess, loginFailure, hideErrors, fetchVideos } from "../../actions/actions";
-import { USER_POOL_URL } from "../../constants";
+import {connect} from 'react-redux';
+import {Auth} from 'aws-amplify/lib/index';
+import {Link, withRouter} from 'react-router-dom';
+import {fetchVideos, hideErrors, loginFailure, loginRequest, loginSuccess} from "../../actions/actions";
+import {USER_POOL_URL} from "../../constants";
 import Log from '../../Log';
 import './Signup.css';
 import withContainer from "../../components/withContainer";
@@ -290,14 +287,41 @@ class Signup extends Component {
 
     render() {
         return (
-            <div className="row">
-                <div className="col-lg-4 offset-lg-4 col-md-4 offset-md-4 col-sm-6 offset-sm-3 col-xs-6 offset-xs-2">
-                    <div className="Signup">
-                        {
-                            this.state.newUser === null
-                            ? this.renderForm()
-                            : this.renderConfirmationForm()
-                        }
+            <div>
+                <div className="stripes-container initial">
+                    <div className="stripe s2"/>
+                    <div className="stripe s3"/>
+                    <div className="stripe s4"/>
+                    <div className="stripe s5"/>
+                    <div className="stripe s7"/>
+                    <div className="stripe gradient"/>
+                    <div className="stripe s1"/>
+                    <div className="stripe s6"/>
+                    <div className="left-dots-container"/>
+                    <div className="light-dots-container"/>
+                    <div className="dark-dots-container"/>
+                    <div className="medium-dots-container"/>
+                </div>
+                <div className="row">
+
+                    <div className="ml-auto mr-auto my-4" style={{textAlign: 'center', maxWidth: 680}}>
+                        <div className="container-lg">
+                            <h1 className="headline-text">Create an Ignite Account</h1>
+
+                            <h2 className="common-IntroText">Fill out the form to create an Ignite account and learn end
+                                to end full
+                                stack development</h2>
+                        </div>
+                    </div>
+                    <div
+                        className="col-lg-4 offset-lg-4 col-md-4 offset-md-4 col-sm-6 offset-sm-3 col-xs-6 offset-xs-2">
+                        <div className="Signup">
+                            {
+                                this.state.newUser === null
+                                    ? this.renderForm()
+                                    : this.renderConfirmationForm()
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
