@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import SyntaxHighlighter from 'react-syntax-highlighter';
+import {Transition} from "semantic-ui-react";
 import {docco} from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import Container from "./components/Container/Container";
 import {Link, withRouter} from 'react-router-dom'
@@ -26,34 +27,46 @@ class App extends Component {
         this.state = {
             cogOne: 0,
             cogTwo: 0,
-            activeSyntax: 0, // Index of which syntax we should show in the animation
+            activeIndex: 0,
             syntax: [
                 {
+                    id: 0,
+                    visible: true,
                     title: 'Javascript & JQuery',
                     lang: 'javascript',
                     code: '$("button.primary").click(function() { \n   window.location.href = "https://google.com?q=My%20Question";\n   const username = $(this).find(".my-class").text();\n    if(username === "foo") {\n      console.log(username); \n    } \n});',
                 },
                 {
+                    id: 1,
+                    visible: false,
                     title: 'Node.JS',
                     lang: 'javascript',
                     code: 'const fs = require("fs");\nconst express = require("express");\n\nconst app = express();\n\n app.get("/users/find/:id", (req, res) => {\n        Users.find(req.params.id).then((user) => {\n        user.authenticate();\n        res.json({ success: true, user });    \n    });    \n});',
                 },
                 {
+                    id: 2,
+                    visible: false,
                     title: 'Structured Query Language',
                     lang: 'sql',
                     code: 'SELECT (\n    day,\n    transaction_id,\n    timestamp,\n    amount \n) FROM transaction_statements.transactions\n   WHERE transaction_country = "US"\n   GROUP BY timestamp\n   ORDER BY day ASC;',
                 },
                 {
+                    id: 3,
+                    visible: false,
                     title: 'React',
                     code: 'import React, { Component } from "react";\n\nclass App extends Component {\n        constructor(props) {\n        super(props);\n        this.state = { data: [] }\n    }\n\nasync componentDidMount() {\n        const data = await fetch("https://apis.google.com/maps/v1/").json();\n        this.setState({ data: data });\n    }\n\nrender() {\n    return (\n        <ul className={this.props.class}>\n        { this.state.data.map(d => <li>{d.title}</li>}) }\n        </ul>\n    )\n}',
                     lang: 'jsx'
                 },
                 {
+                    id: 4,
+                    visible: false,
                     title: 'CSS',
                     code: '.footer-text {\n    margin-left: 20px;\n    top: 10px;\n    border: 1px solid #abff01;\n    color:green !important;\n    padding: 3px 2px 10px;\n}\n\n #section-title {\n    font-weight: bold;\n    color: red;\n    border-radius: 3px;\n}\n\np > li.list-item {\n    background-color: white;\n    background-image: url(https://google.com/images/0.jpg)\n    background-size: cover;\n}',
                     lang: 'css'
                 },
                 {
+                    id: 5,
+                    visible: false,
                     title: 'Bash & Shell',
                     code: '$ curl -X POST https://google.com | grep <! | sed \\"/g[DOC([a-z])]" > output.txt;\n$ cat output.txt | grep doc',
                     lang: 'shell'
@@ -67,33 +80,47 @@ class App extends Component {
 
         setInterval(() => {
             this.setState((prev) => {
-                if (prev.activeSyntax === prev.syntax.length - 1)
-                    return {activeSyntax: 0};
-                else
-                    return {activeSyntax: prev.activeSyntax + 1}
-            });
-        }, 6500);
+                const allFalse = prev.syntax.map(s => ({...s, visible: false}));
 
-        setInterval(() => {
-            this.setState((prev) => {
-                // Compute the cogs value
-                let { cogOne, cogTwo } = prev;
-                if(cogOne >= 360)
-                    cogOne = 0;
-                else
-                    cogOne += SPEED; // Speed
 
-                if(cogTwo <= -360)
-                    cogTwo = 0;
-                else
-                    cogTwo -= SPEED;
-
-                return {
-                    cogOne,
-                    cogTwo
+                if (prev.activeIndex === prev.syntax.length - 1) {
+                    return {
+                        activeIndex: 0,
+                        syntax: allFalse.map(s => {
+                            if (s.id === 0)
+                                return {
+                                    ...s,
+                                    visible: true
+                                };
+                            return s;
+                        })
+                    };
                 }
-            })
-        }, 50);
+
+                return {activeIndex: prev.activeIndex + 1}
+            });
+        }, 3000);
+
+        // setInterval(() => {
+        //     this.setState((prev) => {
+        //         // Compute the cogs value
+        //         let { cogOne, cogTwo } = prev;
+        //         if(cogOne >= 360)
+        //             cogOne = 0;
+        //         else
+        //             cogOne += SPEED; // Speed
+        //
+        //         if(cogTwo <= -360)
+        //             cogTwo = 0;
+        //         else
+        //             cogTwo -= SPEED;
+        //
+        //         return {
+        //             cogOne,
+        //             cogTwo
+        //         }
+        //     })
+        // }, 50);
 
         const addScript = document.createElement('script');
         addScript.setAttribute('src', './Bubbles.js');
@@ -233,14 +260,20 @@ class App extends Component {
                 <section id="course-overview">
                     <div className="row">
                         <div className="col-md-6 offset-md-2">
-                            {/* Graphic Goes Here*/}
-                            <Card cardTitle={this.state.syntax[this.state.activeSyntax].title} inverted
-                                  style={{paddingBottom: 0}} classNames={['py-0']}>
-                                <SyntaxHighlighter showLineNumbers language={this.state.activeSyntax.lang}
-                                                   style={docco}>
-                                    {this.state.syntax[this.state.activeSyntax].code}
-                                </SyntaxHighlighter>
-                            </Card>
+                            <Transition visible={this.state.syntax[this.state.activeIndex].visible === true}
+                                        animation="scale" duration={500}>
+                                <Card cardTitle={this.state.syntax[this.state.activeIndex].title} inverted
+                                      style={{paddingBottom: 0}} classNames={['py-0']}>
+                                    <SyntaxHighlighter showLineNumbers
+                                                       language={this.state.syntax[this.state.activeIndex].lang}
+                                                       style={docco}>
+                                        {this.state.syntax[this.state.activeIndex].code}
+                                    </SyntaxHighlighter>
+                                </Card>
+                            </Transition>
+                            <button onClick={() => this.setState({visible: !this.state.visible})}
+                                    className="common-Button common-Button--default">Click Me
+                            </button>
                         </div>
                         <div className="col-md-4 pb-3 pr-3">
                             <h1 className="common-UppercaseTitle common-UppercaseTitle-Inverse mt-3">

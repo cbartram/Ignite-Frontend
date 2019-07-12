@@ -201,7 +201,7 @@ pre {
     background-image: url(https://stripe.com/img/v3/customers/logos/header-logos@2x.png);
     will-change: transform,opacity;
     -webkit-background-size: 1076px 1076px;
-    background-size: 1076px 921px;
+    background-size: 1076px 1000px;
     margin: -45px 0 0 -75px;
     border-radius: 50%;
     -webkit-box-shadow: 0 15px 35px rgba(0,0,0,.1), 0 3px 10px rgba(0,0,0,.07);
@@ -240,6 +240,7 @@ pre {
     opacity: 0.9;
     transform: translate(-50%, 0);
 }
+
 
 
 .Icon-imgAffirm {
@@ -318,6 +319,12 @@ pre {
     background-position: 0 -462px;
     width: 152px;
     height: 152px
+}
+
+.Icon-imgGitHub {
+    background-position: 0 -924px;
+    width: 76px;
+    height: 76px
 }
 
 .Icon-imgGoogle {
@@ -452,6 +459,12 @@ pre {
     height: 152px
 }
 
+.Icon-imgTuro {
+    background-position: -78px -924px;
+    width: 76px;
+    height: 76px
+}
+
 .Icon-imgTwitch {
     background-position: -770px -770px;
     width: 152px;
@@ -468,6 +481,12 @@ pre {
     background-position: -924px -154px;
     width: 152px;
     height: 152px
+}
+
+.Icon-imgWeWork {
+    background-position: -156px -924px;
+    width: 76px;
+    height: 76px
 }
 
 .Icon-imgWish {

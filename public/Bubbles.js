@@ -4,7 +4,7 @@ function LogoBubbles(s) {
      * of the onload callback function to determine when the image is ready to be processed.
      * @param url String url of the image.
      */
-    function loadImages(url = 'https://stripe.com/img/v3/customers/logos/header-logos@2x.png') {
+    function loadImages(url = 'https://stripe.com/img/v3/customers/logos/header-logos@2x.png?2') {
         const image = new Image;
         image.src = url;
         image.onload = () =>  e.logosLoaded = true;
@@ -101,6 +101,8 @@ function LogoBubbles(s) {
             e.playing && requestAnimationFrame(e.tick)
         }
 }
+
+
 var bubbles = [{
     s: .6,
     x: 1134,
@@ -263,6 +265,9 @@ var bubbles = [{
     name: "Fitbit",
     cssClass: "Fitbit"
 }, {
+    name: "GitHub",
+    cssClass: "GitHub"
+}, {
     name: "Google",
     cssClass: "Google"
 }, {
@@ -329,6 +334,9 @@ var bubbles = [{
     name: "TicketSwap",
     cssClass: "TicketSwap"
 }, {
+    name: "Turo",
+    cssClass: "Turo"
+}, {
     name: "Twitch",
     cssClass: "Twitch"
 }, {
@@ -337,6 +345,9 @@ var bubbles = [{
 }, {
     name: "WeTransfer",
     cssClass: "WeTransfer"
+}, {
+    name: "WeWork",
+    cssClass: "WeWork"
 }, {
     name: "Wish",
     cssClass: "Wish"
