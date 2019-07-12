@@ -271,9 +271,6 @@ class App extends Component {
                                     </SyntaxHighlighter>
                                 </Card>
                             </Transition>
-                            <button onClick={() => this.setState({visible: !this.state.visible})}
-                                    className="common-Button common-Button--default">Click Me
-                            </button>
                         </div>
                         <div className="col-md-4 pb-3 pr-3">
                             <h1 className="common-UppercaseTitle common-UppercaseTitle-Inverse mt-3">
