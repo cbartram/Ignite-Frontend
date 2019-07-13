@@ -1,23 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import { Provider } from 'react-redux'
+import {Provider} from 'react-redux'
 import * as serviceWorker from './serviceWorker';
-import { createStore, applyMiddleware, compose } from 'redux';
+import {applyMiddleware, compose, createStore} from 'redux';
 import thunk from 'redux-thunk';
-import Amplify, { Auth } from 'aws-amplify';
-import { CookiesProvider } from 'react-cookie';
+import {gql} from "apollo-boost";
+import {createHttpLink} from "apollo-link-http";
+import {setContext} from "apollo-link-context";
+import {ApolloClient} from 'apollo-client'
+import {InMemoryCache} from 'apollo-cache-inmemory';
+import Amplify, {Auth} from 'aws-amplify';
+import {CookiesProvider} from 'react-cookie';
 import rootReducer from './reducers/rootReducer';
 import * as constants from './constants'
+import {AMPLIFY_CONFIG, API_KEY, DEV_URL, FB_APP_ID, IS_PROD, PROD_API_KEY, PROD_URL} from './constants'
 import Router from './components/Router/Router'
 import Log from './Log';
-import { loginSuccess, fetchVideos } from './actions/actions';
-import { AMPLIFY_CONFIG } from './constants';
-import {IS_PROD} from "./constants";
-import { Loader } from "semantic-ui-react";
-import { StripeProvider, Elements } from 'react-stripe-elements';
-import { FB_APP_ID } from "./constants";
-import { dispatchProcess, dispatchProcessMiddleware } from './util';
+import {fetchVideos, loginSuccess} from './actions/actions';
+import {Loader} from "semantic-ui-react";
+import {Elements, StripeProvider} from 'react-stripe-elements';
+import {dispatchProcess, dispatchProcessMiddleware} from './util';
+import './index.css';
 
 // Setup Redux middleware and store
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -27,6 +30,37 @@ const store = createStore(rootReducer, constants.INITIAL_STATE, composeEnhancers
 
 // Configure federated identity providers (AWS Cognito)
 Amplify.configure(AMPLIFY_CONFIG);
+
+const httpLink = createHttpLink({
+    uri: IS_PROD ? `${PROD_URL}/graphql` : `${DEV_URL}/graphql`
+});
+
+const authLink = setContext((_, {headers}) => {
+    return {
+        headers: {
+            ...headers,
+            'x-api-key': IS_PROD ? PROD_API_KEY : API_KEY,
+        },
+    }
+});
+
+// Setup GraphQL Client
+const client = new ApolloClient({
+    link: authLink.concat(httpLink),
+    cache: new InMemoryCache()
+});
+
+client
+    .query({
+        query: gql`
+      {
+        customer(id: "cus_FOpphWLC8d6huX") {
+          name
+        }
+      }
+    `
+    })
+    .then(result => console.log(result));
 
 // Setup Logger
 if (!IS_PROD || localStorage.getItem('FORCE_LOGS') === true) localStorage.setItem('debug', 'ignite:*');

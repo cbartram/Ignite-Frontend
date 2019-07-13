@@ -1,27 +1,27 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import _ from 'lodash';
-import { FormGroup, FormControl } from 'react-bootstrap';
-import { withRouter } from "react-router-dom";
-import { Auth } from 'aws-amplify/lib/index';
-import { Confirm, Placeholder } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import {FormControl, FormGroup} from 'react-bootstrap';
+import {Link, withRouter} from "react-router-dom";
+import {Auth} from 'aws-amplify/lib/index';
+import {Confirm, Placeholder} from 'semantic-ui-react';
 import moment from 'moment/moment';
 import withContainer from '../../components/withContainer';
 import Card from '../../components/Card/Card';
 import LoaderButton from "../../components/LoaderButton/LoaderButton";
 import './Profile.css';
 import {
-    updateBillingSync,
-    updateVideosSync,
-    requestVideos,
-    updateActiveVideo,
-    updateUserAttributes,
-    videosFetched,
-    unsubscribe,
-    loginSuccess,
     fetchVideos,
     getEvents,
+    getStripeCustomer,
+    loginSuccess,
+    requestVideos,
+    unsubscribe,
+    updateActiveVideo,
+    updateBillingSync,
+    updateUserAttributes,
+    updateVideosSync,
+    videosFetched,
 } from '../../actions/actions';
 import Log from '../../Log';
 
@@ -43,6 +43,7 @@ const mapDispatchToProps = dispatch => ({
    loginSuccess: (payload) => dispatch(loginSuccess(payload)),
    fetchVideos: (payload) => dispatch(fetchVideos(payload)),
    getEvents: (payload) => dispatch(getEvents(payload)),
+    getStripeCustomer: (id) => dispatch(getStripeCustomer(id))
 });
 
 /**
@@ -69,6 +70,7 @@ class Profile extends Component {
      */
     async componentDidMount() {
         this.props.getEvents({ customerId: this.props.user.customer_id });
+        // this.props.getStripeCustomer(this.props.user.customer_id);
 
         try {
             if (this.props.videos.activeVideo && this.props.videos.activeVideo.name === 'null') {

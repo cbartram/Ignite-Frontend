@@ -144,7 +144,7 @@ export const matchSearchQuery = (query, element, green = false) => {
  * @param dispatch Function redux dispatch function
  * @returns {Promise<*|Promise<any>|undefined>}
  */
-export const post = async (body, path, requestType, successType, failureType, dispatch) => {
+export const post = async (body, path, requestType, successType, failureType, dispatch, debug = false) => {
     dispatch({
         type: requestType,
         payload: body // Sets isFetching to true (useful for unit testing redux)
@@ -168,6 +168,8 @@ export const post = async (body, path, requestType, successType, failureType, di
         };
 
         const response = await (await fetch(getRequestUrl(path), params)).json();
+
+        debug && console.log('[DEBUG] Post Response: ', response);
 
         return new Promise((resolve, reject) => {
             if (response.status === 200) {
