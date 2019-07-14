@@ -4,11 +4,10 @@ import {Provider} from 'react-redux'
 import * as serviceWorker from './serviceWorker';
 import {applyMiddleware, compose, createStore} from 'redux';
 import thunk from 'redux-thunk';
-import {gql} from "apollo-boost";
-import {createHttpLink} from "apollo-link-http";
+import * as Apollo from 'apollo-boost';
 import {setContext} from "apollo-link-context";
 import {ApolloClient} from 'apollo-client'
-import {InMemoryCache} from 'apollo-cache-inmemory';
+import {ApolloProvider} from "react-apollo";
 import Amplify, {Auth} from 'aws-amplify';
 import {CookiesProvider} from 'react-cookie';
 import rootReducer from './reducers/rootReducer';
@@ -31,10 +30,6 @@ const store = createStore(rootReducer, constants.INITIAL_STATE, composeEnhancers
 // Configure federated identity providers (AWS Cognito)
 Amplify.configure(AMPLIFY_CONFIG);
 
-const httpLink = createHttpLink({
-    uri: IS_PROD ? `${PROD_URL}/graphql` : `${DEV_URL}/graphql`
-});
-
 const authLink = setContext((_, {headers}) => {
     return {
         headers: {
@@ -46,21 +41,9 @@ const authLink = setContext((_, {headers}) => {
 
 // Setup GraphQL Client
 const client = new ApolloClient({
-    link: authLink.concat(httpLink),
-    cache: new InMemoryCache()
+    link: authLink.concat(Apollo.HttpLink({uri: IS_PROD ? `${PROD_URL}/graphql` : `${DEV_URL}/graphql`})),
+    cache: new Apollo.InMemoryCache()
 });
-
-client
-    .query({
-        query: gql`
-      {
-        customer(id: "cus_FOpphWLC8d6huX") {
-          name
-        }
-      }
-    `
-    })
-    .then(result => console.log(result));
 
 // Setup Logger
 if (!IS_PROD || localStorage.getItem('FORCE_LOGS') === true) localStorage.setItem('debug', 'ignite:*');
@@ -146,15 +129,17 @@ const render = async () => {
 
     // Now render the full page
     ReactDOM.render(
-        <CookiesProvider>
-            <Provider store={store}>
-                <StripeProvider apiKey="pk_test_AIs6RYV3qrxG6baDpohxn1L7">
-                    <Elements>
-                        <Router />
-                    </Elements>
-                </StripeProvider>
-            </Provider>
-        </CookiesProvider>
+        <ApolloProvider client={client}>
+            <CookiesProvider>
+                <Provider store={store}>
+                    <StripeProvider apiKey="pk_test_AIs6RYV3qrxG6baDpohxn1L7">
+                        <Elements>
+                            <Router/>
+                        </Elements>
+                    </StripeProvider>
+                </Provider>
+            </CookiesProvider>
+        </ApolloProvider>
         , document.getElementById('root'));
 
     // If you want your app to work offline and load faster, you can change
