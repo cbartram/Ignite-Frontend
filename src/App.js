@@ -101,26 +101,26 @@ class App extends Component {
             });
         }, 6500);
 
-        // setInterval(() => {
-        //     this.setState((prev) => {
-        //         // Compute the cogs value
-        //         let { cogOne, cogTwo } = prev;
-        //         if(cogOne >= 360)
-        //             cogOne = 0;
-        //         else
-        //             cogOne += SPEED; // Speed
-        //
-        //         if(cogTwo <= -360)
-        //             cogTwo = 0;
-        //         else
-        //             cogTwo -= SPEED;
-        //
-        //         return {
-        //             cogOne,
-        //             cogTwo
-        //         }
-        //     })
-        // }, 50);
+        setInterval(() => {
+            this.setState((prev) => {
+                // Compute the cogs value
+                let {cogOne, cogTwo} = prev;
+                if (cogOne >= 360)
+                    cogOne = 0;
+                else
+                    cogOne += SPEED; // Speed
+
+                if (cogTwo <= -360)
+                    cogTwo = 0;
+                else
+                    cogTwo -= SPEED;
+
+                return {
+                    cogOne,
+                    cogTwo
+                }
+            })
+        }, 50);
 
         const addScript = document.createElement('script');
         addScript.setAttribute('src', './Bubbles.js');

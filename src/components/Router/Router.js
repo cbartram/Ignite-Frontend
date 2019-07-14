@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import App from '../../App';
 import Login from '../../pages/Login/Login';
 import NotFound from '../../pages/NotFound/NotFound';
@@ -38,7 +38,6 @@ class Router extends Component {
                     </Switch>
                 </BrowserRouter>
             );
-
         return (
             <BrowserRouter>
                 <Switch>

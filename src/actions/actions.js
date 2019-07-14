@@ -3,7 +3,6 @@
  */
 import _ from 'lodash';
 import * as constants from '../constants';
-import {API_STRIPE_GET_CUSTOMER} from '../constants';
 import Log from '../Log';
 import {getVideos, post,} from '../util';
 
@@ -170,15 +169,6 @@ export const updateActiveVideo = (video) => dispatch => {
       type: constants.UPDATE_ACTIVE_VIDEO,
       payload: video
   });
-};
-
-/**
- * Retrieves stripe customer details via graphQL api endpoint
- * @param id String customer id cus_xxxxxx
- * @returns {Function}
- */
-export const getStripeCustomer = (id) => async dispatch => {
-    await post({customer_id: id}, API_STRIPE_GET_CUSTOMER, constants.GET_STRIPE_CUSTOMER_REQUEST, constants.GET_STRIPE_CUSTOMER_SUCCESS, constants.GET_STRIPE_CUSTOMER_FAILURE, dispatch, true)
 };
 
 /**

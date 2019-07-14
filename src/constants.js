@@ -65,7 +65,6 @@ export const API_POST_QUESTION = '/posts/create';
 export const API_POST_FIND_QUESTIONS = '/posts/find';
 export const API_POST_UPDATE = '/posts/update';
 export const API_ANSWER_CREATE = '/posts/answer/create';
-export const API_STRIPE_GET_CUSTOMER = '/graphql';
 
 // Prod Params
 export const PROD_URL = 'https://2147bwmah5.execute-api.us-east-1.amazonaws.com/prod';
@@ -159,6 +158,3 @@ export const UNSUBSCRIBE_SUCCESS = 'UNSUBSCRIBE_SUCCESS';
 export const GET_EVENTS_REQUEST = 'GET_EVENTS_REQUEST';
 export const GET_EVENTS_FAILURE = 'GET_EVENTS_FAILURE';
 export const GET_EVENTS_SUCCESS = 'GET_EVENTS_SUCCESS';
-export const GET_STRIPE_CUSTOMER_REQUEST = 'GET_STRIPE_CUSTOMER_REQUEST';
-export const GET_STRIPE_CUSTOMER_SUCCESS = 'GET_STRIPE_CUSTOMER_SUCCESS';
-export const GET_STRIPE_CUSTOMER_FAILURE = 'GET_STRIPE_CUSTOMER_FAILURE';

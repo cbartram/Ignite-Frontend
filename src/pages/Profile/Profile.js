@@ -4,6 +4,8 @@ import _ from 'lodash';
 import {FormControl, FormGroup} from 'react-bootstrap';
 import {Link, withRouter} from "react-router-dom";
 import {Auth} from 'aws-amplify/lib/index';
+import {Query} from 'react-apollo';
+import {gql} from 'apollo-boost';
 import {Confirm, Placeholder} from 'semantic-ui-react';
 import moment from 'moment/moment';
 import withContainer from '../../components/withContainer';
@@ -13,7 +15,6 @@ import './Profile.css';
 import {
     fetchVideos,
     getEvents,
-    getStripeCustomer,
     loginSuccess,
     requestVideos,
     unsubscribe,
@@ -24,6 +25,7 @@ import {
     videosFetched,
 } from '../../actions/actions';
 import Log from '../../Log';
+import BillingDetails from "./BillingDetails/BillingDetails";
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -33,17 +35,16 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-   updateBillingSync: (payload) => dispatch(updateBillingSync(payload)),
-   unsubscribeUser: (user) => dispatch(updateUserAttributes(user)),
-   updateActiveVideo: (video) => dispatch(updateActiveVideo(video)),
-   updateVideosSync: (videos) => dispatch(updateVideosSync(videos)),
-   requestVideos: () => dispatch(requestVideos()),
-   loadingComplete: () => dispatch(videosFetched()),
-   unsubscribe: (payload) => dispatch(unsubscribe(payload)),
-   loginSuccess: (payload) => dispatch(loginSuccess(payload)),
-   fetchVideos: (payload) => dispatch(fetchVideos(payload)),
-   getEvents: (payload) => dispatch(getEvents(payload)),
-    getStripeCustomer: (id) => dispatch(getStripeCustomer(id))
+    updateBillingSync: (payload) => dispatch(updateBillingSync(payload)),
+    unsubscribeUser: (user) => dispatch(updateUserAttributes(user)),
+    updateActiveVideo: (video) => dispatch(updateActiveVideo(video)),
+    updateVideosSync: (videos) => dispatch(updateVideosSync(videos)),
+    requestVideos: () => dispatch(requestVideos()),
+    loadingComplete: () => dispatch(videosFetched()),
+    unsubscribe: (payload) => dispatch(unsubscribe(payload)),
+    loginSuccess: (payload) => dispatch(loginSuccess(payload)),
+    fetchVideos: (payload) => dispatch(fetchVideos(payload)),
+    getEvents: (payload) => dispatch(getEvents(payload)),
 });
 
 /**
@@ -61,6 +62,7 @@ class Profile extends Component {
             confirmPassword: "",
             events: [],
             confirmOpen: false,
+            customer: null
         };
     }
 
@@ -70,8 +72,6 @@ class Profile extends Component {
      */
     async componentDidMount() {
         this.props.getEvents({ customerId: this.props.user.customer_id });
-        // this.props.getStripeCustomer(this.props.user.customer_id);
-
         try {
             if (this.props.videos.activeVideo && this.props.videos.activeVideo.name === 'null') {
                 let activeVideo = null;
@@ -173,22 +173,6 @@ class Profile extends Component {
         return ((scrubDuration / secondsLength) * 100).toFixed(0);
     }
 
-
-    /**
-     * Renders the date when the bill will renew for the user
-     */
-    renderRenewalDate() {
-        if(this.props.user.at_period_end === true) {
-            return <span className="badge badge-pill badge-secondary py-1 px-2">Subscription Cancelled</span>
-        }
-
-        if(_.isNil(this.props.billing.next_invoice_date)) {
-            return <span className="value">None</span>
-        }
-
-        return <span className="badge badge-pill badge-primary py-1 px-2">{moment.unix(this.props.billing.next_invoice_date).format('MMMM Do')}</span>
-    }
-
     /**
      * Determines the proper icon to show
      * given the event type.
@@ -216,353 +200,234 @@ class Profile extends Component {
     }
 
     render() {
-        return (
-            <div>
-                <Confirm
-                    open={this.state.confirmOpen}
-                    className="confirm-delete"
-                    header="Danger Zone"
-                    cancelButton="Back"
-                    confirmButton="Cancel Subscription"
-                    content={() => {
-                        return (
-                            <p className="common-BodyText">
-                                <strong>Warning:</strong>&nbsp;
-                                This will permanently cancel your Ignite Subscription. If you are still in your trial period you will not be charged.
-                                If you trial has ended your subscription will be active until the start of the next billing cycle at which time you will no
-                                longer be able to access Ignite video content.
-                                <br />
-                                You can resubscribe at any time by <Link to="/pricing">following this link.</Link>
-                            </p>
-                        )
-                    }}
-                    onCancel={() => this.setState({ confirmOpen: false })}
-                    onConfirm={async () => {
-                        this.setState({ confirmOpen: false });
-                        await this.unsubscribe();
-                    }}
-                />
-                <div className="row">
-                    <div className="col-md-7">
-                        {/* Billing Card */}
-                        <Card loading={this.props.user.isFetching} cardTitle="Billing Information" classNames={['pb-0']}>
-                            <div className="d-flex flex-row justify-content-between">
-                                <div className="table-responsive">
-                                    <table className="table table-borderless table-sm">
-                                        <tbody>
-                                            <tr>
-                                                <td className="key">ID</td>
-                                                <td>
-                                                    <span className="value-code">
-                                                         { _.isNil(this.props.billing.customer_id) ? 'None' : this.props.billing.customer_id }
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td className="key">Plan Name</td>
-                                                <td>
-                                                    <span className="value">
-                                                        { _.isNil(this.props.billing.plan) ? 'None' : this.props.billing.plan }
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td className="key">Renews On</td>
-                                                <td>
-                                                    { this.renderRenewalDate() }
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td className="key">Active</td>
-                                                <td>
-                                                    <span className="value">
-                                                        { _.isNil(this.props.billing.subscription_active) ? 'None' : this.props.billing.subscription_active }
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div className="table-responsive">
-                                    <table className="table table-borderless table-sm">
-                                        <tbody>
-                                            <tr>
-                                                <td className="key">
-                                                    Current Period
-                                                </td>
-                                                <td>
-                                                    { _.isNil(this.props.user.invoice_date) ?
-                                                        <span className="value">None</span> :
-                                                        <span className="value">
-                                                        { moment.unix(this.props.user.invoice_date).format('MMM Do YYYY') }
-                                                            &nbsp;
-                                                            to
-                                                            &nbsp;
-                                                            { moment.unix(this.props.user.next_invoice_date).format('MMM Do YYYY')}
-                                                        </span>
+        return <Query
+            query={gql`
+                      {
+                        getCustomer(id: "${this.props.user.customer_id}") {
+                          name
+                          id
+                          sources {
+                            last4
+                            brand
+                          }
+                          subscriptions {
+                            cancel_at_period_end
+                            current_period_start
+                            current_period_end
+                            trial_end
+                            status
+                            plan {
+                                nickname
+                                amount
+                            }
+                          }
+                        }
+                      }
+                    `}
+        >
+            {({loading, error, data}) => {
+                if (error) Log.warn(error);
+                console.log(data);
+                return (
+                    <div>
+                        <Confirm
+                            open={this.state.confirmOpen}
+                            className="confirm-delete"
+                            header="Danger Zone"
+                            cancelButton="Back"
+                            confirmButton="Cancel Subscription"
+                            content={() => {
+                                return (
+                                    <p className="common-BodyText">
+                                        <strong>Warning:</strong>&nbsp;
+                                        This will permanently cancel your Ignite Subscription. If you are still in your
+                                        trial period you will not be charged.
+                                        If you trial has ended your subscription will be active until the start of the
+                                        next billing cycle at which time you will no
+                                        longer be able to access Ignite video content.
+                                        <br/>
+                                        You can resubscribe at any time by <Link to="/pricing">following this
+                                        link.</Link>
+                                    </p>
+                                )
+                            }}
+                            onCancel={() => this.setState({confirmOpen: false})}
+                            onConfirm={async () => {
+                                this.setState({confirmOpen: false});
+                                await this.unsubscribe();
+                            }}
+                        />
+                        <div className="row">
+                            <div className="col-md-7">
+                                {/* Billing Card */}
+                                <BillingDetails
+                                    auth={this.props.auth}
+                                    billing={this.props.billing}
+                                    loading={loading}
+                                    customer={data.getCustomer}
+                                />
+                            </div>
+                            <div className="col-md-5">
+                                <Card
+                                    cardTitle="Recent Events"
+                                    style={{midWidth: 0, padding: 0}}
+                                    classNames={['p-0', 'mt-0', 'pb-2']}
+                                >
+                                    {
+                                        this.props.auth.isFetching ?
+                                            _.times(3, i => {
+                                                return (
+                                                    <div className="p-4" key={i}>
+                                                        <Placeholder fluid>
+                                                            <Placeholder.Paragraph>
+                                                                <Placeholder.Line/>
+                                                                <Placeholder.Line/>
+                                                                <Placeholder.Line/>
+                                                                <Placeholder.Line/>
+                                                            </Placeholder.Paragraph>
+                                                        </Placeholder>
+                                                    </div>
+                                                )
+                                            }) :
+                                            <div style={{maxHeight: 240, overflowY: 'scroll'}}>
+                                                <ul className="list-group">
+                                                    {
+                                                        this.props.user.events.length === 0 ?
+                                                            <li className="list-group-item"
+                                                                style={{border: '1px solid white'}}>
+                                                                <h3>No Events</h3></li> :
+                                                            this.props.user.events.map((event, i) => {
+                                                                return (
+                                                                    <li className="list-group-item"
+                                                                        style={{border: '1px solid white'}} key={i}>
+
+                                                                        <div className="d-flex flex-row">
+                                                                    <span
+                                                                        className={`${Profile.getIcon(event.type)} mr-2`}/>
+                                                                            <div className="d-flex flex-column">
+                                                                                <h5 className="mb-1 mt-0">{event.type.split('.').join(' ')}</h5>
+                                                                                <p className="text-muted">{moment(moment.unix(event.created)).format('MMM d, YYYY h:mm A')}</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                )
+                                                            })
                                                     }
-                                                </td>
-                                            </tr>
+                                                </ul>
+                                            </div>
+                                    }
+                                </Card>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-md-4">
+                                {/* Info Card */}
+                                <Card loading={this.props.videos.isFetching} cardTitle="Account Information">
+
+                                    <div className="table-responsive">
+                                        <table className="table table-borderless table-sm">
+                                            <tbody>
                                             <tr>
                                                 <td className="key">
-                                                    Payment Amount
+                                                    Name
                                                 </td>
                                                 <td>
-                                                    <span className="value-code value-lg">
-                                                        ${ !_.isNil(this.props.billing.next_invoice_amount) ? (this.props.billing.next_invoice_amount / 100).toFixed(2): '0.00' }
-                                                    </span>
+                                            <span className="value">
+                                                {this.props.user.name}
+                                            </span>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td className="key">
-                                                    Billing Method
+                                                    Email
+                                                </td>
+                                                <td>
+                                            <span className="value">
+                                                {this.props.user.email}
+                                            </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td className="key">
+                                                    Subscriber
                                                 </td>
                                                 <td>
                                                     {
-                                                        !_.isNil(this.props.billing.payment_card_type) ?
-                                                            <div>
-                                                        <span className="value">
-                                                          {/* Card image icon */}
-                                                            <svg className="SVGInline-svg SVGInline--cleaned-svg SVG-svg mr-2" style={{width: 16, height: 16 }}
-                                                                 xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                                                            <g fill="none" fillRule="evenodd">
-                                                                <path fill="#F6F9FC" fillRule="nonzero" d="M1 12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v8z" />
-                                                                <path fill="#E6EBF1" fillRule="nonzero" d="M1 12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v8zm-1 0V4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2z" />
-                                                                <path fill="#1A1F71" d="M0 5V4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v1H0zm5 2h6a1 1 0 0 1 0 2H5a1 1 0 1 1 0-2z" />
-                                                                <path fill="#F7B600" d="M0 11v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1H0z" />
-                                                            </g>
-                                                        </svg>
-                                                        •••• { this.props.billing.payment_last_four }
+                                                        this.props.billing.premium ?
+                                                            <span className="badge badge-pill badge-success py-1 px-2">
+                                                            True
+                                                        </span> :
+                                                            <span className="badge badge-pill badge-warning py-1 px-2">
+                                                            False
                                                         </span>
-                                                                <span className="value ml-2">
-                                                         { this.props.billing.payment_card_type }
-                                                        </span>
-                                                            </div> :
-                                                            null
                                                     }
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td className="key">
-                                                    Card Brand
-                                                </td>
-                                                <td>
-                                                    <span className="value ml-2">
-                                                         { this.props.billing.payment_card_type }
-                                                        </span>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div className="d-flex align-items-end justify-content-start mt-3">
-                                {
-                                    // Only show the button to user's who are actively subscribed
-                                    // (dont show to users whos subscription will end at the close of the next period)
-                                    (this.props.billing.premium && this.props.billing.premium !== 'false' && this.props.user.at_period_end !== true ) &&
-                                    <LoaderButton
-                                        isLoading={this.props.auth.isFetching}
-                                        className="btn btn-danger"
-                                        text="Cancel Subscription"
-                                        noCommon
-                                        onClick={() => this.setState({ confirmOpen: true })}>
-                                    </LoaderButton>
-
-                                }
-                            </div>
-                        </Card>
-                    </div>
-                    <div className="col-md-5">
-                        <Card
-                            cardTitle="Recent Events"
-                            style={{ midWidth: 0, padding: 0 }}
-                            classNames={['p-0', 'mt-0', 'pb-2']}
-                        >
-                            {
-                                this.props.auth.isFetching ?
-                                    _.times(3, i => {
-                                        return (
-                                            <div className="p-4" key={i}>
-                                                <Placeholder fluid>
-                                                    <Placeholder.Paragraph>
-                                                        <Placeholder.Line />
-                                                        <Placeholder.Line />
-                                                        <Placeholder.Line />
-                                                        <Placeholder.Line />
-                                                    </Placeholder.Paragraph>
-                                                </Placeholder>
-                                            </div>
-                                        )
-                                    }) :
-                                    <div style={{maxHeight: 240, overflowY: 'scroll'}}>
-                                        <ul className="list-group">
-                                            {
-                                                this.props.user.events.length === 0 ?
-                                                    <li className="list-group-item" style={{border: '1px solid white'}}>
-                                                        <h3>No Events</h3></li> :
-                                                    this.props.user.events.map((event, i) => {
-                                                        return (
-                                                            <li className="list-group-item"
-                                                                style={{border: '1px solid white'}} key={i}>
-
-                                                                <div className="d-flex flex-row">
-                                                                    <span
-                                                                        className={`${Profile.getIcon(event.type)} mr-2`}/>
-                                                                    <div className="d-flex flex-column">
-                                                                        <h5 className="mb-1 mt-0">{event.type.split('.').join(' ')}</h5>
-                                                                        <p className="text-muted">{moment(moment.unix(event.created)).format('MMM d, YYYY h:mm A')}</p>
-                                                                    </div>
-                                                                </div>
-                                                            </li>
-                                                        )
-                                                    })
-                                            }
-                                        </ul>
+                                            {/*{*/}
+                                            {/*    data.getCustomer.subscriptions[0].cancel_at_period_end === true &&*/}
+                                            {/*    <tr>*/}
+                                            {/*        <td className="key">*/}
+                                            {/*            Subscription Ends*/}
+                                            {/*        </td>*/}
+                                            {/*        <td>*/}
+                                            {/*            <span className="value">*/}
+                                            {/*                <span className="badge badge-pill badge-secondary px-2 py-1">{moment.unix(this.props.user.unsub_timestamp).fromNow()}</span>*/}
+                                            {/*            </span>*/}
+                                            {/*        </td>*/}
+                                            {/*    </tr>*/}
+                                            {/*}*/}
+                                            </tbody>
+                                        </table>
                                     </div>
-                            }
-                        </Card>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-md-4">
-                    {/* Info Card */}
-                    <Card loading={this.props.videos.isFetching} cardTitle="Account Information">
-
-                        <div className="table-responsive">
-                            <table className="table table-borderless table-sm">
-                                <tbody>
-                                    <tr>
-                                        <td className="key">
-                                            Name
-                                        </td>
-                                        <td>
-                                            <span className="value">
-                                                { this.props.user.name }
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className="key">
-                                            Email
-                                        </td>
-                                        <td>
-                                            <span className="value">
-                                                { this.props.user.email }
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className="key">
-                                            Subscriber
-                                        </td>
-                                        <td>
-                                            {
-                                                this.props.billing.premium ?
-                                                    <span className="badge badge-pill badge-success py-1 px-2">
-                                                        True
-                                                    </span> :
-                                                    <span className="badge badge-pill badge-warning py-1 px-2">
-                                                        False
-                                                    </span>
-                                            }
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className="key">
-                                            Plan
-                                        </td>
-                                        <td>
-                                            {
-                                                this.props.user.plan === 'Basic Plan' ?
-                                                    <span className="value">Basic Plan</span> :
-                                                    <span className="value missing">No Plan</span>
-                                            }
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className="key">
-                                            Active
-                                        </td>
-                                        <td>
-                                            <span className="value">
-                                                { _.isNil(this.props.billing.subscription_active) ? 'None' : this.props.billing.subscription_active }
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className="key">
-                                            Trial End
-                                        </td>
-                                        <td>
-                                            <span className="value">
-                                                { (_.isNil(this.props.billing.trial_end) || !this.props.billing.premium) ? 'None' : <span className="badge badge-pill badge-primary px-2 py-1">{ moment.unix(this.props.billing.trial_end).fromNow() }</span> }
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    {
-                                        this.props.user.at_period_end === true &&
-                                        <tr>
-                                            <td className="key">
-                                                Subscription Ends
-                                            </td>
-                                            <td>
-                                                <span className="value">
-                                                    <span className="badge badge-pill badge-secondary px-2 py-1">{ moment.unix(this.props.user.unsub_timestamp).fromNow() }</span>
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
+                                    <div className="ChangePassword">
+                                        <form onSubmit={this.handleChangeClick}>
+                                            <FormGroup>
+                                                <label>Old Password</label>
+                                                <FormControl
+                                                    id="oldPassword"
+                                                    type="password"
+                                                    className="form-field-default"
+                                                    onChange={this.handleChange}
+                                                    value={this.state.oldPassword}
+                                                />
+                                            </FormGroup>
+                                            <hr/>
+                                            <FormGroup>
+                                                <label>New Password</label>
+                                                <FormControl
+                                                    id="password"
+                                                    type="password"
+                                                    className="form-field-default"
+                                                    value={this.state.password}
+                                                    onChange={this.handleChange}
+                                                />
+                                            </FormGroup>
+                                            <FormGroup>
+                                                <label>Confirm Password</label>
+                                                <FormControl
+                                                    id="confirmPassword"
+                                                    type="password"
+                                                    className="form-field-default"
+                                                    onChange={this.handleChange}
+                                                    value={this.state.confirmPassword}
+                                                />
+                                            </FormGroup>
+                                            <LoaderButton
+                                                type="submit"
+                                                text="Change Password"
+                                                loadingText="Updating…"
+                                                disabled={!this.validateForm()}
+                                                isLoading={this.state.isChanging}
+                                            />
+                                        </form>
+                                    </div>
+                                </Card>
+                            </div>
                         </div>
-                        <div className="ChangePassword">
-                            <form onSubmit={this.handleChangeClick}>
-                                <FormGroup>
-                                    <label>Old Password</label>
-                                    <FormControl
-                                        id="oldPassword"
-                                        type="password"
-                                        className="form-field-default"
-                                        onChange={this.handleChange}
-                                        value={this.state.oldPassword}
-                                    />
-                                </FormGroup>
-                                <hr />
-                                <FormGroup>
-                                    <label>New Password</label>
-                                    <FormControl
-                                        id="password"
-                                        type="password"
-                                        className="form-field-default"
-                                        value={this.state.password}
-                                        onChange={this.handleChange}
-                                    />
-                                </FormGroup>
-                                <FormGroup>
-                                    <label>Confirm Password</label>
-                                    <FormControl
-                                        id="confirmPassword"
-                                        type="password"
-                                        className="form-field-default"
-                                        onChange={this.handleChange}
-                                        value={this.state.confirmPassword}
-                                    />
-                                </FormGroup>
-                                <LoaderButton
-                                    type="submit"
-                                    text="Change Password"
-                                    loadingText="Updating…"
-                                    disabled={!this.validateForm()}
-                                    isLoading={this.state.isChanging}
-                                />
-                            </form>
-                        </div>
-                    </Card>
                     </div>
-                </div>
-            </div>
-        )
+                )
+            }}
+        </Query>
     }
 }
 
