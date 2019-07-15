@@ -277,13 +277,7 @@ export const getVideos = async (username) => {
             'x-api-key': IS_PROD ? PROD_API_KEY : API_KEY
         },
         // Since this is calling an API these details are crucial for the lambda function to know which route to execute.
-        body: JSON.stringify({
-            headers: {},
-            method: 'POST',
-            path: API_FIND_ALL_USERS,
-            parameters: {}, // Query params
-            body: { username }
-        }),
+        body: JSON.stringify({username}),
     };
 
     try {

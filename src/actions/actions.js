@@ -96,32 +96,32 @@ export const fetchVideos = username => async dispatch => {
 
     try {
         const response = await getVideos(username);
-        if(response.status === 200) {
+        if (response.statusCode === 200) {
             // Dispatch information about billing
             dispatch({
                 type: constants.BILLING_SUCCESS,
-                payload: response.body.user,
+                payload: response.user,
             });
 
             dispatch({
                 type: constants.QUIZZES_SUCCESS,
-                payload: response.body.user.quizzes
+                payload: response.user.quizzes
             });
 
             // Dispatch information about videos
             dispatch({
                 type: constants.VIDEOS_SUCCESS,
-                payload: response.body.user.videos,
+                payload: response.user.videos,
             });
 
-            if(!_.isUndefined(response.body.user.active_video))
+            if (!_.isUndefined(response.user.active_video))
                 dispatch({
                     type: constants.UPDATE_ACTIVE_VIDEO,
-                    payload: response.body.user.active_video,
+                    payload: response.user.active_video,
                 });
 
             // Remove Quizzes and videos from user (these are stored elsewhere in redux)
-            const userMinusVideos = { ...response.body.user };
+            const userMinusVideos = {...response.user};
             delete userMinusVideos.videos;
             delete userMinusVideos.quizzes;
 
@@ -129,7 +129,7 @@ export const fetchVideos = username => async dispatch => {
                 type: constants.UPDATE_USER_ATTRIBUTES,
                 payload: userMinusVideos
             });
-        } else if(response.status > 200 || _.isUndefined(response.status)) {
+        } else if (response.statusCode > 200 || _.isUndefined(response.statusCode)) {
             // An error occurred
             dispatch({
                 type: constants.VIDEOS_FAILURE,
