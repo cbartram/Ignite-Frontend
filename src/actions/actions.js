@@ -4,7 +4,7 @@
 import _ from 'lodash';
 import * as constants from '../constants';
 import Log from '../Log';
-import {getVideos, post,} from '../util';
+import {getVideos, post} from '../util';
 
 /**
  * Updates a users attributes within redux
@@ -233,15 +233,6 @@ export const processPayment = (payload) => async dispatch => {
  */
 export const unsubscribe = (payload) => async dispatch => {
     await post(payload, constants.API_DELETE_SUBSCRIPTION, constants.UNSUBSCRIBE_REQUEST, constants.UNSUBSCRIBE_SUCCESS, constants.UNSUBSCRIBE_FAILURE, dispatch);
-};
-
-/**
- * Retrieves stripe events for a customer
- * @param payload Object payload containing the users stripe customer id
- * @returns {Function}
- */
-export const getEvents = (payload) => async dispatch => {
-    await post(payload, constants.API_FIND_EVENTS, constants.GET_EVENTS_REQUEST, constants.GET_EVENTS_SUCCESS, constants.GET_EVENTS_FAILURE, dispatch);
 };
 
 /**

@@ -6,7 +6,7 @@ import {Link, withRouter} from "react-router-dom";
 import {Auth} from 'aws-amplify/lib/index';
 import {Query} from 'react-apollo';
 import {gql} from 'apollo-boost';
-import {Confirm, Placeholder} from 'semantic-ui-react';
+import {Confirm} from 'semantic-ui-react';
 import moment from 'moment/moment';
 import withContainer from '../../components/withContainer';
 import Card from '../../components/Card/Card';
@@ -14,7 +14,6 @@ import LoaderButton from "../../components/LoaderButton/LoaderButton";
 import './Profile.css';
 import {
     fetchVideos,
-    getEvents,
     loginSuccess,
     requestVideos,
     unsubscribe,
@@ -26,6 +25,7 @@ import {
 } from '../../actions/actions';
 import Log from '../../Log';
 import BillingDetails from "./BillingDetails/BillingDetails";
+import RecentEvents from "./RecentEvents/RecentEvents";
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -44,7 +44,6 @@ const mapDispatchToProps = dispatch => ({
     unsubscribe: (payload) => dispatch(unsubscribe(payload)),
     loginSuccess: (payload) => dispatch(loginSuccess(payload)),
     fetchVideos: (payload) => dispatch(fetchVideos(payload)),
-    getEvents: (payload) => dispatch(getEvents(payload)),
 });
 
 /**
@@ -71,7 +70,6 @@ class Profile extends Component {
      * that the user was last watching (started: true, completed: false, scrubDuration > 0)
      */
     async componentDidMount() {
-        this.props.getEvents({ customerId: this.props.user.customer_id });
         try {
             if (this.props.videos.activeVideo && this.props.videos.activeVideo.name === 'null') {
                 let activeVideo = null;
@@ -173,32 +171,6 @@ class Profile extends Component {
         return ((scrubDuration / secondsLength) * 100).toFixed(0);
     }
 
-    /**
-     * Determines the proper icon to show
-     * given the event type.
-     * @param event String the events type (customer.subscription.created etc...)
-     */
-    static getIcon(event) {
-        switch(event) {
-            case 'customer.created':
-                return 'fas fa-user success-icon';
-            case 'customer.subscription.created':
-                return 'far fa-calendar info-icon';
-            case 'charge.succeeded':
-                return 'far fa-credit-card success-icon';
-            case 'invoice.upcoming':
-                return 'far fa-hourglass info-icon';
-            case 'invoice.created':
-                return 'fas fa-receipt success-icon';
-            case 'customer.subscription.trial_will_end':
-                return 'far fa-hourglass warning-icon';
-            case 'customer.subscription.deleted':
-                return 'fas fa-times danger-icon';
-            default:
-                return 'fa fa-plus success-icon'
-        }
-    }
-
     render() {
         return <Query
             query={gql`
@@ -206,6 +178,10 @@ class Profile extends Component {
                         getCustomer(id: "${this.props.user.customer_id}") {
                           name
                           id
+                          events {
+                            type
+                            created
+                          }
                           sources {
                             last4
                             brand
@@ -216,6 +192,7 @@ class Profile extends Component {
                             current_period_end
                             trial_end
                             status
+                           
                             plan {
                                 nickname
                                 amount
@@ -226,7 +203,7 @@ class Profile extends Component {
                     `}
         >
             {({loading, error, data}) => {
-                if (error) Log.warn(error);
+                if (error) Log.warn('No Such Customer...', error);
                 console.log(data);
                 return (
                     <div>
@@ -264,59 +241,14 @@ class Profile extends Component {
                                     auth={this.props.auth}
                                     billing={this.props.billing}
                                     loading={loading}
-                                    customer={data.getCustomer}
+                                    customer={_.isNil(data) ? null : data.getCustomer}
                                 />
                             </div>
                             <div className="col-md-5">
-                                <Card
-                                    cardTitle="Recent Events"
-                                    style={{midWidth: 0, padding: 0}}
-                                    classNames={['p-0', 'mt-0', 'pb-2']}
-                                >
-                                    {
-                                        this.props.auth.isFetching ?
-                                            _.times(3, i => {
-                                                return (
-                                                    <div className="p-4" key={i}>
-                                                        <Placeholder fluid>
-                                                            <Placeholder.Paragraph>
-                                                                <Placeholder.Line/>
-                                                                <Placeholder.Line/>
-                                                                <Placeholder.Line/>
-                                                                <Placeholder.Line/>
-                                                            </Placeholder.Paragraph>
-                                                        </Placeholder>
-                                                    </div>
-                                                )
-                                            }) :
-                                            <div style={{maxHeight: 240, overflowY: 'scroll'}}>
-                                                <ul className="list-group">
-                                                    {
-                                                        this.props.user.events.length === 0 ?
-                                                            <li className="list-group-item"
-                                                                style={{border: '1px solid white'}}>
-                                                                <h3>No Events</h3></li> :
-                                                            this.props.user.events.map((event, i) => {
-                                                                return (
-                                                                    <li className="list-group-item"
-                                                                        style={{border: '1px solid white'}} key={i}>
-
-                                                                        <div className="d-flex flex-row">
-                                                                    <span
-                                                                        className={`${Profile.getIcon(event.type)} mr-2`}/>
-                                                                            <div className="d-flex flex-column">
-                                                                                <h5 className="mb-1 mt-0">{event.type.split('.').join(' ')}</h5>
-                                                                                <p className="text-muted">{moment(moment.unix(event.created)).format('MMM d, YYYY h:mm A')}</p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </li>
-                                                                )
-                                                            })
-                                                    }
-                                                </ul>
-                                            </div>
-                                    }
-                                </Card>
+                                <RecentEvents
+                                    loading={loading}
+                                    customer={_.isNil(data) ? {events: []} : data.getCustomer}
+                                />
                             </div>
                         </div>
                         <div className="row">
