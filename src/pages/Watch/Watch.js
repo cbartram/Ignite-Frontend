@@ -202,7 +202,6 @@ class Watch extends Component {
      * @param answer
      */
     createAnswer(answer) {
-        console.log(answer);
         this.props.answerQuestion(answer)
             .then(() => {
                 this.props.pushAlert('success', 'Answer Posted', 'Your answer has been posted successfully!');
