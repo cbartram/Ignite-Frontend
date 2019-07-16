@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Link, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import debounce from 'lodash/debounce';
+import isNil from 'lodash/isNil';
 import {Image, Search,} from 'semantic-ui-react';
 import {findQuestions, getSignedUrl, hideErrors, logout, updateActiveVideo,} from '../../actions/actions';
 import {Auth} from 'aws-amplify';
@@ -243,7 +244,7 @@ class Navbar extends Component {
             {
                 this.props.sidebar && !this.props.videos.isFetching &&
                 <Sidebar
-                    currentVideoName={this.props.videos.activeVideo.name}
+                    currentVideoName={isNil(this.props.videos.activeVideo) ? 'Loading...' : this.props.videos.activeVideo.name}
                     active={this.state.active}
                     onDismiss={() => this.setState({ active: false }, () => this.props.restoreScroll())}
                     onSearch={value => this.setState({ query: value })}

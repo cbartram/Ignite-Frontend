@@ -3,18 +3,19 @@ import {connect} from 'react-redux';
 import ReactPlayer from 'react-player'
 import {Link, withRouter} from 'react-router-dom';
 import {Auth} from 'aws-amplify/lib/index';
+import {withCookies} from "react-cookie";
 import Markdown from 'react-markdown';
 import _ from 'lodash';
-import { Menu } from 'semantic-ui-react'
+import {Menu} from 'semantic-ui-react'
 import Log from '../../Log';
 import {
-    logout,
-    updateActiveVideo,
-    ping,
+    answerQuestion,
     askQuestion,
     findQuestions,
-    answerQuestion,
     getSignedUrl,
+    logout,
+    ping,
+    updateActiveVideo,
     updatePost,
 } from '../../actions/actions';
 import './Watch.css';
@@ -70,8 +71,19 @@ class Watch extends Component {
         }
     }
 
+    /**
+     * If there is no active video redirect the users back
+     */
+    componentWillMount() {
+        if (_.isNil(this.props.activeVideo)) this.props.history.push('/videos?new=true');
+    }
+
+
     async componentDidMount() {
-        if(this.props.activeVideo.name === 'null' && _.isUndefined(this.props.user.active_video)) this.props.history.push('/videos?new=true');
+        if (_.isNil(this.props.activeVideo)) {
+            this.props.history.push('/videos?new=true');
+            return;
+        }
 
         const videoId = `${this.props.activeVideo.chapter}.${this.props.activeVideo.sortKey}`;
 
@@ -290,7 +302,9 @@ class Watch extends Component {
     renderTabContent() {
         switch (this.state.activeTab) {
             case 0:
-                const video_id = `${this.props.videos.activeVideo.chapter}.${this.props.videos.activeVideo.sortKey}`;
+                let video_id = '0.0';
+                if (!_.isNil(this.props.videos.activeVideo))
+                    video_id = `${this.props.videos.activeVideo.chapter}.${this.props.videos.activeVideo.sortKey}`;
 
                 if (!_.isUndefined(this.props.posts.questions) && !_.isUndefined(this.props.posts.questions[video_id])) {
                     return <ForumContainer
@@ -485,7 +499,6 @@ class Watch extends Component {
                     </div>
                 </div>
             );
-
         return (
             <div>
                 <Modal
@@ -543,7 +556,7 @@ class Watch extends Component {
                 </Modal>
                 <ReactPlayer
                     ref={this.ref}
-                    url={this.props.activeVideo.signedUrl}
+                    url={_.isNil(this.props.activeVideo) ? '' : this.props.activeVideo.signedUrl}
                     width="100%"
                     height="100%"
                     onPlay={() => this.setState({ muted: false })}
@@ -565,17 +578,17 @@ class Watch extends Component {
                 <div className="video-meta-container p-3">
                     <div className="d-flex">
                         <h2 className="mr-auto">
-                            {this.props.activeVideo.name}
+                            {_.isNil(this.props.activeVideo) ? 'Loading...' : this.props.activeVideo.name}
                         </h2>
                         <h4 className="text-muted">
-                            {this.props.activeVideo.length}
+                            {_.isNil(this.props.activeVideo) ? 'Loading...' : this.props.activeVideo.length}
                         </h4>
                     </div>
                     <span className="text-muted">
                           with Christian Bartram
                       </span>
                     <p className="common-BodyText mt-2">
-                        {this.props.activeVideo.description}
+                        {_.isNil(this.props.activeVideo) ? 'Loading...' : this.props.activeVideo.description}
                     </p>
                 </div>
                 <div className="tab-container">
@@ -615,7 +628,7 @@ class Watch extends Component {
     }
 }
 
-export default withContainer(connect(mapStateToProps, mapDispatchToProps)(withRouter(Watch)), {
+export default withContainer(connect(mapStateToProps, mapDispatchToProps)(withCookies(withRouter(Watch))), {
     sidebar: true,
     noFooterMargin: true,
     style: {background: '#fff'}

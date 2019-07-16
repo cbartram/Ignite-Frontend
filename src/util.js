@@ -142,6 +142,7 @@ export const matchSearchQuery = (query, element, green = false) => {
  * @param successType String the redux dispatch type when the request is successful
  * @param failureType String the redux dispatch type when the request has failed.
  * @param dispatch Function redux dispatch function
+ * @param debug Boolean true if we should print the http response and false otherwise. Defaults to false
  * @returns {Promise<*|Promise<any>|undefined>}
  */
 export const post = async (body, path, requestType, successType, failureType, dispatch, debug = false) => {
@@ -158,28 +159,22 @@ export const post = async (body, path, requestType, successType, failureType, di
                 'Accept': 'application/json',
                 'x-api-key': IS_PROD ? PROD_API_KEY : API_KEY,
             },
-            body: JSON.stringify({
-                headers: {},
-                method: 'POST',
-                path,
-                parameters: {},
-                body
-            }),
+            body: JSON.stringify(body),
         };
 
-        const response = await (await fetch(getRequestUrl(path), params)).json();
 
+        const response = await (await fetch(getRequestUrl(path), params)).json();
         debug && console.log('[DEBUG] Post Response: ', response);
 
         return new Promise((resolve, reject) => {
-            if (response.status === 200) {
+            if (response.statusCode === 200) {
                 dispatch({
                     type: successType,
-                    payload: response.body,
+                    payload: response,
                 });
 
                 resolve(response);
-            } else if (response.status > 200 || typeof response.status === 'undefined') {
+            } else if (response.statusCode > 200 || typeof response.statusCode === 'undefined') {
                 // An error occurred
                 dispatch({
                     type: failureType,

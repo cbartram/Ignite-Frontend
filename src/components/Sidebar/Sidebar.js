@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom';
 import _ from 'lodash';
 import SidebarOverlay from './SidebarOverlay';
 import './Sidebar.css';
-import { getSignedUrl, findQuestions } from "../../actions/actions";
-import { IS_PROD } from "../../constants";
+import {findQuestions, getSignedUrl} from "../../actions/actions";
+import {IS_PROD} from "../../constants";
 import Log from "../../Log";
 import {matchSearchQuery} from "../../util";
 
@@ -64,6 +64,24 @@ class Sidebar extends Component {
         }
     }
 
+
+    /**
+     * Computes which icon to render in the sidebar based on if the user
+     * has completed, currently watching, or needs to watch a video
+     * @param video Object video object to compute the icon for
+     * @returns {*}
+     */
+    renderIcon(video) {
+        if (!_.isNil(this.props.activeVideo)) {
+            if (this.props.activeVideo.name === video.name)
+                return <i className="fa fa-pause info-icon"/>;
+            else if (video.completed)
+                return <i className="fa fa-check success-icon"/>
+        } else
+        // Its still loading no active video
+            return <i className="fa fa-pause info-icon"/>
+    }
+
     /**
      * Renders a list of videos to the DOM
      * @param video Object the video to render { name: 'FOO', length: '20:10' }
@@ -73,13 +91,7 @@ class Sidebar extends Component {
             <div className="d-flex flex-row justify-content-between align-self-center py-3 curriculum-row"
                  key={video.name} onClick={() => this.handleVideoClick(video)}>
                 <div className="pl-4">
-                    {
-                        !_.isUndefined(this.props.activeVideo) && this.props.activeVideo.name === video.name ?
-                            <i className="fa fa-pause info-icon"/> : (
-                                video.completed ? <i className="fa fa-check success-icon"/> :
-                                    <i className="fas fa-play play-icon"/>
-                            )
-                    }
+                    {this.renderIcon(video)}
                 </div>
                 <span>{video.name}</span>
                 <span className="curriculum-chapterDuration pr-2">{video.length}</span>
@@ -103,7 +115,7 @@ class Sidebar extends Component {
                             <input className="form-field-default" placeholder="Search Chapters"
                                    onChange={({ target }) => this.onSearchChange(target.value)}/>
                         </div>
-                        <h3 className="text-muted">{this.props.videos.activeVideo.name}</h3>
+                        <h3 className="text-muted">{_.isNil(this.props.activeVideo) ? 'Loading...' : this.props.activeVideo.name}</h3>
                     </div>
                     {/* Chapter */}
                     {
