@@ -1,4 +1,5 @@
 import * as constants from '../constants';
+
 /**
  * This is the Video reducer which handles updating state to reflect the user's current
  * videos as well as associated data like which video comes next.

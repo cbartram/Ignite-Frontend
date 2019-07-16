@@ -76,7 +76,9 @@ class Sidebar extends Component {
             if (this.props.activeVideo.name === video.name)
                 return <i className="fa fa-pause info-icon"/>;
             else if (video.completed)
-                return <i className="fa fa-check success-icon"/>
+                return <i className="fa fa-check success-icon"/>;
+            else
+                return <i className="fa fa-play play-icon"/>
         } else
         // Its still loading no active video
             return <i className="fa fa-pause info-icon"/>

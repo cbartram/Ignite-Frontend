@@ -78,7 +78,6 @@ class Watch extends Component {
         if (_.isNil(this.props.activeVideo)) this.props.history.push('/videos?new=true');
     }
 
-
     async componentDidMount() {
         if (_.isNil(this.props.activeVideo)) {
             this.props.history.push('/videos?new=true');
