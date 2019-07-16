@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import withContainer from '../../components/withContainer';
 import Card from '../../components/Card/Card';
 import Log from '../../Log';
 import LoaderButton from '../../components/LoaderButton/LoaderButton';
-import { sendEmail } from '../../util';
+import {sendEmail} from '../../util';
 import './Support.css';
 
 const mapStateToProps = state => ({
@@ -42,8 +42,7 @@ class Support extends Component {
     this.setState({ isSending: true }, async () => {
       try {
         const response = await sendEmail(this.props.user.email, this.state.subject, this.state.message);
-        console.log(response);
-        if(response.status === 200)
+        if (response.statusCode === 200)
           this.props.pushAlert('success', 'Message Sent Successfully', 'Your message has been delivered successfully. We will do our best to respond as soon as possible!');
         else {
           Log.error('Error Sending message!', response);

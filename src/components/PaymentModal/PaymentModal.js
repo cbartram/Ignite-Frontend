@@ -114,7 +114,7 @@ class PaymentModal extends Component {
                 this.setState({ loading: false });
                 this.closeButton.current.click();
                 this.props.onSuccessfulPayment();
-            }).catch(err => this.props.onFailedPayment(err.body.messages[0]));
+            }).catch(err => this.props.onFailedPayment(err.messages[0]));
         } catch(err) {
             this.props.onFailedPayment(err.message);
         }

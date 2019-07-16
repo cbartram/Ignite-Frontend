@@ -11,9 +11,10 @@ export default class BillingDetails extends Component {
      * Renders the date when the bill will renew for the user
      */
     renderRenewalDate() {
-        if (isNil(this.props.customer)) return <span className="value">None</span>;
+        if (isNil(this.props.customer) || this.props.customer.subscriptions.length === 0) return <span
+            className="value">None</span>;
         if (this.props.customer.subscriptions[0].cancel_at_period_end === true) return <span
-            className="badge badge-pill badge-secondary py-1 px-2">Subscription Cancelled</span>
+            className="badge badge-pill badge-secondary py-1 px-2">Subscription Cancelled</span>;
         if (_.isNil(this.props.customer.subscriptions[0].current_period_end)) return <span
             className="value">None</span>;
 
@@ -36,7 +37,7 @@ export default class BillingDetails extends Component {
                         </Placeholder>
                     </div>
                 </Card>
-            )
+            );
 
         return (
             <Card cardTitle="Billing Information" classNames={['pb-0']}>
@@ -56,7 +57,7 @@ export default class BillingDetails extends Component {
                                 <td className="key">Plan Name</td>
                                 <td>
                                     <span className="value">
-                                        {isNil(this.props.customer) ? 'None' : this.props.customer.subscriptions[0].plan.nickname}
+                                        {isNil(this.props.customer) || this.props.customer.subscriptions.length === 0 ? 'None' : this.props.customer.subscriptions[0].plan.nickname}
                                     </span>
                                 </td>
                             </tr>
@@ -70,7 +71,7 @@ export default class BillingDetails extends Component {
                                 <td className="key">Subscription Status</td>
                                 <td>
                                     <span className="value">
-                                        {isNil(this.props.customer) ? 'None' : this.props.customer.subscriptions[0].status}
+                                        {isNil(this.props.customer) || this.props.customer.subscriptions.length === 0 ? 'None' : this.props.customer.subscriptions[0].status}
                                     </span>
                                 </td>
                             </tr>
@@ -85,7 +86,7 @@ export default class BillingDetails extends Component {
                                     Current Period
                                 </td>
                                 <td>
-                                    {isNil(this.props.customer) ?
+                                    {isNil(this.props.customer) || this.props.customer.subscriptions.length === 0 ?
                                         <span className="value">None</span> :
                                         <span className="value">
                                                         {moment.unix(this.props.customer.subscriptions[0].current_period_start).format('MMM Do YYYY')}
@@ -103,7 +104,7 @@ export default class BillingDetails extends Component {
                                 </td>
                                 <td>
                                     <span className="value-code value-lg">
-                                        ${!isNil(this.props.customer) ? (this.props.customer.subscriptions[0].plan.amount / 100).toFixed(2) : '0.00'}
+                                        ${isNil(this.props.customer) || this.props.customer.subscriptions.length === 0 ? '0.00' : (this.props.customer.subscriptions[0].plan.amount / 100).toFixed(2)}
                                     </span>
                                 </td>
                             </tr>
@@ -168,7 +169,7 @@ export default class BillingDetails extends Component {
                             className="btn btn-danger"
                             text="Cancel Subscription"
                             noCommon
-                            onClick={() => this.setState({confirmOpen: true})}>
+                            onClick={() => this.props.onCancelClick()}>
                         </LoaderButton>
                     }
                 </div>

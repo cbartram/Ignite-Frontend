@@ -322,7 +322,7 @@ class App extends Component {
                             <QuoteCard
                                 imageUrl={InstructorImage}
                                 quote="Teach people to code and they can build an app. Teach someone to think
-                                 like a full stack develop and they can conquer any problem they are faced with."
+                                 like a full stack developer and they can conquer any problem they are faced with."
                                 by="Christian Bartram"
                             />
                         </div>

@@ -242,6 +242,7 @@ class Profile extends Component {
                                     billing={this.props.billing}
                                     loading={loading}
                                     customer={_.isNil(data) ? null : data.getCustomer}
+                                    onCancelClick={() => this.setState({confirmOpen: true})}
                                 />
                             </div>
                             <div className="col-md-5">
