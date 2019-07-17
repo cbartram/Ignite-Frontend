@@ -4,16 +4,9 @@
  * @author cbartram
  */
 import React from 'react';
+import isNil from 'lodash/isNil';
 import Log from './Log';
-import {
-    API_FIND_ALL_USERS,
-    API_KEY,
-    API_POST_FIND_QUESTIONS,
-    API_SEND_EMAIL,
-    getRequestUrl,
-    IS_PROD,
-    PROD_API_KEY,
-} from './constants';
+import {API_FIND_ALL_USERS, API_KEY, getRequestUrl, IS_PROD, PROD_API_KEY,} from './constants';
 
 /**
  * Parses the query string from the URL.
@@ -142,10 +135,16 @@ export const matchSearchQuery = (query, element, green = false) => {
  * @param successType String the redux dispatch type when the request is successful
  * @param failureType String the redux dispatch type when the request has failed.
  * @param dispatch Function redux dispatch function
+ * @param getState function returns the current state of the application as an object from the redux store
  * @param debug Boolean true if we should print the http response and false otherwise. Defaults to false
  * @returns {Promise<*|Promise<any>|undefined>}
  */
-export const post = async (body, path, requestType, successType, failureType, dispatch, debug = false) => {
+export const post = async (body, path, requestType, successType, failureType, dispatch, getState, debug = false) => {
+    //If we don't need redux for the action we can just skip the dispatch by setting the actions to null
+    let doDispatch = true;
+    if (isNil(requestType) || isNil(successType) || isNil(failureType)) doDispatch = false;
+
+    doDispatch &&
     dispatch({
         type: requestType,
         payload: body // Sets isFetching to true (useful for unit testing redux)
@@ -155,6 +154,7 @@ export const post = async (body, path, requestType, successType, failureType, di
         const params = {
             method: 'POST',
             headers: {
+                Authorization: getState().auth.user.jwtToken,
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'x-api-key': IS_PROD ? PROD_API_KEY : API_KEY,
@@ -162,12 +162,12 @@ export const post = async (body, path, requestType, successType, failureType, di
             body: JSON.stringify(body),
         };
 
-
         const response = await (await fetch(getRequestUrl(path), params)).json();
         debug && console.log('[DEBUG] Post Response: ', response);
 
         return new Promise((resolve, reject) => {
             if (response.statusCode === 200) {
+                doDispatch &&
                 dispatch({
                     type: successType,
                     payload: response,
@@ -176,6 +176,7 @@ export const post = async (body, path, requestType, successType, failureType, di
                 resolve(response);
             } else if (response.statusCode > 200 || typeof response.statusCode === 'undefined') {
                 // An error occurred
+                doDispatch &&
                 dispatch({
                     type: failureType,
                     payload: { message: `There was an error retrieving data from the API: ${JSON.stringify(response)}`}
@@ -186,6 +187,7 @@ export const post = async (body, path, requestType, successType, failureType, di
         });
     } catch(err) {
         Log.error('[ERROR] Error receiving response from API', err);
+        doDispatch &&
         dispatch({
             type: failureType,
             payload: { message: err.message }
@@ -194,69 +196,15 @@ export const post = async (body, path, requestType, successType, failureType, di
 };
 
 /**
- * Sends an API request to the backend to process and send an email
- * using AWS SES.
- * @param from String who this email is from (emails are sent using no-reply@ignitecode.net) but this is the users email
- * @param subject String the subject line of the email
- * @param message String the body/message of the email.
- */
-export const sendEmail = async (from, subject = '', message = '') => {
-    const params = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'x-api-key': IS_PROD ? PROD_API_KEY : API_KEY
-        },
-        // Since this is calling an API these details are crucial for the lambda function to know which route to execute.
-        body: JSON.stringify({from, subject, message}),
-    };
-
-    try {
-        return await (await fetch(getRequestUrl(API_SEND_EMAIL), params)).json();
-    } catch(err) {
-        Log.error('Failed to retrieve videos from API...', err);
-    }
-};
-
-/**
- * Retrieves all questions for a video given the video_id
- * @param video_id String video id: should be videoChapter.videoNumber ex 9.6
- * @returns {Promise<any>}
- */
-export const findQuestions = async (video_id) => {
-    const params = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'x-api-key': IS_PROD ? PROD_API_KEY : API_KEY,
-        },
-        body: JSON.stringify({
-            headers: {},
-            method: 'POST',
-            path: API_POST_FIND_QUESTIONS,
-            parameters: {},
-            body: { video_id }
-        }),
-    };
-
-    try {
-        return await (await fetch(getRequestUrl(API_POST_FIND_QUESTIONS), params)).json();
-    } catch(err) {
-        Log.error('Failed to retrieve post questions...', err);
-    }
-};
-
-/**
  * Gets data about the user's videos including: scrub duration, the next video in the queue,
  * @param username String the user's username to retrieve the user profile for
  * @returns {Promise<void>}
  */
-export const getVideos = async (username) => {
+export const getVideos = async (username, token) => {
     const params = {
         method: 'POST',
         headers: {
+            'Authorization': token,
             'Content-Type': 'application/json',
             'Accept': 'application/json',
             'x-api-key': IS_PROD ? PROD_API_KEY : API_KEY

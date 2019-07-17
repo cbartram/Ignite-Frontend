@@ -88,14 +88,14 @@ export const loginFailure = payload => dispatch => {
  * @param username String the username of the user to retrieve videos, billing, general info and quiz data for
  * @returns {Function}
  */
-export const fetchVideos = username => async dispatch => {
+export const fetchVideos = username => async (dispatch, getState) => {
     dispatch({
         type: constants.REQUEST_VIDEOS,
         payload: true // Sets isFetching to true (useful for unit testing redux)
     });
 
     try {
-        const response = await getVideos(username);
+        const response = await getVideos(username, getState().auth.user.jwtToken);
         if (response.statusCode === 200) {
             // Dispatch information about billing
             dispatch({
@@ -176,8 +176,8 @@ export const updateActiveVideo = (video) => dispatch => {
  * the backend for storage. This also updates redux with the latest values.
  * @returns {Function}
  */
-export const ping = (payload) => async dispatch => {
-    await post(payload, constants.API_PING_VIDEO, constants.PING_REQUEST, constants.PING_RESPONSE_SUCCESS, constants.PING_RESPONSE_FAILURE, dispatch);
+export const ping = (payload) => async (dispatch, getState) => {
+    await post(payload, constants.API_PING_VIDEO, constants.PING_REQUEST, constants.PING_RESPONSE_SUCCESS, constants.PING_RESPONSE_FAILURE, dispatch, getState);
 };
 
 /**
@@ -185,8 +185,8 @@ export const ping = (payload) => async dispatch => {
  * @param payload Object the payload includes the question title, video id, user who posted, and question contents.
  * @returns {Function}
  */
-export const askQuestion = (payload) => async dispatch => {
-    await post(payload, constants.API_POST_QUESTION, constants.CREATE_QUESTION_REQUEST, constants.QUESTION_CREATE_RESPONSE_SUCCESS, constants.QUESTION_CREATE_RESPONSE_FAILURE, dispatch);
+export const askQuestion = (payload) => async (dispatch, getState) => {
+    await post(payload, constants.API_POST_QUESTION, constants.CREATE_QUESTION_REQUEST, constants.QUESTION_CREATE_RESPONSE_SUCCESS, constants.QUESTION_CREATE_RESPONSE_FAILURE, dispatch, getState);
 };
 
 /**
@@ -194,8 +194,8 @@ export const askQuestion = (payload) => async dispatch => {
  * @param payload Object { video_id: '9.6' }
  * @returns {Function}
  */
-export const findQuestions = (payload) => async dispatch => {
-    await post({ video_id: payload }, constants.API_POST_FIND_QUESTIONS, constants.FIND_QUESTION_REQUEST, constants.QUESTION_FIND_POSTS_SUCCESS, constants.QUESTION_FIND_POSTS_ERROR, dispatch);
+export const findQuestions = (payload) => async (dispatch, getState) => {
+    await post({video_id: payload}, constants.API_POST_FIND_QUESTIONS, constants.FIND_QUESTION_REQUEST, constants.QUESTION_FIND_POSTS_SUCCESS, constants.QUESTION_FIND_POSTS_ERROR, dispatch, getState);
 };
 
 /**
@@ -203,17 +203,18 @@ export const findQuestions = (payload) => async dispatch => {
  * @param payload Object
  * @returns {Function}
  */
-export const answerQuestion = (payload) => async dispatch => {
-    await post(payload, constants.API_ANSWER_CREATE, constants.CREATE_ANSWER_REQUEST, constants.CREATE_ANSWER_SUCCESS, constants.CREATE_ANSWER_FAILURE, dispatch);
+export const answerQuestion = (payload) => async (dispatch, getState) => {
+    await post(payload, constants.API_ANSWER_CREATE, constants.CREATE_ANSWER_REQUEST, constants.CREATE_ANSWER_SUCCESS, constants.CREATE_ANSWER_FAILURE, dispatch, getState);
 };
 
 /**
  * Creates a signed url for accessing protected video resources on amazon S3.
  * @param payload Object { resourceUrl, jwtToken }
+ * @param getState Function returns the current state from redux store
  * @returns {Function}
  */
-export const getSignedUrl = (payload) => async dispatch => {
-    await post(payload, constants.API_FETCH_SIGNED_URL, constants.GET_SIGNED_URL_REQUEST, constants.GET_SIGNED_URL_SUCCESS, constants.GET_SIGNED_URL_FAILURE, dispatch);
+export const getSignedUrl = (payload) => async (dispatch, getState) => {
+    await post(payload, constants.API_FETCH_SIGNED_URL, constants.GET_SIGNED_URL_REQUEST, constants.GET_SIGNED_URL_SUCCESS, constants.GET_SIGNED_URL_FAILURE, dispatch, getState);
 };
 
 /**
@@ -222,8 +223,8 @@ export const getSignedUrl = (payload) => async dispatch => {
  * @param payload Object payload
  * @returns {Function}
  */
-export const processPayment = (payload) => async dispatch => {
-  await post(payload, constants.API_CREATE_SUBSCRIPTION, constants.CREATE_SUBSCRIPTION_REQUEST, constants.CREATE_SUBSCRIPTION_SUCCESS, constants.CREATE_SUBSCRIPTION_FAILURE, dispatch);
+export const processPayment = (payload) => async (dispatch, getState) => {
+    await post(payload, constants.API_CREATE_SUBSCRIPTION, constants.CREATE_SUBSCRIPTION_REQUEST, constants.CREATE_SUBSCRIPTION_SUCCESS, constants.CREATE_SUBSCRIPTION_FAILURE, dispatch, getState);
 };
 
 /**
@@ -231,8 +232,20 @@ export const processPayment = (payload) => async dispatch => {
  * @param payload Object payload containing the cognito username, refreshToken and accessKey
  * @returns {Function}
  */
-export const unsubscribe = (payload) => async dispatch => {
-    await post(payload, constants.API_DELETE_SUBSCRIPTION, constants.UNSUBSCRIBE_REQUEST, constants.UNSUBSCRIBE_SUCCESS, constants.UNSUBSCRIBE_FAILURE, dispatch);
+export const unsubscribe = (payload) => async (dispatch, getState) => {
+    await post(payload, constants.API_DELETE_SUBSCRIPTION, constants.UNSUBSCRIBE_REQUEST, constants.UNSUBSCRIBE_SUCCESS, constants.UNSUBSCRIBE_FAILURE, dispatch, getState);
+};
+
+/**
+ * Sends an API request to the backend to process and send an email
+ * using AWS SES.
+ * @param payload Object Payload includes the following fields:
+ * from String who this email is from (emails are sent using no-reply@ignitecode.net) but this is the users email
+ * subject String the subject line of the email
+ * message String the body/message of the email.
+ */
+export const sendEmail = (payload) => async (dispatch, getState) => {
+    await post(payload, constants.API_SEND_EMAIL, null, null, null, dispatch, getState);
 };
 
 /**
@@ -242,9 +255,24 @@ export const unsubscribe = (payload) => async dispatch => {
  * @param payload
  * @returns {Function}
  */
-export const updatePost = (payload) => async dispatch => {
-    await post(payload, constants.API_POST_UPDATE, constants.UPDATE_POST_REQUEST, constants.UPDATE_POST_SUCCESS, constants.UPDATE_POST_FAILURE, dispatch);
+export const updatePost = (payload) => async (dispatch, getState) => {
+    await post(payload, constants.API_POST_UPDATE, constants.UPDATE_POST_REQUEST, constants.UPDATE_POST_SUCCESS, constants.UPDATE_POST_FAILURE, dispatch, getState);
 };
+
+
+/**
+ * Sends the quiz to the server for processing and storage before being returned to the client.
+ * @param username String the users username given by cognito and prefixed with "user-<COGNITO_ID>"
+ * @param quiz Object the quiz object to grade.
+ * @returns {Function}
+ */
+export const submitQuiz = (username, quiz) => async (dispatch, getState) => {
+    await post({
+        username,
+        quiz
+    }, constants.API_SUBMIT_QUIZ, constants.SUBMIT_QUIZ_REQUEST, constants.UPDATE_QUIZ, constants.SUBMIT_QUIZ_FAILURE, dispatch, getState);
+};
+
 
 /**
  * Updates billing details for a user synchronously (without making an additional API call)
@@ -282,17 +310,6 @@ export const updateQuiz = (quiz) => dispatch => {
       type: constants.UPDATE_QUIZ,
       payload: quiz,
   })
-};
-
-
-/**
- * Sends the quiz to the server for processing and storage before being returned to the client.
- * @param username String the users username given by cognito and prefixed with "user-<COGNITO_ID>"
- * @param quiz Object the quiz object to grade.
- * @returns {Function}
- */
-export const submitQuiz = (username, quiz) => async dispatch => {
-    await post({ username, quiz }, constants.API_SUBMIT_QUIZ, constants.SUBMIT_QUIZ_REQUEST, constants.UPDATE_QUIZ, constants.SUBMIT_QUIZ_FAILURE, dispatch);
 };
 
 /**

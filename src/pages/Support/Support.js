@@ -4,11 +4,15 @@ import withContainer from '../../components/withContainer';
 import Card from '../../components/Card/Card';
 import Log from '../../Log';
 import LoaderButton from '../../components/LoaderButton/LoaderButton';
-import {sendEmail} from '../../util';
+import {sendEmail} from '../../actions/actions';
 import './Support.css';
 
 const mapStateToProps = state => ({
   user: state.auth.user,
+});
+
+const mapDispatchToProps = dispatch => ({
+  sendEmail: (payload) => dispatch(sendEmail(payload))
 });
 
 /**
@@ -41,13 +45,12 @@ class Support extends Component {
   submit() {
     this.setState({ isSending: true }, async () => {
       try {
-        const response = await sendEmail(this.props.user.email, this.state.subject, this.state.message);
-        if (response.statusCode === 200)
-          this.props.pushAlert('success', 'Message Sent Successfully', 'Your message has been delivered successfully. We will do our best to respond as soon as possible!');
-        else {
-          Log.error('Error Sending message!', response);
-          this.props.pushAlert('danger', 'Failed to Send Message', 'Something went wrong sending your message. Please refresh the page and try again!')
-        }
+        await this.props.sendEmail({
+          from: this.props.user.email,
+          subject: this.state.subject,
+          message: this.state.message
+        });
+        this.props.pushAlert('success', 'Message Sent Successfully', 'Your message has been delivered successfully. We will do our best to respond as soon as possible!');
       } catch(err) {
         Log.error(err);
         this.props.pushAlert('danger', 'Failed to Send Message', 'Something went wrong sending your message. Please refresh the page and try again!')
@@ -97,4 +100,4 @@ class Support extends Component {
   }
 }
 
-export default withContainer(connect(mapStateToProps)(Support))
+export default withContainer(connect(mapStateToProps, mapDispatchToProps)(Support))

@@ -76,7 +76,6 @@ const load = async () => {
 
     try {
         const user = await Auth.currentSession();
-
         Log.info(user.idToken.payload['cognito:username'], 'Found Authenticated user within a Cookie!');
         Log.info('Attempting to retrieve user videos...');
 
