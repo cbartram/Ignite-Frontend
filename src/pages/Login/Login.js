@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import isUndefined from 'lodash/isUndefined';
 import {FormControl, FormGroup} from "react-bootstrap";
 import {Auth} from 'aws-amplify/lib/index';
 import {connect} from 'react-redux';
@@ -38,14 +39,6 @@ class Login extends Component {
         };
     }
 
-    componentDidMount() {
-        // Show alert if there is a ?redirect= query param
-        // if(this.props.location.search) {
-        //     const pageName = this.props.location.search.substring(this.props.location.search.indexOf('=') + 2, this.props.location.search.length);
-        //     this.props.pushAlert('info', 'Login', `You need to login before you can access the ${pageName} page.`);
-        // }
-    }
-
     /**
      * Ensures both form fields are filled out and valid
      * @returns {boolean} True if they are valid and false otherwise
@@ -79,26 +72,28 @@ class Login extends Component {
         try {
             const res = await Auth.signIn(this.state.email, this.state.password);
             // Fetches both user videos and user billing information
-            // using the same API route
-            await dispatchProcess(fetchVideos(`user-${res.username}`), constants.VIDEOS_SUCCESS, constants.VIDEOS_FAILURE);
+            // using the same API route we must update redux first because of the JWT token used in API Authorization
             this.props.loginSuccess(res);
+            await dispatchProcess(fetchVideos(`user-${res.username}`), constants.VIDEOS_SUCCESS, constants.VIDEOS_FAILURE);
         } catch (err) {
-            if(err.code === 'NotAuthorizedException')
-                Log.warn(err.message);
-            else
-                Log.error('Login Failed!', err);
+            if (!isUndefined(err)) {
+                if (err.code === 'NotAuthorizedException')
+                    Log.warn(err.message);
+                else
+                    Log.error('Login Failed!', err);
 
-            // Their device key is messed up
-            if(err.message.includes('device') || err.message.includes('key')) {
-                Log.warn('Device Key not recognized re-authenticating');
-                localStorage.clear();
-                const res = await Auth.signIn(this.state.email, this.state.password);
-                Log.info('Login Success!', res);
-                await dispatchProcess(fetchVideos(`user-${res.username}`), constants.VIDEOS_SUCCESS, constants.VIDEOS_FAILURE);
-                this.props.loginSuccess(res);
-            } else {
-                this.props.loginFailure(err);
-                this.props.pushAlert('danger', 'Login Failed', err.message);
+                // Their device key is messed up
+                if (err.message.includes('device') || err.message.includes('key')) {
+                    Log.warn('Device Key not recognized re-authenticating');
+                    localStorage.clear();
+                    const res = await Auth.signIn(this.state.email, this.state.password);
+                    Log.info('Login Success!', res);
+                    await dispatchProcess(fetchVideos(`user-${res.username}`), constants.VIDEOS_SUCCESS, constants.VIDEOS_FAILURE);
+                    this.props.loginSuccess(res);
+                } else {
+                    this.props.loginFailure(err);
+                    this.props.pushAlert('danger', 'Login Failed', err.message);
+                }
             }
         }
     };

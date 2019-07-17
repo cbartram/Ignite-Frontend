@@ -30,21 +30,6 @@ const store = createStore(rootReducer, constants.INITIAL_STATE, composeEnhancers
 // Configure federated identity providers (AWS Cognito)
 Amplify.configure(AMPLIFY_CONFIG);
 
-const authLink = setContext((_, {headers}) => {
-    return {
-        headers: {
-            ...headers,
-            'x-api-key': IS_PROD ? PROD_API_KEY : API_KEY,
-        },
-    }
-});
-
-// Setup GraphQL Client
-const client = new ApolloClient({
-    link: authLink.concat(Apollo.HttpLink({uri: IS_PROD ? `${PROD_URL}/graphql` : `${DEV_URL}/graphql`})),
-    cache: new Apollo.InMemoryCache()
-});
-
 // Setup Logger
 if (!IS_PROD || localStorage.getItem('FORCE_LOGS') === true) localStorage.setItem('debug', 'ignite:*');
 
@@ -88,11 +73,27 @@ const load = async () => {
     catch (e) {
         Log.warn('Could not find authenticated user.');
         // Check Cognito for an active session on the server
-        await Auth.currentAuthenticatedUser({ bypassCache: true });
         if (e !== 'No current user') {
             Log.error(e);
         }
     }
+
+    // Adds custom headers to graphQL requests
+    const authLink = setContext((_, {headers}) => {
+        return {
+            headers: {
+                ...headers,
+                Authorization: store.getState().auth.user === null ? '' : store.getState().auth.user.jwtToken,
+                'x-api-key': IS_PROD ? PROD_API_KEY : API_KEY,
+            },
+        }
+    });
+
+    // Setup GraphQL Client
+    return new ApolloClient({
+        link: authLink.concat(Apollo.HttpLink({uri: IS_PROD ? `${PROD_URL}/graphql` : `${DEV_URL}/graphql`})),
+        cache: new Apollo.InMemoryCache()
+    });
 };
 
 /**
@@ -112,7 +113,27 @@ const render = async () => {
         </Provider>,document.getElementById('root'));
 
     try {
-    await load();
+        // Returns an ApolloClient Object
+        const client = await load();
+        // Now render the full page
+        ReactDOM.render(
+            <ApolloProvider client={client}>
+                <CookiesProvider>
+                    <Provider store={store}>
+                        <StripeProvider apiKey="pk_test_AIs6RYV3qrxG6baDpohxn1L7">
+                            <Elements>
+                                <Router/>
+                            </Elements>
+                        </StripeProvider>
+                    </Provider>
+                </CookiesProvider>
+            </ApolloProvider>
+            , document.getElementById('root'));
+
+        // If you want your app to work offline and load faster, you can change
+        // unregister() to register() below. Note this comes with some pitfalls.
+        // Learn more about service workers: http://bit.ly/CRA-PWA
+        serviceWorker.unregister();
     } catch(err) {
         Log.error(err);
 
@@ -125,26 +146,6 @@ const render = async () => {
             </StripeProvider>
         </Provider>, document.getElementById('root'));
     }
-
-    // Now render the full page
-    ReactDOM.render(
-        <ApolloProvider client={client}>
-            <CookiesProvider>
-                <Provider store={store}>
-                    <StripeProvider apiKey="pk_test_AIs6RYV3qrxG6baDpohxn1L7">
-                        <Elements>
-                            <Router/>
-                        </Elements>
-                    </StripeProvider>
-                </Provider>
-            </CookiesProvider>
-        </ApolloProvider>
-        , document.getElementById('root'));
-
-    // If you want your app to work offline and load faster, you can change
-    // unregister() to register() below. Note this comes with some pitfalls.
-    // Learn more about service workers: http://bit.ly/CRA-PWA
-    serviceWorker.unregister();
 };
 
 // Execute the App
