@@ -69,6 +69,8 @@ export default (state = {}, action) => {
         case constants.CREATE_SUBSCRIPTION_SUCCESS:
             return {
                 ...state,
+                isFetching: false,
+                error: null,
                 user: {
                     ...state.user,
                     ...action.payload.user,
@@ -88,6 +90,7 @@ export default (state = {}, action) => {
                 error: action.payload,
             };
         case constants.UNSUBSCRIBE_SUCCESS:
+            console.log(action.payload);
                 if(action.payload.atPeriodEnd || action.payload.cancelConfirmation.cancel_at_period_end) {
                     return {
                         ...state,
@@ -95,7 +98,7 @@ export default (state = {}, action) => {
                             ...state.user,
                             'custom:at_period_end': 'true',
                             'custom:unsub_timestamp': action.payload.cancelConfirmation.current_period_end.toString(),
-                            jwtToken: action.payload.idToken,
+                            // jwtToken: action.payload.idToken,
                         },
                         isFetching: false,
                         error: null,
@@ -110,7 +113,7 @@ export default (state = {}, action) => {
                             'custom:plan_id': 'null',
                             'custom:plan': 'none',
                             'custom:premium': 'false',
-                            jwtToken: action.payload.idToken,
+                            // jwtToken: action.payload.idToken,
                         },
                         isFetching: false,
                         error: null,

@@ -163,7 +163,7 @@ export default class BillingDetails extends Component {
                         // Only show the button to user's who are actively subscribed
                         // (dont show to users whos subscription will end at the close of the next period)
 
-                        (!isNil(this.props.customer) && this.props.billing.premium && this.props.billing.premium !== 'false' && this.props.customer.subscriptions[0].cancel_at_period_end !== true) &&
+                        (!isNil(this.props.customer) && this.props.customer.subscriptions.length > 0 && this.props.customer.subscriptions[0].cancel_at_period_end !== true) &&
                         <LoaderButton
                             isLoading={this.props.auth.isFetching}
                             className="btn btn-danger"

@@ -145,7 +145,7 @@ class Profile extends Component {
      * the subscription until the end of their period else it will cancel it immediately if they
      * are in their trial period.
      */
-    async unsubscribe() {
+    async unsubscribe(refetch) {
         this.props.unsubscribe({
             username: this.props.user.userName,
             subscriptionId: this.props.user.subscription_id,
@@ -153,6 +153,7 @@ class Profile extends Component {
         }).then(async () => {
             //Update user attributes in redux
             this.props.fetchVideos(`user-${this.props.user.userName}`);
+            refetch(); // Re-load the graphql query
             this.props.pushAlert('success', 'Unsubscribe Successful', 'You Ignite subscription has been cancelled successfully. If you are outside of your trial period you will still retain access to video content until the end of the billing cycle.');
         }).catch(err => {
             Log.error(err);
@@ -173,6 +174,7 @@ class Profile extends Component {
 
     render() {
         return <Query
+            fetchPolicy="network-only"
             query={gql`
                       {
                         getCustomer(id: "${this.props.user.customer_id}") {
@@ -202,7 +204,7 @@ class Profile extends Component {
                       }
                     `}
         >
-            {({loading, error, data}) => {
+            {({loading, error, data, refetch}) => {
                 if (error) Log.warn('No Such Customer...', error);
                 console.log(data);
                 return (
@@ -231,7 +233,7 @@ class Profile extends Component {
                             onCancel={() => this.setState({confirmOpen: false})}
                             onConfirm={async () => {
                                 this.setState({confirmOpen: false});
-                                await this.unsubscribe();
+                                await this.unsubscribe(refetch);
                             }}
                         />
                         <div className="row">

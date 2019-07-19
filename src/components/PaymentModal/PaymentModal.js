@@ -189,8 +189,10 @@ class PaymentModal extends Component {
                                     />
                                 </div>
                                 <p className="text-muted px-2 mt-3">
-                                    You will be billed {this.props.plan.amount} starting at the end of
-                                    your free trial and recurring {this.props.plan.recurring}. You
+                                    You will be billed {this.props.plan.amount} {this.props.user.used_trial ?
+                                    'immediately and unsubscribing will give you access to video content until the end of the period. ' +
+                                    'Your plan renews ' + this.props.plan.recurring : 'starting at the end of' +
+                                    'your free trial and recurring ' + this.props.plan.recurring}. You
                                     can unsubscribe at any time by visiting your profile page.
                                 </p>
                             </div>

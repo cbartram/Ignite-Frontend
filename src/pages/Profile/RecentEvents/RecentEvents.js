@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import times from 'lodash/times';
+import isNil from 'lodash/isNil';
 import {Placeholder} from "semantic-ui-react";
 import moment from "moment";
 import Card from "../../../components/Card/Card";
@@ -67,6 +68,7 @@ export default class RecentEvents extends Component {
                 <div style={{maxHeight: 240, overflowY: 'scroll'}}>
                     <ul className="list-group">
                         {
+                            !isNil(this.props.customer) &&
                             this.props.customer.events.length === 0 ?
                                 <li className="list-group-item" style={{border: '1px solid white'}}>
                                     <h3>No Events</h3></li> :
