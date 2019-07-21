@@ -385,7 +385,7 @@ class Profile extends Component {
 
                                         try {
                                             // Generate a signed URL ( dont let the upload file fool you this isnt actually uploading a file )
-                                            this.props.uploadFile({fileName: file.name});
+                                            const response = await this.props.uploadFile({fileName: file.name});
 
                                             // Publish to S3 using signed URL ( dont await this it causes an issue and doesnt actually upload data)
                                             console.log('[INFO] Successful signed URL');
@@ -394,10 +394,17 @@ class Profile extends Component {
                                                 .then(() => console.log('[INFO] Successful Upload!'));
 
                                             // Finally update the user profile in DynamoDB
-                                            await this.props.updateUserProfilePicture({
+                                            const {user} = await this.props.updateUserProfilePicture({
                                                 fileName: file.name,
                                                 username: `user-${this.props.user.userName}`
                                             });
+
+
+                                            // And make sure redux reflects the same
+                                            // (look at mapDispatch unsubscribeUser is actually just mapped to updating their attributes)
+                                            // dont let the function name confuse you
+                                            this.props.unsubscribeUser({profile_picture: user.Attributes.profile_picture})
+
                                         } catch (err) {
                                             console.log('[ERROR] Error uploading: ', err);
                                         } finally {
