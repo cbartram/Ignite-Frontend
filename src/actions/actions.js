@@ -172,6 +172,24 @@ export const updateActiveVideo = (video) => dispatch => {
 };
 
 /**
+ * Uploads a users profile picture to the ignite server stored in S3.
+ * @param payload Object File object from the file upload input element
+ * @returns {Function}
+ */
+export const uploadFile = (payload) => (dispatch, getState) => {
+    return post(payload, constants.API_UPLOAD, null, null, null, dispatch, getState);
+};
+
+/**
+ * Updates a users profile picture in DynamoDB given the file already exists in S3
+ * @param payload Object payload containing the users username and the file name in S3
+ * @returns {function(*=, *=): Promise<*|Promise<any>|undefined>}
+ */
+export const updateUserProfilePicture = (payload) => (dispatch, getState) => {
+    return post(payload, constants.API_UPDATE_USER_PROFILE, null, null, null, dispatch, getState);
+};
+
+/**
  * Sends a user's current video information (such as duration completed, started watching etc.) to
  * the backend for storage. This also updates redux with the latest values.
  * @returns {Function}

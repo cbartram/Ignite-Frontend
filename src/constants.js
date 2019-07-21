@@ -52,6 +52,7 @@ export const getRequestUrl = (endpointURI) => {
 
 // API Parameters
 export const API_FIND_ALL_USERS = '/users/find';
+export const API_UPDATE_USER_PROFILE = '/users/picture/update';
 export const API_SEND_EMAIL = '/support/message';
 export const API_FETCH_SIGNED_URL = '/security/signed-url/create';
 export const API_FIND_EVENTS = '/billing/events';
@@ -63,6 +64,7 @@ export const API_POST_QUESTION = '/posts/create';
 export const API_POST_FIND_QUESTIONS = '/posts/find';
 export const API_POST_UPDATE = '/posts/update';
 export const API_ANSWER_CREATE = '/posts/answer/create';
+export const API_UPLOAD = '/upload';
 
 // Prod Params
 export const PROD_URL = 'https://2147bwmah5.execute-api.us-east-1.amazonaws.com/prod';

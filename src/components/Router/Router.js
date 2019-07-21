@@ -19,7 +19,6 @@ import Terms from '../../pages/Legal/Terms';
 import Support from '../../pages/Support/Support';
 import Quiz from '../../pages/Quiz/Quiz';
 import QuizResults from "../../pages/QuizResults/QuizResults";
-import Upload from './Upload';
 
 const mapStateToProps = state => ({
    auth: state.auth,
@@ -56,7 +55,6 @@ class Router extends Component {
                     <Avenue path="/legal" component={Legal} />
                     <Avenue path="/cookie" component={CookiePolicy} />
                     <Avenue path="/terms" component={Terms} />
-                    <Avenue path="/upload" component={Upload} />
                     {/* Catch All unmatched paths with a 404 */}
                     <Route path="/sitemap.xml" onEnter={() => window.location.reload()} />
                     <Route component={NotFound} />
