@@ -20,15 +20,12 @@ import {
     updateActiveVideo,
     updateBillingSync,
     updateUserAttributes,
-    updateUserProfilePicture,
     updateVideosSync,
-    uploadFile,
     videosFetched,
 } from '../../actions/actions';
 import Log from '../../Log';
 import BillingDetails from "./BillingDetails/BillingDetails";
 import RecentEvents from "./RecentEvents/RecentEvents";
-import Upload from "../../components/Upload/Upload";
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -47,8 +44,6 @@ const mapDispatchToProps = dispatch => ({
     unsubscribe: (payload) => dispatch(unsubscribe(payload)),
     loginSuccess: (payload) => dispatch(loginSuccess(payload)),
     fetchVideos: (payload) => dispatch(fetchVideos(payload)),
-    uploadFile: (payload) => dispatch(uploadFile(payload)),
-    updateUserProfilePicture: (payload) => dispatch(updateUserProfilePicture(payload)),
 });
 
 /**
@@ -213,7 +208,6 @@ class Profile extends Component {
         >
             {({loading, error, data, refetch}) => {
                 if (error) Log.warn('No Such Customer...', error);
-                console.log(data);
                 return (
                     <div>
                         <Confirm
@@ -367,51 +361,6 @@ class Profile extends Component {
                                         </form>
                                     </div>
                                 </Card>
-                            </div>
-                            <div className="col-md-4">
-                                <Upload
-                                    file={this.state.file}
-                                    loading={this.state.fileLoading}
-                                    onFileSelect={(file) => {
-                                        // TODO Set max file size and check for it
-                                        this.setState({file})
-                                    }}
-                                    onFileUpload={async () => {
-                                        this.setState({fileLoading: true});
-                                        const {file} = this.state;
-                                        console.log('Attempting to upload image..', file.name);
-                                        const data = new FormData();
-                                        data.append('file', file);
-
-                                        try {
-                                            // Generate a signed URL ( dont let the upload file fool you this isnt actually uploading a file )
-                                            const response = await this.props.uploadFile({fileName: file.name});
-
-                                            // Publish to S3 using signed URL ( dont await this it causes an issue and doesnt actually upload data)
-                                            console.log('[INFO] Successful signed URL');
-                                            fetch(response.signedUrl, {method: 'PUT', body: data})
-                                                .then(response => response.text())
-                                                .then(() => console.log('[INFO] Successful Upload!'));
-
-                                            // Finally update the user profile in DynamoDB
-                                            const {user} = await this.props.updateUserProfilePicture({
-                                                fileName: file.name,
-                                                username: `user-${this.props.user.userName}`
-                                            });
-
-
-                                            // And make sure redux reflects the same
-                                            // (look at mapDispatch unsubscribeUser is actually just mapped to updating their attributes)
-                                            // dont let the function name confuse you
-                                            this.props.unsubscribeUser({profile_picture: user.Attributes.profile_picture})
-
-                                        } catch (err) {
-                                            console.log('[ERROR] Error uploading: ', err);
-                                        } finally {
-                                            this.setState({fileLoading: false});
-                                        }
-                                    }}
-                                />
                             </div>
                         </div>
                     </div>

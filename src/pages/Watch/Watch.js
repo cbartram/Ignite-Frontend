@@ -178,7 +178,7 @@ class Watch extends Component {
                     first_name: this.props.user.name.split(' ')[0],
                     last_name: this.props.user.name.split(' ')[1],
                     email: this.props.user.email,
-                    avatar: 'https://t4.ftcdn.net/jpg/02/15/84/43/240_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg',
+                    avatar: this.props.user.profile_picture,
                     id: this.props.user.pid,
                 },
                 title: this.state.question.title,

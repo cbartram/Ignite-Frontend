@@ -1,11 +1,7 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import moment from "moment";
 import Markdown from "react-markdown";
-import {
-    Pagination,
-    Image,
-    Segment
-} from "semantic-ui-react";
+import {Image, Pagination, Segment} from "semantic-ui-react";
 import Voter from '../../../src/components/Voter/Voter';
 
 const ITEMS_PER_PAGE = 5;
@@ -107,7 +103,17 @@ export default class ForumRow extends Component {
                         <small className="form-text text-muted">Hint: You can use <a href="https://guides.github.com/features/mastering-markdown/" target="_blank" rel="noopener noreferrer">markdown</a> here!</small>
                         <div className="d-flex justify-content-end">
                             <button className="common-Button common-Button--default" onClick={() => {
-                                this.props.onReply({ question_id: this.props.post.sid, content: this.state.answerText,  type: 'ANSWER'});
+                                this.props.onReply({
+                                    question_id: this.props.post.sid,
+                                    content: this.state.answerText,
+                                    type: 'ANSWER',
+                                    content_creator: {
+                                        email: this.props.user.email,
+                                        first_name: this.props.user.name.split(' ')[0],
+                                        last_name: this.props.user.name.split(' ')[1],
+                                        avatar: this.props.user.profile_picture,
+                                    }
+                                });
                                 this.setState({ answerText: '' }); // Reset the form fields
                             }}>
                                 Reply <i className="fas fa-reply" />
@@ -124,7 +130,7 @@ export default class ForumRow extends Component {
             <div>
                 <div className="d-flex" style={{ cursor: 'pointer' }} role="button" onClick={() => this.props.onClick(this.props.post.sid)}>
                     <div className="avatar-container sm-avatar-container m-2">
-                        <Image src="https://secure.gravatar.com/avatar/7762d0145e4f9da9b9957fbca1b76865?s=96&amp;d=https%3A%2F%2Fstatic.teamtreehouse.com%2Fassets%2Fcontent%2Fdefault_avatar-ea7cf6abde4eec089a4e03cc925d0e893e428b2b6971b12405a9b118c837eaa2.png&amp;r=pg" />
+                        <Image src={this.props.post.content_creator.avatar}/>
                     </div>
                     <div className="flex-column ml-2 mt-1">
                         <h5 className="question-title">
