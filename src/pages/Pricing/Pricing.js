@@ -23,25 +23,25 @@ class Pricing extends Component {
             selectedPlan: {
                 ONE_MONTH: {
                     name: 'ONE_MONTH',
-                    amount: '$7.00',
+                    amount: '$14.99',
                     recurring: `on the ${moment().format('Do')} of the month`
                 }
             },
             plans: {
                 ONE_MONTH: {
                     name: 'ONE_MONTH',
-                    amount: '$7.00',
+                    amount: '$14.99',
                     recurring: `on the ${moment().format('Do')} of the month`
                 },
                 THREE_MONTH: {
                     name: 'THREE_MONTH',
-                    amount: '$18.00',
+                    amount: '$39.99',
                     recurring: `on ${moment().add(3, 'months').format('MMMM DD')}`
 
                 },
                 SIX_MONTH: {
                     name: 'SIX_MONTH',
-                    amount: '$35.00',
+                    amount: '$74.99',
                     recurring: `on ${moment().add(6, 'months').format('MMMM DD')}`
                 },
             }
@@ -112,7 +112,7 @@ class Pricing extends Component {
                     <div className="col-lg-4 col-md-4 col-sm-10 p-4">
                         <PricingCard
                             title="One Month"
-                            pricing="$7"
+                            pricing="$14.99"
                             perSymbol="/"
                             duration="month"
                         >
@@ -149,7 +149,7 @@ class Pricing extends Component {
                     <div className="col-lg-4 col-md-4 col-sm-10 p-4">
                         <PricingCard
                             title="Three Month"
-                            pricing="$18"
+                            pricing="$39.99"
                             perSymbol="/"
                             duration="three months"
                         >
@@ -186,7 +186,7 @@ class Pricing extends Component {
                         <PricingCard
                             title="Six Month"
                             disabled
-                            pricing="$35"
+                            pricing="$74.99"
                             perSymbol="/"
                             duration="bi-annually"
                         >
