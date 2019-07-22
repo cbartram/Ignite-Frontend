@@ -212,7 +212,7 @@ class Navbar extends Component {
                                 this.props.auth.user && (
                                     <li className="nav-item dropdown user-avatar">
                                         <button className="btn btn-link dropdown-toggle" id="navbarDropdown" data-toggle="dropdown">
-                                            <Image src={getAvatar(this.props.auth.user.email)} avatar/>
+                                            <Image src={getAvatar(this.props.auth.user.email, true)} avatar/>
                                         </button>
                                         <div className="dropdown-menu dropdown-menu-right header-nav-item-profile-dropdown mt-2 py-0">
                                             <h4 className="dropdown-title">

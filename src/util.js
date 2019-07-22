@@ -132,7 +132,8 @@ export const matchSearchQuery = (query, element, green = false) => {
  * @param email String users email address
  * @returns {string}
  */
-export const getAvatar = (email) => {
+export const getAvatar = (email, retro = false) => {
+    if (retro) return `https://www.gravatar.com/avatar/${md5(email.toLowerCase())}?d=identicon`;
     return `https://www.gravatar.com/avatar/${md5(email.toLowerCase())}?d=${encodeURI('https://t4.ftcdn.net/jpg/02/15/84/43/240_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg')}`
 };
 

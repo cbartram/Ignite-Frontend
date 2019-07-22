@@ -131,7 +131,7 @@ export default class ForumRow extends Component {
             <div>
                 <div className="d-flex" style={{ cursor: 'pointer' }} role="button" onClick={() => this.props.onClick(this.props.post.sid)}>
                     <div className="avatar-container sm-avatar-container m-2">
-                        <Image src={getAvatar(this.props.user.email)}/>
+                        <Image src={getAvatar(this.props.user.email, true)}/>
                     </div>
                     <div className="flex-column ml-2 mt-1">
                         <h5 className="question-title">
