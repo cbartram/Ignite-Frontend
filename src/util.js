@@ -7,6 +7,7 @@ import React from 'react';
 import isNil from 'lodash/isNil';
 import Log from './Log';
 import {API_FIND_ALL_USERS, API_KEY, getRequestUrl, IS_PROD, PROD_API_KEY,} from './constants';
+import md5 from "md5";
 
 /**
  * Parses the query string from the URL.
@@ -126,48 +127,14 @@ export const matchSearchQuery = (query, element, green = false) => {
 };
 
 /**
- * Determines the correct MIME type given the file. This function does NOT use the files
- * extension but rather reads the first 4 bytes of the files information to determine the content-type
- * @param file Object Browser file object from a file input field
- * @returns Object<Promise> the content type of the file as a string to be used in an HTTP header
+ * Returns a users gravatar image and defaults to the normal
+ * blank user image if none is found
+ * @param email String users email address
+ * @returns {string}
  */
-export const getMimeType = (file) => {
-    const blob = file; // File object
-    const fileReader = new FileReader();
-
-    return new Promise((resolve, reject) => {
-        fileReader.onloadend = (e) => {
-            const arr = (new Uint8Array(e.target.result)).subarray(0, 4);
-            let header = "";
-            for (let i = 0; i < arr.length; i++) {
-                header += arr[i].toString(16);
-            }
-            resolve(determineMime(header));
-        };
-        fileReader.onerror = (e) => reject(e);
-        fileReader.readAsArrayBuffer(blob);
-    });
+export const getAvatar = (email) => {
+    return `https://www.gravatar.com/avatar/${md5(email.toLowerCase())}?d=${encodeURI('https://t4.ftcdn.net/jpg/02/15/84/43/240_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg')}`
 };
-
-
-const determineMime = (header) => {
-    // Check the file signature against known types
-    switch (header) {
-        case "89504e47":
-            return "image/png";
-        case "47494638":
-            return "image/gif";
-        case "ffd8ffe0":
-        case "ffd8ffe1":
-        case "ffd8ffe2":
-        case "ffd8ffe3":
-        case "ffd8ffe8":
-            return "image/jpeg";
-        default:
-            return null;
-    }
-};
-
 
 /**
  * Makes a generic POST request to the API to retrieve, insert, or update

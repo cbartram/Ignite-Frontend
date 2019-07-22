@@ -11,7 +11,7 @@ import './Navbar.css';
 import Sidebar from "../Sidebar/Sidebar";
 import Logo from '../../resources/images/logo.png';
 import {IS_PROD} from "../../constants";
-import {matchSearchQuery} from "../../util";
+import {getAvatar, matchSearchQuery} from "../../util";
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -212,7 +212,7 @@ class Navbar extends Component {
                                 this.props.auth.user && (
                                     <li className="nav-item dropdown user-avatar">
                                         <button className="btn btn-link dropdown-toggle" id="navbarDropdown" data-toggle="dropdown">
-                                            <Image src={this.props.auth.user.profile_picture} avatar/>
+                                            <Image src={getAvatar(this.props.auth.user.email)} avatar/>
                                         </button>
                                         <div className="dropdown-menu dropdown-menu-right header-nav-item-profile-dropdown mt-2 py-0">
                                             <h4 className="dropdown-title">

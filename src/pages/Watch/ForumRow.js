@@ -3,6 +3,7 @@ import moment from "moment";
 import Markdown from "react-markdown";
 import {Image, Pagination, Segment} from "semantic-ui-react";
 import Voter from '../../../src/components/Voter/Voter';
+import {getAvatar} from "../../util";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -130,7 +131,7 @@ export default class ForumRow extends Component {
             <div>
                 <div className="d-flex" style={{ cursor: 'pointer' }} role="button" onClick={() => this.props.onClick(this.props.post.sid)}>
                     <div className="avatar-container sm-avatar-container m-2">
-                        <Image src={this.props.post.content_creator.avatar}/>
+                        <Image src={getAvatar(this.props.user.email)}/>
                     </div>
                     <div className="flex-column ml-2 mt-1">
                         <h5 className="question-title">
