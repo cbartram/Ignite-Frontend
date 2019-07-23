@@ -51,6 +51,10 @@ h1.common-PageTitle {
 }
 
 /* Code & Syntax Highlighting */
+.react-syntax-highlighter-line-number {
+    color: #aab7c5;
+}
+
 pre {
     background: #fff !important;
     position: relative;
@@ -96,8 +100,13 @@ pre {
     color: #159570;
 }
 
-.hljs-keyword {
+.hljs-keyword, .hljs-meta {
     color: #6772e5;
+}
+
+.bash {
+    font-weight: 400;
+    color: #159570;
 }
 
 .hljs-function {
@@ -113,6 +122,29 @@ pre {
 .muted {
     color: rgb(105, 100, 110);
     font-weight: 600;
+}
+
+/* Media Queries for Mobile Devices */
+@media only screen and (max-width: 375px) {
+    .iphone-margin {
+        padding-left: 30px !important;
+        padding-right: 30px;
+    }
+
+    .iphone-margin-top {
+        padding-top: 20px;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .iphone-margin {
+        padding-left: 30px !important;
+        padding-right: 30px;
+    }
+
+    .iphone-margin-top {
+        padding-top: 20px;
+    }
 }
 
 #developers-section:before {
@@ -164,26 +196,15 @@ pre {
     color: rgb(255, 162, 123);
 }
 
-/* Syntax Highlighting CSS */
-.react-syntax-highlighter-line-number {
-    color: #aab7c5;
+.ui.cards > .red.card, .ui.red.card, .ui.red.cards > .card {
+    box-shadow: 0 0 0 1px #d4d4d5, 0 4px 0 0 #FFA27B, 0 1px 3px 0 #d4d4d5;
 }
 
-
-.box-container {
-    display: flex;
-    align-items: stretch;
-    flex-wrap: wrap;
-    /*justify-content: space-between;*/
-    /*width: calc(60% - 2rem);*/
+.ui.cards > .red.card:hover, .ui.red.card:hover, .ui.red.cards > .card:hover {
+    /*box-shadow: 0 0 0 1px #d4d4d5, 0 4px 0 0 #FFA27B, 0 1px 3px 0 #d4d4d5;*/
+    transform: translateY(-2px);
+    box-shadow: 0 30px 60px -12px rgba(50, 50, 93, .25), 0 18px 36px -18px rgba(0, 0, 0, .3);
 }
-
-@media (max-width: 1280px) {
-    .css-124p5sw {
-        width: calc(50% - 1rem);
-    }
-}
-
 
 /* Header & Stripes Styles */
 .header-hero {

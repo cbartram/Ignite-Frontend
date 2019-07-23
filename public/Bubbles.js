@@ -380,66 +380,66 @@ try {
         });
 
         // Performs the animations for the shooting programming languages
-        const t = (...t) => e => t.reduce((t, e) => e(t), e);
-        const n = (t, e) => Math.floor(Math.random() * (e - t)) + t;
-        const e = (t, e, r) => Object.defineProperty(t, e, {
-            value: r,
-            writable: !0,
-            configurable: !0,
-            enumerable: !0
-        });
-        const o = (t, e) => {
-            const r = n => {
-                    n - a >= e && (a = n, t()),
-                        requestAnimationFrame(r)
-                }
-            ;
-            let a = performance.now();
-            requestAnimationFrame(r)
-        };
-        const lll = (t, e, r, a) => -r * ((t = t / a - 1) * Math.pow(t, 3) - 1) + e
-
-        const r = document.getElementById("programming-languages")
-            ,
-            a = ["clojure", "erlang", "fsharp", "go", "haskell", "javascript", "php", "python", "r", "ruby", "rust", "scala", "scheme", "swift"]
-            , s = (t, e, r) => {
-                if (Math.abs(t) > e)
-                    return n(-r, r);
-                const a = Math.sqrt(Math.pow(e, 2) - Math.pow(t, 2));
-                return (2 * Math.round(Math.random()) - 1) * n(a, r)
-            }
-        ;
-        o(t(() => a[n(0, a.length)], t => {
-                const e = document.createElement("img");
-                return e.alt = t,
-                    e.src = `https://stripe.com/img/v3/home/programming-languages/${t}.svg`,
-                    r.appendChild(e),
-                    e.setAttribute("aria-hidden", !0),
-                    e
-            }
-            , t => {
-                const a = {
-                    total: 12e3
-                }
-                    , o = {};
-                e(o, "translateX", n(-120, 120)),
-                    e(o, "translateY", s(o.translateX, 60, 120)),
-                    e(o, "rotate", n(-800, 800));
-                const i = n => {
-                        null == a.start && e(a, "start", n),
-                            e(a, "elapsed", n - a.start);
-                        const s = lll(a.elapsed, 0, 1, a.total);
-                        t.style.opacity = Math.abs(1 - s),
-                            t.style.transform = Object.keys(o).map(t => {
-                                    return `${t}(${o[t] * s}${/rotate/.test(t) ? "deg" : "px"})`
-                                }
-                            ).join(" "),
-                            a.elapsed < a.total ? requestAnimationFrame(i) : r.removeChild(t)
-                    }
-                ;
-                requestAnimationFrame(i)
-            }
-        ), 500)
+        // const t = (...t) => e => t.reduce((t, e) => e(t), e);
+        // const n = (t, e) => Math.floor(Math.random() * (e - t)) + t;
+        // const e = (t, e, r) => Object.defineProperty(t, e, {
+        //     value: r,
+        //     writable: !0,
+        //     configurable: !0,
+        //     enumerable: !0
+        // });
+        // const o = (t, e) => {
+        //     const r = n => {
+        //             n - a >= e && (a = n, t()),
+        //                 requestAnimationFrame(r)
+        //         }
+        //     ;
+        //     let a = performance.now();
+        //     requestAnimationFrame(r)
+        // };
+        // const lll = (t, e, r, a) => -r * ((t = t / a - 1) * Math.pow(t, 3) - 1) + e
+        //
+        // const r = document.getElementById("programming-languages")
+        //     ,
+        //     a = ["clojure", "erlang", "fsharp", "go", "haskell", "javascript", "php", "python", "r", "ruby", "rust", "scala", "scheme", "swift"]
+        //     , s = (t, e, r) => {
+        //         if (Math.abs(t) > e)
+        //             return n(-r, r);
+        //         const a = Math.sqrt(Math.pow(e, 2) - Math.pow(t, 2));
+        //         return (2 * Math.round(Math.random()) - 1) * n(a, r)
+        //     }
+        // ;
+        // o(t(() => a[n(0, a.length)], t => {
+        //         const e = document.createElement("img");
+        //         return e.alt = t,
+        //             e.src = `https://stripe.com/img/v3/home/programming-languages/${t}.svg`,
+        //             r.appendChild(e),
+        //             e.setAttribute("aria-hidden", !0),
+        //             e
+        //     }
+        //     , t => {
+        //         const a = {
+        //             total: 12e3
+        //         }
+        //             , o = {};
+        //         e(o, "translateX", n(-120, 120)),
+        //             e(o, "translateY", s(o.translateX, 60, 120)),
+        //             e(o, "rotate", n(-800, 800));
+        //         const i = n => {
+        //                 null == a.start && e(a, "start", n),
+        //                     e(a, "elapsed", n - a.start);
+        //                 const s = lll(a.elapsed, 0, 1, a.total);
+        //                 t.style.opacity = Math.abs(1 - s),
+        //                     t.style.transform = Object.keys(o).map(t => {
+        //                             return `${t}(${o[t] * s}${/rotate/.test(t) ? "deg" : "px"})`
+        //                         }
+        //                     ).join(" "),
+        //                     a.elapsed < a.total ? requestAnimationFrame(i) : r.removeChild(t)
+        //             }
+        //         ;
+        //         requestAnimationFrame(i)
+        //     }
+        // ), 500)
     }, 3000);
 } catch(err) {
     console.log('[WARN] Issue loading bubbles...', err.message);

@@ -188,7 +188,8 @@ class App extends Component {
                 </div>
                 <section id="developers-section" className="py-4">
                     <div className="row d-flex justify-content-center mt-3">
-                        <div className="col-md-4 offset-md-2 col-sm-5 offset-sm-1 pl-3" id="flexible-learning">
+                        <div className="col-md-4 offset-md-2 col-sm-5 offset-sm-1 pl-3 iphone-margin"
+                             id="flexible-learning">
                             <img src="https://stripe.com/img/v3/customers/section-icons/sharing.svg" width="66"
                                  height="66" alt="Network grid"/>
                             <h2 className="common-UppercaseText mt-4">
@@ -203,7 +204,7 @@ class App extends Component {
                                 Get Started
                             </Link>
                         </div>
-                        <div className="col-md-4 col-sm-5">
+                        <div className="col-md-4 col-sm-5 iphone-margin iphone-margin-top">
                             <img src="https://stripe.com/img/v3/customers/section-icons/platforms.svg" width="66"
                                  height="66" alt="Stack of squares"/>
                             <h2 className="common-UppercaseText mt-4">
@@ -223,7 +224,7 @@ class App extends Component {
                 </section>
                 <section id="our-mission">
                     <div className="row">
-                        <div className="col-md-6 offset-md-1">
+                        <div className="col-md-6 offset-md-1 iphone-margin">
                             <svg xmlns="http://www.w3.org/2000/svg" className="mission-svg" width="73" height="73"
                                  viewBox="0 0 73 73">
                                 <g fill="none" transform="translate(.5 .736)">
@@ -299,7 +300,7 @@ class App extends Component {
                                 </IgniteCard>
                             </Transition>
                         </div>
-                        <div className="col-md-4 pb-3 pr-3">
+                        <div className="col-md-4 pb-3 pr-3 iphone-margin">
                             <h1 className="common-UppercaseTitle common-UppercaseTitle-Inverse mt-3">
                                 Course Overview
                             </h1>
@@ -321,12 +322,13 @@ class App extends Component {
 
                 <section id="learning-tools">
                     <div className="row">
-                        <div className="col-md-6 offset-md-1 mt-3">
+                        <div className="col-md-6 offset-md-1 iphone-margin mt-3">
                             <Card.Group itemsPerRow={2}>
                                 {
                                     this.state.features.map(feature => {
                                         return (
                                             <Card
+                                                color="red"
                                                 header={feature.name}
                                                 description={feature.description}
                                             />
@@ -335,7 +337,7 @@ class App extends Component {
                                 }
                             </Card.Group>
                         </div>
-                        <div className="col-md-4 mr-2">
+                        <div className="col-md-4 mr-2 iphone-margin iphone-margin-top">
                             <svg xmlns="http://www.w3.org/2000/svg" width="73" height="73" viewBox="0 0 48 39">
                                 <g fill="none">
                                     <path fill="#FFCCA5"
@@ -365,7 +367,7 @@ class App extends Component {
                 {/* TODO Add section about community forum, quizzes, videos, practice, article links, etc... */}
                 <section id="instructor">
                     <div className="row">
-                        <div className="col-md-6 offset-md-1 pt-4">
+                        <div className="col-md-6 offset-md-1 iphone-margin pt-4">
                             <h1 className="common-UppercaseTitle">
                                 Meet your Instructor
                             </h1>
@@ -389,7 +391,7 @@ class App extends Component {
                                 Ignite we want to provide it to our users as cheaply as possible.
                             </p>
                         </div>
-                        <div className="col-md-4">
+                        <div className="col-xl-4 col-lg-4 col-md-4">
                             <QuoteCard
                                 imageUrl={InstructorImage}
                                 quote="Teach people to code and they can build an app. Teach someone to think
