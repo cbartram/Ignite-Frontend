@@ -9,7 +9,6 @@
     line-height: 32px;
 }
 
-
 .common-UppercaseTitle-Inverse {
     color: #a78ce9;
 }
@@ -51,6 +50,7 @@ h1.common-PageTitle {
     color: #a78ce9;
 }
 
+/* Code & Syntax Highlighting */
 pre {
     background: #fff !important;
     position: relative;
@@ -62,6 +62,52 @@ pre {
     padding-left: 10px;
     padding-right: 10px;
     padding-bottom: 10px;
+}
+
+.hljs-number {
+    font-weight: 500;
+    color: #d14;
+}
+
+.hljs-tag {
+    color: #0075d6;
+}
+
+.hljs-selector-id, .hljs-selector-class {
+    font-weight: 400;
+    color: #159570;
+}
+
+.hljs-attribute {
+    color: #0075d6;
+}
+
+.hljs-attr {
+    font-weight: 500;
+    color: #d14;
+}
+
+.hljs-built_in {
+    color: #0075d6;
+}
+
+.hljs-string {
+    font-weight: 400;
+    color: #159570;
+}
+
+.hljs-keyword {
+    color: #6772e5;
+}
+
+.hljs-function {
+    font-weight: 600;
+    color: #3297d3;
+}
+
+.hljs-params {
+    font-weight: 500;
+    color: #d14;
 }
 
 .muted {

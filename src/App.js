@@ -104,28 +104,28 @@ class App extends Component {
     componentDidMount() {
         const SPEED = 1.5;
 
-        // setInterval(() => {
-        //     this.setState((prev) => {
-        //         const allFalse = prev.syntax.map(s => ({...s, visible: false}));
-        //
-        //
-        //         if (prev.activeIndex === prev.syntax.length - 1) {
-        //             return {
-        //                 activeIndex: 0,
-        //                 syntax: allFalse.map(s => {
-        //                     if (s.id === 0)
-        //                         return {
-        //                             ...s,
-        //                             visible: true
-        //                         };
-        //                     return s;
-        //                 })
-        //             };
-        //         }
-        //
-        //         return {activeIndex: prev.activeIndex + 1}
-        //     });
-        // }, 6500);
+        setInterval(() => {
+            this.setState((prev) => {
+                const allFalse = prev.syntax.map(s => ({...s, visible: false}));
+
+
+                if (prev.activeIndex === prev.syntax.length - 1) {
+                    return {
+                        activeIndex: 0,
+                        syntax: allFalse.map(s => {
+                            if (s.id === 0)
+                                return {
+                                    ...s,
+                                    visible: true
+                                };
+                            return s;
+                        })
+                    };
+                }
+
+                return {activeIndex: prev.activeIndex + 1}
+            });
+        }, 6500);
 
         setInterval(() => {
             this.setState((prev) => {
