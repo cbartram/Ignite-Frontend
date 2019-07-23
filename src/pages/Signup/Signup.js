@@ -303,14 +303,11 @@ class Signup extends Component {
                     <div className="medium-dots-container"/>
                 </div>
                 <div className="row">
-
                     <div className="ml-auto mr-auto my-4" style={{textAlign: 'center', maxWidth: 680}}>
                         <div className="container-lg">
                             <h1 className="headline-text">Create an Ignite Account</h1>
-
                             <h2 className="common-IntroText">Fill out the form to create an Ignite account and learn end
-                                to end full
-                                stack development</h2>
+                                to end full stack development</h2>
                         </div>
                     </div>
                     <div

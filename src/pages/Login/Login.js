@@ -118,50 +118,48 @@ class Login extends Component {
                 <div className="ml-auto mr-auto my-4" style={{textAlign: 'center', maxWidth: 680}}>
                     <div className="container-lg">
                         <h1 className="headline-text">Login to Ignite</h1>
-
                         <h2 className="common-IntroText">Login to your Ignite Account</h2>
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-lg-5 offset-lg-4 col-md-5 offset-md-4 col-sm-3 offset-sm-4 col-xs-3">
-                        <div className="Login">
-                            <form onSubmit={this.handleSubmit}>
-                                <FormGroup>
-                                    <label>Email</label>
-                                    <FormControl
-                                        autoFocus
-                                        id="email"
-                                        className="form-field-default"
-                                        type="email"
-                                        value={this.state.email}
-                                        onChange={this.handleChange}
-                                    />
-                                </FormGroup>
-                                <FormGroup>
-                                    <label>Password</label>
-                                    <FormControl
-                                        id="password"
-                                        className="form-field-default"
-                                        value={this.state.password}
-                                        onChange={this.handleChange}
-                                        type="password"
-                                    />
-                                </FormGroup>
-                                <LoaderButton
-                                    disabled={!this.validateForm()}
-                                    type="submit"
-                                    isLoading={this.props.auth.isFetching}
-                                    text="Login"
-                                    style={{marginBottom: 20}}
-                                    loadingText="Logging in…"
-                                    className="btn-block"
+                    <div
+                        className="col-lg-4 offset-lg-4 col-md-4 offset-md-4 col-sm-6 offset-sm-3 col-xs-6 offset-xs-2 login-col">
+                        <form onSubmit={this.handleSubmit}>
+                            <FormGroup>
+                                <label>Email</label>
+                                <FormControl
+                                    autoFocus
+                                    id="email"
+                                    className="form-field-default"
+                                    type="email"
+                                    value={this.state.email}
+                                    onChange={this.handleChange}
                                 />
-                                <div className="d-flex flex-row justify-content-between">
-                                    <Link to="/login/reset" className="text-muted">Forgot your password?</Link>
-                                    <Link to="/signup" className="text-muted">Resend Confirmation</Link>
-                                </div>
-                            </form>
-                        </div>
+                            </FormGroup>
+                            <FormGroup>
+                                <label>Password</label>
+                                <FormControl
+                                    id="password"
+                                    className="form-field-default"
+                                    value={this.state.password}
+                                    onChange={this.handleChange}
+                                    type="password"
+                                />
+                            </FormGroup>
+                            <LoaderButton
+                                disabled={!this.validateForm()}
+                                type="submit"
+                                isLoading={this.props.auth.isFetching}
+                                text="Login"
+                                style={{marginBottom: 20}}
+                                loadingText="Logging in…"
+                                className="btn-block"
+                            />
+                            <div className="d-flex flex-row justify-content-between">
+                                <Link to="/login/reset" className="text-muted">Forgot your password?</Link>
+                                <Link to="/signup" className="text-muted">Resend Confirmation</Link>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
