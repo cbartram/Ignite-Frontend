@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import SyntaxHighlighter from 'react-syntax-highlighter';
-import {Transition} from "semantic-ui-react";
+import {Card, Transition} from "semantic-ui-react";
 import {docco} from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import Container from "./components/Container/Container";
 import {Link, withRouter} from 'react-router-dom'
 import QuoteCard from "./components/QuoteCard/QuoteCard";
-import Card from './components/Card/Card';
+import IgniteCard from './components/Card/Card';
 import InstructorImage from './resources/images/instructor_picture.jpg';
 import './App.css';
 import {fetchVideos} from "./actions/actions";
@@ -28,6 +28,32 @@ class App extends Component {
             cogOne: 0,
             cogTwo: 0,
             activeIndex: 0,
+            features: [
+                {
+                    name: 'Quizzes',
+                    description: 'Test your knowledge on coding concepts at the end of each suite of videos.'
+                },
+                {
+                    name: 'Articles',
+                    description: 'Browse through hand curated articles illuminating new ideas relating to each video.',
+                },
+                {
+                    name: 'Downloads',
+                    description: 'All software and downloads used in video lectures is free to use.'
+                },
+                {
+                    name: 'Open Source',
+                    description: 'Gain access to direct source code referenced in each of the videos.'
+                },
+                {
+                    name: 'Embedded Programming',
+                    description: 'Write & run code along with each video directly in the browser window.'
+                },
+                {
+                    name: 'Open Community',
+                    description: 'Utilize the community to answer questions or issues for every Ignite video.'
+                }
+            ],
             syntax: [
                 {
                     id: 0,
@@ -78,28 +104,28 @@ class App extends Component {
     componentDidMount() {
         const SPEED = 1.5;
 
-        setInterval(() => {
-            this.setState((prev) => {
-                const allFalse = prev.syntax.map(s => ({...s, visible: false}));
-
-
-                if (prev.activeIndex === prev.syntax.length - 1) {
-                    return {
-                        activeIndex: 0,
-                        syntax: allFalse.map(s => {
-                            if (s.id === 0)
-                                return {
-                                    ...s,
-                                    visible: true
-                                };
-                            return s;
-                        })
-                    };
-                }
-
-                return {activeIndex: prev.activeIndex + 1}
-            });
-        }, 6500);
+        // setInterval(() => {
+        //     this.setState((prev) => {
+        //         const allFalse = prev.syntax.map(s => ({...s, visible: false}));
+        //
+        //
+        //         if (prev.activeIndex === prev.syntax.length - 1) {
+        //             return {
+        //                 activeIndex: 0,
+        //                 syntax: allFalse.map(s => {
+        //                     if (s.id === 0)
+        //                         return {
+        //                             ...s,
+        //                             visible: true
+        //                         };
+        //                     return s;
+        //                 })
+        //             };
+        //         }
+        //
+        //         return {activeIndex: prev.activeIndex + 1}
+        //     });
+        // }, 6500);
 
         setInterval(() => {
             this.setState((prev) => {
@@ -197,7 +223,7 @@ class App extends Component {
                 </section>
                 <section id="our-mission">
                     <div className="row">
-                        <div className="col-md-3 offset-md-3">
+                        <div className="col-md-6 offset-md-1">
                             <svg xmlns="http://www.w3.org/2000/svg" className="mission-svg" width="73" height="73"
                                  viewBox="0 0 73 73">
                                 <g fill="none" transform="translate(.5 .736)">
@@ -227,7 +253,7 @@ class App extends Component {
                                 Start Now
                             </Link>
                         </div>
-                        <div className="col-md-6">
+                        <div className="col-md-5">
                             <div className="laptop">
                                 <span className="shadow"/>
                                 <span className="lid"/>
@@ -259,24 +285,25 @@ class App extends Component {
                 </section>
                 <section id="course-overview">
                     <div className="row">
-                        <div className="col-md-6 offset-md-2">
+                        <div className="col-md-6 offset-md-1">
                             <Transition visible={this.state.syntax[this.state.activeIndex].visible === true}
                                         animation="scale" duration={500}>
-                                <Card cardTitle={this.state.syntax[this.state.activeIndex].title} inverted
-                                      style={{paddingBottom: 0}} classNames={['py-0']}>
+                                <IgniteCard cardTitle={this.state.syntax[this.state.activeIndex].title} inverted
+                                            style={{paddingBottom: 0}} classNames={['py-0']}>
                                     <SyntaxHighlighter showLineNumbers
+                                                       useInlineStyles={false}
                                                        language={this.state.syntax[this.state.activeIndex].lang}
                                                        style={docco}>
                                         {this.state.syntax[this.state.activeIndex].code}
                                     </SyntaxHighlighter>
-                                </Card>
+                                </IgniteCard>
                             </Transition>
                         </div>
                         <div className="col-md-4 pb-3 pr-3">
                             <h1 className="common-UppercaseTitle common-UppercaseTitle-Inverse mt-3">
                                 Course Overview
                             </h1>
-                            <p className="common-BodyText common-BodyText-dark">
+                            <p className="common-BodyText common-BodyText-light">
                                 Learn end to end full stack development using modern open source
                                 technologies and libraries like Git, React, NodeJS, Postgres, Express, and JQuery among
                                 others! The course takes you through everything from setting up your local development
@@ -291,10 +318,54 @@ class App extends Component {
                         </div>
                     </div>
                 </section>
+
+                <section id="learning-tools">
+                    <div className="row">
+                        <div className="col-md-6 offset-md-1 mt-3">
+                            <Card.Group itemsPerRow={2}>
+                                {
+                                    this.state.features.map(feature => {
+                                        return (
+                                            <Card
+                                                header={feature.name}
+                                                description={feature.description}
+                                            />
+                                        );
+                                    })
+                                }
+                            </Card.Group>
+                        </div>
+                        <div className="col-md-4 mr-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="73" height="73" viewBox="0 0 48 39">
+                                <g fill="none">
+                                    <path fill="#FFCCA5"
+                                          d="M38,39 L12,39 C10.3431458,39 9,37.6568542 9,36 L9,3 C9,1.34314575 10.3431458,0 12,0 L38,0 C39.6568542,0 41,1.34314575 41,3 L41,36 C41,37.6568542 39.6568542,39 38,39 Z M19.5,36 L32.5,36 C33.3284271,36 34,35.3284271 34,34.5 C34,33.6715729 33.3284271,33 32.5,33 L19.5,33 C18.6715729,33 18,33.6715729 18,34.5 C18,35.3284271 18.6715729,36 19.5,36 Z M26,16.5 C26,15.6715729 25.3284271,15 24.5,15 L18.5,15 C17.6715729,15 17,15.6715729 17,16.5 C17,17.3284271 17.6715729,18 18.5,18 L24.5,18 C25.3284271,18 26,17.3284271 26,16.5 L26,16.5 Z M13.5,24 L22.5,24 C23.3284271,24 24,23.3284271 24,22.5 C24,21.6715729 23.3284271,21 22.5,21 L13.5,21 C12.6715729,21 12,21.6715729 12,22.5 C12,23.3284271 12.6715729,24 13.5,24 Z M24.5,3 L13.5,3 C12.6715729,3 12,3.67157288 12,4.5 C12,5.32842712 12.6715729,6 13.5,6 L24.5,6 C25.3284271,6 26,5.32842712 26,4.5 C26,3.67157288 25.3284271,3 24.5,3 Z M36.5,9 L23.5,9 C22.6715729,9 22,9.67157288 22,10.5 C22,11.3284271 22.6715729,12 23.5,12 L36.5,12 C37.3284271,12 38,11.3284271 38,10.5 C38,9.67157288 37.3284271,9 36.5,9 L36.5,9 Z M36.5,21 L28.5,21 C27.6715729,21 27,21.6715729 27,22.5 C27,23.3284271 27.6715729,24 28.5,24 L36.5,24 C37.3284271,24 38,23.3284271 38,22.5 C38,21.6715729 37.3284271,21 36.5,21 Z"/>
+                                    <path fill="#FFA27B"
+                                          d="M48.66,29.366 L44.506,33.65 C44.2890532,33.8767863 43.9888438,34.0050541 43.675,34.0050541 C43.3611562,34.0050541 43.0609468,33.8767863 42.844,33.65 C42.3862197,33.1707525 42.3862197,32.4162475 42.844,31.937 L44.722,30 L24.5,30 C23.6715729,30 23,29.3284271 23,28.5 C23,27.6715729 23.6715729,27 24.5,27 L44.704,27 L42.844,25.082 C42.3862197,24.6027525 42.3862197,23.8482475 42.844,23.369 C43.0605372,23.1418217 43.3605151,23.0130116 43.6743591,23.0124451 C43.9882031,23.0118786 44.2886441,23.1396049 44.506,23.366 L48.661,27.651 C49.121,28.124 49.121,28.891 48.661,29.364 L48.66,29.366 Z M17.5,12 L5.296,12 L7.156,13.918 C7.61378028,14.3972475 7.61378028,15.1517525 7.156,15.631 C6.93905318,15.8577863 6.63884379,15.9860541 6.325,15.9860541 C6.01115621,15.9860541 5.71094682,15.8577863 5.494,15.631 L1.34,11.35 C0.881582563,10.8706211 0.881582563,10.1153789 1.34,9.636 L5.494,5.352 C5.71094682,5.12521375 6.01115621,4.99694591 6.325,4.99694591 C6.63884379,4.99694591 6.93905318,5.12521375 7.156,5.352 C7.61378028,5.83124747 7.61378028,6.58575253 7.156,7.065 L5.278,9 L17.5,9 C18.3284271,9 19,9.67157288 19,10.5 C19,11.3284271 18.3284271,12 17.5,12 Z"/>
+                                </g>
+                            </svg>
+                            <h1 className="common-UppercaseTitle peach">
+                                Learning Tools
+                            </h1>
+                            <p className="common-BodyText">
+                                Ignite has the tools you need to learn including quizzes for each chapter, hand curated
+                                articles relating to each video,
+                                useful download links for free open source software, direct access to the lessons source
+                                code, an embedded space to write
+                                code directly in the browser, and even a question and answer forum to promote community
+                                collaboration!
+                            </p>
+                            <Link className="common-Button common-Peach-Button mb-3" to="/signup">
+                                Start Now
+                            </Link>
+                        </div>
+                    </div>
+                </section>
+
                 {/* TODO Add section about community forum, quizzes, videos, practice, article links, etc... */}
                 <section id="instructor">
                     <div className="row">
-                        <div className="col-md-4 offset-md-3 pt-4">
+                        <div className="col-md-6 offset-md-1 pt-4">
                             <h1 className="common-UppercaseTitle">
                                 Meet your Instructor
                             </h1>

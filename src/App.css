@@ -59,6 +59,9 @@ pre {
     font-size: 13px;
     line-height: 23px;
     color: #6f7c82;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
 }
 
 .muted {
@@ -119,6 +122,22 @@ pre {
 .react-syntax-highlighter-line-number {
     color: #aab7c5;
 }
+
+
+.box-container {
+    display: flex;
+    align-items: stretch;
+    flex-wrap: wrap;
+    /*justify-content: space-between;*/
+    /*width: calc(60% - 2rem);*/
+}
+
+@media (max-width: 1280px) {
+    .css-124p5sw {
+        width: calc(50% - 1rem);
+    }
+}
+
 
 /* Header & Stripes Styles */
 .header-hero {
@@ -523,11 +542,15 @@ pre {
     border-right: 2px solid #f6f9fc;
 }
 
-#our-mission:before {
+#our-mission:before, #learning-tools:before {
     content: "";
     display: block;
     height: 2px;
     background: #f2f6fa;
+}
+
+.peach {
+    color: #FFA27B;
 }
 
 #course-overview {

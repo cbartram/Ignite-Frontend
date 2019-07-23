@@ -190,6 +190,13 @@ ul {
   color: #525f7f;
 }
 
+.common-BodyText-light {
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 28px;
+  color: white;
+}
+
 .common-Button {
   cursor: pointer;
   white-space: nowrap;
@@ -273,6 +280,20 @@ ul {
 .common-Blue-Button:hover {
   color: #fff !important;
   background: #408AF8 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08) !important;
+}
+
+.common-Peach-Button {
+  color: #fff;
+  background: #FFCCA5;
+  width: 150px;
+  text-align: center;
+}
+
+.common-Peach-Button:hover {
+  color: #fff !important;
+  background: #FFA27B !important;
   transform: translateY(-1px) !important;
   box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08) !important;
 }
