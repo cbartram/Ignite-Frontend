@@ -224,7 +224,7 @@ class App extends Component {
                 </section>
                 <section id="our-mission">
                     <div className="row">
-                        <div className="col-md-6 offset-md-1 iphone-margin">
+                        <div className="col-md-5 offset-md-1 iphone-margin">
                             <svg xmlns="http://www.w3.org/2000/svg" className="mission-svg" width="73" height="73"
                                  viewBox="0 0 73 73">
                                 <g fill="none" transform="translate(.5 .736)">
@@ -242,24 +242,23 @@ class App extends Component {
                                 Our Mission
                             </h1>
                             <p className="common-BodyText">
-                                At Ignite our missions is to bring affordable technology education to everyone. Full
-                                stack development is hard. There is a plethora of information and mis-information out
-                                there on the right way to develop modern
-                                web applications. In our current age we demand that apps be more reliable, resilient,
-                                available, and responsive
-                                then ever before. Ignite's courses teach you how to code, create, deploy, and maintain
+                                At Ignite our missions is to bring affordable technology education to everyone.
+                                Ignite's simple step by step courses teach you how to code, create, deploy, and maintain
                                 modern day full stack applications in production.
                             </p>
                             <Link className="common-Button common-Blue-Button mb-3" to="/signup">
                                 Start Now
                             </Link>
                         </div>
-                        <div className="col-md-5">
-                            <div>
-                                <div className="circle one"/>
-                                <div className="circle two"/>
-                                <div className="circle three"/>
+                        <div className="col-md-6">
+                            <div className="grid-background d-flex justify-content-center align-items-center">
+                                <h3 className="common-UppercaseTitle">From Blueprint to Release Day</h3>
                             </div>
+                            {/*<div>*/}
+                            {/*    <div className="circle one" />*/}
+                            {/*    <div className="circle two" />*/}
+                            {/*    <div className="circle three" />*/}
+                            {/*</div>*/}
                         </div>
                     </div>
                 </section>

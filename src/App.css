@@ -650,101 +650,32 @@ pre {
     margin-bottom: 20px;
 }
 
-.laptop {
-    position: relative;
-    width: 584px;
-    height: 405px;
-    top: 30px;
-    -webkit-transform: scale(0.65);
-    transform: scale(0.65); /* Controls the size of the laptop */
-    -webkit-transform-origin: 0 40px;
-    transform-origin: 0 40px;
-    left: calc(50% - 166px);
-}
-
-.laptop * {
-    position: absolute;
-}
-
-.laptop .shadow {
-    left: 17px;
-    right: 17px;
-    top: 40px;
-    height: 490px;
-    opacity: .3;
-    background: #7692b3;
-    -webkit-filter: blur(30px);
-    filter: blur(30px);
-    will-change: transform;
-}
-
-.laptop .lid {
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(45deg,#e5ebf2,#f3f8fb);
-    border-radius: 20px;
-    -webkit-box-shadow: inset 1px -4px 6px rgba(145,161,181,.3);
-    box-shadow: inset 1px -4px 6px rgba(145,161,181,.3);
-}
-
-.laptop .camera {
-    --size: 4px;
-    width: var(--size);
-    height: var(--size);
-    top: 10px;
-    left: 50%;
-    margin-left: -2px;
-    border-radius: 50%;
-    background: #dae0e8;
-}
-
-.laptop .screen {
-    top: 24px;
-    bottom: 35px;
-    left: 17px;
-    right: 17px;
+/* Grid Styles */
+.grid-background {
+    border: 2px solid #f2f6fa;
+    margin-top: 20px;
     border-radius: 4px;
-    -webkit-box-shadow: -1px 1px 6px rgba(171,183,204,.2);
-    box-shadow: -1px 1px 6px rgba(171,183,204,.2);
-    background: #f2f6fa;
+    height: 406px;
+    width: 608px;
+    position: static;
+    background: url(https://stripe.com/img/v3/connect/features/routing-diagram/grid-background.png);
+    background-size: 101px 101px;
 }
 
-.laptop .chassis {
-    width: 100%;
-    height: 142px;
-    top: calc(100% - 11px);
-    border-radius: 8px 8px 14px 14px;
-    -webkit-transform: perspective(880px) rotateX(40deg);
-    transform: perspective(880px) rotateX(40deg);
-    -webkit-transform-origin: 50% 0;
-    transform-origin: 50% 0;
-    background: linear-gradient(rgba(145,161,181,.2),rgba(145,161,181,0)),linear-gradient(45deg,#e5ebf2,#f3f8fb);
-    -webkit-box-shadow: inset 0 -2px 3px rgba(145,161,181,.5), inset -1px -6px 4px rgba(253,255,255,.9);
-    box-shadow: inset 0 -2px 3px rgba(145,161,181,.5), inset -1px -6px 4px rgba(253,255,255,.9);
+.step {
+    position: absolute;
+    width: 72px;
+    height: 72px;
+    left: 50%;
+    top: 50%;
+    margin: -36px 0 0 -36px;
+    transition-property: transform, opacity, -webkit-transform;
+    transition-timing-function: cubic-bezier(.2, 1, .3, 1.05), cubic-bezier(0, 1, 0, 1);
+    background: #aff1b6 url(https://stripe.com/img/v3/connect/features/routing-diagram/customer.svg) no-repeat 50% 50%;
+    border-radius: 50%;
 }
 
-.laptop .chassis * {
-    opacity: .3;
-    background: linear-gradient(45deg,#b2bdcc,#c1ccd8);
-    -webkit-box-shadow: 1px 1px 1px hsla(0,0%,100%,.75);
-    box-shadow: 1px 1px 1px hsla(0,0%,100%,.75);
-}
 
-.laptop .keyboard {
-    left: 28px;
-    right: 28px;
-    top: 8px;
-    height: 66px;
-    border-radius: 2px 2px 4px 4px;
-}
-
-.laptop .trackpad {
-    left: 165px;
-    right: 165px;
-    top: 76px;
-    height: 52px;
-    border-radius: 4px 4px 6px 6px;
-}
 
 
 .section-intro {
