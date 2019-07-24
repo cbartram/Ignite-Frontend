@@ -609,11 +609,21 @@ pre {
     border-right: 2px solid #f6f9fc;
 }
 
-#our-mission:before, #learning-tools:before {
+#our-mission:before {
     content: "";
     display: block;
     height: 2px;
     background: #f2f6fa;
+}
+
+#our-mission {
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+
+#learning-tools {
+    padding-top: 50px;
+    padding-bottom: 50px;
 }
 
 .peach {
@@ -622,6 +632,8 @@ pre {
 
 #course-overview {
     background: #424770;
+    padding-top: 50px;
+    padding-bottom: 50px;
 }
 
 .common-BodyText-dark {

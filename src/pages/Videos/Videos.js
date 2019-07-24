@@ -166,13 +166,13 @@ class Videos extends Component {
      */
     renderJumbotron(authorized = false, isLoading = false) {
         let text = '';
-        if (isLoading) text = 'Checking your subscription status....It\'ll just be a moment';
-        else if (!authorized) text = ' It looks like you aren\'t subscribed to ignite. If you would like to subscribe and watch all the high quality HD full stack development videos you can click the button below!';
+        if (!authorized && !isLoading) text = ' It looks like you aren\'t subscribed to ignite. If you would like to subscribe and watch all the high quality HD full stack development videos you can click the button below!';
 
         return (
             <div className="p-3 d-flex flex-column align-items-center">
                 <h3 className="common-SectionTitle">
-                    { !authorized && 'No subscription found'}
+                    {(!authorized && !isLoading) && 'No subscription found'}
+                    {!authorized && isLoading && 'Loading...'}
                 </h3>
                 <div className="row d-flex flex-column align-items-center">
                     <div className="col-md-8">
@@ -180,7 +180,7 @@ class Videos extends Component {
                             { text }
                         </p>
                         {
-                            !authorized &&
+                            (!authorized && !isLoading) &&
                             <div className="d-flex flex-column align-items-center">
                                 <Link to="/pricing" className="common-Button common-Button--default">
                                     Subscribe
