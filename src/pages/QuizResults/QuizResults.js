@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { withRouter} from 'react-router-dom';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {Placeholder} from 'semantic-ui-react'
+import {withRouter} from 'react-router-dom';
 import withContainer from '../../components/withContainer';
-import { queryString } from '../../util';
-import { updateQuiz, submitQuiz } from '../../actions/actions';
+import {queryString} from '../../util';
+import {submitQuiz, updateQuiz} from '../../actions/actions';
 import Log from '../../Log';
 import './QuizResults.css';
 import Card from "../../components/Card/Card";
@@ -115,13 +116,38 @@ class QuizResults extends Component {
     // If we are still grading the quiz show a loading icon
     if(this.props.isFetching) {
       return (
-          <div className="d-flex flex-column align-items-center justify-content-center mt-4">
-            <h3 className="common-SectionTitle">
-              Grading Quiz One Moment...
-            </h3>
-            <i className="fa fa-4x fa-circle-notch" style={{color: '#7795f8'}} />
+          <div className="row d-flex flex-column align-items-center justify-content-center">
+              <div className="mt-4">
+                  <h3 className="common-SectionTitle">
+                      Grading Quiz One Moment...
+                  </h3>
+              </div>
+              <div className="col-md-7 col-sm-12">
+                  <Card cardTitle="">
+                      <Placeholder fluid>
+                          <Placeholder.Header image>
+                              <Placeholder.Line/>
+                              <Placeholder.Line/>
+                          </Placeholder.Header>
+                          <Placeholder.Paragraph>
+                              <Placeholder.Line/>
+                              <Placeholder.Line/>
+                              <Placeholder.Line/>
+                          </Placeholder.Paragraph>
+                          <Placeholder.Header>
+                              <Placeholder.Line/>
+                              <Placeholder.Line/>
+                          </Placeholder.Header>
+                          <Placeholder.Paragraph>
+                              <Placeholder.Line/>
+                              <Placeholder.Line/>
+                              <Placeholder.Line/>
+                          </Placeholder.Paragraph>
+                      </Placeholder>
+                  </Card>
+              </div>
           </div>
-      )
+      );
     }
 
 
