@@ -45,7 +45,9 @@ class Videos extends Component {
             loadingVideo: null, // The id of the video that is loading
             activeChapter: 0,
             recentlyWatched: [],
-        }
+        };
+
+
     }
 
     async componentDidMount() {
@@ -339,6 +341,7 @@ class Videos extends Component {
                                         )
                                     }
                                     return <Menu.Item key={_.uniqueId('chapter_menu_item_')} name={`Chapter ${i + 1}`} onClick={() => this.chapterScroll(i)} active={this.state.activeChapter === i} />
+
                                 })
                             }
                         </Menu>

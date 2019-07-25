@@ -33,7 +33,6 @@ class PaymentModal extends Component {
             fields: {
                 firstName: '',
                 lastName: '',
-                amount: 2500,
             },
             missingValues: {
                 firstName: false,

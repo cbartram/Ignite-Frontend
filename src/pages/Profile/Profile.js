@@ -26,6 +26,7 @@ import {
 import Log from '../../Log';
 import BillingDetails from "./BillingDetails/BillingDetails";
 import RecentEvents from "./RecentEvents/RecentEvents";
+import UpdatePaymentCard from "./UpdatePaymentCard/UpdatePaymentCard";
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -361,6 +362,22 @@ class Profile extends Component {
                                         </form>
                                     </div>
                                 </Card>
+                            </div>
+                            <div className="col-md-4">
+                                {
+                                    this.props.billing.premium &&
+                                    <UpdatePaymentCard
+                                        customerId={this.props.user.customer_id}
+                                        onError={(err) => {
+                                            Log.error('Error updating payment method: ', err);
+                                            this.props.pushAlert('danger', 'Update Payment Failed', 'Something went wrong trying to update your payment method. Please try again shortly!')
+                                        }}
+                                        onSuccess={() => {
+                                            Log.info('Sucessfully Updated User payment info');
+                                            this.props.pushAlert('success', 'Payment Updated', 'Your payment method has been updated successfully')
+                                        }}
+                                    />
+                                }
                             </div>
                         </div>
                     </div>
