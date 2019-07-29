@@ -10,6 +10,7 @@ import {ApolloClient} from 'apollo-client'
 import {ApolloProvider} from "react-apollo";
 import Amplify, {Auth} from 'aws-amplify';
 import {CookiesProvider} from 'react-cookie';
+import ReactGA from "react-ga";
 import rootReducer from './reducers/rootReducer';
 import * as constants from './constants'
 import {AMPLIFY_CONFIG, API_KEY, DEV_URL, FB_APP_ID, IS_PROD, PROD_API_KEY, PROD_URL} from './constants'
@@ -32,6 +33,9 @@ Amplify.configure(AMPLIFY_CONFIG);
 
 // Setup Logger
 if (!IS_PROD || localStorage.getItem('FORCE_LOGS') === true) localStorage.setItem('debug', 'ignite:*');
+
+ReactGA.initialize('UA-133319035-1');
+ReactGA.pageview(window.location.pathname + window.location.search);
 
 /**
  * Checks the cookies/local storage to see if the user has been authenticated recently/remembered and loads
@@ -61,6 +65,7 @@ const load = async () => {
 
     try {
         const user = await Auth.currentSession();
+        ReactGA.set({userId: user.idToken.payload['cognito:username']});
         Log.info(user.idToken.payload['cognito:username'], 'Found Authenticated user within a Cookie!');
         Log.info('Attempting to retrieve user videos...');
 

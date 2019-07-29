@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import _ from 'lodash';
-import { withRouter, Link } from 'react-router-dom';
+import ReactGA from 'react-ga';
+import {Link, withRouter} from 'react-router-dom';
 import withContainer from '../../components/withContainer';
-import { queryString } from '../../util';
-import { updateQuiz, submitQuiz } from '../../actions/actions';
+import {queryString} from '../../util';
+import {submitQuiz, updateQuiz} from '../../actions/actions';
 import Log from '../../Log';
 import './Quiz.css';
 
@@ -151,6 +152,12 @@ class Quiz extends Component {
           Log.info('Submitting Quiz results...');
           this.props.updateQuiz(quiz);
           this.props.submitQuiz(this.props.user.pid, quiz);
+
+          ReactGA.event({
+            category: 'User',
+            action: 'Took a Quiz'
+          });
+
           // Show the user their quiz results!
           this.props.history.push(`/quiz/results?q=${encodeURI(btoa(this.state.quiz.id))}`);
         }

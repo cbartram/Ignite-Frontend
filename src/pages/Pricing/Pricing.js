@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import moment from 'moment';
 import isNil from 'lodash/isNil';
 import {withRouter} from 'react-router-dom';
+import ReactGA from 'react-ga';
 import PaymentModal from '../../components/PaymentModal/PaymentModal';
 import './Pricing.css';
 import withContainer from "../../components/withContainer";
@@ -57,20 +58,29 @@ class Pricing extends Component {
             // If the user is already premium let them know!
             if (!isNil(this.props.user.plan))
                 return <button
-                    onClick={() => this.props.pushAlert('info', 'Already Subscribed', 'You are already subscribed to this plan!')}
+                    onClick={() => {
+                        this.props.pushAlert('info', 'Already Subscribed', 'You are already subscribed to this plan!');
+                        ReactGA.modalview('/pricing#already-subscribed');
+                    }}
                     className="Plan-button common-UppercaseText common-Link--arrow">
                     Join free for 7 days
                 </button>;
              else
                 // Else show them the payment form
-                return <button onClick={() => this.setState({selectedPlan: this.state.plans[planName]})}
+                return <button onClick={() => {
+                    this.setState({selectedPlan: this.state.plans[planName]});
+                    ReactGA.modalview('/pricing#successful');
+                }}
                                data-toggle="modal" data-target="#payment-modal"
                                className="Plan-button common-Link--arrow">
                     Join free for 7 days
                 </button>
         }
         // User is not signed in prompt them to signup
-        return <button onClick={() => this.props.history.push('/signup')}
+        return <button onClick={() => {
+            this.props.history.push('/signup');
+            ReactGA.modalview('/pricing#signup');
+        }}
                        className="Plan-button common-UppercaseText common-Link--arrow">
             Join free for 7 days
         </button>;

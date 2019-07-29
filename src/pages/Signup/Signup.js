@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {FormControl, FormGroup,} from "react-bootstrap";
 import _ from 'lodash';
+import ReactGA from 'react-ga';
 import LoaderButton from "../../components/LoaderButton/LoaderButton";
 import {connect} from 'react-redux';
 import {Auth} from 'aws-amplify/lib/index';
@@ -122,6 +123,11 @@ class Signup extends Component {
                 }
             });
 
+            ReactGA.event({
+                category: 'User',
+                action: 'Created an Account'
+            });
+
             this.props.hideErrors();
 
             // This triggers the app to show the confirmation dialog box
@@ -147,6 +153,12 @@ class Signup extends Component {
             const user = await Auth.signIn(this.state.email, this.state.password);
 
             Log.info('Sign-in successful!');
+
+            ReactGA.event({
+                category: 'User',
+                action: 'Confirmed their email'
+            });
+
             this.props.loginSuccess(user);
             this.props.fetchVideos(`user-${user.username}`);
             this.props.history.push('/videos');

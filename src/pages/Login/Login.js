@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import isUndefined from 'lodash/isUndefined';
 import {FormControl, FormGroup} from "react-bootstrap";
 import {Auth} from 'aws-amplify/lib/index';
+import ReactGA from 'react-ga';
 import {connect} from 'react-redux';
 import {Link, withRouter} from 'react-router-dom';
 import './Login.css';
@@ -70,6 +71,10 @@ class Login extends Component {
         this.props.loginRequest();
 
         try {
+            ReactGA.event({
+                category: 'User',
+                action: 'Logged In'
+            });
             const res = await Auth.signIn(this.state.email, this.state.password);
             // Fetches both user videos and user billing information
             // using the same API route we must update redux first because of the JWT token used in API Authorization

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import ReactGA from 'react-ga';
 import withContainer from '../../components/withContainer';
 import Card from '../../components/Card/Card';
 import Log from '../../Log';
@@ -45,6 +46,10 @@ class Support extends Component {
   submit() {
     this.setState({ isSending: true }, async () => {
       try {
+          ReactGA.event({
+              category: 'User',
+              action: 'Sent a support message'
+          });
         await this.props.sendEmail({
           from: this.props.user.email,
           subject: this.state.subject,

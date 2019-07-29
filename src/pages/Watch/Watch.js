@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import ReactPlayer from 'react-player'
+import ReactPlayer from 'react-player';
+import ReactGA from 'react-ga';
 import {Link, withRouter} from 'react-router-dom';
 import {Auth} from 'aws-amplify/lib/index';
 import {withCookies} from "react-cookie";
@@ -85,6 +86,11 @@ class Watch extends Component {
         }
 
         const videoId = `${this.props.activeVideo.chapter}.${this.props.activeVideo.sortKey}`;
+
+        ReactGA.event({
+            category: 'User',
+            action: 'Watched a Video: ' + videoId
+        });
 
         // Only attempt to find posts for this video if its not currently stored in redux
         // the user won't see posts updated in real time unless they refresh the page but thats okay
