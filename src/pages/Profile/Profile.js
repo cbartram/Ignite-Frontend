@@ -178,9 +178,10 @@ class Profile extends Component {
     render() {
         return <Query
             fetchPolicy="network-only"
+            variables={{id: this.props.user.customer_id}}
             query={gql`
-                      {
-                        getCustomer(id: "${this.props.user.customer_id}") {
+                      query getCustomer($id: String!) {
+                        getCustomer(id: $id) {
                           name
                           id
                           events {
