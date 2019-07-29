@@ -301,6 +301,7 @@ class Profile extends Component {
                                                 </td>
                                             </tr>
                                             {
+                                                !_.isNil(data) &&
                                                 !_.isNil(data.getCustomer)
                                                 && data.getCustomer.subscriptions.length > 0
                                                 && data.getCustomer.subscriptions[0].cancel_at_period_end === true &&

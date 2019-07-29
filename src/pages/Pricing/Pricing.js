@@ -55,15 +55,6 @@ class Pricing extends Component {
     renderButton(planName) {
         if (this.props.user) {
             // If the user is already premium let them know!
-
-            // TODO REMOVE THIS
-            return <button onClick={() => this.setState({selectedPlan: this.state.plans[planName]})} data-toggle="modal"
-                           data-target="#payment-modal"
-                           className="Plan-button common-Link--arrow">
-                Join free for 7 days
-            </button>
-
-
             if (!isNil(this.props.user.plan))
                 return <button
                     onClick={() => this.props.pushAlert('info', 'Already Subscribed', 'You are already subscribed to this plan!')}
@@ -78,17 +69,6 @@ class Pricing extends Component {
                     Join free for 7 days
                 </button>
         }
-
-
-        // TODO REMOVE THIS
-        // Else show them the payment form
-        return <button onClick={() => this.setState({selectedPlan: this.state.plans[planName]})} data-toggle="modal"
-                       data-target="#payment-modal"
-                       className="Plan-button common-Link--arrow">
-            Join free for 7 days
-        </button>
-
-
         // User is not signed in prompt them to signup
         return <button onClick={() => this.props.history.push('/signup')}
                        className="Plan-button common-UppercaseText common-Link--arrow">
