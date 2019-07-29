@@ -23,7 +23,7 @@ export default class LinkPreview extends Component {
    */
   async componentDidMount() {
       this.setState({ imageHeight: this.containerRef.current.clientHeight + 1, loading: true }, async () => {
-         const { urls } = await ( await fetch(`https://api.unsplash.com/photos/random?query=code,programming,software,computer&client_id=51d4e3876e7e846aefdc9c0db737f7ab3dc5034b59fda2cbd5d07e2deeac1e3b`)).json()
+         const { urls } = await ( await fetch(`https://api.unsplash.com/photos/random?query=code,programming,software,computer&client_id=5bc016a1eb97df54ecb478ce984d4b287cfae62ad82ff7d50888a7d00242e8a0`)).json();
          this.setState({ imageUrl: urls.regular, loading: false });
       });
   }
