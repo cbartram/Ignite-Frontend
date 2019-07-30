@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import './Legal.css';
 import withContainer from "../../components/withContainer";
 
@@ -9,7 +9,7 @@ class Legal extends Component {
               <article id="content">
                 <header id="pagmt">
                   <h1>Privacy Policy</h1>
-                  <p>Last updated: February 18, 2019</p>
+                  <p>Last updated: July 30, 2019</p>
                 </header>
 
                 <section>
@@ -19,7 +19,8 @@ class Legal extends Component {
                     services that enable you to learn about full stack development.</p>
                   <p>This Global Privacy Policy describes the types of <a href="#personal-data-definition">Personal
                     Data</a> we collect through our products and services (“Services”) and via our online
-                    presence, which include our main website at <a href="https://ignitecode.net">Ignite.com</a>, as well
+                    presence, which include our main website at <a href="https://ignitecode.net">Ignite Code</a>, as
+                    well
                     as services and websites that we enable Internet users to access, (collectively, our “Sites”). This policy also
                     describes how we use Personal Data, with whom
                     we share it, your rights and choices, and how you can contact us about our privacy practices. This
@@ -99,11 +100,6 @@ class Legal extends Component {
                     <li>When you fill-in our online form to contact our sales team, we collect your full name, work email,
                       country, and anything else you tell us about your project, needs and timeline.
                     </li>
-                    <li>When you use the “Remember Me” feature of Ignite Checkout, we collect your email address, payment
-                      card number, CVC code and expiration date however we do not store this information. It is stored by
-                      an independent third party <a href="https://stripe.com">Stripe</a>. This information is processed by
-                      Stripe and a token is returned to use representing your credit card credentials.
-                    </li>
                   </ul>
 
                   <p>When you respond to Ignite emails or surveys we collect your email address, name and any other
@@ -155,7 +151,7 @@ class Legal extends Component {
 
                   <p>To learn more about the cookies that may be served through our Sites and how You can control our use
                     of cookies and third-party analytics, please see our <a
-                        href="https://www.Ignite.com/cookies-policy/legal">Cookie Policy</a>.</p>
+                        href="https://ignitecode.net/legal">Cookie Policy</a>.</p>
 
                   <h3 id="how-we-use-personal-data">
                     3. How We Use Personal Data
@@ -273,15 +269,6 @@ class Legal extends Component {
                     technology also helps us track the effectiveness of our marketing efforts and understand if you have
                     seen one of our advertisements.</p>
 
-                  <p>We work with Google AdWords, Doubleclick, AdRoll and other advertising networks. To learn how to opt
-                    out of behavioral advertising delivered by Network Advertising Initiative member companies, please
-                    visit the <a href="http://www.networkadvertising.org/managing/opt_out.asp">Network Advertising
-                      Initative</a> and <a href="http://www.aboutads.info/">Digital Advertising Alliance</a>. You may
-                    download the <a href="http://youradchoices.com/appchoices">AppChoices app</a> to opt out in mobile
-                    apps. If you opt out from interest-based advertising, you may see advertising that is not relevant to
-                    you. At present, there is no industry standard for recognizing Do Not Track browser signals, so we do
-                    not respond to them.</p>
-
                   <h3 id="how-we-disclose-personal-data">
                     4. How We Disclose Personal Data.
                     <a className="anchor" href="#how-we-disclose-personal-data">{null}</a>
@@ -388,7 +375,7 @@ class Legal extends Component {
                     need access to the information to perform their duties. Unfortunately, no data transmission or storage
                     system can be guaranteed to be 100% secure. If you have reason to believe that your interaction with
                     us is no longer secure (for example, if you feel that the security of your account has been
-                    compromised), please <a href="https://Ignite.com/contact">contact us</a> immediately.</p>
+                    compromised), please <a href="https://ignitecode.net/contact">contact us</a> immediately.</p>
 
                   <p>If you are a Ignite User, we retain your Personal Data as long as we are providing the Services to
                     you. We retain Personal Data after we cease providing Services to you, even if you close your Ignite
@@ -412,13 +399,6 @@ class Legal extends Component {
                     standards described in this Privacy Policy. In certain circumstances, courts, law enforcement
                     agencies, regulatory agencies or security authorities in those other countries may be entitled to
                     access your Personal Data.</p>
-
-                  <p>If you are located in the European Economic Area (“EEA”) or Switzerland, we comply with applicable
-                    laws to provide an adequate level of data protection for the transfer of your Personal Data to the US.
-                    Ignite Inc. is certified under the EU-U.S. and the Swiss-U.S. Privacy Shield Framework and adheres to
-                    the Privacy Shield Principles. For more, see Ignite’s <a
-                        href="https://www.Ignite.com/privacy-shield-policy">Privacy Shield Policy</a>. In addition, we
-                    have implemented intra-group data transfer agreements which you may view upon request.</p>
 
                   <p>Where applicable law requires us to ensure that an international data transfer is governed by a data
                     transfer mechanism, we use one or more of the following mechanisms: EU Standard Contractual Clauses

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import './Legal.css';
 import './CookiePolicy.css'
 import withContainer from "../../components/withContainer";
@@ -34,11 +34,6 @@ class CookiePolicy extends Component {
                                 including:</p>
 
                             <ul>
-                                <li><strong>Authentication.</strong> We use cookies to remember Your login state so You
-                                    don’t have to login as You navigate through our site and Your dashboard. For
-                                    example, when You log into Your Stripe dashboard account, we use a cookie so that
-                                    You don’t have to login again as You navigate throughout the website.
-                                </li>
                                 <li><strong>Site Features and Services.</strong> We use cookies to remember how You
                                     prefer to use our Services so that You don’t have to reconfigure Your settings each
                                     time You log into Your account. For example the
@@ -82,7 +77,8 @@ class CookiePolicy extends Component {
                             </h3>
 
                             <p>Your web browser may allow You to change Your cookie preferences, including to delete and
-                                disable Stripe cookies. Please consult the help section of Your web browser or follow
+                                disable ignite code cookies. Please consult the help section of Your web browser or
+                                follow
                                 the links below to understand Your options, but please note that if You choose to
                                 disable the cookies, some features of our website or Services may not operate as
                                 intended.</p>
@@ -110,7 +106,8 @@ class CookiePolicy extends Component {
                             <p>Cookies that we commonly use are listed below. This list is not exhaustive, but describes
                                 the main reasons we typically set cookies.</p>
 
-                            <h4 id="stripe-cookies">Stripe cookies<a className="anchor" href="#stripe-cookies">{null}</a></h4>
+                            <h4 id="stripe-cookies">Ignite cookies<a className="anchor"
+                                                                     href="#stripe-cookies">{null}</a></h4>
 
                             <table className="alternate">
                                 <thead>
@@ -154,11 +151,6 @@ class CookiePolicy extends Component {
                                 <tr>
                                     <td>cid</td>
                                     <td>Sets a value to track User metrics</td>
-                                    <td>Persistent</td>
-                                </tr>
-                                <tr>
-                                    <td>checkout-test-session, checkout-dashboard-session</td>
-                                    <td>Associates a device with a "Remember Me" Checkout account</td>
                                     <td>Persistent</td>
                                 </tr>
                                 </tbody>
