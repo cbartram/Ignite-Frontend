@@ -1,5 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+.idea
+*.iml
 # dependencies
 /node_modules
 /.pnp
@@ -26,8 +28,6 @@ yarn-error.log*
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 .idea/*
-.idea
-*.iml
 
 # User-specific stuff
 .idea/**/workspace.xml
