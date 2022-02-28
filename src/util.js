@@ -16,14 +16,16 @@ import {
 /**
  * Gets data about the user's videos including: scrub duration, the next video in the queue,
  * @param email String the user's email to retrieve videos from
+ * @param jwt JWT token representing a user who is signed into a session and authenticated.
  * @returns {Promise<void>}
  */
-export const getVideos = async (email) => {
+export const getVideos = async (email, jwt) => {
     const params = {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
+            'Authorization': `Bearer ${jwt}`,
             'x-api-key': IS_PROD ? PROD_API_KEY : API_KEY
         },
         // Since this is calling an API these details are crucial for the lambda function to know which route to execute.

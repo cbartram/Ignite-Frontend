@@ -74,13 +74,13 @@ export const loginFailure = payload => dispatch => {
  * @param email String the email of the user to retrieve videos for
  * @returns {Function}
  */
-export const fetchVideos = email => async dispatch => {
+export const fetchVideos = (email, jwt) => async dispatch => {
     dispatch({
         type: constants.REQUEST_VIDEOS,
         payload: true // Sets isFetching to true (useful for unit testing redux)
     });
 
-    const response = await getVideos(email);
+    const response = await getVideos(email, jwt);
 
     if(response.status === 200) {
         // Dispatch information about billing

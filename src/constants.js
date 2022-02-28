@@ -42,6 +42,7 @@ export const getRequestUrl = (endpointURI) => {
   else
       url = `${DEV_URL}${endpointURI}`;
 
+  console.log(`Making request to URL: ${url}`)
   return url;
 };
 
