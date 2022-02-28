@@ -6,7 +6,7 @@ const COLOURS = {
     info: 'blue',
     warn: 'orange',
     error: 'red'
-}; // choose better colours :)
+};
 
 class Log {
     generateMessage(level, message, source) {

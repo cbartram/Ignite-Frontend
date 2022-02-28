@@ -48,7 +48,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, .7);
+    background: rgba(54, 67, 94, 0.7);
     z-index: 999;
     opacity: 0;
     transition: all .5s ease-in-out;
@@ -57,11 +57,11 @@
 .overlay-active {
     display: block;
     opacity: 1;
+    overflow-y: hidden;
 }
 
 #sidebar .sidebar-header {
-    padding: 20px;
-    padding-bottom: 0;
+    padding: 20px 20px 0;
     background: white;
 }
 

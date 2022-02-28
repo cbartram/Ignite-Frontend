@@ -1,3 +1,7 @@
+.alert-container {
+    position: absolute;
+    height: 100vh;
+}
 .notification {
     position: relative;
     max-width: 500px;

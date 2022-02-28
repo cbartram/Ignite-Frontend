@@ -10,7 +10,11 @@ export default class Container extends Component {
     render() {
         return (
             <div className="container-fluid" style={this.props.style}>
-                <Navbar sidebar={this.props.sidebar} />
+                <Navbar
+                    sidebar={this.props.sidebar}
+                    disableScroll={() => document.body.style.overflow = "hidden"}
+                    restoreScroll={() => document.body.style.overflow = "scroll"}
+                />
                     {this.props.children}
                 <Footer noMargin={this.props.noFooterMargin}/>
             </div>

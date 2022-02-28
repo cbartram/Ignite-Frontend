@@ -1,0 +1,38 @@
+/* Basic button (before vote) styles */
+.fa-chevron-up, .fa-chevron-down {
+    color: #008cdd;
+}
+
+/* Button hover styles */
+.btn > .fa-chevron-up:hover {
+    color: #006cdd;
+}
+
+.btn > .fa-chevron-down:hover {
+    color: #006cdd;
+}
+
+/* Check mark styles */
+.btn > .fa-check {
+    color: #3ecf8e;
+}
+
+.btn > .fa-check:hover {
+    color: #18b25b;
+}
+
+/* Styles for disabled buttons that were not selected */
+.btn:disabled > .fa-chevron-up, .btn:disabled > .fa-chevron-down {
+    color: gray;
+    opacity: .65;
+}
+
+/* Styles for if the user voted and the button is disabled */
+.btn.voted:disabled > .fa-chevron-up {
+    color: #008cdd;
+}
+
+
+.btn.voted:disabled > .fa-chevron-down {
+    color: #008cdd;
+}

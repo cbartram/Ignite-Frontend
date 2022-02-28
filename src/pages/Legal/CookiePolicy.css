@@ -1,0 +1,126 @@
+article ul>li {
+    position: relative;
+    margin: 5px 0;
+    padding-left: 30px;
+}
+
+#content {
+    position: relative;
+    padding-top: 33px;
+    padding-left: 32px;
+    border-top: 1px solid rgba(120,134,156,.08);
+}
+
+#content, header#main-header {
+    width: 770px;
+}
+
+article header {
+    padding-top: 8px;
+    padding-bottom: 39px;
+    border-bottom: 2px solid #f4f6f7;
+}
+
+article section {
+    border-bottom: 2px solid #f4f6f7;
+    padding: 39px 0;
+}
+
+article p {
+    font-size: 15px;
+    color: #373e42;
+    line-height: 26px;
+}
+
+article ul:not(:first-child) {
+    margin-top: 10px;
+    font-size: 15px;
+    color: #373e42;
+    line-height: 26px;
+    counter-reset: listitem;
+    list-style: none;
+}
+
+article table:not(:first-child) {
+    margin-top: 18px;
+}
+
+article table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+article table thead tr th, article table thead tr th p {
+    font-weight: 500;
+    font-size: 13px;
+    color: #939da3;
+    text-transform: uppercase;
+}
+
+article table thead tr th:first-child {
+    padding-left: 10px;
+}
+
+article table tbody {
+    color: #373e42;
+    line-height: 26px;
+    font-size: 14px;
+}
+
+article table.alternate tbody tr:nth-child(odd) td {
+    background: #fafcfd;
+}
+
+article table tbody tr:first-child>td:first-child {
+    border-top-left-radius: 5px;
+}
+
+article table tbody tr:first-child>td {
+    border-top-width: 1px;
+}
+
+article table tbody tr td:first-child {
+    border-left-width: 1px;
+}
+
+
+
+article table tbody tr td {
+    border-color: #f0f4f7;
+    border-style: solid;
+    padding: 4px 9px;
+}
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+* {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+user agent stylesheet
+td, th {
+    display: table-cell;
+    vertical-align: inherit;
+}
+article table tbody, article table tbody td>* {
+    font-size: 14px;
+    line-height: 26px;
+}
+article blockquote, article dl, article ol, article p, article table tbody, article ul {
+    font-size: 15px;
+    color: #373e42;
+    line-height: 26px;
+}
+
+article table tbody tr td {
+    border-bottom-width: 1px;
+}
+
+article table tbody tr td {
+    border-color: #f0f4f7;
+    border-style: solid;
+    padding: 4px 9px;
+}

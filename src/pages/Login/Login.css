@@ -1,0 +1,80 @@
+.stripes-container-login {
+    pointer-events: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -52px;
+    top: -30%;
+    -webkit-transform: skewY(-12deg);
+    transform: skewY(-12deg);
+    -webkit-transition: opacity .2s ease-out;
+    transition: opacity .2s ease-out;
+    will-change: transform;
+}
+
+.stripes-container-login .left-dots-container-login {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: block;
+}
+
+.stripes-container-login .left-dots-container-login:before {
+    content: "";
+    background-image: url(https://stripe.com/img/v3/contact_sales/background/dots-left.svg);
+    background-size: 100%;
+    position: absolute;
+    bottom: 30em;
+    left: 0;
+    width: 145px;
+    height: 370px;
+    -webkit-transform: skewY(12deg);
+    transform: skewY(12deg);
+}
+
+.stripes-container-login .light-dots-container-login {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    overflow: hidden;
+}
+
+.stripes-container-login .light-dots-container-login:before {
+    content: "";
+    background-image: url(https://stripe.com/img/v3/contact_sales/background/dots-right-light.svg);
+    background-size: 100%;
+    position: absolute;
+    bottom: 11em;
+    right: 3px;
+    width: 220px;
+    height: 352px;
+    -webkit-transform: skewY(12deg);
+    transform: skewY(12deg);
+}
+
+.stripes-container-login .dark-dots-container-login {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 44%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.stripes-container-login .dark-dots-container-login:before {
+    content: "";
+    background-image: url(https://stripe.com/img/v3/contact_sales/background/dots-right-dark.svg);
+    background-size: 100%;
+    position: absolute;
+    top: -141px;
+    right: -22px;
+    width: 220px;
+    height: 352px;
+    -webkit-transform: skewY(12deg);
+    transform: skewY(12deg);
+    will-change: opacity;
+}

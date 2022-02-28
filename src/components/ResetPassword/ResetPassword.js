@@ -3,14 +3,10 @@ import { Auth } from "aws-amplify";
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
 import {
-    HelpBlock,
     FormGroup,
-    Glyphicon,
     FormControl,
-    ControlLabel
 } from 'react-bootstrap';
 import LoaderButton from '../LoaderButton/LoaderButton';
-import Container from '../Container/Container';
 import {
     loginFailure,
     loginRequest,
@@ -18,9 +14,7 @@ import {
     hideErrors
 } from '../../actions/actions';
 import './ResetPassword.css';
-import Alert from '../Alert/Alert';
-import AlertContainer from '../AlertContainer/AlertContainer';
-import _ from "lodash";
+import withContainer from "../withContainer";
 
 const mapStateToProps = state => ({
     auth: state.auth,
@@ -49,7 +43,6 @@ class ResetPassword extends Component {
             confirmPassword: "",
             isConfirming: false,
             isSendingCode: false,
-            alerts: []
         };
     }
 
@@ -93,7 +86,7 @@ class ResetPassword extends Component {
         } catch (err) {
             this.props.loginFailure(err);
             this.setState({ isSendingCode: false });
-            this.pushAlert('danger', 'Oh No!', this.props.auth.error.message)
+            this.props.pushAlert('danger', 'Oh No!', this.props.auth.error.message)
         }
     };
 
@@ -104,6 +97,9 @@ class ResetPassword extends Component {
      */
     handleConfirmClick = async event => {
         event.preventDefault();
+
+        this.setState({ isConfirming: true });
+
         try {
             await Auth.forgotPasswordSubmit(
                 this.state.email,
@@ -113,8 +109,10 @@ class ResetPassword extends Component {
             this.props.hideErrors();
             this.setState({ confirmed: true });
         } catch (err) {
-            console.log("Error occurred while attempting to reset password: ", err)
+            this.setState({ isConfirming: false });
             this.props.loginFailure(err);
+            this.props.pushAlert('danger', 'Oh No!', this.props.auth.error.message)
+
         }
     };
 
@@ -125,8 +123,8 @@ class ResetPassword extends Component {
     renderRequestCodeForm() {
         return (
             <form onSubmit={this.handleSendCodeClick}>
-                <FormGroup bsSize="large" controlId="email">
-                    <ControlLabel>Email</ControlLabel>
+                <FormGroup controlId="email">
+                    <label>Email</label>
                     <FormControl
                         className="form-field-default"
                         autoFocus
@@ -138,7 +136,6 @@ class ResetPassword extends Component {
                 <LoaderButton
                     block
                     type="submit"
-                    bsSize="large"
                     loadingText="Sending…"
                     text="Send Confirmation"
                     isLoading={this.state.isSendingCode}
@@ -155,8 +152,8 @@ class ResetPassword extends Component {
     renderConfirmationForm() {
         return (
             <form onSubmit={this.handleConfirmClick}>
-                <FormGroup bsSize="large" controlId="code">
-                    <ControlLabel>Confirmation Code</ControlLabel>
+                <FormGroup controlId="code">
+                    <label>Confirmation Code</label>
                     <FormControl
                         autoFocus
                         className="form-field-default"
@@ -164,14 +161,14 @@ class ResetPassword extends Component {
                         value={this.state.code}
                         onChange={this.handleChange}
                     />
-                    <HelpBlock>
+                    <small>
                         Please check your email ({this.state.email}) for the confirmation
                         code.
-                    </HelpBlock>
+                    </small>
                 </FormGroup>
                 <hr />
-                <FormGroup bsSize="large" controlId="password">
-                    <ControlLabel>New Password</ControlLabel>
+                <FormGroup controlId="password">
+                    <label>New Password</label>
                     <FormControl
                         className="form-field-default"
                         type="password"
@@ -179,8 +176,8 @@ class ResetPassword extends Component {
                         onChange={this.handleChange}
                     />
                 </FormGroup>
-                <FormGroup bsSize="large" controlId="confirmPassword">
-                    <ControlLabel>Confirm Password</ControlLabel>
+                <FormGroup controlId="confirmPassword">
+                    <label>Confirm Password</label>
                     <FormControl
                         className="form-field-default"
                         type="password"
@@ -191,7 +188,6 @@ class ResetPassword extends Component {
                 <LoaderButton
                     block
                     type="submit"
-                    bsSize="large"
                     text="Confirm"
                     loadingText="Confirm…"
                     isLoading={this.state.isConfirming}
@@ -202,10 +198,9 @@ class ResetPassword extends Component {
     }
 
     renderSuccessMessage() {
-        // this.pushAlert('success', 'Success', 'Your password has been reset successfully!');
+        this.props.pushAlert('success', 'Success', 'Your password has been reset successfully!');
         return (
             <div className="success">
-                <Glyphicon glyph="ok" />
                 <p>Your password has been reset.</p>
                 <p>
                     <Link to="/login">
@@ -216,49 +211,8 @@ class ResetPassword extends Component {
         );
     }
 
-    /**
-     * Pushes an alert onto the stack to be
-     * visible by users
-     */
-    pushAlert(type, title, message, id = _.uniqueId()) {
-        const { alerts } = this.state;
-        // Push an object of props to be passed to the <Alert /> Component
-        alerts.push({
-            type,
-            title,
-            id,
-            message,
-        });
-
-        this.setState({ alerts });
-    }
-
-    /**
-     * Removes an alert from the stack so that
-     * it is no longer rendered on the page
-     * @param id Integer the unique alert id
-     */
-    removeAlert(id) {
-        const { alerts } = this.state;
-        const newAlerts = [
-            ...alerts.filter(alert => alert.id !== id)
-        ];
-
-        this.setState({ alerts: newAlerts });
-    }
-
     render() {
         return (
-            <Container style={{backgroundColor: '#ffffff'}}>
-                <AlertContainer>
-                    {
-                        this.state.alerts.map((props, index) =>
-                            <Alert onDismiss={() => this.removeAlert(props.id)} {...props} key={index}>
-                                { props.message }
-                            </Alert>
-                        )
-                    }
-                </AlertContainer>
                 <div className="row">
                     <div className="col-lg-5 offset-lg-4 col-md-5 offset-md-4 col-sm-3 offset-sm-3 col-xs-3 offset-xs-3">
                         <div className="ResetPassword">
@@ -270,9 +224,8 @@ class ResetPassword extends Component {
                         </div>
                     </div>
                 </div>
-            </Container>
         );
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ResetPassword);
+export default withContainer(connect(mapStateToProps, mapDispatchToProps)(ResetPassword), { style: { backgroundColor: '#ffffff' }});

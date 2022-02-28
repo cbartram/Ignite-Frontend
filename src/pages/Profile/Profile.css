@@ -1,0 +1,274 @@
+@media all and (min-width: 480px) {
+    .ChangePassword {
+        padding: 0px 0;
+    }
+
+    .ChangePassword form {
+        margin: 0 auto;
+        max-width: 320px;
+    }
+}
+
+.key {
+    color: #697386;
+    line-height: 1.6;
+    word-break: break-word;
+    white-space: normal;
+}
+
+.value {
+    color: black;
+    font-size: 16px;
+}
+
+.text-danger {
+    color:#cd3d64;
+}
+
+.no-hover:hover:enabled {
+    background-color: white !important;
+    box-shadow: 0 0 0 1px rgba(42,47,69, 0.1), 0 2px 5px 0 rgba(42,47,69, 0.08), 0 1px 1.5px 0 rgba(0,0,0, 0.07), 0 1px 2px 0 rgba(0,0,0, 0.08);
+}
+
+.missing {
+    color: #a3acb9;
+    font-style: italic;
+    line-height: 1.6;
+}
+
+.value-code {
+    font-family: 'Inconsolata', monospace;
+    line-height: 20px;
+    font-weight: 400;
+    font-size: 16px;
+    white-space: normal;
+}
+
+.badge-primary {
+    color: #3d4eac;
+    background-color: #d6ecff;
+}
+
+.badge-secondary {
+    color: #4f566b;
+    background-color: #e3e8ee;
+}
+
+.badge-warning {
+    background-color: rgb(255, 231, 203);
+    color: #ff996b;
+    max-width: 50px;
+}
+
+.badge-success {
+    background-color: rgb(175, 241, 182);
+    color: rgb(21, 149, 112);
+    max-width: 50px;
+}
+
+.value-lg {
+    font-size: 19px;
+}
+
+/* Slider Styles */
+.slider {
+    margin-top: 20px;
+    position: relative;
+    border-radius: 10px;
+    cursor: default;
+}
+
+.rail {
+    border-radius: 10px;
+    height: 20px;
+}
+
+.rail .tooltip-container:first-child {
+    background: #24b47e;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    margin-left: 20px;
+}
+
+.rail .tooltip-container:nth-child(2) {
+    background: #3ecf8e;
+}
+
+.rail .tooltip-container:last-child {
+    background: #55d9c2;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    margin-right: 20px;
+}
+
+.schema-tooltip {
+    background: #fff !important;
+    border-radius: 4px !important;
+    -webkit-box-shadow: 0 0 0 1px rgba(136,152,170,.1), 0 15px 35px 0 rgba(49,49,93,.1), 0 5px 15px 0 rgba(0,0,0,.08);
+    box-shadow: 0 0 0 1px rgba(136,152,170,.1), 0 15px 35px 0 rgba(49,49,93,.1), 0 5px 15px 0 rgba(0,0,0,.08);
+    padding: 17px 20px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #525f7f !important;
+    opacity: 1;
+    -webkit-transition: opacity .2s;
+    transition: opacity .2s;
+}
+
+.__react_component_tooltip.type-dark.place-bottom:after {
+        width: 0;
+        height: 0;
+        position: absolute;
+        left: 50%;
+        top: 1px;
+        border: 6px solid #fff;
+        border-right-color: transparent;
+        border-bottom-color: transparent;
+        border-top-left-radius: 3px;
+        -webkit-box-shadow: -1px -1px 0 rgba(0,0,0,.08);
+        box-shadow: -1px -1px 0 rgba(0,0,0,.08);
+        -webkit-transform: translate(-50%,-50%) rotate(45deg);
+        transform: translate(-40%,-50%) rotate(45deg);
+}
+
+.__react_component_tooltip.type-dark.place-left:after {
+    width: 0;
+    height: 0;
+    position: absolute;
+    left: 50%;
+    top: 1px;
+    border: 6px solid #fff;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-top-left-radius: 3px;
+    -webkit-box-shadow: -1px -1px 0 rgba(0,0,0,.08);
+    box-shadow: -1px -1px 0 rgba(0,0,0,.08);
+    -webkit-transform: translate(-50%,-50%) rotate(45deg);
+    transform: translate(-40%,-50%) rotate(45deg);
+}
+
+.__react_component_tooltip.type-dark.place-right:after {
+    width: 0;
+    height: 0;
+    position: absolute;
+    left: 50%;
+    top: 1px;
+    border: 6px solid #fff;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-top-left-radius: 3px;
+    -webkit-box-shadow: -1px -1px 0 rgba(0,0,0,.08);
+    box-shadow: -1px -1px 0 rgba(0,0,0,.08);
+    -webkit-transform: translate(-50%,-50%) rotate(45deg);
+    transform: translate(-40%,-50%) rotate(45deg);
+}
+
+.__react_component_tooltip.type-dark.place-top:after {
+    width: 0;
+    height: 0;
+    position: absolute;
+    left: 50%;
+    top: 1px;
+    border: 6px solid #fff;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-top-left-radius: 3px;
+    -webkit-box-shadow: -1px -1px 0 rgba(0,0,0,.08);
+    box-shadow: -1px -1px 0 rgba(0,0,0,.08);
+    -webkit-transform: translate(-50%,-50%) rotate(45deg);
+    transform: translate(-40%,-50%) rotate(45deg);
+}
+
+.event-card {
+    background-color: #fff;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 30px 60px -12px rgba(50,50,93,.25), 0 18px 36px -18px rgba(0,0,0,.3), 0 -12px 36px -8px rgba(0,0,0,.025);
+    box-shadow: 0 30px 60px -12px rgba(50,50,93,.25), 0 18px 36px -18px rgba(0,0,0,.3), 0 -12px 36px -8px rgba(0,0,0,.025);
+    padding: 1.15em 1.5em;
+    -webkit-transition: all .5s cubic-bezier(.645,.045,.355,1);
+    transition: all .5s cubic-bezier(.645,.045,.355,1);
+    min-height: 73px;
+    overflow: hidden;
+    z-index: 10;
+    font-size: 15px;
+}
+
+.event-card-text {
+    font-size: 15px;
+    color: #32325d;
+    font-weight: 500;
+}
+
+/* Ensures the confirm modal does not conflict with other bs modals */
+.confirm-delete {
+    height: auto !important;
+    top: auto !important;
+    left: auto !important;
+}
+
+.confirm-delete .header {
+    color: #db2828 !important;
+}
+
+.ui.modal > p {
+    background: #f6f9fc;
+    margin: 0;
+    padding: 20px;
+}
+
+.ui.modal > .actions {
+    background: #fff;
+    padding: 1rem 1rem;
+    border-top: 1px solid rgba(34,36,38,.15);
+    text-align: right;
+}
+
+.ui.modal > .actions > .ui.primary.button {
+    background-color: #db2828;
+}
+
+.circle-container {
+    position: fixed;
+    bottom: 5px;
+    left: 100px;
+}
+
+.circle {
+    position: absolute;
+    border: 2px solid #3d9aff;
+    height: 180px;
+    width: 180px;
+    border-radius: 50%;
+    top: 230px;
+    right: 19.5em;
+    opacity: 0;
+    transform: scale(.06);
+    animation: expand 2s ease-out infinite;
+}
+
+.circle-icon {
+    position: relative;
+    color: #408AF8 !important;
+    top: 170px;
+    left: 6.8em;
+}
+
+.circle.three {
+    animation-delay: 1333ms;
+}
+
+.circle.two {
+    animation-delay: 666ms;
+}
+
+@keyframes expand {
+    0% {
+        transform: scale(.06);
+        opacity: 1
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 0
+    }
+}

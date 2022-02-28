@@ -5,11 +5,9 @@ export default class QuoteCard extends Component {
   render() {
       return (
           <div className="QuoteCard MediaElement">
-            <a target="_blank"
-               href="#instructor"
-               className="QuoteCard__card">
+            <a href="#instructor" className="QuoteCard__card">
               <div className="QuoteCard__image Helm__background--cyan5">
-                <img src={this.props.imageUrl} className="image" alt="Krithika Mothukumar" />
+                <img src={this.props.imageUrl} className="image" alt="Christian Bartram" />
                   <div className="QuoteCard__icon">
                     <span className="Helm-Icon Helm-Icon--xsmall Helm-Icon__quote Helm__background--transparent Helm-Icon--full">
                       <svg xmlns="http://www.w3.org/2000/svg" width="19" height="14" viewBox="0 0 19 14" fill="#61b0e3">
@@ -22,7 +20,7 @@ export default class QuoteCard extends Component {
               </div>
               <div className="QuoteCard__body">
                 <div className="QuoteCard__text">
-                  <p className="common-IntroText">
+                  <p className="common-IntroText mt-2">
                     { this.props.quote }
                   </p>
                 </div>

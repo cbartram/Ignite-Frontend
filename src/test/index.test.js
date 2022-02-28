@@ -32,7 +32,10 @@ describe('Redux Unit Tests', () => {
                         deviceKey: 'devicekey'
                     },
                     error: null },
-            videos: {},
+            videos: {
+                videoList: [],
+                activeVideo: { name: 'null' }
+            },
             billing: {},
         };
 
@@ -74,7 +77,10 @@ describe('Redux Unit Tests', () => {
                user: null
            },
            billing: {},
-           videos: {}
+           videos: {
+               videoList: [],
+               activeVideo: { name: 'null' }
+           }
        };
        // Update the state with an action
        store.dispatch(loginFailure({ message: 'Bad unit test' }));
@@ -124,7 +130,10 @@ describe('Redux Unit Tests', () => {
                 }
             },
             billing: {},
-            videos: {}
+            videos: {
+                videoList: [],
+                activeVideo: { name: 'null' }
+            }
         };
 
         const payload = {
@@ -154,6 +163,8 @@ describe('Redux Unit Tests', () => {
             billing: {},
             videos: {
                     isFetching: false,
+                    videoList: [],
+                    activeVideo: { name: 'null' },
                     error: {
                         message: 'Failed to retrieve videos from API'
                     }
@@ -189,6 +200,7 @@ describe('Redux Unit Tests', () => {
                 }, {
                     message: 'test'
                 }],
+                activeVideo: { name: 'null' },
                 isFetching: false,
                 error: null
             }
@@ -216,7 +228,10 @@ describe('Redux Unit Tests', () => {
                 user: null,
                 error: null
             },
-            videos: {},
+            videos: {
+                videoList: [],
+                activeVideo: { name: 'null' }
+            },
             billing: {
                 error: null,
                 isFetching:true,
@@ -232,6 +247,43 @@ describe('Redux Unit Tests', () => {
         done();
     });
 
+
+    it('Updates state when the BILLING_FAILURE action is dispatched', done => {
+        const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+        const store = createStore(rootReducer, constants.INITIAL_STATE, composeEnhancers(
+            applyMiddleware(thunk)
+        ));
+
+        const updatedState = {
+            auth: {
+                isAuthenticated: false,
+                isFetching: false,
+                user: null,
+                error: null
+            },
+            videos: {
+                videoList: [],
+                activeVideo: { name: 'null' }
+            },
+            billing: {
+                isFetching: false,
+                error: {
+                    message: 'Failed'
+                },
+            }
+        };
+
+        expect(store.getState()).to.be.a('object').that.deep.equals(constants.INITIAL_STATE);
+        store.dispatch({
+            type: constants.BILLING_FAILURE,
+            payload: {
+                message: 'Failed'
+            }
+        });
+        expect(store.getState()).to.be.a('object').that.deep.equals(updatedState);
+       done();
+    });
+
     it('Updates state when the BILLING_SUCCESS action is dispatched', done => {
         const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
         const store = createStore(rootReducer, constants.INITIAL_STATE, composeEnhancers(
@@ -245,7 +297,10 @@ describe('Redux Unit Tests', () => {
                 user: null,
                 error: null
             },
-            videos: {},
+            videos: {
+                videoList: [],
+                activeVideo: { name: 'null' }
+            },
             billing: {
                 error: null,
                 isFetching:false,
@@ -284,6 +339,37 @@ describe('Redux Unit Tests', () => {
                 plan_id: 'pl_x1jdha8s7ahD',
                 subscription_id: 'sub_asdjkJA9sd7A',
                 trial_end: 152938127
+            }
+        });
+        expect(store.getState()).to.be.a('object').that.deep.equals(updatedState);
+        done();
+    });
+
+    it('Updates state when the UPDATE_ACTIVE_VIDEO action is dispatched', (done) => {
+        const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+        const store = createStore(rootReducer, constants.INITIAL_STATE, composeEnhancers(
+            applyMiddleware(thunk)
+        ));
+
+        const updatedState = {
+            auth: {
+                isAuthenticated: false,
+                isFetching: false,
+                user: null,
+                error: null
+            },
+            videos: {
+                videoList: [],
+                activeVideo: { name: 'Foo' }
+            },
+            billing: {}
+        };
+
+        expect(store.getState()).to.be.a('object').that.deep.equals(constants.INITIAL_STATE);
+        store.dispatch({
+            type: constants.UPDATE_ACTIVE_VIDEO,
+            payload: {
+                name: 'Foo'
             }
         });
         expect(store.getState()).to.be.a('object').that.deep.equals(updatedState);

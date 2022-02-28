@@ -1,15 +1,17 @@
 import React, { Component } from "react";
-import { Auth } from "aws-amplify";
-import LoaderButton from "../LoaderButton/LoaderButton";
+import { Auth } from 'aws-amplify';
+import { Popup } from 'semantic-ui-react';
+import './FacebookButton.css';
 import Log from '../../Log';
+import LoaderButton from "../LoaderButton/LoaderButton";
+import {IS_PROD} from "../../constants";
 
 /**
  * Waits for the Facebook SDK to load and disables the
  * button once it is loaded
  * @returns {Promise<any>}
  */
-
-const waitForInit = () => {
+function waitForInit() {
   return new Promise((res, rej) => {
     const hasFbLoaded = () => {
       if (window.FB) {
@@ -20,8 +22,12 @@ const waitForInit = () => {
     };
     hasFbLoaded();
   });
-};
+}
 
+/**
+ * Handles Loading and using the Facebook SDK to
+ * retrieve basic_profile info from Facebook
+ */
 export default class FacebookButton extends Component {
   constructor(props) {
     super(props);
@@ -31,91 +37,97 @@ export default class FacebookButton extends Component {
     };
   }
 
+  /**
+   * Loads the SDK and waits for it to be properly mounted
+   * @returns {Promise<void>}
+   */
   async componentDidMount() {
     await waitForInit();
     this.setState({ isLoading: false });
   }
 
   /**
-   * Retrieves the OAuth Access token from Facebook
-   * and calls the handleResponse() method to sign them
-   * in with cognito
+   * Callback when OAuth process is complete with facebook
    */
   checkLoginState = () => {
-    window.FB.getLoginStatus(({ status, authResponse}) => {
-      if (status === "connected") {
-        this.handleResponse(authResponse);
+    window.FB.getLoginStatus((response) => {
+      if (response.status === "connected") {
+        this.handleResponse(response.authResponse);
       } else {
-        Log.error(status, authResponse);
-        this.handleError('Error Logging user in with facebook.');
+        Log.error(response);
       }
     });
   };
 
   /**
-   * Contacts facebook to retrieve the Access token for the users
-   * public profile and email address.
+   * Opens the OAuth link with Cognito to authenticate via user pool
+   * through facebook -> cognito link.
+   * @returns {Promise<void>}
    */
-  handleClick = () => {
-    window.location.replace('https://ignite-app.auth.us-east-1.amazoncognito.com/login?response_type=code&client_id=29mat74dp2pep5bmh532gjepm2&redirect_uri=http://localhost:3000/login')
-    // window.FB.login(this.checkLoginState, { scope: "public_profile,email" });
+  handleClick = async () => {
+    const url_to_google = `https://ignite-app${IS_PROD ? '-prod' : ''}.auth.us-east-1.amazoncognito.com/login?response_type=token&client_id=${IS_PROD ? '57ga887esg3j7t2r89hr9nkn4c' : '29mat74dp2pep5bmh532gjepm2'}&redirect_uri=${IS_PROD ? 'https://ignitecode.net/signup' : 'http://localhost:3000/signup'}`;
+    window.location.assign(url_to_google);
+    // window.FB.login(this.checkLoginState, {scope: "public_profile,email"});
   };
 
   /**
-   * Handles any errors thrown
-   * @param error
+   * Currently not in use this uses AWS Amplify to authenticat with facebook through
+   * an identity pool. This returns identity pool credentials to access AWS services but
+   * not user pool credentials.
+   * @param data
+   * @returns {Promise<void>}
    */
-  handleError(error) {
-    Log.error(error);
-    this.props.onError(error);
-  }
-
-
   async handleResponse(data) {
-    const { accessToken: token, expiresIn } = data;
+    const { email, accessToken: token, expiresIn } = data;
     const expires_at = expiresIn * 1000 + new Date().getTime();
-    fetch(`https://graph.facebook.com/${data.userID}?fields=name,email&access_token=${token}`)
-        .then(res => res.json())
-        .then(async user => {
-            this.setState({ isLoading: true });
+    const user = { email };
 
-            try {
-              Auth.federatedSignIn("facebook", { token, expires_at }, user)
-                  .then(creds => {
-                    console.log('CREDS ->', creds);
-                    return Auth.currentAuthenticatedUser();
-                  })
-                  .then(user => {
-                      console.log('USER ->', user);
-                      this.setState({ isLoading: false }, () => {
-                        this.props.onLogin(user);
-                      });
-                  }).catch(err => {
-                    Log.error(err);
-                    this.handleError(err);
-                  });
-            } catch (e) {
-              this.setState({ isLoading: false });
-              this.handleError(e);
-            }
-    }).catch(err => {
-      Log.error(err);
-      this.handleError(err);
-    });
+    this.setState({ isLoading: true });
+
+    try {
+      const response = await Auth.federatedSignIn(
+          "facebook",
+          { token, expires_at },
+          user
+      );
+      this.setState({ isLoading: false });
+      this.props.onLogin(response);
+    } catch (e) {
+      this.setState({ isLoading: false });
+      this.handleError(e);
+    }
   }
 
   render() {
+    // If the user has already "clicked" the facebook button show it as disabled with a popup
+    // this is to avoid users constantly re-clicking the sign-in with facebook
+    if(this.props.hasAuthenticated)
+        return (
+            <Popup
+                position="top center"
+                hideOnScroll
+                content="You are already signed in with Facebook. Continue with Ignite by creating a new password."
+                trigger={
+                  <LoaderButton
+                      noCommon
+                      className="btn btn-primary btn-block FacebookButton"
+                      text={<span><i className="fab fa-facebook" /> Continue with Facebook</span>}
+                      onClick={() => {}}
+                      disabled
+                  />
+                }
+            />
+        );
+
+    // Else just return the normal button
     return (
         <LoaderButton
-            block
-            bsSize="large"
-            bsStyle="primary"
-            className="FacebookButton"
-            text={<span><i className="fab fa-facebook" /> Login with Facebook</span>}
+            noCommon
+            className="btn btn-primary btn-block FacebookButton"
+            text={<span><i className="fab fa-facebook" /> Continue with Facebook</span>}
             onClick={this.handleClick}
-            disabled={this.state.isLoading}
-            style={{ backgroundColor: 'rgb(72, 103, 173)', color: '#fff', marginBottom: '15px'}}
+            disabled={this.state.isLoading || this.props.disabled}
         />
-    );
+    )
   }
 }

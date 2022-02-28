@@ -1,0 +1,136 @@
+.course-viewer-sidebar {
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background: #fafcfc;
+    border-right: 1px solid #f0f4f7;
+    text-align: center;
+    margin-top: 80px;
+    position: fixed;
+    width: 350px;
+    overflow: hidden;
+}
+
+h4 {
+ font-size: 20px;
+}
+
+small {
+    margin-bottom: .75em;
+    letter-spacing: .2em;
+    font-size: .7rem;
+    opacity: .5;
+}
+
+.course-viewer-sidebar .curriculum-chapterDuration {
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: .2em;
+    font-size: 10px;
+    opacity: .5;
+}
+
+.overflow {
+    height: 100vh;
+    width:100%;
+    overflow-y: scroll;
+}
+
+.curriculum-row {
+    border-top: 1px solid #f0f4f7;
+}
+
+.curriculum-row-last {
+    border-bottom: 1px solid #f0f4f7;
+}
+
+.curriculum-row:hover {
+    cursor: pointer;
+    background-color:rgb(241, 244, 254);
+}
+
+.video-meta-container {
+    width: 100%;
+    background: white;
+}
+
+.tab-container {
+    background: white;
+}
+
+.nav-tabs {
+    background: white;
+    border-bottom: 2px solid #b5bec2;
+}
+
+.tab {
+    border-bottom-color: #b5bec2;
+    margin-right: 30px;
+}
+
+.active-tab {
+    color:#343b3d;
+    border-bottom: 2px solid #4b5658;
+}
+
+.question-title {
+    color: #008cdd;
+    text-decoration: none;
+}
+
+.project-files {
+    cursor: pointer;
+}
+
+.answer-count {
+    font-size: 22px;
+    font-weight: 500;
+    color: #4b5658;
+    margin-bottom: 0;
+    text-align: center;
+}
+
+.sm-avatar-container {
+    width: 50px;
+    height: 50px;
+}
+
+.avatar-image-sm {
+    border-radius: 8px;
+    width: 50px;
+    height: 50px;
+    border: 2px solid #edeff0;
+}
+
+.well {
+    background-color: #f5f5f5;
+    padding: 20px 20px 20px;
+    overflow: auto;
+    min-height: 250px;
+    max-height: 2000px;
+    transition: max-height .5s ease;
+    box-shadow: inset 2px 2px 4px rgba(0, 0, 0, .05);
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
+    border-top: 1px solid rgba(0, 0, 0, .1);
+}
+
+.no-card-hover:hover {
+    transform: scaleX(1) scaleY(1);
+    box-shadow: 0 13px 27px -5px rgba(50,50,93,.25), 0 8px 16px -8px rgba(0,0,0,.3);
+}
+
+.ui.secondary.pointing.menu .active.item {
+    border-color: #6772e5;
+}
+
+.ui.secondary.pointing.menu .active.item:hover {
+    border-color: #9094e5;
+    color: rgba(0,0,0,.95);
+}
+
+.ui.segment.answered {
+    border: 2px solid #c1ecce;
+    border-right-width: 0;
+    border-left-width: 0;
+    background: #f0fbf3;
+}

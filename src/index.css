@@ -50,7 +50,6 @@
 
 html {
   height: 100%;
-  overflow-x: hidden;
 }
 
 body {
@@ -163,6 +162,16 @@ button:focus {
 .common-IntroText {
   font-size: 24px;
   line-height: 36px;
+  font-weight: 300;
+  color: #424770;
+}
+
+.common-Link {
+  color: #6772e5;
+  font-weight: 500;
+  -webkit-transition: color .1s ease;
+  transition: color .1s ease;
+  cursor: pointer;
 }
 
 h2 {
@@ -181,7 +190,15 @@ ul {
   color: #525f7f;
 }
 
+.common-BodyText-light {
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 28px;
+  color: white;
+}
+
 .common-Button {
+  cursor: pointer;
   white-space: nowrap;
   display: inline-block;
   height: 40px;
@@ -202,11 +219,13 @@ ul {
 }
 
 .common-Button--default {
+  cursor: pointer;
   color: #fff;
   background: #6772e5;
 }
 
 .common-Button--danger {
+  cursor: pointer;
   background: #cd3d64;
   color: white;
   box-shadow: 0 0 0 1px rgba(205,61,100, 0.1), 0 2px 5px 0 rgba(205,61,100, 0.08), 0 1px 1.5px 0 rgba(0,0,0, 0.07), 0 1px 2px 0 rgba(0,0,0, 0.08), 0 0 0 0 transparent;
@@ -220,4 +239,66 @@ ul {
 
 .common-Button--default:disabled {
   opacity: 0.4;
+}
+
+.common-Button:hover {
+  color: #7795f8 !important;
+  background: #fff !important;
+  -webkit-transform: translateY(-1px);
+  transform: translateY(-1px);
+  -webkit-box-shadow: 0 13px 27px -5px rgba(50,50,93,.25), 0 8px 16px -8px rgba(0,0,0,.3), 0 -6px 16px -6px rgba(0,0,0,.025);
+  box-shadow: 0 13px 27px -5px rgba(50,50,93,.25), 0 8px 16px -8px rgba(0,0,0,.3), 0 -6px 16px -6px rgba(0,0,0,.025);
+  /*-webkit-box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);*/
+  /*box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);*/
+}
+
+.common-Hero-Button {
+  color: #fff;
+  background: #3ecf8e;
+  text-shadow: 0 1px 3px rgba(36, 180, 126, .4);
+  width: 220px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+}
+
+.common-Hero-Button:hover {
+  color: #fff !important;
+  background: #3ecf8e !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08) !important;
+}
+
+.common-Blue-Button {
+  color: #fff;
+  background: #408AF8;
+  text-shadow: 0 1px 3px rgba(41, 87, 180, 0.4);
+  width: 150px;
+  text-align: center;
+}
+
+.common-Blue-Button:hover {
+  color: #fff !important;
+  background: #408AF8 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08) !important;
+}
+
+.common-Peach-Button {
+  color: #fff;
+  background: #ffb380;
+  width: 150px;
+  text-align: center;
+}
+
+.common-Peach-Button:hover {
+  color: #fff !important;
+  background: #FFA27B !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08) !important;
+}
+
+
+.ui.loader:after {
+  border-color: #6772e5 transparent transparent !important;
 }

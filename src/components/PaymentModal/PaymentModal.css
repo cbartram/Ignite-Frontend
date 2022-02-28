@@ -22,7 +22,7 @@
     text-transform: none;
 }
 
-.form-row input, .form-row textarea {
+.form-row input, .form-row textarea, .card-field {
     background-image: url(https://stripe.com/img/v3/contact_sales/form/validation-error.svg);
     background-repeat: no-repeat;
     background-position-x: -5000px;
@@ -48,60 +48,12 @@
     transition: background-color .1s ease-in,color .1s ease-in;
 }
 
-.form-row input:focus ,.form-row textarea:focus {
+.form-row input:focus ,.form-row textarea:focus, .card-field:focus {
     -webkit-box-shadow: 0 0 0 1px #e4effa;
     box-shadow: 0 0 0 1px #e4effa;
     color: #8898aa!important;
     background-color: white;
 }
-
-
-/* Dropdown Select */
-.select-dropdown {
-    z-index: 1000;
-    background: #fff;
-    -webkit-box-shadow: 0 13px 27px -5px rgba(50,50,93,.25), 0 8px 16px -8px rgba(0,0,0,.3);
-    box-shadow: 0 13px 27px -5px rgba(50,50,93,.25), 0 8px 16px -8px rgba(0,0,0,.3);
-    width: calc(90% + 12px);
-    margin-top: 5px;
-    padding: 0 5px;
-    border: 1px solid #e6ebf1;
-    border-radius: 4px;
-    -webkit-transition: opacity .08s ease-out,-webkit-transform .08s ease-out;
-    transition: opacity .08s ease-out,transform .08s ease-out;
-    -webkit-transition-duration: .12s;
-    transition-duration: .12s;
-    transition-delay: .1s;
-    -webkit-transform-origin: 100% -50px;
-    transform-origin: 100% -50px;
-}
-
-.select-results {
-    max-height: 215px;
-    overflow-y: auto;
-    position: relative;
-    padding: 0;
-    margin: 0 -5px;
-    -webkit-tap-highlight-color: transparent;
-    list-style: none;
-}
-
-.select-result {
-    border-bottom: 1px solid #e7ecf3;
-    padding: 8px 0 8px 12px;
-    font-weight: 300;
-    font-size: 17px;
-    line-height: 26px;
-    color: #6b7c93;
-    cursor: pointer;
-}
-
-.select-result:hover {
-    background: #f2f7fc;
-    color: #32325d;
-    font-weight: 400;
-}
-
 .hidden {
     display: none;
 }

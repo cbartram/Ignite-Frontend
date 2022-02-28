@@ -1,9 +1,10 @@
 /**
  * This file defines actions which trigger switch statements in the reducer
  */
+import _ from 'lodash';
 import * as constants from '../constants';
-import {getVideos, sendVideoData} from '../util';
-
+import Log from '../Log';
+import {getVideos, post} from '../util';
 
 /**
  * Updates a users attributes within redux
@@ -17,6 +18,19 @@ export const updateUserAttributes = (payload) => dispatch => {
         type: constants.UPDATE_USER_ATTRIBUTES,
         payload
     });
+};
+
+
+/**
+ * This is used to update the isFetching property on the videos reducer
+ * without actually modifying any type of video data. Its used when we only want the
+ * loading icons on the frontend and this basically shuts them off.
+ * @returns {Function}
+ */
+export const videosFetched = () => dispatch => {
+    dispatch({
+        type: constants.VIDEOS_FETCHED,
+    })
 };
 
 /**
@@ -67,40 +81,67 @@ export const loginFailure = payload => dispatch => {
 };
 
 /**
- * Handles making the Async API call to retrieve the videos and billing information from users. It will dispatch a success or failure event
- * depending on the status of the API call.
- * Note: that this action updates both the videos and billing information for a user. If you want to just update the billing
+ * Handles making the Async API call to retrieve the videos, quiz data and billing information for the authenticated user.
+ * It will dispatch a success or failure event depending on the status of the API call.
+ * Note: that this action updates the videos, quiz data and billing information for a user. If you want to just update the billing
  * information it would be better to use fetchBilling()
- * @param email String the email of the user to retrieve videos for
+ * @param username String the username of the user to retrieve videos, billing, general info and quiz data for
  * @returns {Function}
  */
-export const fetchVideos = (email, jwt) => async dispatch => {
+export const fetchVideos = username => async (dispatch, getState) => {
     dispatch({
         type: constants.REQUEST_VIDEOS,
         payload: true // Sets isFetching to true (useful for unit testing redux)
     });
 
-    const response = await getVideos(email, jwt);
+    try {
+        const response = await getVideos(username, getState().auth.user.jwtToken);
+        if (response.statusCode === 200) {
+            // Dispatch information about billing
+            dispatch({
+                type: constants.BILLING_SUCCESS,
+                payload: response.user,
+            });
 
-    console.log("bILLING / vid api response: ", response)
+            dispatch({
+                type: constants.QUIZZES_SUCCESS,
+                payload: response.user.quizzes
+            });
 
-    if(response.statusCode === 200) {
-        // Dispatch information about billing
-        dispatch({
-            type: constants.BILLING_SUCCESS,
-            payload: response.user,
-        });
+            // Dispatch information about videos
+            dispatch({
+                type: constants.VIDEOS_SUCCESS,
+                payload: response.user.videos,
+            });
 
-        // Dispatch information about videos
-        dispatch({
-            type: constants.VIDEOS_SUCCESS,
-            payload: response.user.videos,
-        });
-    } else if(response.statusCode > 200 || typeof response.status === 'undefined') {
+            if (!_.isUndefined(response.user.active_video))
+                dispatch({
+                    type: constants.UPDATE_ACTIVE_VIDEO,
+                    payload: response.user.active_video,
+                });
+
+            // Remove Quizzes and videos from user (these are stored elsewhere in redux)
+            const userMinusVideos = {...response.user};
+            delete userMinusVideos.videos;
+            delete userMinusVideos.quizzes;
+
+            dispatch({
+                type: constants.UPDATE_USER_ATTRIBUTES,
+                payload: userMinusVideos
+            });
+        } else if (response.statusCode > 200 || _.isUndefined(response.statusCode)) {
+            // An error occurred
+            dispatch({
+                type: constants.VIDEOS_FAILURE,
+                payload: { message: `Failed to retrieve billing/video data from API: ${JSON.stringify(response)}`}
+            });
+        }
+    } catch(err) {
+        Log.error('Failed to load user data from actions.js API call.', err);
         // An error occurred
         dispatch({
             type: constants.VIDEOS_FAILURE,
-            payload: { message: `Failed to retrieve billing/video data from API: ${JSON.stringify(response)}`}
+            payload: { message: `Failed to retrieve initial user data from API`, error: err }
         });
     }
 };
@@ -120,14 +161,14 @@ export const requestVideos = () => dispatch => {
 /**
  * Updates the name of the video the user is currently
  * watching
- * @param videoName String video's name
+ * @param video Object the video object to make active
  * @returns {Function}
  */
-export const updateActiveVideo = (videoName) => dispatch => {
+export const updateActiveVideo = (video) => dispatch => {
   dispatch({
       type: constants.UPDATE_ACTIVE_VIDEO,
-      payload: videoName
-  })
+      payload: video
+  });
 };
 
 /**
@@ -135,55 +176,101 @@ export const updateActiveVideo = (videoName) => dispatch => {
  * the backend for storage. This also updates redux with the latest values.
  * @returns {Function}
  */
-export const ping = (payload) => async dispatch => {
-    dispatch({
-        type: constants.PING_REQUEST,
-        payload: true // Sets isFetching to true (useful for unit testing redux)
-    });
-
-    const response = await sendVideoData(payload);
-
-    if(response.status === 200) {
-        // Dispatch information about the users video progress
-        dispatch({
-            type: constants.PING_RESPONSE_SUCCESS,
-            payload: response.body,
-        });
-    } else if(response.status > 200 || typeof response.status === 'undefined') {
-        // An error occurred
-        dispatch({
-            type: constants.PING_RESPONSE_FAILURE,
-            payload: { message: `Failed to retrieve billing data from API: ${JSON.stringify(response)}`}
-        });
-    }
+export const ping = (payload) => async (dispatch, getState) => {
+    await post(payload, constants.API_PING_VIDEO, constants.PING_REQUEST, constants.PING_RESPONSE_SUCCESS, constants.PING_RESPONSE_FAILURE, dispatch, getState);
 };
 
 /**
- * Retrieves billing information from the API and stores it in redux.
- * @param email String the users email to retrieve billing details
+ * Makes a POST request to the server to create a new question about a video
+ * @param payload Object the payload includes the question title, video id, user who posted, and question contents.
  * @returns {Function}
  */
-export const fetchBilling = email => async dispatch => {
-    dispatch({
-        type: constants.REQUEST_BILLING,
-        payload: true // Sets isFetching to true (useful for unit testing redux)
-    });
+export const askQuestion = (payload) => async (dispatch, getState) => {
+    await post(payload, constants.API_POST_QUESTION, constants.CREATE_QUESTION_REQUEST, constants.QUESTION_CREATE_RESPONSE_SUCCESS, constants.QUESTION_CREATE_RESPONSE_FAILURE, dispatch, getState);
+};
 
-    const response = await getVideos(email);
+/**
+ * Retrieves a list of questions for a particular video
+ * @param payload Object { video_id: '9.6' }
+ * @returns {Function}
+ */
+export const findQuestions = (payload) => async (dispatch, getState) => {
+    await post({video_id: payload}, constants.API_POST_FIND_QUESTIONS, constants.FIND_QUESTION_REQUEST, constants.QUESTION_FIND_POSTS_SUCCESS, constants.QUESTION_FIND_POSTS_ERROR, dispatch, getState);
+};
 
-    if(response.status === 200) {
-        // Dispatch information about billing
-        dispatch({
-            type: constants.BILLING_SUCCESS,
-            payload: response.body.user,
-        });
-    } else if(response.status > 200 || typeof response.status === 'undefined') {
-        // An error occurred
-        dispatch({
-            type: constants.BILLING_FAILURE,
-            payload: { message: `Failed to retrieve billing data from API: ${JSON.stringify(response)}`}
-        });
-    }
+/**
+ * Creates a new answer and ties it to a question being asked
+ * @param payload Object
+ * @returns {Function}
+ */
+export const answerQuestion = (payload) => async (dispatch, getState) => {
+    await post(payload, constants.API_ANSWER_CREATE, constants.CREATE_ANSWER_REQUEST, constants.CREATE_ANSWER_SUCCESS, constants.CREATE_ANSWER_FAILURE, dispatch, getState);
+};
+
+/**
+ * Creates a signed url for accessing protected video resources on amazon S3.
+ * @param payload Object { resourceUrl, jwtToken }
+ * @param getState Function returns the current state from redux store
+ * @returns {Function}
+ */
+export const getSignedUrl = (payload) => async (dispatch, getState) => {
+    await post(payload, constants.API_FETCH_SIGNED_URL, constants.GET_SIGNED_URL_REQUEST, constants.GET_SIGNED_URL_SUCCESS, constants.GET_SIGNED_URL_FAILURE, dispatch, getState);
+};
+
+/**
+ * Handles processing a users payment given a valid Stripe
+ * token representing the users credit card details
+ * @param payload Object payload
+ * @returns {Function}
+ */
+export const processPayment = (payload) => async (dispatch, getState) => {
+    await post(payload, constants.API_CREATE_SUBSCRIPTION, constants.CREATE_SUBSCRIPTION_REQUEST, constants.CREATE_SUBSCRIPTION_SUCCESS, constants.CREATE_SUBSCRIPTION_FAILURE, dispatch, getState);
+};
+
+/**
+ * Handles un subscribing a user from their current plan.
+ * @param payload Object payload containing the cognito username, refreshToken and accessKey
+ * @returns {Function}
+ */
+export const unsubscribe = (payload) => async (dispatch, getState) => {
+    await post(payload, constants.API_DELETE_SUBSCRIPTION, constants.UNSUBSCRIBE_REQUEST, constants.UNSUBSCRIBE_SUCCESS, constants.UNSUBSCRIBE_FAILURE, dispatch, getState);
+};
+
+/**
+ * Sends an API request to the backend to process and send an email
+ * using AWS SES.
+ * @param payload Object Payload includes the following fields:
+ * from String who this email is from (emails are sent using no-reply@ignitecode.net) but this is the users email
+ * subject String the subject line of the email
+ * message String the body/message of the email.
+ */
+export const sendEmail = (payload) => async (dispatch, getState) => {
+    await post(payload, constants.API_SEND_EMAIL, null, null, null, dispatch, getState);
+};
+
+/**
+ * Handles updating a question or answer with
+ * additional information such as up-votes, down-votes or
+ * if it is being accepted
+ * @param payload
+ * @returns {Function}
+ */
+export const updatePost = (payload) => async (dispatch, getState) => {
+    await post(payload, constants.API_POST_UPDATE, constants.UPDATE_POST_REQUEST, constants.UPDATE_POST_SUCCESS, constants.UPDATE_POST_FAILURE, dispatch, getState);
+};
+
+
+/**
+ * Sends the quiz to the server for processing and storage before being returned to the client.
+ * @param username String the users username given by cognito and prefixed with "user-<COGNITO_ID>"
+ * @param quiz Object the quiz object to grade.
+ * @returns {Function}
+ */
+export const submitQuiz = (username, quiz) => async (dispatch, getState) => {
+    await post({
+        username,
+        quiz
+    }, constants.API_SUBMIT_QUIZ, constants.SUBMIT_QUIZ_REQUEST, constants.UPDATE_QUIZ, constants.SUBMIT_QUIZ_FAILURE, dispatch, getState);
 };
 
 
@@ -212,22 +299,17 @@ export const updateVideosSync = (videos) => dispatch => {
     })
 };
 
-
 /**
- * Dispatches an action updating redux store that
- * something has gone wrong retrieving the billing data from DynamoDB/API
- * @param code String error code
- * @param message String the error message to be displayed
+ * Synchronously updates a completed quiz in redux.
+ * This will eventually be retrieved from redux and sent to the server for storage.
+ * @param quiz Object quiz object
  * @returns {Function}
  */
-export const billingFailure = (code, message) => dispatch => {
+export const updateQuiz = (quiz) => dispatch => {
   dispatch({
-      type: constants.BILLING_FAILURE,
-      payload: {
-          code,
-          message
-      }
-  });
+      type: constants.UPDATE_QUIZ,
+      payload: quiz,
+  })
 };
 
 /**

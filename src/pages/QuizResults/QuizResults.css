@@ -1,0 +1,53 @@
+.question-dot {
+    display: inline-block;
+    width: 23px;
+    height: 9px;
+    font-size: 0;
+    margin: 0 0.2rem;
+    border-width: 3px 4px;
+    transition: transform 0.15s cubic-bezier(0.645, 0.045, 0.355, 1) 0s;
+}
+
+.question-dot-selected {
+    box-shadow: rgba(50, 50, 93, 0.1) 0 5px 8px;
+    transform: scale(1.25);
+    border-color: rgb(255,255, 255) !important;
+}
+
+.question-dot-incorrect {
+  background: rgb(244, 0, 100);
+}
+
+.question-dot-correct {
+    background: rgb(8, 196, 114);
+}
+
+.question-ask {
+    font-weight: bold;
+}
+
+.question-answer {
+    font-size: 14px;
+    line-height: 1.42857;
+    color: rgb(86, 99, 117);
+}
+
+.answer-selected {
+    font-weight: bold;
+}
+
+.answer-value {
+    font-size: 16px;
+}
+
+.bg-green {
+  color: rgb(21, 149, 112);
+}
+
+.bg-red {
+    color: rgb(224, 77, 77);
+}
+
+.bg-grey {
+    color: rgb(176, 186, 198);
+}

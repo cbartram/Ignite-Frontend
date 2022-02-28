@@ -28,6 +28,11 @@
     z-index:2;
 }
 
+
+.QuoteCard__card:hover {
+    transform: translateY(-2px);
+}
+
 .RamAnt .QuoteCard .QuoteCard__card {
     z-index: 1;
 }
@@ -203,6 +208,6 @@
 .QuoteCard__stripes>div:last-of-type {
     /*background-color: green;*/
     left: -20px;
-    width: calc(100% + 126px);
+    width: calc(100% + 135px);
     top: var(--imageHeight);
 }

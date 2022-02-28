@@ -11,7 +11,11 @@
 }
 
 .common-Card:hover {
-    transform: none;
+    transform: none !important; /* Forces the card not to bump when hovered */
+}
+
+.modal-title-inverted {
+    color: #a78ce9 !important;
 }
 
 .common-UppercaseText-Badge {

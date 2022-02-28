@@ -1,5 +1,4 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
 import './LoaderButton.css';
 
 /**
@@ -10,15 +9,16 @@ import './LoaderButton.css';
  * @param loadingText
  * @param className
  * @param disabled
+ * @param noCommon removes the common button class from the loader
  * @param props
  * @returns {*}
  */
-export default ({ isLoading, text, loadingText, className = '', disabled = false, ...props }) =>
-    <Button
-        className={`LoaderButton common-Button common-Button--default ${className}`}
+export default ({ isLoading, text, loadingText, noCommon, className = '', disabled = false, ...props }) =>
+    <button
+        className={`LoaderButton ${!noCommon ? 'common-Button common-Button--default' : ''} ${className}`}
         disabled={disabled || isLoading}
         {...props}
     >
         {isLoading && <i className="fas fa-circle-notch" />}
         {!isLoading ? text : loadingText}
-    </Button>;
+    </button>;

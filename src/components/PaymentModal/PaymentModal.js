@@ -1,20 +1,25 @@
-import React, { Component } from 'react';
-import moment from 'moment';
-import { connect } from 'react-redux';
-import { updateUserAttributes, fetchVideos } from '../../actions/actions';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {CardElement, injectStripe} from "react-stripe-elements";
+import {fetchVideos, loginSuccess, processPayment, updateUserAttributes,} from '../../actions/actions';
 import './PaymentModal.css';
-import Log from '../../Log';
-import {API_CREATE_SUBSCRIPTION, API_KEY, getRequestUrl, IS_PROD, PROD_API_KEY} from '../../constants';
 
 const mapStateToProps = state => ({
     auth: state.auth,
+    user: state.auth.user
 });
 
 const mapDispatchToProps = dispatch => ({
-   updateUserAttributes: (payload) => dispatch(updateUserAttributes(payload)),
-   fetchVideos: (email) => dispatch(fetchVideos(email)),
+    updateUserAttributes: (payload) => dispatch(updateUserAttributes(payload)),
+    fetchVideos: (username) => dispatch(fetchVideos(username)),
+    processPayment: (payload) => dispatch(processPayment(payload)),
+    loginSuccess: (data) => dispatch(loginSuccess(data)),
 });
 
+/**
+ * Handles Showing the modal users enter their credit card
+ * details into.
+ */
 class PaymentModal extends Component {
     constructor(props) {
         super(props);
@@ -23,29 +28,25 @@ class PaymentModal extends Component {
         this.closeButton = React.createRef();
 
         this.state = {
-            visible: false, // Is the dropdown for the expiration year visible?
-            monthVisible: false, // Is the dropdown for the expiration month visible?
-            error: null, // Was there an error processing payment?
-            success: false, // Was the request successful?
             loading: false, // If the request is processing we don't want users to accidentally submit duplicate payments
+            isCardComplete: false,
             fields: {
                 firstName: '',
                 lastName: '',
-                creditCard: '',
-                expirationMonth: '',
-                expirationYear: '',
-                cvc: '',
-                amount: 2500,
             },
             missingValues: {
                 firstName: false,
                 lastName: false,
-                creditCard: false,
-                cvc: false,
             },
-        }
+        };
     }
 
+    /**
+     * Updates the first name and last name fields with proper values
+     * the user enters
+     * @param fieldName String the field name to update (either firstName or lastName)
+     * @param e Object the event object to retrieve the value entered from.
+     */
     updateField = (fieldName, e) => {
         let value = e.target.value;
         const valid = e.target.validity.valid || value.length === 0;
@@ -58,29 +59,64 @@ class PaymentModal extends Component {
     };
 
     /**
-     * Updates the month field in the form based on a users selection
-     * @param expirationMonth String expiration month that has been selected
+     * Updates state when the credit card form from React elements
+     * is filled out
+     * @param complete Boolean true if the form is complete and flase otherwise
      */
-    handleMonthSelect = (expirationMonth) => {
+    handleCardFieldChange = ({complete}) => {
         this.setState({
-            fields: {
-                ...this.state.fields,
-                expirationMonth
-            }
+            isCardComplete: complete
         });
     };
 
     /**
-     * Updates the year field in the form based on the users selection
-     * @param expirationYear
+     * Closes a modal if a user clicks chrome's "back" button
      */
-    handleYearSelect = (expirationYear) => {
-        this.setState({
-            fields: {
-                ...this.state.fields,
-                expirationYear
-            }
-        });
+    componentWillUnmount() {
+        this.closeButton.current.click();
+    }
+
+    /**
+     * Handles submitting the form to convert
+     * card details into a Stripe Token for use with stripe API's
+     * @param event Object event object.
+     * @returns {Promise<void>}
+     */
+    async handleSubmitClick(event) {
+        event.preventDefault();
+
+        const {fields, isCardComplete } = this.state;
+        const {firstName, lastName} = fields;
+
+        // If any of the fields are blank do not submit the request
+        if (firstName.length === 0 || lastName.length === 0 || !isCardComplete) {
+            this.props.onFailedPayment('Some of the fields were left blank or there were errors in the form');
+            return;
+        }
+
+        this.setState({ loading: true});
+
+        try {
+            const { token } = await this.props.stripe.createToken({ name: `${firstName} ${lastName}`});
+
+            this.props.processPayment({
+                name: `${firstName} ${lastName}`,
+                email: this.props.user.email,
+                token,
+                username: this.props.user.userName,
+                customerId: this.props.user.customer_id,
+                plan: this.props.plan
+            }).then(() => {
+                this.props.fetchVideos(`user-${this.props.user.userName}`);
+
+                // Finally stop loading, close the modal and redirect to the /videos page
+                this.setState({ loading: false });
+                this.closeButton.current.click();
+                this.props.onSuccessfulPayment();
+            }).catch(err => this.props.onFailedPayment(err.messages[0]));
+        } catch(err) {
+            this.props.onFailedPayment(err.message);
+        }
     };
 
     /**
@@ -88,7 +124,7 @@ class PaymentModal extends Component {
      * @param fieldName String name of the field corresponding to
      */
     handleFieldBlur = (fieldName) => {
-        if(this.state.fields[fieldName].length === 0) {
+        if (this.state.fields[fieldName].length === 0) {
             this.setState({
                 missingValues: {
                     ...this.state.missingValues,
@@ -98,125 +134,6 @@ class PaymentModal extends Component {
         }
     };
 
-    /**
-     * Handles making the POST request containing the CC details to the backend.
-     * This also updates the user attributes in AWS Cognito with stripe details for the plan, customer,
-     * and subscription objects.
-     */
-    checkout = () => {
-        this.setState({ loading: true }, async () => {
-            console.log('[INFO] Attempting to process card information');
-            const {
-                creditCard,
-                firstName,
-                lastName,
-                cvc,
-                expirationMonth,
-                expirationYear,
-                amount
-            } = this.state.fields;
-            // If any of the fields are blank do not submit the request
-            if(creditCard.length === 0 || firstName.length === 0 || amount < 200 || lastName.length === 0 || cvc.length === 0 || expirationMonth.length === 0 || expirationYear.length === 0) {
-                this.setState({ error: 'Some of the fields were left blank!', success: false, loading: false });
-                return;
-            }
-
-            const params = {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'x-api-key': IS_PROD ? PROD_API_KEY : API_KEY,
-                },
-                // Since this is calling an API these details are crucial for the lambda function to know which route to execute.
-                body: JSON.stringify({
-                    headers: {},
-                    method: 'POST',
-                    path: API_CREATE_SUBSCRIPTION,
-                    parameters: {}, // Query params
-                    body: {
-                        'cognito:username': this.props.auth.user['cognito:username'],
-                        deviceKey: this.props.auth.user.deviceKey,
-                        refreshToken: this.props.auth.user.refreshToken,
-                        number: creditCard,
-                        exp_month: expirationMonth,
-                        exp_year: expirationYear,
-                        cvc: cvc,
-                        name: `${firstName} ${lastName}`,
-                        amount,
-                        customer_id: this.props.auth.user['custom:customer_id']
-                    }
-                }),
-            };
-
-            // Attempt to make the API call
-            try {
-                let response = await (await fetch(getRequestUrl(API_CREATE_SUBSCRIPTION), params)).json();
-
-                Log.info(response);
-                // Something went wrong with the request
-                if(response.errorMessage) {
-                    this.setState({error: response.errorMessage, success: false, loading: false});
-                    this.props.onFailedPayment(response.errorMessage);
-                } else if(response.body.error) {
-                    this.setState({error: response.body.error.message, success: false, loading: false});
-                    this.props.onFailedPayment(response.body.error.message);
-                } else if(response.statusCode > 200 || response.status > 200) {
-                    this.setState({error: response.body.messages.join(','), success: false, loading: false});
-                    this.props.onFailedPayment(response.body.messages.join(','));
-                } else {
-                    // Update redux with the new user attributes
-                    this.props.updateUserAttributes(response.body.user);
-                    this.props.fetchVideos(this.props.auth.user.email);
-
-
-                    // TODO Update billing attributes with the latest subscription
-                    // Re-Signin so AWS Amplify can't retrieve old user data from localStorage
-                    // If a user does refresh it will kick them out the login screen
-                    // const r = await Auth.signIn(response.body.user['cognito:username']);
-                    // console.log('Attempting to re-sign in user: ', r);
-                    // todo come back to this there is a bug in AWS amplify'
-                    // todo this is bad and it will force users to re-sign in when they refresh a page
-                    localStorage.clear();
-
-                    // Ensures that the user only see's a success message if the operation was actually successful.
-                    if(response.status === 200 && response.body.statusCode === 200) {
-
-                        // Close the modal
-                        this.closeButton.current.click();
-
-                        // Reset all the fields and show a success message
-                        this.setState({
-                            success: true,
-                            loading: false,
-                            error: '',
-                            fields: {
-                                firstName: '',
-                                lastName: '',
-                                amount: 2500,
-                                expirationYear: '',
-                                expirationMonth: '',
-                                creditCard: '',
-                                cvc: ''
-                            },
-                            missingValues: {
-                                firstName: false,
-                                lastName: false,
-                                creditCard: false,
-                                cvc: false,
-                            }
-                        }, () => {
-                            // Push an alert to the stack
-                            this.props.onSuccessfulPayment();
-                        });
-                    }
-                }
-            } catch(err) {
-                Log.error(err);
-                this.setState({ error: err.message, success: false, loading: false });
-            }
-        });
-    };
 
     render() {
         return (
@@ -225,166 +142,71 @@ class PaymentModal extends Component {
                     <div className="modal-content">
                         <div className="modal-header">
                             <h5 className="modal-title">Subscribe to Ignite</h5>
-                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
                         </div>
-                        <div className="modal-body">
-                            <div className="form-row text firstname">
-                                <label className="firstname" htmlFor="firstname">Your first name</label>
-                                <input
-                                    onBlur={() => this.handleFieldBlur('firstName')}
-                                    onChange={(e) => this.updateField('firstName', e)}
-                                    value={this.state.fields.firstName}
-                                    id="firstname"
-                                    name="firstname"
-                                    type="text"
-                                    placeholder="Jürgen"
-                                    className={`${this.state.missingValues['firstName'] ? 'missing-value' : ''}`}
-                                    required
-                                />
-                            </div>
-                            <div className="form-row text lastname">
-                                <label className="lastname" htmlFor="lastname">Your last name</label>
-                                <input
-                                    onBlur={() => this.handleFieldBlur('lastName')}
-                                    onChange={(e) => this.updateField('lastName', e)}
-                                    value={this.state.fields.lastName}
-                                    id="lastname"
-                                    name="lastname"
-                                    type="text"
-                                    placeholder="Windcaller"
-                                    className={`${this.state.missingValues['lastName'] ? 'missing-value' : ''}`}
-                                    required
-                                />
-                            </div>
-                            <div className="form-row text cc">
-                                <label className="cc" htmlFor="cc">Credit Card Number</label>
-                                <input
-                                    onBlur={() => this.handleFieldBlur('creditCard')}
-                                    onChange={(e) => this.updateField('creditCard', e)}
-                                    value={this.state.fields.creditCard}
-                                    pattern="[0-9]*"
-                                    id="cc"
-                                    name="cc"
-                                    type="text"
-                                    placeholder="4444 4444 4444 4444"
-                                    className={`${this.state.missingValues['creditCard'] ? 'missing-value' : ''}`}
-                                    required
-                                />
-                            </div>
-                            <div className="form-row text expiration">
-                                <label className="expiration" htmlFor="expirationMonth">Expiration Month</label>
-                                <input
-                                    id="expirationMonth"
-                                    name="expirationMonth"
-                                    onBlur={() => this.setState({ monthVisible: false })}
-                                    onFocus={() => this.setState({ monthVisible: true })}
-                                    onChange={() => {}}
-                                    type="text"
-                                    pattern="[0-9]*"
-                                    placeholder="08"
-                                    value={this.state.fields.expirationMonth}
-                                    required
-                                />
-                                <div className={`select-dropdown ${!this.state.monthVisible && 'hidden'}`}>
-                                    <ul className="select-results">
-                                        <li className="select-result" onMouseDown={() => this.handleMonthSelect('01')}>
-                                            01
-                                        </li>
-                                        <li className="select-result" onMouseDown={() => this.handleMonthSelect('02')}>
-                                            02
-                                        </li>
-                                        <li className="select-result" onMouseDown={() => this.handleMonthSelect('03')}>
-                                            03
-                                        </li>
-                                        <li className="select-result" onMouseDown={() => this.handleMonthSelect('04')}>
-                                            04
-                                        </li>
-                                        <li className="select-result" onMouseDown={() => this.handleMonthSelect('05')}>
-                                            05
-                                        </li>
-                                        <li className="select-result" onMouseDown={() => this.handleMonthSelect('06')}>
-                                            06
-                                        </li>
-                                        <li className="select-result" onMouseDown={() => this.handleMonthSelect('07')}>
-                                            07
-                                        </li>
-                                        <li className="select-result" onMouseDown={() => this.handleMonthSelect('08')}>
-                                            08
-                                        </li>
-                                        <li className="select-result" onMouseDown={() => this.handleMonthSelect('09')}>
-                                            09
-                                        </li>
-                                        <li className="select-result" onMouseDown={() => this.handleMonthSelect('10')}>
-                                            10
-                                        </li>
-                                        <li className="select-result" onMouseDown={() => this.handleMonthSelect('11')}>
-                                            11
-                                        </li>
-                                        <li className="select-result" onMouseDown={() => this.handleMonthSelect('12')}>
-                                            12
-                                        </li>
-                                    </ul>
+                        <form onSubmit={(e) => this.handleSubmitClick(e)}>
+                            <div className="modal-body" style={{background: '#fff'}}>
+                                <div className="form-row text firstname">
+                                    <label className="firstname" htmlFor="firstname">Your first name</label>
+                                    <input
+                                        onBlur={() => this.handleFieldBlur('firstName')}
+                                        onChange={(e) => this.updateField('firstName', e)}
+                                        value={this.state.fields.firstName}
+                                        id="firstname"
+                                        name="firstname"
+                                        type="text"
+                                        placeholder="Jürgen"
+                                        className={`${this.state.missingValues['firstName'] ? 'missing-value' : ''}`}
+                                        required
+                                    />
                                 </div>
-                            </div>
-                            <div className="form-row text expiration">
-                                <label className="expiration" htmlFor="expiration">Expiration Year</label>
-                                <input
-                                    id="expiration"
-                                    name="expiration"
-                                    onBlur={() => this.setState({ visible: false })}
-                                    onFocus={() => this.setState({ visible: true })}
-                                    onChange={() => {}}
-                                    type="text"
-                                    pattern="[0-9]*"
-                                    placeholder="18"
-                                    value={this.state.fields.expirationYear}
-                                    required
-                                />
-                                <div className={`select-dropdown ${!this.state.visible && 'hidden'}`}>
-                                    <ul className="select-results">
-                                        {
-                                            Array.apply(null, { length: 50 }).map(Number.call, Number)
-                                                .map(i => {
-                                                    let momentItem = moment().add(i, 'years').format('YYYY');
-                                                    return (
-                                                        <li className="select-result" key={i} onMouseDown={() => this.handleYearSelect(momentItem)}>
-                                                            { momentItem }
-                                                        </li>
-                                                    )
-                                                })
+                                <div className="form-row text lastname">
+                                    <label className="lastname" htmlFor="lastname">Your last name</label>
+                                    <input
+                                        onBlur={() => this.handleFieldBlur('lastName')}
+                                        onChange={(e) => this.updateField('lastName', e)}
+                                        value={this.state.fields.lastName}
+                                        id="lastname"
+                                        name="lastname"
+                                        type="text"
+                                        placeholder="Windcaller"
+                                        className={`${this.state.missingValues['lastName'] ? 'missing-value' : ''}`}
+                                        required
+                                    />
+                                </div>
+                                <div className="form-row text cc">
+                                    <label className="cc" htmlFor="cc">Bank Card</label>
+                                    <CardElement
+                                        className="card-field"
+                                        onChange={this.handleCardFieldChange}
+                                        style={{
+                                            base: {
+                                                fontSize: '17px',
+                                                fontWeight: 'lighter',
+                                                fontFamily: "Camphor,Open Sans,Segoe UI,sans-serif",
                                         }
-                                    </ul>
+                                        }}
+                                    />
                                 </div>
+                                <p className="text-muted px-2 mt-3">
+                                    You will be
+                                    billed {this.props.plan.amount} {this.props.user && this.props.user.used_trial ?
+                                    'immediately and unsubscribing will give you access to video content until the end of the period. ' +
+                                    'Your plan renews ' + this.props.plan.recurring : 'starting at the end of' +
+                                    'your free trial and recurring ' + this.props.plan.recurring}. You
+                                    can unsubscribe at any time by visiting your profile page.
+                                </p>
                             </div>
-                            <div className="form-row text security">
-                                <label className="security" htmlFor="security">CCV Security Code</label>
-                                <input
-                                    id="security"
-                                    name="security"
-                                    type="text"
-                                    placeholder="123"
-                                    required
-                                    onBlur={() => this.handleFieldBlur('cvc')}
-                                    onChange={(e) => this.updateField('cvc', e)}
-                                    value={this.state.fields.cvc}
-                                    pattern="[0-9]*"
-                                    className={`${this.state.missingValues['cvc'] ? 'missing-value' : ''}`}
-                                />
+                            <div className="modal-footer">
+                                <button type="button" className="common-Button" data-dismiss="modal" ref={this.closeButton}>Close</button>
+                                {
+                                    this.state.loading ?
+                                        <button type="button" className="common-Button common-Button--default"
+                                                disabled>Processing <i className="fas fa-circle-notch"/></button> :
+                                        <button className="common-Button common-Button--default" type="submit">Place
+                                            Order</button>
+                                }
                             </div>
-                            <p className="text-muted px-2 mt-3">
-                                You will be billed $20.00 monthly starting today and recurring on the { moment().format('Do') } of the month. You
-                                can unsubscribe at any time by visiting your profile page.
-                            </p>
-                        </div>
-                        <div className="modal-footer">
-                            <button type="button" className="common-Button" data-dismiss="modal" ref={this.closeButton}>Close</button>
-                            {
-                                this.state.loading ? <button type="button" className="common-Button common-Button--default" disabled>Processing <i className="fas fa-circle-notch" /></button> :
-                                    <button type="button" className="common-Button common-Button--default" onClick={() => this.checkout()}>Place Order</button>
-                            }
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -392,5 +214,5 @@ class PaymentModal extends Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PaymentModal);
+export default connect(mapStateToProps, mapDispatchToProps)(injectStripe(PaymentModal));
 
