@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom'
 import './App.css';
 import Card from "./components/Card/Card";
 import QuoteCard from "./components/QuoteCard/QuoteCard";
+import NodeImage from './resources/images/node_icon_dots.png'
+import ModernStackImage from './resources/images/modern_stack_img.png'
 
 const mapStateToProps = state => ({
    auth: state.auth,
@@ -21,8 +23,57 @@ class App extends Component {
                   <div className="stripe s2" />
                   <div className="stripe s3" />
               </div>
-              {/* Visual Bubbles Flow */}
-              <div className="icon-container" />
+              <div className="_2ul34cSKJYhID1B6aQr5js _2T4GxTSvR4kmaXMxD2WPHJ">
+                  <div className="MWTYOfDTUXHpHD8anIASV"><span className="A99_cj9ulQplugJPz_dh0">Input</span>
+                      <div className="u-flexSpacer" />
+                      <button className="_1pjcbLNJfN1Q-iAzFQaKMX">Run</button>
+                  </div>
+                  <div className="_2JI5PaCeIaLfE9r9bu9Pb1">
+                      <div className="_2aZAjnHpaVo8GBLFKzYTxl" style={{paddingLeft: 0}}><span
+                          className="CJXpwkPGeXldITjWaYREm"></span><span className="CJXpwkPGeXldITjWaYREm"></span><span
+                          className="_1T4LSfLE0ygy6QoT2WbMI4"></span></div>
+                      <div className="_2aZAjnHpaVo8GBLFKzYTxl" style={{paddingLeft: 40}}><span
+                          className="CJXpwkPGeXldITjWaYREm"></span><span
+                          className="_3_4JdX-xRJnQ9v1TrLP5EJ"></span><span
+                          className="CJXpwkPGeXldITjWaYREm"></span><span className="_38cH8bgG-ZhbrBBgoRkndK"></span>
+                      </div>
+                      <div className="_2aZAjnHpaVo8GBLFKzYTxl" style={{paddingLeft: 40}}><span
+                          className="_3HtHvTWPO4M2fJrTlROw3C"></span><span
+                          className="CJXpwkPGeXldITjWaYREm"></span><span
+                          className="_3HtHvTWPO4M2fJrTlROw3C"></span><span className="_3_4JdX-xRJnQ9v1TrLP5EJ"></span>
+                      </div>
+                      <div className="_2aZAjnHpaVo8GBLFKzYTxl" style={{paddingLeft: 40}}><span
+                          className="_38cH8bgG-ZhbrBBgoRkndK"></span><span
+                          className="_3_4JdX-xRJnQ9v1TrLP5EJ"></span><span
+                          className="CJXpwkPGeXldITjWaYREm"></span><span className="_3HtHvTWPO4M2fJrTlROw3C"></span>
+                      </div>
+                      <div className="_2aZAjnHpaVo8GBLFKzYTxl" style={{paddingLeft: 40}}><span
+                          className="_3_4JdX-xRJnQ9v1TrLP5EJ"></span><span className="_1T4LSfLE0ygy6QoT2WbMI4"></span>
+                      </div>
+                      <br />
+                          <div className="_2aZAjnHpaVo8GBLFKzYTxl" style={{paddingLeft: 0}}><span
+                              className="_38cH8bgG-ZhbrBBgoRkndK"></span><span
+                              className="_3_4JdX-xRJnQ9v1TrLP5EJ"></span><span
+                              className="_1T4LSfLE0ygy6QoT2WbMI4"></span></div>
+                          <div className="_2aZAjnHpaVo8GBLFKzYTxl" style={{paddingLeft: 40}}><span
+                              className="_3HtHvTWPO4M2fJrTlROw3C"></span><span className="CJXpwkPGeXldITjWaYREm"></span><span
+                              className="CJXpwkPGeXldITjWaYREm"></span><span className="CJXpwkPGeXldITjWaYREm"></span>
+                          </div>
+                          <div className="_2aZAjnHpaVo8GBLFKzYTxl" style={{paddingLeft: 40}}><span
+                              className="_1T4LSfLE0ygy6QoT2WbMI4"></span><span
+                              className="_38cH8bgG-ZhbrBBgoRkndK"></span><span
+                              className="_3HtHvTWPO4M2fJrTlROw3C"></span><span
+                              className="_1T4LSfLE0ygy6QoT2WbMI4"></span></div>
+                          <div className="_2aZAjnHpaVo8GBLFKzYTxl" style={{paddingLeft: 40}}><span
+                              className="_3_4JdX-xRJnQ9v1TrLP5EJ"></span><span
+                              className="_3_4JdX-xRJnQ9v1TrLP5EJ"></span><span className="CJXpwkPGeXldITjWaYREm"></span><span
+                              className="CJXpwkPGeXldITjWaYREm"></span></div>
+                          <div className="_2aZAjnHpaVo8GBLFKzYTxl" style={{paddingLeft: 40}}><span
+                              className="_3_4JdX-xRJnQ9v1TrLP5EJ"></span><span
+                              className="_1T4LSfLE0ygy6QoT2WbMI4"></span>
+                          </div>
+                      </div>
+              </div>
           </div>
           <div className="d-flex flex-row justify-content-center">
               {/* Intro Column*/}
@@ -41,7 +92,7 @@ class App extends Component {
           <section id="developers-section" className="py-4">
               <div className="row">
                   <div className="col-md-4 offset-md-3 col-sm-5 offset-sm-1 pl-3" id="flexible-learning">
-                      <img src="https://stripe.com/img/v3/customers/section-icons/sharing.svg" width="66" height="66" alt="Network grid" />
+                     <img src={NodeImage} height="66" width="66" alt="Node icon dots" />
                       <h2 className="common-UppercaseText mt-4">
                         Flexible Learning
                       </h2>
@@ -55,7 +106,7 @@ class App extends Component {
                       </Link>
                   </div>
                   <div className="col-md-4 col-sm-5 pl-3">
-                      <img src="https://stripe.com/img/v3/customers/section-icons/platforms.svg" width="66" height="66" alt="Stack of squares" />
+                      <img src={ModernStackImage} width="66" height="66" alt="Stack of squares" />
                       <h2 className="common-UppercaseText mt-4">
                           Modern Stack
                       </h2>

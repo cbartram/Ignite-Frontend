@@ -172,6 +172,11 @@ h1.common-PageTitle {
     transition-timing-function: ease-out;
 }
 
+.AnimatedIcon {
+    width: 40px;
+    height: 96px;
+}
+
 .Icon:hover span {
     opacity: 0.9;
     transform: translate(-50%, 0);

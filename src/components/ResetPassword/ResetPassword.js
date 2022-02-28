@@ -104,9 +104,6 @@ class ResetPassword extends Component {
      */
     handleConfirmClick = async event => {
         event.preventDefault();
-
-        this.setState({ isConfirming: true });
-
         try {
             await Auth.forgotPasswordSubmit(
                 this.state.email,
@@ -116,10 +113,8 @@ class ResetPassword extends Component {
             this.props.hideErrors();
             this.setState({ confirmed: true });
         } catch (err) {
-            this.setState({ isConfirming: false });
+            console.log("Error occurred while attempting to reset password: ", err)
             this.props.loginFailure(err);
-            this.pushAlert('danger', 'Oh No!', this.props.auth.error.message)
-
         }
     };
 
@@ -207,7 +202,7 @@ class ResetPassword extends Component {
     }
 
     renderSuccessMessage() {
-        this.pushAlert('success', 'Success', 'Your password has been reset successfully!');
+        // this.pushAlert('success', 'Success', 'Your password has been reset successfully!');
         return (
             <div className="success">
                 <Glyphicon glyph="ok" />
