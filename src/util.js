@@ -34,7 +34,7 @@ export const getVideos = async (email, jwt) => {
             method: 'POST',
             path: API_FIND_ALL_USERS,
             parameters: {}, // Query params
-            body: { email }
+            body: { username: email }
         }),
     };
 

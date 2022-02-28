@@ -91,7 +91,8 @@ const checkAuthStatus = async () => {
         Log.info('Attempting to retrieve user videos...');
 
         // Using our custom middleware we can now wait for a async dispatch to complete
-        await dispatchProcess(fetchVideos(user.idToken.payload.email), constants.VIDEOS_SUCCESS, constants.VIDEOS_FAILURE);
+        Log.info(`Fetching user profile using username: user-${user.idToken.payload.sub} and token ${user.idToken.jwtToken.substr(0, 10)}`)
+        await dispatchProcess(fetchVideos(`user-${user.idToken.payload.sub}`, user.idToken.jwtToken), constants.VIDEOS_SUCCESS, constants.VIDEOS_FAILURE);
         // TODO set the active video to the last video in the series that the user was last watching (started: true, completed: false, scrubDuration > 0)
 
         store.dispatch(loginSuccess(user));

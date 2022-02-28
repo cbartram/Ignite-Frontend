@@ -82,19 +82,21 @@ export const fetchVideos = (email, jwt) => async dispatch => {
 
     const response = await getVideos(email, jwt);
 
-    if(response.status === 200) {
+    console.log("bILLING / vid api response: ", response)
+
+    if(response.statusCode === 200) {
         // Dispatch information about billing
         dispatch({
             type: constants.BILLING_SUCCESS,
-            payload: response.body.user,
+            payload: response.user,
         });
 
         // Dispatch information about videos
         dispatch({
             type: constants.VIDEOS_SUCCESS,
-            payload: response.body.user.videos,
+            payload: response.user.videos,
         });
-    } else if(response.status > 200 || typeof response.status === 'undefined') {
+    } else if(response.statusCode > 200 || typeof response.status === 'undefined') {
         // An error occurred
         dispatch({
             type: constants.VIDEOS_FAILURE,

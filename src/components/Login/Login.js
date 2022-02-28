@@ -87,7 +87,7 @@ class Login extends Component {
             Log.info('Login Success!', res);
             // Fetches both user videos and user billing information
             // using the same API route
-            this.props.fetchVideos(this.state.email, res.signInUserSession.idToken.jwtToken);
+            this.props.fetchVideos(`user-${res.signInUserSession.idToken.payload.sub}`, res.signInUserSession.idToken.jwtToken);
             this.props.loginSuccess(res);
         } catch (err) {
             if(err.code === 'NotAuthorizedException')

@@ -25,6 +25,8 @@ class Navbar extends Component {
     constructor(props) {
         super(props);
 
+        this.default_profile_picture = 'https://secure.gravatar.com/avatar/7762d0145e4f9da9b9957fbca1b76865?s=96&d=https%3A%2F%2Fstatic.teamtreehouse.com%2Fassets%2Fcontent%2Fdefault_avatar-ea7cf6abde4eec089a4e03cc925d0e893e428b2b6971b12405a9b118c837eaa2.png&r=pg'
+
         this.state = {
             active: false, // True if the sidebar is active
         }
@@ -87,7 +89,7 @@ class Navbar extends Component {
                                 <li className="nav-item dropdown">
                                     <button className="btn btn-link dropdown-toggle" id="navbarDropdown" data-toggle="dropdown">
                                         <div className="avatar-container">
-                                            <img src={this.props.auth.user['custom:profile_picture']} alt="Profile" className="avatar-image" height="30" width="30" />
+                                            <img src={this.props.auth.user['custom:profile_picture'] || this.default_profile_picture} alt="Profile" className="avatar-image" height="30" width="30" />
                                         </div>
                                     </button>
                                     <div className="dropdown-menu dropdown-menu-right header-nav-item-profile-dropdown mt-2 py-0">
