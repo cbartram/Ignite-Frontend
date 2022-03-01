@@ -259,11 +259,11 @@ class Signup extends Component {
                     />
                 </form>
                 <hr />
-                <FacebookButton
-                    hasAuthenticated={this.state.hasAuthenticated}
-                    onLogin={() => {}}
-                    onError={() => Log.error('Error with Facebook SSO')}
-                />
+                {/*<FacebookButton*/}
+                {/*    hasAuthenticated={this.state.hasAuthenticated}*/}
+                {/*    onLogin={() => {}}*/}
+                {/*    onError={() => Log.error('Error with Facebook SSO')}*/}
+                {/*/>*/}
                 <div className="d-flex flex-column align-items-center justify-content-center">
                     <button className="btn btn-link" onClick={() => this.resendConfirmationCode()}>Re-send confirmation code.</button>
                     <span className="text-muted">
