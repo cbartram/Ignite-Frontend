@@ -150,7 +150,7 @@ export const getAvatar = (email, retro = false) => {
  * @param debug Boolean true if we should print the http response and false otherwise. Defaults to false
  * @returns {Promise<*|Promise<any>|undefined>}
  */
-export const post = async (body, path, requestType, successType, failureType, dispatch, getState, debug = false) => {
+export const post = async (body, path, requestType, successType, failureType, dispatch, getState, debug = true) => {
     //If we don't need redux for the action we can just skip the dispatch by setting the actions to null
     let doDispatch = true;
     if (isNil(requestType) || isNil(successType) || isNil(failureType)) doDispatch = false;
@@ -209,6 +209,7 @@ export const post = async (body, path, requestType, successType, failureType, di
 /**
  * Gets data about the user's videos including: scrub duration, the next video in the queue,
  * @param username String the user's username to retrieve the user profile for
+ * @param token Authorization token used to authenticate the user with the API
  * @returns {Promise<void>}
  */
 export const getVideos = async (username, token) => {

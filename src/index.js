@@ -13,7 +13,7 @@ import {CookiesProvider} from 'react-cookie';
 import ReactGA from "react-ga";
 import rootReducer from './reducers/rootReducer';
 import * as constants from './constants'
-import {AMPLIFY_CONFIG, API_KEY, DEV_URL, FB_APP_ID, IS_PROD, PROD_API_KEY, PROD_URL} from './constants'
+import {AMPLIFY_CONFIG, API_KEY, DEV_URL, IS_PROD, PROD_API_KEY, PROD_URL} from './constants'
 import Router from './components/Router/Router'
 import Log from './Log';
 import {fetchVideos, loginSuccess} from './actions/actions';
@@ -44,25 +44,6 @@ ReactGA.pageview(window.location.pathname + window.location.search);
  */
 const load = async () => {
     Log.info('Checking User Authentication status...');
-
-    // Load the Facebook SDK
-    window.fbAsyncInit = function() {
-        window.FB.init({
-            appId: FB_APP_ID,
-            autoLogAppEvents: true,
-            xfbml: true,
-            version: 'v3.1'
-        });
-    };
-
-    (function(d, s, id){
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {return;}
-        js = d.createElement(s); js.id = id;
-        js.src = "https://connect.facebook.net/en_US/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
-
     try {
         const user = await Auth.currentSession();
         ReactGA.set({userId: user.idToken.payload['cognito:username']});
@@ -74,12 +55,11 @@ const load = async () => {
         // It basically loads up all the data for the user when the App loads.
         store.dispatch(loginSuccess(user));
         await dispatchProcess(fetchVideos(`user-${user.idToken.payload['cognito:username']}`), constants.VIDEOS_SUCCESS, constants.VIDEOS_FAILURE);
-    }
-    catch (e) {
+    } catch (e) {
         Log.warn('Could not find authenticated user.');
         // Check Cognito for an active session on the server
         if (e !== 'No current user') {
-            Log.error(e);
+            Log.error(`Error thrown while attempting to load application: ${e}`);
         }
     }
 
@@ -140,7 +120,7 @@ const render = async () => {
         // Learn more about service workers: http://bit.ly/CRA-PWA
         serviceWorker.unregister();
     } catch(err) {
-        Log.error(err);
+        Log.error(`Error thrown while attempting to load the application. Error = ${err}`);
 
         ReactDOM.render(
         <Provider store={store}>

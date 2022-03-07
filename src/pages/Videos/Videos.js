@@ -46,8 +46,6 @@ class Videos extends Component {
             activeChapter: 0,
             recentlyWatched: [],
         };
-
-
     }
 
     async componentDidMount() {
@@ -87,7 +85,7 @@ class Videos extends Component {
                 });
                 this.setState({ recentlyWatched: recentlyWatched });
             } catch(err) {
-              Log.error(err);
+              Log.error("Failed to find _recent videos cookie: ", err);
               this.props.cookies.remove('_recent');
             }
         }
@@ -145,7 +143,7 @@ class Videos extends Component {
                 // this.props.updateActiveVideo(video); TODO check this out somethings not right here.
                 this.props.history.push('/watch');
             } catch(err) {
-                Log.error(err);
+                Log.error('Failed to retrieve signed url for video: ', video, err);
                 this.props.pushAlert('danger', 'Oh No!', 'There was an issue retrieving the url for your video refresh the page and try again!');
                 this.setState({ isLoading: false, loadingVideo: null });
             }

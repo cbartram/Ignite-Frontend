@@ -42,7 +42,6 @@ export const getRequestUrl = (endpointURI) => {
   let url = '';
 
   if(process.env.REACT_APP_NODE_ENV === 'local') {
-      console.log('Making request to localhost')
       return `http://localhost:8080${endpointURI}`
   }
 
@@ -80,7 +79,6 @@ export const DEV_URL = 'https://5c5aslvp9k.execute-api.us-east-1.amazonaws.com/d
 // Configuration Params
 export const API_KEY = 'pgS8gGvkv53xFg4BdgECn38C4CDNZXKj8EqFtQdW';
 export const PROD_API_KEY = 'mNer7Typlc9npqrkThXZ08xAIWoBXLyG2NEfHDd2';
-export const FB_APP_ID = '833844836958913';
 export const USER_POOL_URL= IS_PROD ? 'https://ignite-app-prod.auth.us-east-1.amazoncognito.com' : 'https://ignite-app.auth.us-east-1.amazoncognito.com';
 export const MAX_RECENTLY_WATCHED_VIDEOS = 4; // The maximum amount of videos we should show in the recently watched panel
 
