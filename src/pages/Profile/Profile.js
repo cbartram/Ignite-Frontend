@@ -154,7 +154,7 @@ class Profile extends Component {
             subscriptionId: this.props.user.subscription_id,
             trialEnd: this.props.user.trial_end,
         }).then(async () => {
-            //Update user attributes in redux
+            // Update user attributes in redux
             this.props.fetchVideos(`user-${this.props.user.userName}`);
             refetch(); // Re-load the graphql query
             this.props.pushAlert('success', 'Unsubscribe Successful', 'You Ignite subscription has been cancelled successfully. If you are outside of your trial period you will still retain access to video content until the end of the billing cycle.');
@@ -375,7 +375,7 @@ class Profile extends Component {
                                             this.props.pushAlert('danger', 'Update Payment Failed', 'Something went wrong trying to update your payment method. Please try again shortly!')
                                         }}
                                         onSuccess={() => {
-                                            Log.info('Sucessfully Updated User payment info');
+                                            Log.info('Successfully Updated User payment info');
                                             this.props.pushAlert('success', 'Payment Updated', 'Your payment method has been updated successfully')
                                         }}
                                     />

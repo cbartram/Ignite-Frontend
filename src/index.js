@@ -13,7 +13,7 @@ import {CookiesProvider} from 'react-cookie';
 import ReactGA from "react-ga";
 import rootReducer from './reducers/rootReducer';
 import * as constants from './constants'
-import {AMPLIFY_CONFIG, API_KEY, DEV_URL, IS_PROD, PROD_API_KEY, PROD_URL} from './constants'
+import {AMPLIFY_CONFIG, API_KEY, DEV_URL, IS_PROD, PROD_API_KEY, PROD_URL, IS_LOCAL} from './constants'
 import Router from './components/Router/Router'
 import Log from './Log';
 import {fetchVideos, loginSuccess} from './actions/actions';
@@ -36,6 +36,16 @@ if (!IS_PROD || localStorage.getItem('FORCE_LOGS') === true) localStorage.setIte
 
 ReactGA.initialize('UA-133319035-1');
 ReactGA.pageview(window.location.pathname + window.location.search);
+
+const getGraphQLUri = () => {
+    if(IS_LOCAL) {
+        return "http://localhost:8080/graphql"
+    }
+    if(IS_PROD) {
+        return `${PROD_URL}/graphql`
+    }
+    return `${DEV_URL}/graphql`
+}
 
 /**
  * Checks the cookies/local storage to see if the user has been authenticated recently/remembered and loads
@@ -76,7 +86,7 @@ const load = async () => {
 
     // Setup GraphQL Client
     return new ApolloClient({
-        link: authLink.concat(Apollo.HttpLink({uri: IS_PROD ? `${PROD_URL}/graphql` : `${DEV_URL}/graphql`})),
+        link: authLink.concat(Apollo.HttpLink({uri: getGraphQLUri()})),
         cache: new Apollo.InMemoryCache()
     });
 };

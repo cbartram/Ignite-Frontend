@@ -30,6 +30,7 @@ export const INITIAL_STATE = {
  * @type {boolean} True if the application is running in prod and false otherwise.
  */
 export const IS_PROD = window.location.hostname !== 'localhost' || process.env.REACT_APP_NODE_ENV === 'production';
+export const IS_LOCAL = process.env.REACT_APP_NODE_ENV === 'local'
 
 /**
  * Helper function which determines the correct API to hit (prod,dev) and the correct region to use.
@@ -41,7 +42,7 @@ export const IS_PROD = window.location.hostname !== 'localhost' || process.env.R
 export const getRequestUrl = (endpointURI) => {
   let url = '';
 
-  if(process.env.REACT_APP_NODE_ENV === 'local') {
+  if(IS_LOCAL) {
       return `http://localhost:8080${endpointURI}`
   }
 
