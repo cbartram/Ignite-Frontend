@@ -11,7 +11,6 @@ import {USER_POOL_URL} from "../../constants";
 import Log from '../../Log';
 import './Signup.css';
 import withContainer from "../../components/withContainer";
-import FacebookButton from "../../components/FacebookButton/FacebookButton";
 
 const mapStateToProps = state => ({
     auth: state.auth,

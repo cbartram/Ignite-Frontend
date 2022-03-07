@@ -41,6 +41,11 @@ export const IS_PROD = window.location.hostname !== 'localhost' || process.env.R
 export const getRequestUrl = (endpointURI) => {
   let url = '';
 
+  if(process.env.REACT_APP_NODE_ENV === 'local') {
+      console.log('Making request to localhost')
+      return `http://localhost:8080${endpointURI}`
+  }
+
   // Attempt to use prod
   if(IS_PROD)
       url = `${PROD_URL}${endpointURI}`;
